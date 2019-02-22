@@ -80,6 +80,8 @@ async function changeColorSetting(
     ...colorCustomizations,
     'titleBar.activeBackground': backgroundHex,
     'titleBar.activeForeground': foregroundHex
+
+    // use these for debugging only
     // 'statusBar.background': backgroundHex,
     // 'statusBar.foreground': foregroundHex
   };
