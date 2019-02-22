@@ -66,6 +66,7 @@
     "configuration": {}
   },
   "scripts": {
+    "publish": "npx vsce publish",
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
