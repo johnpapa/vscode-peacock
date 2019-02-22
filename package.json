@@ -1,15 +1,15 @@
 {
-  "name": "vscode-colorize",
-  "displayName": "Colorize VS Code",
-  "description": "Change the titlebar color for your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
+  "name": "vscode-peacock",
+  "displayName": "Peacock",
+  "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
   "version": "0.0.1",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnpapa/vscode-colorize.git"
+    "url": "https://github.com/johnpapa/vscode-peacock.git"
   },
-  "homepage": "https://github.com/johnpapa/vscode-colorize/blob/master/README.md",
+  "homepage": "https://github.com/johnpapa/vscode-peacock/blob/master/README.md",
   "icon": "resources/winteriscoming-icon.png",
   "galleryBanner": {
     "color": "#0072c6",
