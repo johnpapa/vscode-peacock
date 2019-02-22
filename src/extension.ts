@@ -13,7 +13,9 @@ const colors = {
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log('Congratulations, your extension "papa-titlebar" is now active!');
+  console.log(
+    'Congratulations, your extension "vscode-colorize" is now active!'
+  );
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
@@ -79,7 +81,9 @@ async function changeColorSetting(
   const newColorCustomizations = {
     ...colorCustomizations,
     'titleBar.activeBackground': backgroundHex,
-    'titleBar.activeForeground': foregroundHex
+    'titleBar.activeForeground': foregroundHex,
+    'titleBar.inactiveBackground': backgroundHex,
+    'titleBar.inactiveForeground': foregroundHex
 
     // use these for debugging only
     // 'statusBar.background': backgroundHex,

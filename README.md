@@ -1,4 +1,4 @@
-# papa-titlebar README
+# vscode-colorize README
 
 ## Features
 

@@ -1,16 +1,32 @@
 {
-  "name": "papa-titlebar",
-  "displayName": "Workspace Titlebar Color",
+  "name": "vscode-colorize",
+  "displayName": "Colorize VS Code",
   "description": "Change the titlebar color for your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
   "version": "0.0.1",
+  "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
-  "icon": "resources/azure-functions.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnpapa/vscode-colorize.git"
+  },
+  "homepage": "https://github.com/johnpapa/vscode-colorize/blob/master/README.md",
+  "icon": "resources/winteriscoming-icon.png",
+  "galleryBanner": {
+    "color": "#0072c6",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.31.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "Theme",
+    "Colors",
+    "Fun"
+  ],
+  "preview": true,
   "activationEvents": [
     "onCommand:extension.changeTitlebarColor",
     "onCommand:extension.changeTitlebarColorToRandom",
