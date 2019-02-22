@@ -31,6 +31,10 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
+  vscode.commands.registerCommand('extension.clearColor', async () => {
+    removeColorSetting();
+  });
+
   vscode.commands.registerCommand('extension.changeColorToRandom', async () => {
     const backgroundHex = generateRandomHexColor();
     const foregroundHex = formatHex(invertColor(backgroundHex));
@@ -65,6 +69,21 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // context.subscriptions.push(disposable);
+}
+
+async function removeColorSetting() {
+  const colorCustomizations = await vscode.workspace
+    .getConfiguration()
+    .get('workbench.colorCustomizations');
+  
+  delete colorCustomizations['titleBar.activeBackground'];
+  delete colorCustomizations['titleBar.activeForeground'];
+  delete colorCustomizations['titleBar.inactiveBackground'];
+  delete colorCustomizations['titleBar.inactiveForeground'];
+
+  await vscode.workspace
+    .getConfiguration()
+    .update('workbench.colorCustomizations', colorCustomizations, false);
 }
 
 async function changeColorSetting(

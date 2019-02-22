@@ -32,7 +32,8 @@
     "onCommand:extension.changeColorToRandom",
     "onCommand:extension.changeColorToVueGreen",
     "onCommand:extension.changeColorToAngularRed",
-    "onCommand:extension.changeColorToReactBlue"
+    "onCommand:extension.changeColorToReactBlue",
+    "onCommand:extension.clearColor"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -56,6 +57,10 @@
       {
         "command": "extension.changeColorToReactBlue",
         "title": "Peacock: Color to React Blue"
+      },
+      {
+        "command": "extension.clearColor",
+        "title": "Peacock: Clear Color"
       }
     ],
     "configuration": {}
