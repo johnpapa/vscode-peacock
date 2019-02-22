@@ -1,8 +1,10 @@
 {
-  "name": "papa-colored",
-  "displayName": "papa-colored",
-  "description": "foo",
+  "name": "papa-titlebar",
+  "displayName": "Workspace Titlebar Color",
+  "description": "Change the titlebar color for your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
   "version": "0.0.1",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "icon": "resources/azure-functions.png",
   "engines": {
     "vscode": "^1.31.0"
   },
@@ -10,7 +12,11 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.changeTitlebarColor"
+    "onCommand:extension.changeTitlebarColor",
+    "onCommand:extension.changeTitlebarColorToRandom",
+    "onCommand:extension.changeTitlebarColorToVueGreen",
+    "onCommand:extension.changeTitlebarColorToAngularRed",
+    "onCommand:extension.changeTitlebarColorToReactBlue"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -18,23 +24,25 @@
       {
         "command": "extension.changeTitlebarColor",
         "title": "Change Titlebar Color"
+      },
+      {
+        "command": "extension.changeTitlebarColorToVueGreen",
+        "title": "Change Titlebar Color to Vue Green"
+      },
+      {
+        "command": "extension.changeTitlebarColorToRandom",
+        "title": "Change Titlebar Color to a Random Color"
+      },
+      {
+        "command": "extension.changeTitlebarColorToAngularRed",
+        "title": "Change Titlebar Color to Angular Red"
+      },
+      {
+        "command": "extension.changeTitlebarColorToReactBlue",
+        "title": "Change Titlebar Color to React Blue"
       }
     ],
-    "configuration": {
-      "properties": {
-        "conf.titlebarColor": {
-          "type": "string",
-          "default": "",
-          "description": "%ext.config.titlebarColor%"
-        },
-        "papa.titlebarColor": {
-          "type": "object",
-          "default": "{titleBar.activeBackground: undefined}",
-          "description": "Titlebar color",
-          "scope": "resource"
-        }
-      }
-    }
+    "configuration": {}
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

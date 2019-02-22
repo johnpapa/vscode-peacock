@@ -2,76 +2,105 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+const colors = {
+  vue: '#42b883',
+  angular: '#b52e31',
+  react: '#00b3e6'
+};
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log('Congratulations, your extension "papa-colored" is now active!');
+  console.log('Congratulations, your extension "papa-titlebar" is now active!');
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
-  let disposable = vscode.commands.registerCommand(
-    'extension.changeTitlebarColor',
-    async () => {
-      if (vscode.window.activeTextEditor) {
-        // await vscode.workspace
-        //   .getConfiguration()
-        //   .update('conf.titlebarColor', '#f0f0f0', false);
-
-        const colorCustomizations = await vscode.workspace
-          .getConfiguration()
-          .get('workbench.colorCustomizations');
-
-        const options: vscode.InputBoxOptions = {
-          ignoreFocusOut: true,
-          placeHolder: '#ff00ff',
-          prompt: 'Enter a background color for the title bar',
-          value: '#42b883' // default to Vue green
-
-          // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
-          // prompt: localize("cmd.otherOptions.preserve.prompt")
-        };
-        const input = await vscode.window.showInputBox(options);
-        const hexInput = formatHex(input);
-        if (!isValidHexColor(hexInput)) {
-          return;
-        }
-
-        // let backgroundHex: string = generateRandomHexColor();
-
-        let backgroundHex = hexInput;
-        const foregroundHex = formatHex(invertColor(backgroundHex));
-
-        // For debugging we use status bar, as title bar is unavailable when debugging
-        // const newColorCustomizations = {
-        //   ...colorCustomizations,
-        //   'statusBar.background': backgroundHex,
-        //   'statusBar.foreground': foregroundHex
-        // };
-
-        const newColorCustomizations = {
-          ...colorCustomizations,
-          'titleBar.activeBackground': backgroundHex,
-          'titleBar.activeForeground': foregroundHex
-        };
-
-        await vscode.workspace
-          .getConfiguration()
-          .update(
-            'workbench.colorCustomizations',
-            newColorCustomizations,
-            false
-          );
+  vscode.commands.registerCommand('extension.changeTitlebarColor', async () => {
+    if (vscode.window.activeTextEditor) {
+      const backgroundHex = await promptForHexColor();
+      if (!isValidHexColor(backgroundHex)) {
+        return;
       }
+      const foregroundHex = formatHex(invertColor(backgroundHex));
+      changeColorSetting(backgroundHex, foregroundHex);
+    }
+  });
+
+  vscode.commands.registerCommand(
+    'extension.changeTitlebarColorToRandom',
+    async () => {
+      const backgroundHex = generateRandomHexColor();
+      const foregroundHex = formatHex(invertColor(backgroundHex));
+      changeColorSetting(backgroundHex, foregroundHex);
     }
   );
 
-  context.subscriptions.push(disposable);
+  vscode.commands.registerCommand(
+    'extension.changeTitlebarColorToVueGreen',
+    async () => {
+      const backgroundHex = colors.vue;
+      const foregroundHex = formatHex(invertColor(backgroundHex));
+      changeColorSetting(backgroundHex, foregroundHex);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    'extension.changeTitlebarColorToAngularRed',
+    async () => {
+      const backgroundHex = colors.angular;
+      const foregroundHex = formatHex(invertColor(backgroundHex));
+      changeColorSetting(backgroundHex, foregroundHex);
+    }
+  );
+
+  vscode.commands.registerCommand(
+    'extension.changeTitlebarColorToReactBlue',
+    async () => {
+      const backgroundHex = colors.react;
+      const foregroundHex = formatHex(invertColor(backgroundHex));
+      changeColorSetting(backgroundHex, foregroundHex);
+    }
+  );
+
+  // context.subscriptions.push(disposable);
 }
-function randomDigit() {
-  return Math.floor(Math.random() * 10);
+
+async function changeColorSetting(
+  backgroundHex: string,
+  foregroundHex: string
+) {
+  const colorCustomizations = await vscode.workspace
+    .getConfiguration()
+    .get('workbench.colorCustomizations');
+
+  const newColorCustomizations = {
+    ...colorCustomizations,
+    'titleBar.activeBackground': backgroundHex,
+    'titleBar.activeForeground': foregroundHex
+    // 'statusBar.background': backgroundHex,
+    // 'statusBar.foreground': foregroundHex
+  };
+
+  await vscode.workspace
+    .getConfiguration()
+    .update('workbench.colorCustomizations', newColorCustomizations, false);
+}
+
+async function promptForHexColor() {
+  const options: vscode.InputBoxOptions = {
+    ignoreFocusOut: true,
+    placeHolder: '#ff00ff',
+    prompt: 'Enter a background color for the title bar',
+    value: '#42b883' // default to Vue green
+    // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
+    // prompt: localize("cmd.otherOptions.preserve.prompt")
+  };
+  const input = await vscode.window.showInputBox(options);
+  const hexInput = formatHex(input);
+  return hexInput;
 }
 
 function invertColor(hex: string) {
@@ -84,7 +113,7 @@ function invertColor(hex: string) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
   if (hex.length !== 6) {
-    throw new Error('Invalid HEX color.');
+    throw new Error(`Invalid HEX color ${hex}`);
   }
   const r = parseInt(hex.slice(0, 2), 16);
   const g = parseInt(hex.slice(2, 4), 16);
@@ -103,15 +132,11 @@ function formatHex(input: string = '') {
 }
 
 function generateRandomHexColor() {
-  return (
-    '' +
-    randomDigit().toString() +
-    randomDigit().toString() +
-    randomDigit().toString() +
-    randomDigit().toString() +
-    randomDigit().toString() +
-    randomDigit().toString()
-  );
+  // credit: https://www.paulirish.com/2009/random-hex-color-code-snippets/
+  const hex = (
+    '000000' + Math.floor(Math.random() * 16777215).toString(16)
+  ).slice(-6);
+  return '#' + hex;
 }
 
 // this method is called when your extension is deactivated
