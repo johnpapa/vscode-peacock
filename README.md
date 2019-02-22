@@ -11,6 +11,8 @@ A Visual Studio Code extension that subtly changes the workspace color of your w
 
 ## Features
 
+Commands can be found in the command palette. Look for commands beginning with `Peacock:`
+
 - Change the titlebar to
   - user defined color
   - a random color

@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
-  vscode.commands.registerCommand('extension.changeTitlebarColor', async () => {
+  vscode.commands.registerCommand('extension.changeColor', async () => {
     if (vscode.window.activeTextEditor) {
       const backgroundHex = await promptForHexColor();
       if (!isValidHexColor(backgroundHex)) {
@@ -31,17 +31,14 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
-  vscode.commands.registerCommand(
-    'extension.changeTitlebarColorToRandom',
-    async () => {
-      const backgroundHex = generateRandomHexColor();
-      const foregroundHex = formatHex(invertColor(backgroundHex));
-      changeColorSetting(backgroundHex, foregroundHex);
-    }
-  );
+  vscode.commands.registerCommand('extension.changeColorToRandom', async () => {
+    const backgroundHex = generateRandomHexColor();
+    const foregroundHex = formatHex(invertColor(backgroundHex));
+    changeColorSetting(backgroundHex, foregroundHex);
+  });
 
   vscode.commands.registerCommand(
-    'extension.changeTitlebarColorToVueGreen',
+    'extension.changeColorToVueGreen',
     async () => {
       const backgroundHex = colors.vue;
       const foregroundHex = formatHex(invertColor(backgroundHex));
@@ -50,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.commands.registerCommand(
-    'extension.changeTitlebarColorToAngularRed',
+    'extension.changeColorToAngularRed',
     async () => {
       const backgroundHex = colors.angular;
       const foregroundHex = formatHex(invertColor(backgroundHex));
@@ -59,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.commands.registerCommand(
-    'extension.changeTitlebarColorToReactBlue',
+    'extension.changeColorToReactBlue',
     async () => {
       const backgroundHex = colors.react;
       const foregroundHex = formatHex(invertColor(backgroundHex));
@@ -86,8 +83,8 @@ async function changeColorSetting(
     'titleBar.inactiveForeground': foregroundHex
 
     // use these for debugging only
-    // 'statusBar.background': backgroundHex,
-    // 'statusBar.foreground': foregroundHex
+    ,'statusBar.background': backgroundHex,
+    'statusBar.foreground': foregroundHex
   };
 
   await vscode.workspace

@@ -28,34 +28,34 @@
   ],
   "preview": true,
   "activationEvents": [
-    "onCommand:extension.changeTitlebarColor",
-    "onCommand:extension.changeTitlebarColorToRandom",
-    "onCommand:extension.changeTitlebarColorToVueGreen",
-    "onCommand:extension.changeTitlebarColorToAngularRed",
-    "onCommand:extension.changeTitlebarColorToReactBlue"
+    "onCommand:extension.changeColor",
+    "onCommand:extension.changeColorToRandom",
+    "onCommand:extension.changeColorToVueGreen",
+    "onCommand:extension.changeColorToAngularRed",
+    "onCommand:extension.changeColorToReactBlue"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.changeTitlebarColor",
-        "title": "Change Titlebar Color"
+        "command": "extension.changeColor",
+        "title": "Peacock: Enter a Color"
       },
       {
-        "command": "extension.changeTitlebarColorToVueGreen",
-        "title": "Change Titlebar Color to Vue Green"
+        "command": "extension.changeColorToVueGreen",
+        "title": "Peacock: Color to Vue Green"
       },
       {
-        "command": "extension.changeTitlebarColorToRandom",
-        "title": "Change Titlebar Color to a Random Color"
+        "command": "extension.changeColorToRandom",
+        "title": "Peacock: Color to Random"
       },
       {
-        "command": "extension.changeTitlebarColorToAngularRed",
-        "title": "Change Titlebar Color to Angular Red"
+        "command": "extension.changeColorToAngularRed",
+        "title": "Peacock: Color to Angular Red"
       },
       {
-        "command": "extension.changeTitlebarColorToReactBlue",
-        "title": "Change Titlebar Color to React Blue"
+        "command": "extension.changeColorToReactBlue",
+        "title": "Peacock: Color to React Blue"
       }
     ],
     "configuration": {}
