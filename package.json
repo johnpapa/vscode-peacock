@@ -1,0 +1,58 @@
+{
+  "name": "papa-colored",
+  "displayName": "papa-colored",
+  "description": "foo",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.31.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.helloWorld",
+    "onCommand:extension.changeTitlebarColor"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "extension.changeTitlebarColor",
+        "title": "Change Titlebar Color"
+      }
+    ],
+    "configuration": {
+      "properties": {
+        "conf.titlebarColor": {
+          "type": "string",
+          "default": "",
+          "description": "%ext.config.titlebarColor%"
+        },
+        "papa.titlebarColor": {
+          "type": "object",
+          "default": "{titleBar.activeBackground: undefined}",
+          "description": "Titlebar color",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^3.3.1",
+    "vscode": "^1.1.28",
+    "tslint": "^5.12.1",
+    "@types/node": "^10.12.21",
+    "@types/mocha": "^2.2.42"
+  }
+}
