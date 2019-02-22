@@ -120,7 +120,7 @@ async function promptForHexColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: '#ff00ff',
-    prompt: 'Enter a background color for the title bar',
+    prompt: 'Enter a background color for the title bar in RGB hex format',
     value: '#42b883' // default to Vue green
     // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
     // prompt: localize("cmd.otherOptions.preserve.prompt")

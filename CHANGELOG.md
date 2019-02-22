@@ -4,6 +4,11 @@ All notable changes to the code will be documented in this file.
 
 ## [0.0.5]
 
+Features
+
+- Added menu command to reset all colors (clears the workspace settings for the affected colors)
+- Revised the prompt to guide on RGB format for hex values
+
 Bug fixes
 
 - Prompt for color now works when a file is not open.
