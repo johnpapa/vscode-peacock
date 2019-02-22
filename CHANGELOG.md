@@ -2,9 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
+## [0.0.2]
 
 - Named **peacock**
 - Allow changing to user defined color
