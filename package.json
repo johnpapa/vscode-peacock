@@ -10,7 +10,7 @@
     "url": "https://github.com/johnpapa/vscode-peacock.git"
   },
   "homepage": "https://github.com/johnpapa/vscode-peacock/blob/master/README.md",
-  "icon": "resources/winteriscoming-icon.png",
+  "icon": "resources/peacock-icon.png",
   "galleryBanner": {
     "color": "#0072c6",
     "theme": "dark"
