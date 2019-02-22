@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -28,6 +28,7 @@
   ],
   "preview": true,
   "activationEvents": [
+    "onCommand:extension.resetColors",
     "onCommand:extension.changeColor",
     "onCommand:extension.changeColorToRandom",
     "onCommand:extension.changeColorToVueGreen",
@@ -37,6 +38,10 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "extension.resetColors",
+        "title": "Peacock: Reset Colors"
+      },
       {
         "command": "extension.changeColor",
         "title": "Peacock: Enter a Color"

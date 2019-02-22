@@ -8,27 +8,34 @@ const colors = {
   react: '#00b3e6'
 };
 
+const colorSettings = [
+  'titleBar.activeBackground',
+  'titleBar.activeForeground',
+  'titleBar.inactiveBackground',
+  'titleBar.inactiveForeground'
+];
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log(
-    'Congratulations, your extension "vscode-peacock" is now active!'
-  );
+  console.log('Extension "vscode-peacock" is now active!');
 
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
+  vscode.commands.registerCommand('extension.resetColors', async () => {
+    resetColorSettings();
+  });
+
   vscode.commands.registerCommand('extension.changeColor', async () => {
-    if (vscode.window.activeTextEditor) {
-      const backgroundHex = await promptForHexColor();
-      if (!isValidHexColor(backgroundHex)) {
-        return;
-      }
-      const foregroundHex = formatHex(invertColor(backgroundHex));
-      changeColorSetting(backgroundHex, foregroundHex);
+    const backgroundHex = await promptForHexColor();
+    if (!isValidHexColor(backgroundHex)) {
+      return;
     }
+    const foregroundHex = formatHex(invertColor(backgroundHex));
+    changeColorSetting(backgroundHex, foregroundHex);
   });
 
   vscode.commands.registerCommand('extension.changeColorToRandom', async () => {
@@ -86,6 +93,23 @@ async function changeColorSetting(
     // ,'statusBar.background': backgroundHex,
     // 'statusBar.foreground': foregroundHex
   };
+
+  await vscode.workspace
+    .getConfiguration()
+    .update('workbench.colorCustomizations', newColorCustomizations, false);
+}
+
+async function resetColorSettings() {
+  const colorCustomizations = await vscode.workspace
+    .getConfiguration()
+    .get('workbench.colorCustomizations');
+
+  const newColorCustomizations: any = {
+    ...colorCustomizations
+  };
+  colorSettings.forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
 
   await vscode.workspace
     .getConfiguration()
