@@ -12,7 +12,7 @@
   "homepage": "https://github.com/johnpapa/vscode-peacock/blob/master/README.md",
   "icon": "resources/peacock-icon.png",
   "galleryBanner": {
-    "color": "#0072c6",
+    "color": "#373436",
     "theme": "dark"
   },
   "engines": {
