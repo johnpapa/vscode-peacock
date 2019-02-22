@@ -13,63 +13,60 @@ export function activate(context: vscode.ExtensionContext) {
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
   let disposable = vscode.commands.registerCommand(
-    'extension.helloWorld',
-    () => {
-      // The code you place here will be executed every time your command is executed
+    'extension.changeTitlebarColor',
+    async () => {
+      if (vscode.window.activeTextEditor) {
+        // await vscode.workspace
+        //   .getConfiguration()
+        //   .update('conf.titlebarColor', '#f0f0f0', false);
 
-      // Display a message box to the user
-      vscode.window.showInformationMessage('Hello World!');
+        const colorCustomizations = await vscode.workspace
+          .getConfiguration()
+          .get('workbench.colorCustomizations');
+
+        const options: vscode.InputBoxOptions = {
+          ignoreFocusOut: true,
+          placeHolder: '#ff00ff',
+          prompt: 'Enter a background color for the title bar',
+          value: '#42b883' // default to Vue green
+
+          // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
+          // prompt: localize("cmd.otherOptions.preserve.prompt")
+        };
+        const input = await vscode.window.showInputBox(options);
+        const hexInput = formatHex(input);
+        if (!isValidHexColor(hexInput)) {
+          return;
+        }
+
+        // let backgroundHex: string = generateRandomHexColor();
+
+        let backgroundHex = hexInput;
+        const foregroundHex = formatHex(invertColor(backgroundHex));
+
+        // For debugging we use status bar, as title bar is unavailable when debugging
+        // const newColorCustomizations = {
+        //   ...colorCustomizations,
+        //   'statusBar.background': backgroundHex,
+        //   'statusBar.foreground': foregroundHex
+        // };
+
+        const newColorCustomizations = {
+          ...colorCustomizations,
+          'titleBar.activeBackground': backgroundHex,
+          'titleBar.activeForeground': foregroundHex
+        };
+
+        await vscode.workspace
+          .getConfiguration()
+          .update(
+            'workbench.colorCustomizations',
+            newColorCustomizations,
+            false
+          );
+      }
     }
   );
-
-  vscode.commands.registerCommand('extension.changeTitlebarColor', async () => {
-    if (vscode.window.activeTextEditor) {
-      // await vscode.workspace
-      //   .getConfiguration()
-      //   .update('conf.titlebarColor', '#f0f0f0', false);
-
-      const colorCustomizations = await vscode.workspace
-        .getConfiguration()
-        .get('workbench.colorCustomizations');
-
-      const options: vscode.InputBoxOptions = {
-        ignoreFocusOut: true,
-        placeHolder: '#ff00ff',
-        prompt: 'Enter a background color for the title bar',
-        value: '#42b883' // default to Vue green
-
-        // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
-        // prompt: localize("cmd.otherOptions.preserve.prompt")
-      };
-      const input = await vscode.window.showInputBox(options);
-      const hexInput = formatHex(input);
-      if (!isValidHexColor(hexInput)) {
-        return;
-      }
-
-      // let backgroundHex: string = generateRandomHexColor();
-
-      let backgroundHex = hexInput;
-      const foregroundHex = formatHex(invertColor(backgroundHex));
-
-      // For debugging we use status bar, as title bar is unavailable when debugging
-      // const newColorCustomizations = {
-      //   ...colorCustomizations,
-      //   'statusBar.background': backgroundHex,
-      //   'statusBar.foreground': foregroundHex
-      // };
-
-      const newColorCustomizations = {
-        ...colorCustomizations,
-        'titleBar.activeBackground': backgroundHex,
-        'titleBar.activeForeground': foregroundHex
-      };
-
-      await vscode.workspace
-        .getConfiguration()
-        .update('workbench.colorCustomizations', newColorCustomizations, false);
-    }
-  });
 
   context.subscriptions.push(disposable);
 }
