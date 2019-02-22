@@ -12,3 +12,4 @@ All notable changes to the code will be documented in this file.
 - Sets the foreground to white or black based on the contrast for the background color
 - Add peacock icon
 - Added README.md
+- Made commands use `peacock:` prefix

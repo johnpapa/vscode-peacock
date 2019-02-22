@@ -83,8 +83,8 @@ async function changeColorSetting(
     'titleBar.inactiveForeground': foregroundHex
 
     // use these for debugging only
-    ,'statusBar.background': backgroundHex,
-    'statusBar.foreground': foregroundHex
+    // ,'statusBar.background': backgroundHex,
+    // 'statusBar.foreground': foregroundHex
   };
 
   await vscode.workspace
