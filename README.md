@@ -24,7 +24,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Roadmap
 
-There are may features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](./issues)!
+There are may features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
 
 ## Changes
 
