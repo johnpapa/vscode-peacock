@@ -13,16 +13,16 @@ A Visual Studio Code extension that subtly changes the workspace color of your w
 
 Commands can be found in the command palette. Look for commands beginning with `Peacock:`
 
-- Change the titlebar to
-  - user defined color
-  - a random color
-  - the primary color for angular, vue, or react
+- Change the "affectedSetting" (see `peacock.affectedSettings` in the Properties section)
+  - to user defined color
+  - to a random color
+  - to the primary color for angular, vue, or react
 - Saves colors to your workspace in the `.vscode/settings.json` file
 - Sets the foreground to white or black based on the contrast for the background color
 
 ## Properties
 
-You can tell peacock which parts of VS Code will be affected bywhen you select a color. You can do this by setting the proeprty `peacock.affectedSettings` to one or more of the valid values below.
+You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedSettings` to one or more of the valid values below.
 
 ```javascript
 // Valid settings you can choose to be affected
