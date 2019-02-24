@@ -35,6 +35,8 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 So you can choose to affect just one of those, two of them or all three of them. You do you!
 
+![Select the setting to affect](./resources/peacock-affectedsettings.gif)
+
 ## Commands
 
 | Command                       | Description                                                              |
