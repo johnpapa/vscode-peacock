@@ -20,6 +20,19 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Saves colors to your workspace in the `.vscode/settings.json` file
 - Sets the foreground to white or black based on the contrast for the background color
 
+## Properties
+
+You can tell peacock which parts of VS Code will be affected bywhen you select a color. You can do this by setting the proeprty `peacock.affectedSettings` to one or more of the valid values below.
+
+```javascript
+// Valid settings you can choose to be affected
+"peacock.affectedSettings": [
+    "activityBar",
+    "statusBar",
+    "titleBar"
+  ]
+```
+
 ## Commands
 
 | Command                       | Description                                                              |
