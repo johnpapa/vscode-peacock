@@ -2,17 +2,24 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+// Buiult-in colors
 const colors = {
   vue: '#42b883',
   angular: '#b52e31',
   react: '#00b3e6'
 };
 
+// Domain of all color settings we affect
 const colorSettings = [
   'titleBar.activeBackground',
   'titleBar.activeForeground',
   'titleBar.inactiveBackground',
-  'titleBar.inactiveForeground'
+  'titleBar.inactiveForeground',
+  'activityBar.background',
+  'activityBar.foreground',
+  'activityBar.inactiveForeground',
+  'statusBar.background',
+  'statusBar.foreground'
 ];
 
 // this method is called when your extension is activated
@@ -82,16 +89,42 @@ async function changeColorSetting(
     .getConfiguration()
     .get('workbench.colorCustomizations');
 
+  let newSettings = {
+    titleBarSettings: {},
+    activityBarSettings: {},
+    statusBarSettings: {}
+  };
+
+  if (await isSelected('titleBar')) {
+    newSettings.titleBarSettings = {
+      'titleBar.activeBackground': backgroundHex,
+      'titleBar.activeForeground': foregroundHex,
+      'titleBar.inactiveBackground': backgroundHex,
+      'titleBar.inactiveForeground': foregroundHex
+    };
+  }
+
+  if (await isSelected('activityBar')) {
+    newSettings.activityBarSettings = {
+      'activityBar.background': backgroundHex,
+      'activityBar.foreground': foregroundHex,
+      'activityBar.inactiveForeground': foregroundHex
+    };
+  }
+
+  if (await isSelected('statusBar')) {
+    newSettings.statusBarSettings = {
+      'statusBar.background': backgroundHex,
+      'statusBar.foreground': foregroundHex
+    };
+  }
+
+  // Merge all color settings
   const newColorCustomizations = {
     ...colorCustomizations,
-    'titleBar.activeBackground': backgroundHex,
-    'titleBar.activeForeground': foregroundHex,
-    'titleBar.inactiveBackground': backgroundHex,
-    'titleBar.inactiveForeground': foregroundHex
-
-    // use these for debugging only
-    // ,'statusBar.background': backgroundHex,
-    // 'statusBar.foreground': foregroundHex
+    ...newSettings.activityBarSettings,
+    ...newSettings.titleBarSettings,
+    ...newSettings.statusBarSettings
   };
 
   await vscode.workspace
@@ -164,6 +197,20 @@ function generateRandomHexColor() {
     '000000' + Math.floor(Math.random() * 16777215).toString(16)
   ).slice(-6);
   return '#' + hex;
+}
+
+async function isSelected(setting: string) {
+  // grab the settings array from their settings.json file
+  const peacockAffectedSettings: string[] = await vscode.workspace
+    .getConfiguration('peacock')
+    .get('affectedSettings', []);
+
+  // check if they requested a setting
+  const itExists: boolean = !!(
+    peacockAffectedSettings && peacockAffectedSettings.includes(setting)
+  );
+
+  return itExists;
 }
 
 // this method is called when your extension is deactivated

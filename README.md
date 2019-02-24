@@ -17,8 +17,19 @@ Commands can be found in the command palette. Look for commands beginning with `
   - user defined color
   - a random color
   - the primary color for angular, vue, or react
-- Saves colors to your workspace
+- Saves colors to your workspace in the `.vscode/settings.json` file
 - Sets the foreground to white or black based on the contrast for the background color
+
+## Commands
+
+| Command                       | Description                                                              |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| Peacock: Reset Colors         | Removes any of the color settings from the `.vscode/setttings.json` file |
+| Peacock: Enter a Color        | Prompts you to enter a color using hex and RGB format                    |
+| Peacock: Color to Vue Green   | Sets the color to Vue.js's main color, #42b883                           |
+| Peacock: Color to Angular Red | Sets the color to Angular's main color, #b52e31                          |
+| Peacock: Color to React Blue  | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Color to Random      | Sets the color to a random color                                         |
 
 ![Animated GIF](./resources/peacock.gif)
 

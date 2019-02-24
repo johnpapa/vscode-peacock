@@ -63,7 +63,26 @@
         "title": "Peacock: Color to React Blue"
       }
     ],
-    "configuration": {}
+    "configuration": {
+      "properties": {
+        "peacock.affectedSettings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "titleBar",
+              "activityBar",
+              "statusBar"
+            ],
+            "description": "prefix of settings affected by peacock"
+          },
+          "default": [
+            "titleBar"
+          ],
+          "description": "my test configurations"
+        }
+      }
+    }
   },
   "scripts": {
     "publish": "npx vsce publish",
