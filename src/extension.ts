@@ -1,47 +1,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { Commands } from './enums';
 import {
-  resetColorSettings,
-  isValidHexColor,
-  formatHex,
-  invertColor,
-  promptForHexColor,
-  changeColorSetting,
-  generateRandomHexColor
-} from './utils';
-import { Commands, BuiltInColors } from './enums';
-
-// Create the handlers for the commands
-const resetColorsHandler = async () => resetColorSettings();
-const changeColorHandler = async () => {
-  const backgroundHex = await promptForHexColor();
-  if (!isValidHexColor(backgroundHex)) {
-    return;
-  }
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
-};
-const changeColorToRandomHandler = async () => {
-  const backgroundHex = generateRandomHexColor();
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
-};
-const changeColorToVueGreenHandler = async () => {
-  const backgroundHex = BuiltInColors.Vue;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
-};
-const changeColorToAngularRedHandler = async () => {
-  const backgroundHex = BuiltInColors.Angular;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
-};
-const changeColorToReactBlueHandler = async () => {
-  const backgroundHex = BuiltInColors.React;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
-};
+  resetColorsHandler,
+  changeColorHandler,
+  changeColorToRandomHandler,
+  changeColorToVueGreenHandler,
+  changeColorToAngularRedHandler,
+  changeColorToReactBlueHandler
+} from './color-handlers';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

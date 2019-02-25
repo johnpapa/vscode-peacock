@@ -1,7 +1,57 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Settings, ColorSettings, BuiltInColors } from './enums';
+
+import { BuiltInColors, ColorSettings, Settings } from './enums';
+
+// Create the handlers for the commands
+export async function resetColorsHandler() {
+  // Domain of all color settings we affect
+  const colorCustomizations = await vscode.workspace
+    .getConfiguration()
+    .get('workbench.colorCustomizations');
+
+  const newColorCustomizations: any = {
+    ...colorCustomizations
+  };
+  Object.values(ColorSettings).forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
+
+  await vscode.workspace
+    .getConfiguration()
+    .update('workbench.colorCustomizations', newColorCustomizations, false);
+}
+export async function changeColorHandler() {
+  const backgroundHex = await promptForHexColor();
+  if (!isValidHexColor(backgroundHex)) {
+    return;
+  }
+  const foregroundHex = formatHex(invertColor(backgroundHex));
+  changeColorSetting(backgroundHex, foregroundHex);
+}
+
+export async function changeColorToRandomHandler() {
+  const backgroundHex = generateRandomHexColor();
+  const foregroundHex = formatHex(invertColor(backgroundHex));
+  changeColorSetting(backgroundHex, foregroundHex);
+}
+
+export async function changeColorToVueGreenHandler() {
+  const backgroundHex = BuiltInColors.Vue;
+  const foregroundHex = formatHex(invertColor(backgroundHex));
+  changeColorSetting(backgroundHex, foregroundHex);
+}
+
+export async function changeColorToAngularRedHandler() {
+  const backgroundHex = BuiltInColors.Angular;
+  const foregroundHex = formatHex(invertColor(backgroundHex));
+  changeColorSetting(backgroundHex, foregroundHex);
+}
+
+export async function changeColorToReactBlueHandler() {
+  const backgroundHex = BuiltInColors.React;
+  const foregroundHex = formatHex(invertColor(backgroundHex));
+  changeColorSetting(backgroundHex, foregroundHex);
+}
 
 export async function changeColorSetting(
   backgroundHex: string,
@@ -54,32 +104,12 @@ export async function changeColorSetting(
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
 
-export async function resetColorSettings() {
-  // Domain of all color settings we affect
-  const colorCustomizations = await vscode.workspace
-    .getConfiguration()
-    .get('workbench.colorCustomizations');
-
-  const newColorCustomizations: any = {
-    ...colorCustomizations
-  };
-  Object.values(ColorSettings).forEach(setting => {
-    delete newColorCustomizations[setting];
-  });
-
-  await vscode.workspace
-    .getConfiguration()
-    .update('workbench.colorCustomizations', newColorCustomizations, false);
-}
-
 export async function promptForHexColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: BuiltInColors.Vue,
     prompt: 'Enter a background color for the title bar in RGB hex format',
-    value: BuiltInColors.Vue // default to Vue green
-    // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
-    // prompt: localize("cmd.otherOptions.preserve.prompt")
+    value: BuiltInColors.Vue
   };
   const input = await vscode.window.showInputBox(options);
   const hexInput = formatHex(input);
