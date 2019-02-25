@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 import {
   extSuffix,
   Commands,
-  Settings,
+  Elements,
   ColorSettings,
   BuiltInColors
 } from '../enums';
@@ -70,9 +70,9 @@ suite('Extension Basic Tests', function() {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
-    for (let setting in Settings) {
+    for (let setting in Elements) {
       const result = properties.some(
-        property => property === `${extSuffix}.${Settings[setting]}`
+        property => property === `${extSuffix}.${Elements[setting]}`
       );
       assert.ok(result);
     }

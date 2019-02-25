@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { BuiltInColors, ColorSettings, Settings } from './enums';
+import { BuiltInColors, ColorSettings, Elements } from './enums';
 
 // Create the handlers for the commands
 export async function resetColorsHandler() {
@@ -154,13 +154,13 @@ export function generateRandomHexColor() {
 
 export async function isSelected(setting: string) {
   // grab the settings array from their settings.json file
-  const peacockAffectedSettings: string[] = await vscode.workspace
+  const peacockaffectedElements: string[] = await vscode.workspace
     .getConfiguration('peacock')
-    .get(Settings.affectedSettings, []);
+    .get(Elements.affectedElements, []);
 
   // check if they requested a setting
   const itExists: boolean = !!(
-    peacockAffectedSettings && peacockAffectedSettings.includes(setting)
+    peacockaffectedElements && peacockaffectedElements.includes(setting)
   );
 
   return itExists;

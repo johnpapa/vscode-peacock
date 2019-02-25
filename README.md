@@ -13,7 +13,7 @@ A Visual Studio Code extension that subtly changes the workspace color of your w
 
 Commands can be found in the command palette. Look for commands beginning with `Peacock:`
 
-- Change the "affectedSetting" (see `peacock.affectedSettings` in the Properties section)
+- Change the "affectedSetting" (see `peacock.affectedElements` in the Properties section)
   - to user defined color
   - to a random color
   - to the primary color for angular, vue, or react
@@ -22,11 +22,11 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Properties
 
-You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedSettings` to one or more of the valid values below.
+You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedElements` to one or more of the valid values below.
 
 ```javascript
 // Valid settings you can choose to be affected
-"peacock.affectedSettings": [
+"peacock.affectedElements": [
     "activityBar",
     "statusBar",
     "titleBar"
@@ -35,7 +35,7 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 So you can choose to affect just one of those, two of them or all three of them. You do you!
 
-![Select the setting to affect](./resources/peacock-affectedsettings.gif)
+![Select the setting to affect](./resources/peacock-affectedElements.gif)
 
 ## Commands
 

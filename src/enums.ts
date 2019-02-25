@@ -2,8 +2,8 @@
 export const extSuffix = 'peacock';
 
 // Enums
-export enum Settings {
-  'affectedSettings' = 'affectedSettings'
+export enum Elements {
+  'affectedElements' = 'affectedElements'
 }
 
 export enum Commands {

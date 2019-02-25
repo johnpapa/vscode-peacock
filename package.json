@@ -65,7 +65,7 @@
     ],
     "configuration": {
       "properties": {
-        "peacock.affectedSettings": {
+        "peacock.affectedElements": {
           "type": "array",
           "items": {
             "type": "string",

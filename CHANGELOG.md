@@ -7,7 +7,7 @@ All notable changes to the code will be documented in this file.
 Features
 
 - Added ability to color the activityBar, statusBar, and titleBar
-- Added the property `peacock.affectedSettings` to allow affecting one or more of the following:
+- Added the property `peacock.affectedElements` to allow affecting one or more of the following:
   - activityBar
   - statusBar
   - titleBar
