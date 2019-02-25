@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## [0.1.0]
+## [0.1.1]
 
 Features
 
@@ -17,6 +17,7 @@ Breaking Changes
 Other Changes
 
 - Refactored code in different modules
+- Updated README
 
 ## [0.0.7]
 
