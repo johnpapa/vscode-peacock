@@ -17,20 +17,26 @@ You must specify at least one option in "affectedSettings" (see `peacock.affecte
 
 Commands can be found in the command palette. Look for commands beginning with `Peacock:`
 
-- Change the color of "affectedSettings" (see `peacock.affectedSettings` in the Properties section) to
+- Change the color of "affectedElements" (see `peacock.affectedElements` in the Properties section) to
   - user defined color
   - a random color
   - the primary color for angular, vue, or react
 - Saves colors to your workspace in the `.vscode/settings.json` file
-- Sets the foreground to white or black based on the contrast for the background color
+- Sets the foreground to light `#e7e7e7` and dark `#15202b` based on the contrast for the background color
 
 ## Properties
 
-You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedSettings` to one or more of the valid values below.
+| Property                 | Description                              |
+| ------------------------ | ---------------------------------------- |
+| peacock.affectedElements | prefixes of elements affected by peacock |
+| peacock.darkForeground   | override for the dark foreground         |
+| peacock.lightForeground  | override for the light foreground        |
+
+You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedElements` to one or more of the valid values below.
 
 ```javascript
 // Valid settings you can choose to be affected
-"peacock.affectedSettings": [
+"peacock.affectedElements": [
     "activityBar",
     "statusBar",
     "titleBar"
@@ -39,7 +45,7 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 So you can choose to affect just one of those, two of them or all three of them. You do you!
 
-![Select the setting to affect](./resources/peacock-affectedsettings.gif)
+![Select the setting to affect](./resources/peacock-affectedElements.gif)
 
 ## Commands
 

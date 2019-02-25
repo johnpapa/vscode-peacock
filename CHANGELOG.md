@@ -2,12 +2,28 @@
 
 All notable changes to the code will be documented in this file.
 
+## [0.1.0]
+
+Features
+
+- Added properties in settings for `peacock.lightForeground` and `peacock.darkForeground`
+- Added defaults for light foreground `#e7e7e7` and dark foreground `#15202b`
+
+Breaking Changes
+
+- Renamed the property in settings from `peacock.affectedSettings` to `peacock.affectedElements`
+- When there are no settings for `peacock.affectedElements`, the default is `titleBar`
+
+Other Changes
+
+- Refactored code in different modules
+
 ## [0.0.7]
 
 Features
 
 - Added ability to color the activityBar, statusBar, and titleBar
-- Added the property `peacock.affectedSettings` to allow affecting one or more of the following:
+- Added the property `peacock.affectedElements` to allow affecting one or more of the following:
   - activityBar
   - statusBar
   - titleBar

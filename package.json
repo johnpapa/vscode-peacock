@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -28,44 +28,44 @@
   ],
   "preview": true,
   "activationEvents": [
-    "onCommand:extension.resetColors",
-    "onCommand:extension.changeColor",
-    "onCommand:extension.changeColorToRandom",
-    "onCommand:extension.changeColorToVueGreen",
-    "onCommand:extension.changeColorToAngularRed",
-    "onCommand:extension.changeColorToReactBlue"
+    "onCommand:peacock.resetColors",
+    "onCommand:peacock.changeColor",
+    "onCommand:peacock.changeColorToRandom",
+    "onCommand:peacock.changeColorToVueGreen",
+    "onCommand:peacock.changeColorToAngularRed",
+    "onCommand:peacock.changeColorToReactBlue"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.resetColors",
+        "command": "peacock.resetColors",
         "title": "Peacock: Reset Colors"
       },
       {
-        "command": "extension.changeColor",
+        "command": "peacock.changeColor",
         "title": "Peacock: Enter a Color"
       },
       {
-        "command": "extension.changeColorToVueGreen",
+        "command": "peacock.changeColorToVueGreen",
         "title": "Peacock: Color to Vue Green"
       },
       {
-        "command": "extension.changeColorToRandom",
+        "command": "peacock.changeColorToRandom",
         "title": "Peacock: Color to Random"
       },
       {
-        "command": "extension.changeColorToAngularRed",
+        "command": "peacock.changeColorToAngularRed",
         "title": "Peacock: Color to Angular Red"
       },
       {
-        "command": "extension.changeColorToReactBlue",
+        "command": "peacock.changeColorToReactBlue",
         "title": "Peacock: Color to React Blue"
       }
     ],
     "configuration": {
       "properties": {
-        "peacock.affectedSettings": {
+        "peacock.affectedElements": {
           "type": "array",
           "items": {
             "type": "string",
@@ -73,11 +73,22 @@
               "titleBar",
               "activityBar",
               "statusBar"
-            ],
-            "description": "prefix of settings affected by peacock"
+            ]
           },
-          "default": [],
-          "description": "prefixes of settings affected by peacock"
+          "default": [
+            "titleBar"
+          ],
+          "description": "prefixes of elements affected by peacock"
+        },
+        "peacock.darkForeground": {
+          "type": "string",
+          "default": "#15202b",
+          "description": "override for the dark foreground"
+        },
+        "peacock.lightForeground": {
+          "type": "string",
+          "default": "#e7e7e7",
+          "description": "override for the light foreground"
         }
       }
     }

@@ -1,16 +1,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { Commands } from './enums';
 import {
-  resetColorSettings,
-  isValidHexColor,
-  formatHex,
-  invertColor,
-  promptForHexColor,
-  changeColorSetting,
-  generateRandomHexColor,
-  builtInColors
-} from './utils';
+  resetColorsHandler,
+  changeColorHandler,
+  changeColorToRandomHandler,
+  changeColorToVueGreenHandler,
+  changeColorToAngularRedHandler,
+  changeColorToReactBlueHandler
+} from './color-handlers';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -22,50 +21,30 @@ export function activate(context: vscode.ExtensionContext) {
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
-  vscode.commands.registerCommand('extension.resetColors', async () => {
-    resetColorSettings();
-  });
 
-  vscode.commands.registerCommand('extension.changeColor', async () => {
-    const backgroundHex = await promptForHexColor();
-    if (!isValidHexColor(backgroundHex)) {
-      return;
-    }
-    const foregroundHex = formatHex(invertColor(backgroundHex));
-    changeColorSetting(backgroundHex, foregroundHex);
-  });
+  /// Register the commands
+  vscode.commands.registerCommand(Commands.resetColors, resetColorsHandler);
 
-  vscode.commands.registerCommand('extension.changeColorToRandom', async () => {
-    const backgroundHex = generateRandomHexColor();
-    const foregroundHex = formatHex(invertColor(backgroundHex));
-    changeColorSetting(backgroundHex, foregroundHex);
-  });
+  vscode.commands.registerCommand(Commands.changeColor, changeColorHandler);
 
   vscode.commands.registerCommand(
-    'extension.changeColorToVueGreen',
-    async () => {
-      const backgroundHex = builtInColors.vue;
-      const foregroundHex = formatHex(invertColor(backgroundHex));
-      changeColorSetting(backgroundHex, foregroundHex);
-    }
+    Commands.changeColorToRandom,
+    changeColorToRandomHandler
   );
 
   vscode.commands.registerCommand(
-    'extension.changeColorToAngularRed',
-    async () => {
-      const backgroundHex = builtInColors.angular;
-      const foregroundHex = formatHex(invertColor(backgroundHex));
-      changeColorSetting(backgroundHex, foregroundHex);
-    }
+    Commands.changeColorToVueGreen,
+    changeColorToVueGreenHandler
   );
 
   vscode.commands.registerCommand(
-    'extension.changeColorToReactBlue',
-    async () => {
-      const backgroundHex = builtInColors.react;
-      const foregroundHex = formatHex(invertColor(backgroundHex));
-      changeColorSetting(backgroundHex, foregroundHex);
-    }
+    Commands.changeColorToAngularRed,
+    changeColorToAngularRedHandler
+  );
+
+  vscode.commands.registerCommand(
+    Commands.changeColorToReactBlue,
+    changeColorToReactBlueHandler
   );
 
   // context.subscriptions.push(disposable);
