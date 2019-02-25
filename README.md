@@ -18,9 +18,15 @@ Commands can be found in the command palette. Look for commands beginning with `
   - to a random color
   - to the primary color for angular, vue, or react
 - Saves colors to your workspace in the `.vscode/settings.json` file
-- Sets the foreground to white or black based on the contrast for the background color
+- Sets the foreground to light `#e7e7e7` and dark `#15202b` based on the contrast for the background color
 
 ## Properties
+
+| Property                 | Description                              |
+| ------------------------ | ---------------------------------------- |
+| peacock.affectedElements | prefixes of elements affected by peacock |
+| peacock.darkForeground   | override for the dark foreground         |
+| peacock.lightForeground  | override for the light foreground        |
 
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedElements` to one or more of the valid values below.
 
