@@ -9,7 +9,8 @@ import {
   promptForHexColor,
   changeColorSetting,
   generateRandomHexColor,
-  builtInColors
+  builtInColors,
+  initialiseAffectedSettings
 } from './utils';
 
 // this method is called when your extension is activated
@@ -67,6 +68,8 @@ export function activate(context: vscode.ExtensionContext) {
       changeColorSetting(backgroundHex, foregroundHex);
     }
   );
+
+  initialiseAffectedSettings();
 
   // context.subscriptions.push(disposable);
 }

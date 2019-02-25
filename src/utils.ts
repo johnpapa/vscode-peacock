@@ -142,9 +142,7 @@ export function generateRandomHexColor() {
 
 export async function isSelected(setting: string) {
   // grab the settings array from their settings.json file
-  const peacockAffectedSettings: string[] = await vscode.workspace
-    .getConfiguration('peacock')
-    .get('affectedSettings', []);
+  const peacockAffectedSettings: string[] = await getAffectedSettings();
 
   // check if they requested a setting
   const itExists: boolean = !!(
@@ -152,4 +150,41 @@ export async function isSelected(setting: string) {
   );
 
   return itExists;
+}
+
+type AffectedSetting = 'titleBar' | 'statusBar' | 'activityBar';
+
+async function getAffectedSettings(): Promise<AffectedSetting[]> {
+  return vscode.workspace
+    .getConfiguration('peacock')
+    .get<AffectedSetting[]>('affectedSettings', []);
+}
+
+async function setAffectedSettings(settings: AffectedSetting[]) {
+  vscode.workspace
+    .getConfiguration('peacock')
+    .update('affectedSettings', settings, false);
+}
+
+export async function initialiseAffectedSettings() {
+  const peacockAffectedSettings = await getAffectedSettings();  
+  if(peacockAffectedSettings.length === 0) {
+    toggleAffectedSetting('titleBar', true);
+  }
+}
+
+export async function toggleAffectedSetting(
+  setting: 'titleBar' | 'statusBar' | 'activityBar',
+  value: boolean
+) {
+  const settings = await getAffectedSettings();
+
+  if (settings.includes(setting) && !value){
+    settings.splice(settings.indexOf(setting),1);
+  }  
+  if (settings.includes(setting) === false && value){
+    settings.push(setting);
+  }
+
+  await setAffectedSettings(settings);
 }
