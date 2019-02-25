@@ -79,6 +79,16 @@
             "titleBar"
           ],
           "description": "prefixes of settings affected by peacock"
+        },
+        "peacock.darkForeground": {
+          "type": "string",
+          "default": "#15202b",
+          "description": "override for the dark foreground instead of #15202b"
+        },
+        "peacock.lightForeground": {
+          "type": "string",
+          "default": "#e7e7e7",
+          "description": "override for the light foreground instead of #cacaca"
         }
       }
     }

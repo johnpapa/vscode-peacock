@@ -2,8 +2,10 @@
 export const extSuffix = 'peacock';
 
 // Enums
-export enum Elements {
-  'affectedElements' = 'affectedElements'
+export enum Settings {
+  'affectedElements' = 'affectedElements',
+  'darkForeground' = 'darkForeground',
+  'lightForeground' = 'lightForeground'
 }
 
 export enum Commands {
@@ -31,4 +33,9 @@ export enum BuiltInColors {
   Vue = '#42b883',
   Angular = '#b52e31',
   React = '#00b3e6'
+}
+
+export enum ForegroundColors {
+  DarkForeground = '15202b',
+  LightForeground = 'e7e7e7'
 }

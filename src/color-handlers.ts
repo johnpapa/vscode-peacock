@@ -1,11 +1,17 @@
 import * as vscode from 'vscode';
+const { workspace } = vscode;
 
-import { BuiltInColors, ColorSettings, Elements } from './enums';
+import {
+  BuiltInColors,
+  ColorSettings,
+  Settings,
+  ForegroundColors
+} from './enums';
 
 // Create the handlers for the commands
 export async function resetColorsHandler() {
   // Domain of all color settings we affect
-  const colorCustomizations = await vscode.workspace
+  const colorCustomizations = await workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
 
@@ -16,40 +22,41 @@ export async function resetColorsHandler() {
     delete newColorCustomizations[setting];
   });
 
-  await vscode.workspace
+  await workspace
     .getConfiguration()
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
+
 export async function changeColorHandler() {
   const backgroundHex = await promptForHexColor();
   if (!isValidHexColor(backgroundHex)) {
     return;
   }
-  const foregroundHex = formatHex(invertColor(backgroundHex));
+  const foregroundHex = formatHex(await invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToRandomHandler() {
   const backgroundHex = generateRandomHexColor();
-  const foregroundHex = formatHex(invertColor(backgroundHex));
+  const foregroundHex = formatHex(await invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToVueGreenHandler() {
   const backgroundHex = BuiltInColors.Vue;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
+  const foregroundHex = formatHex(await invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToAngularRedHandler() {
   const backgroundHex = BuiltInColors.Angular;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
+  const foregroundHex = formatHex(await invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToReactBlueHandler() {
   const backgroundHex = BuiltInColors.React;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
+  const foregroundHex = formatHex(await invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 }
 
@@ -57,7 +64,7 @@ export async function changeColorSetting(
   backgroundHex: string,
   foregroundHex: string
 ) {
-  const colorCustomizations = await vscode.workspace
+  const colorCustomizations = await workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
 
@@ -99,7 +106,7 @@ export async function changeColorSetting(
     ...newSettings.statusBarSettings
   };
 
-  await vscode.workspace
+  await workspace
     .getConfiguration()
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
@@ -116,7 +123,7 @@ export async function promptForHexColor() {
   return hexInput;
 }
 
-export function invertColor(hex: string) {
+export async function invertColor(hex: string) {
   // credit: https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
   if (hex.indexOf('#') === 0) {
     hex = hex.slice(1);
@@ -132,8 +139,28 @@ export function invertColor(hex: string) {
   const g = parseInt(hex.slice(2, 4), 16);
   const b = parseInt(hex.slice(4, 6), 16);
 
+  const useDark = r * 0.299 + g * 0.587 + b * 0.114 > 186;
+
+  let foreground = useDark
+    ? await getDarkForeground()
+    : await getLightForeground();
+
   // credit: http://stackoverflow.com/a/3943023/112731
-  return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? '000000' : 'FFFFFF';
+  return foreground;
+}
+
+async function getDarkForeground() {
+  const foregroundOverride = await readConfiguration<string>(
+    Settings.darkForeground
+  );
+  return foregroundOverride || ForegroundColors.DarkForeground;
+}
+
+async function getLightForeground() {
+  const foregroundOverride = await readConfiguration<string>(
+    Settings.lightForeground
+  );
+  return foregroundOverride || ForegroundColors.LightForeground;
 }
 
 export function isValidHexColor(input: string) {
@@ -153,15 +180,25 @@ export function generateRandomHexColor() {
 }
 
 export async function isSelected(setting: string) {
-  // grab the settings array from their settings.json file
-  const peacockaffectedElements: string[] = await vscode.workspace
-    .getConfiguration('peacock')
-    .get(Elements.affectedElements, []);
+  const affectedElements = await readConfiguration<string[]>(
+    Settings.affectedElements,
+    []
+  );
 
   // check if they requested a setting
   const itExists: boolean = !!(
-    peacockaffectedElements && peacockaffectedElements.includes(setting)
+    affectedElements && affectedElements.includes(setting)
   );
 
   return itExists;
+}
+
+async function readConfiguration<T>(
+  setting: Settings,
+  defaultValue?: T | undefined
+) {
+  const value: T | undefined = await workspace
+    .getConfiguration('peacock')
+    .get<T | undefined>(setting, defaultValue);
+  return value as T;
 }
