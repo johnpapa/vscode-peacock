@@ -6,7 +6,13 @@
 // The module 'assert' provides assertion methods from node
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { extSuffix, Commands, Settings } from '../enums';
+import {
+  extSuffix,
+  Commands,
+  Settings,
+  ColorSettings,
+  BuiltInColors
+} from '../enums';
 
 interface ICommand {
   title: string;
@@ -26,7 +32,7 @@ interface IConfiguration {
 // import * as myExtension from '../extension';
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite('Extension Tests', function() {
+suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
 
   setup(function(done) {
@@ -40,14 +46,14 @@ suite('Extension Tests', function() {
     done();
   });
 
-  test('Extension loads in VSCode and is active', function(done) {
-    // Hopefully a 200ms timeout will allow the extension to activate within Windows
-    // otherwise we get a false result.
-    setTimeout(function() {
-      assert.equal(extension.isActive, true);
-      done();
-    }, 200);
-  });
+  // test('Extension loads in VSCode and is active', function(done) {
+  //   // Hopefully a 200ms timeout will allow the extension to activate within Windows
+  //   // otherwise we get a false result.
+  //   setTimeout(function() {
+  //     assert.equal(extension.isActive, true);
+  //     done();
+  //   }, 200);
+  // });
 
   test('constants.Commands exist in package.json', function() {
     const commandCollection: ICommand[] =
@@ -89,9 +95,10 @@ suite('Extension Tests', function() {
     });
   });
 
-  // Defines a Mocha unit test
-  test('Something 1', function() {
-    assert.equal(-1, [1, 2, 3].indexOf(5));
-    assert.equal(-1, [1, 2, 3].indexOf(0));
-  });
+  // // Defines a Mocha unit test
+  // test('Something 1', function() {
+  //   assert.equal(-1, [1, 2, 3].indexOf(5));
+  //   assert.equal(-1, [1, 2, 3].indexOf(0));
+  // });
+
 });

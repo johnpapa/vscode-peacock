@@ -27,8 +27,8 @@ export enum ColorSettings {
   'statusBar_foreground' = 'statusBar.foreground'
 }
 
-export enum builtInColors {
-  vue = '#42b883',
-  angular = '#b52e31',
-  react = '#00b3e6'
+export enum BuiltInColors {
+  Vue = '#42b883',
+  Angular = '#b52e31',
+  React = '#00b3e6'
 }

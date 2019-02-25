@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Settings, ColorSettings, builtInColors } from './enums';
+import { Settings, ColorSettings, BuiltInColors } from './enums';
 
 export async function changeColorSetting(
   backgroundHex: string,
@@ -75,9 +75,9 @@ export async function resetColorSettings() {
 export async function promptForHexColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
-    placeHolder: builtInColors.vue,
+    placeHolder: BuiltInColors.Vue,
     prompt: 'Enter a background color for the title bar in RGB hex format',
-    value: builtInColors.vue // default to Vue green
+    value: BuiltInColors.Vue // default to Vue green
     // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
     // prompt: localize("cmd.otherOptions.preserve.prompt")
   };

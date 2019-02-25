@@ -10,7 +10,7 @@ import {
   changeColorSetting,
   generateRandomHexColor
 } from './utils';
-import { Commands, builtInColors } from './enums';
+import { Commands, BuiltInColors } from './enums';
 
 // Create the handlers for the commands
 const resetColorsHandler = async () => resetColorSettings();
@@ -28,17 +28,17 @@ const changeColorToRandomHandler = async () => {
   changeColorSetting(backgroundHex, foregroundHex);
 };
 const changeColorToVueGreenHandler = async () => {
-  const backgroundHex = builtInColors.vue;
+  const backgroundHex = BuiltInColors.Vue;
   const foregroundHex = formatHex(invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 };
 const changeColorToAngularRedHandler = async () => {
-  const backgroundHex = builtInColors.angular;
+  const backgroundHex = BuiltInColors.Angular;
   const foregroundHex = formatHex(invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 };
 const changeColorToReactBlueHandler = async () => {
-  const backgroundHex = builtInColors.react;
+  const backgroundHex = BuiltInColors.React;
   const foregroundHex = formatHex(invertColor(backgroundHex));
   changeColorSetting(backgroundHex, foregroundHex);
 };
