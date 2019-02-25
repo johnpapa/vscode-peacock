@@ -2,6 +2,17 @@
 
 All notable changes to the code will be documented in this file.
 
+## [0.1.0]
+
+Breaking Changes
+
+- Renamed the property in settings from `peacock.affectedSettings` to `peacock.affectedElements`
+- When there are no settings for `peacock.affectedElements`, the default is `titleBar`
+
+Other Changes
+
+- Refactored code in different modules
+
 ## [0.0.7]
 
 Features
