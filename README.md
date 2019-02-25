@@ -9,14 +9,18 @@ A Visual Studio Code extension that subtly changes the workspace color of your w
 1. Click **Install**
 1. Click **Reload**, if required
 
+## Setup
+
+You must specify at least one option in "affectedSettings" (see `peacock.affectedSettings` in the Properties section) for peacock commands to be effective.
+
 ## Features
 
 Commands can be found in the command palette. Look for commands beginning with `Peacock:`
 
-- Change the "affectedSetting" (see `peacock.affectedSettings` in the Properties section)
-  - to user defined color
-  - to a random color
-  - to the primary color for angular, vue, or react
+- Change the color of "affectedSettings" (see `peacock.affectedSettings` in the Properties section) to
+  - user defined color
+  - a random color
+  - the primary color for angular, vue, or react
 - Saves colors to your workspace in the `.vscode/settings.json` file
 - Sets the foreground to white or black based on the contrast for the background color
 
