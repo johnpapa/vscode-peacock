@@ -11,10 +11,6 @@ A Visual Studio Code extension that subtly changes the workspace color of your w
 1. Click **Install**
 1. Click **Reload**, if required
 
-## Setup
-
-You must specify at least one option in "affectedSettings" (see `peacock.affectedSettings` in the Properties section) for peacock commands to be effective.
-
 ## Features
 
 Commands can be found in the command palette. Look for commands beginning with `Peacock:`
