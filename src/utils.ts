@@ -1,13 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
-// Buiult-in colors
-export const builtInColors = {
-  vue: '#42b883',
-  angular: '#b52e31',
-  react: '#00b3e6'
-};
+import { Settings, ColorSettings, builtInColors } from './enums';
 
 export async function changeColorSetting(
   backgroundHex: string,
@@ -25,25 +19,25 @@ export async function changeColorSetting(
 
   if (await isSelected('titleBar')) {
     newSettings.titleBarSettings = {
-      'titleBar.activeBackground': backgroundHex,
-      'titleBar.activeForeground': foregroundHex,
-      'titleBar.inactiveBackground': backgroundHex,
-      'titleBar.inactiveForeground': foregroundHex
+      [ColorSettings.titleBar_activeBackground]: backgroundHex,
+      [ColorSettings.titleBar_activeForeground]: foregroundHex,
+      [ColorSettings.titleBar_inactiveBackground]: backgroundHex,
+      [ColorSettings.titleBar_inactiveForeground]: foregroundHex
     };
   }
 
   if (await isSelected('activityBar')) {
     newSettings.activityBarSettings = {
-      'activityBar.background': backgroundHex,
-      'activityBar.foreground': foregroundHex,
-      'activityBar.inactiveForeground': foregroundHex
+      [ColorSettings.activityBar_background]: backgroundHex,
+      [ColorSettings.activityBar_foreground]: foregroundHex,
+      [ColorSettings.activityBar_inactiveForeground]: foregroundHex
     };
   }
 
   if (await isSelected('statusBar')) {
     newSettings.statusBarSettings = {
-      'statusBar.background': backgroundHex,
-      'statusBar.foreground': foregroundHex
+      [ColorSettings.statusBar_background]: backgroundHex,
+      [ColorSettings.statusBar_foreground]: foregroundHex
     };
   }
 
@@ -62,18 +56,6 @@ export async function changeColorSetting(
 
 export async function resetColorSettings() {
   // Domain of all color settings we affect
-  const colorSettings = [
-    'titleBar.activeBackground',
-    'titleBar.activeForeground',
-    'titleBar.inactiveBackground',
-    'titleBar.inactiveForeground',
-    'activityBar.background',
-    'activityBar.foreground',
-    'activityBar.inactiveForeground',
-    'statusBar.background',
-    'statusBar.foreground'
-  ];
-
   const colorCustomizations = await vscode.workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
@@ -81,7 +63,7 @@ export async function resetColorSettings() {
   const newColorCustomizations: any = {
     ...colorCustomizations
   };
-  colorSettings.forEach(setting => {
+  Object.values(ColorSettings).forEach(setting => {
     delete newColorCustomizations[setting];
   });
 
@@ -93,9 +75,9 @@ export async function resetColorSettings() {
 export async function promptForHexColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
-    placeHolder: '#ff00ff',
+    placeHolder: builtInColors.vue,
     prompt: 'Enter a background color for the title bar in RGB hex format',
-    value: '#42b883' // default to Vue green
+    value: builtInColors.vue // default to Vue green
     // placeHolder: localize("cmd.otherOptions.preserve.placeholder"),
     // prompt: localize("cmd.otherOptions.preserve.prompt")
   };
@@ -144,7 +126,7 @@ export async function isSelected(setting: string) {
   // grab the settings array from their settings.json file
   const peacockAffectedSettings: string[] = await vscode.workspace
     .getConfiguration('peacock')
-    .get('affectedSettings', []);
+    .get(Settings.affectedSettings, []);
 
   // check if they requested a setting
   const itExists: boolean = !!(
