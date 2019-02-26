@@ -1,4 +1,10 @@
 import * as vscode from 'vscode';
+import { namedColors } from './named-colors';
+import {
+  isValidHexColor,
+  isValidNamedColor
+} from "./color-validators";
+
 const { workspace } = vscode;
 
 import {
@@ -29,11 +35,20 @@ export async function resetColorsHandler() {
 
 export async function changeColorHandler() {
   const backgroundHex = await promptForHexColor();
-  if (!isValidHexColor(backgroundHex)) {
+  let colorHex: string = '';
+
+  if (isValidHexColor(backgroundHex)) {
+    colorHex = backgroundHex;
+  } else if (isValidNamedColor(backgroundHex)) {
+    colorHex = namedColors[backgroundHex.substr(1).toLowerCase()];
+  }
+
+  if (!colorHex) {
     return;
   }
-  const foregroundHex = formatHex(await invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
+
+  const foregroundHex = formatHex(await invertColor(colorHex));
+  changeColorSetting(colorHex, foregroundHex);
 }
 
 export async function changeColorToRandomHandler() {
@@ -115,7 +130,7 @@ export async function promptForHexColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: BuiltInColors.Vue,
-    prompt: 'Enter a background color for the title bar in RGB hex format',
+    prompt: 'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
     value: BuiltInColors.Vue
   };
   const input = await vscode.window.showInputBox(options);
@@ -161,10 +176,6 @@ async function getLightForeground() {
     Settings.lightForeground
   );
   return foregroundOverride || ForegroundColors.LightForeground;
-}
-
-export function isValidHexColor(input: string) {
-  return /^#[0-9A-F]{6}$/i.test(input);
 }
 
 export function formatHex(input: string = '') {
