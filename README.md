@@ -50,7 +50,7 @@ So you can choose to affect just one of those, two of them or all three of them.
 | Command                        | Description                                                              |
 | ------------------------------ | ------------------------------------------------------------------------ |
 | Peacock: Reset Colors          | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color         | Prompts you to enter a color using hex and RGB format                    |
+| Peacock: Enter a Color         | Prompts you to enter a color using hex and RGB format or HTML color name |
 | Peacock: Color to Vue Green    | Sets the color to Vue.js's main color, #42b883                           |
 | Peacock: Color to Angular Red  | Sets the color to Angular's main color, #b52e31                          |
 | Peacock: Color to React Blue   | Sets the color to React.js's main color, #00b3e6                         |
