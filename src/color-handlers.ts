@@ -64,6 +64,7 @@ export async function changeColorSetting(
   backgroundHex: string,
   foregroundHex: string
 ) {
+
   const colorCustomizations = await workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
@@ -74,6 +75,8 @@ export async function changeColorSetting(
     statusBarSettings: {}
   };
 
+  let settingsToReset = [];
+
   if (await isSelected('titleBar')) {
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: backgroundHex,
@@ -81,6 +84,11 @@ export async function changeColorSetting(
       [ColorSettings.titleBar_inactiveBackground]: backgroundHex,
       [ColorSettings.titleBar_inactiveForeground]: foregroundHex
     };
+  } else {
+    settingsToReset.push(ColorSettings.titleBar_activeBackground);
+    settingsToReset.push(ColorSettings.titleBar_activeForeground);
+    settingsToReset.push(ColorSettings.titleBar_inactiveBackground);
+    settingsToReset.push(ColorSettings.titleBar_inactiveForeground);
   }
 
   if (await isSelected('activityBar')) {
@@ -89,6 +97,10 @@ export async function changeColorSetting(
       [ColorSettings.activityBar_foreground]: foregroundHex,
       [ColorSettings.activityBar_inactiveForeground]: foregroundHex
     };
+  } else {
+    settingsToReset.push(ColorSettings.activityBar_background);
+    settingsToReset.push(ColorSettings.activityBar_foreground);
+    settingsToReset.push(ColorSettings.activityBar_inactiveForeground);
   }
 
   if (await isSelected('statusBar')) {
@@ -96,15 +108,24 @@ export async function changeColorSetting(
       [ColorSettings.statusBar_background]: backgroundHex,
       [ColorSettings.statusBar_foreground]: foregroundHex
     };
+  } else {
+    settingsToReset.push(ColorSettings.statusBar_background);
+    settingsToReset.push(ColorSettings.statusBar_foreground);
   }
 
   // Merge all color settings
-  const newColorCustomizations = {
+  const newColorCustomizations : any = {
     ...colorCustomizations,
     ...newSettings.activityBarSettings,
     ...newSettings.titleBarSettings,
     ...newSettings.statusBarSettings
   };
+
+
+
+  Object.values(settingsToReset).forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
 
   await workspace
     .getConfiguration()
