@@ -5,7 +5,8 @@ import {
   BuiltInColors,
   ColorSettings,
   Settings,
-  ForegroundColors
+  ForegroundColors,
+  Sections
 } from './enums';
 
 // Create the handlers for the commands
@@ -33,31 +34,31 @@ export async function changeColorHandler() {
     return;
   }
   const foregroundHex = formatHex(await invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
+  await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToRandomHandler() {
   const backgroundHex = generateRandomHexColor();
   const foregroundHex = formatHex(await invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
+  await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToVueGreenHandler() {
   const backgroundHex = BuiltInColors.Vue;
   const foregroundHex = formatHex(await invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
+  await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToAngularRedHandler() {
   const backgroundHex = BuiltInColors.Angular;
   const foregroundHex = formatHex(await invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
+  await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToReactBlueHandler() {
   const backgroundHex = BuiltInColors.React;
   const foregroundHex = formatHex(await invertColor(backgroundHex));
-  changeColorSetting(backgroundHex, foregroundHex);
+  await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorSetting(
@@ -106,7 +107,7 @@ export async function changeColorSetting(
     ...newSettings.statusBarSettings
   };
 
-  await workspace
+  return await workspace
     .getConfiguration()
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
@@ -193,12 +194,22 @@ export async function isSelected(setting: string) {
   return itExists;
 }
 
-async function readConfiguration<T>(
+export async function readWorkspaceConfiguration<T>(
+  colorSettings: ColorSettings,
+  defaultValue?: T | undefined
+) {
+  const value: T | undefined = await workspace
+    .getConfiguration(Sections.workspacePeacockSection)
+    .get<T | undefined>(colorSettings, defaultValue);
+  return value as T;
+}
+
+export async function readConfiguration<T>(
   setting: Settings,
   defaultValue?: T | undefined
 ) {
   const value: T | undefined = await workspace
-    .getConfiguration('peacock')
+    .getConfiguration(Sections.userPeacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
 }
