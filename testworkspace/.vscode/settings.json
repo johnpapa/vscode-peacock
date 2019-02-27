@@ -1,7 +1,4 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-  "debug.console.fontSize": 7,
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#ff0000"
-  }
+  "workbench.colorCustomizations": {}
 }

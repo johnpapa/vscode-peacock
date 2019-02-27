@@ -36,7 +36,7 @@ interface IConfiguration {
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
 
-  setup(function(done) {
+  setup(async function() {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
     if (!ext) {
       throw new Error('Extension was not found.');
@@ -44,7 +44,14 @@ suite('Extension Basic Tests', function() {
     if (ext) {
       extension = ext;
     }
-    done();
+
+    let config = vscode.workspace.getConfiguration();
+    let value = ['statusBar', 'activityBar', 'titleBar'];
+    await config.update(
+      `${extSuffix}.${Settings.affectedElements}`,
+      value,
+      vscode.ConfigurationTarget.Global
+    );
   });
 
   // test('Extension loads in VSCode and is active', function(done) {
@@ -96,38 +103,26 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  test('can get workspace setting', function() {
-    let config = vscode.workspace.getConfiguration('debug.console');
-    assert.equal(7, config['fontSize']);
-    let config2 = vscode.workspace.getConfiguration(
-      'workbench.colorCustomizations'
-    );
-    assert.equal('#ff0000', config2['titleBar.activeBackground']);
-  });
-
   test('can set color to Angular Red', async function() {
-    await vscode.commands.executeCommand('peacock.changeColorToAngularRed');
+    await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
     let config = vscode.workspace.getConfiguration(
-      'workbench.colorCustomizations'
+      Sections.workspacePeacockSection
     );
     assert.equal(
       BuiltInColors.Angular,
-      // config[ColorSettings.titleBar_activeBackground]
-      config['titleBar.activeBackground']
+      config[ColorSettings.titleBar_activeBackground]
     );
   });
 
-  teardown(async function () {
+  teardown(async function() {
     let config = vscode.workspace.getConfiguration();
     let value = {
-      "titleBar.activeBackground": "#ff0000",
+      //'titleBar.activeBackground': '#ff0000'
     };
-    await config.update('workbench.colorCustomizations', value, vscode.ConfigurationTarget.Workspace);
+    await config.update(
+      'workbench.colorCustomizations',
+      value,
+      vscode.ConfigurationTarget.Workspace
+    );
   });
-
-  // // Defines a Mocha unit test
-  // test('Something 1', function() {
-  //   assert.equal(-1, [1, 2, 3].indexOf(5));
-  //   assert.equal(-1, [1, 2, 3].indexOf(0));
-  // });
 });
