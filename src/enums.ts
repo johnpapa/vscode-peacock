@@ -35,6 +35,11 @@ export enum BuiltInColors {
   React = '#00b3e6'
 }
 
+export enum Sections {
+  workspacePeacockSection = 'workbench.colorCustomizations',
+  userPeacockSection = 'peacock'
+}
+
 export enum ForegroundColors {
   DarkForeground = '15202b',
   LightForeground = 'e7e7e7'

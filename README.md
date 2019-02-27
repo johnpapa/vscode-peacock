@@ -47,14 +47,14 @@ So you can choose to affect just one of those, two of them or all three of them.
 
 ## Commands
 
-| Command                        | Description                                                              |
-| ------------------------------ | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors          | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color         | Prompts you to enter a color using hex and RGB format                    |
-| Peacock: Color to Vue Green    | Sets the color to Vue.js's main color, #42b883                           |
-| Peacock: Color to Angular Red  | Sets the color to Angular's main color, #b52e31                          |
-| Peacock: Color to React Blue   | Sets the color to React.js's main color, #00b3e6                         |
-| Peacock: Color to Random       | Sets the color to a random color                                         |
+| Command                       | Description                                                              |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| Peacock: Reset Colors         | Removes any of the color settings from the `.vscode/setttings.json` file |
+| Peacock: Enter a Color        | Prompts you to enter a color using hex and RGB format or HTML color name |
+| Peacock: Color to Vue Green   | Sets the color to Vue.js's main color, #42b883                           |
+| Peacock: Color to Angular Red | Sets the color to Angular's main color, #b52e31                          |
+| Peacock: Color to React Blue  | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Color to Random      | Sets the color to a random color                                         |
 
 ![Animated GIF](./resources/peacock.gif)
 
@@ -70,9 +70,10 @@ See the [CHANGELOG](CHANGELOG.md) for the latest changes.
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
 
-- [@josephrexme](https://twitter.com/josephrexme) for the name and icon for Peacock
+- [@josephrexme](https://twitter.com/josephrexme) for the name and icon for Peacock from [@musicfuel](https://twitter.com/musicfuel)
 - [@codebeast](https://twitter.com/codebeast) for the CLI suggestions
 - [@\_clarkio](https://twitter.com/_clarkio) and [@burkeholland](https://twitter.com/burkeholland) for several issues/ideas
+- [@kushalpanda](https://twitter.com/kushalpanda) for the HTML color name support
 - the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
 
 ![Sketchnote](./resources/peacock-sketchnote.png)

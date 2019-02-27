@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## [0.1.2]
+
+Features
+
+- Added support for [HTML color names](https://www.w3schools.com/colors/colors_names.asp).
+
 ## [0.1.1]
 
 Features
