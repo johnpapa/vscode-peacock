@@ -96,10 +96,7 @@ export async function changeColorToReactBlueHandler() {
   await changeColorSetting(colorCustomizations);
 }
 
-export async function changeColorSetting(
-  backgroundHex: string,
-  foregroundHex: string
-) {
+export async function changeColorSetting(colorCustomizations: {}) {
   return await workspace
     .getConfiguration()
     .update(
@@ -129,10 +126,12 @@ function prepareColors(backgroundHex: string, foregroundHex: string) {
       [ColorSettings.titleBar_inactiveForeground]: foregroundHex
     };
   } else {
-    settingsToReset.push(ColorSettings.titleBar_activeBackground);
-    settingsToReset.push(ColorSettings.titleBar_activeForeground);
-    settingsToReset.push(ColorSettings.titleBar_inactiveBackground);
-    settingsToReset.push(ColorSettings.titleBar_inactiveForeground);
+    settingsToReset.push(
+      ColorSettings.titleBar_activeBackground,
+      ColorSettings.titleBar_activeForeground,
+      ColorSettings.titleBar_inactiveBackground,
+      ColorSettings.titleBar_inactiveForeground
+    );
   }
   if (isSelected('activityBar')) {
     newSettings.activityBarSettings = {
@@ -141,9 +140,11 @@ function prepareColors(backgroundHex: string, foregroundHex: string) {
       [ColorSettings.activityBar_inactiveForeground]: foregroundHex
     };
   } else {
-    settingsToReset.push(ColorSettings.activityBar_background);
-    settingsToReset.push(ColorSettings.activityBar_foreground);
-    settingsToReset.push(ColorSettings.activityBar_inactiveForeground);
+    settingsToReset.push(
+      ColorSettings.activityBar_background,
+      ColorSettings.activityBar_foreground,
+      ColorSettings.activityBar_inactiveForeground
+    );
   }
   if (isSelected('statusBar')) {
     newSettings.statusBarSettings = {
@@ -151,11 +152,13 @@ function prepareColors(backgroundHex: string, foregroundHex: string) {
       [ColorSettings.statusBar_foreground]: foregroundHex
     };
   } else {
-    settingsToReset.push(ColorSettings.statusBar_background);
-    settingsToReset.push(ColorSettings.statusBar_foreground);
+    settingsToReset.push(
+      ColorSettings.statusBar_background,
+      ColorSettings.statusBar_foreground
+    );
   }
   // Merge all color settings
-  const newColorCustomizations : any = {
+  const newColorCustomizations: any = {
     ...colorCustomizations,
     ...newSettings.activityBarSettings,
     ...newSettings.titleBarSettings,
