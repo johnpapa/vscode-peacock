@@ -2,10 +2,11 @@
 
 All notable changes to the code will be documented in this file.
 
-## [0.1.2]
+## [0.2.0]
 
 Features
 
+- Updated Peacock logo
 - Added support for [HTML color names](https://www.w3schools.com/colors/colors_names.asp).
 
 ## [0.1.1]
