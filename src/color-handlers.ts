@@ -96,7 +96,10 @@ export async function changeColorToReactBlueHandler() {
   await changeColorSetting(colorCustomizations);
 }
 
-export async function changeColorSetting(colorCustomizations: {}) {
+export async function changeColorSetting(
+  backgroundHex: string,
+  foregroundHex: string
+) {
   return await workspace
     .getConfiguration()
     .update(
@@ -115,6 +118,9 @@ function prepareColors(backgroundHex: string, foregroundHex: string) {
     activityBarSettings: {},
     statusBarSettings: {}
   };
+
+  let settingsToReset = [];
+
   if (isSelected('titleBar')) {
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: backgroundHex,
@@ -122,6 +128,11 @@ function prepareColors(backgroundHex: string, foregroundHex: string) {
       [ColorSettings.titleBar_inactiveBackground]: backgroundHex,
       [ColorSettings.titleBar_inactiveForeground]: foregroundHex
     };
+  } else {
+    settingsToReset.push(ColorSettings.titleBar_activeBackground);
+    settingsToReset.push(ColorSettings.titleBar_activeForeground);
+    settingsToReset.push(ColorSettings.titleBar_inactiveBackground);
+    settingsToReset.push(ColorSettings.titleBar_inactiveForeground);
   }
   if (isSelected('activityBar')) {
     newSettings.activityBarSettings = {
@@ -129,22 +140,35 @@ function prepareColors(backgroundHex: string, foregroundHex: string) {
       [ColorSettings.activityBar_foreground]: foregroundHex,
       [ColorSettings.activityBar_inactiveForeground]: foregroundHex
     };
+  } else {
+    settingsToReset.push(ColorSettings.activityBar_background);
+    settingsToReset.push(ColorSettings.activityBar_foreground);
+    settingsToReset.push(ColorSettings.activityBar_inactiveForeground);
   }
   if (isSelected('statusBar')) {
     newSettings.statusBarSettings = {
       [ColorSettings.statusBar_background]: backgroundHex,
       [ColorSettings.statusBar_foreground]: foregroundHex
     };
+  } else {
+    settingsToReset.push(ColorSettings.statusBar_background);
+    settingsToReset.push(ColorSettings.statusBar_foreground);
   }
   // Merge all color settings
-  const newColorCustomizations = {
+  const newColorCustomizations : any = {
     ...colorCustomizations,
     ...newSettings.activityBarSettings,
     ...newSettings.titleBarSettings,
     ...newSettings.statusBarSettings
   };
+
+  Object.values(settingsToReset).forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
+
   return newColorCustomizations;
 }
+
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
