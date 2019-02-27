@@ -28,7 +28,11 @@ export async function resetColorsHandler() {
 
   return await workspace
     .getConfiguration()
-    .update('workbench.colorCustomizations', newColorCustomizations, false);
+    .update(
+      'workbench.colorCustomizations',
+      newColorCustomizations,
+      vscode.ConfigurationTarget.Workspace
+    );
 }
 
 export async function changeColorHandler() {
@@ -38,49 +42,77 @@ export async function changeColorHandler() {
   if (isValidHexColor(backgroundColorInput)) {
     backgroundColorHex = backgroundColorInput;
   } else if (isValidNamedColor(backgroundColorInput)) {
-    backgroundColorHex = namedColors[backgroundColorInput.toLowerCase()];
+    backgroundColorHex = convertNameToHex(backgroundColorInput.toLowerCase());
   }
   if (!backgroundColorHex) {
     throw new Error(`Invalid HEX or named color ${backgroundColorHex}`);
   }
 
   const foregroundHex = formatHex(invertColor(backgroundColorHex));
-  await changeColorSetting(backgroundColorHex, foregroundHex);
+  const colorCustomizations = prepareColors(backgroundColorHex, foregroundHex);
+  await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToRandomHandler() {
   const backgroundHex = generateRandomHexColor();
   const foregroundHex = formatHex(invertColor(backgroundHex));
-  await changeColorSetting(backgroundHex, foregroundHex);
+  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
+  await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToVueGreenHandler() {
   const backgroundHex = BuiltInColors.Vue;
   const foregroundHex = formatHex(invertColor(backgroundHex));
-  return await changeColorSetting(backgroundHex, foregroundHex);
+  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
+  return await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToAngularRedHandler() {
   const backgroundHex = BuiltInColors.Angular;
   const foregroundHex = formatHex(invertColor(backgroundHex));
-  await changeColorSetting(backgroundHex, foregroundHex);
+  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
+  // return await vscode.workspace.getConfiguration().update(
+  //   'workbench.colorCustomizations',
+  //   colorCustomizations,
+  //   // {
+  //   //   'titleBar.activeBackground': BuiltInColors.Angular
+  //   // },
+  //   vscode.ConfigurationTarget.Workspace
+  // );
+  // return await workspace
+  //   .getConfiguration()
+  //   .update(
+  //     'workbench.colorCustomizations',
+  //     colorCustomizations,
+  //     vscode.ConfigurationTarget.Workspace
+  //   );
+  return await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToReactBlueHandler() {
   const backgroundHex = BuiltInColors.React;
   const foregroundHex = formatHex(invertColor(backgroundHex));
-  await changeColorSetting(backgroundHex, foregroundHex);
+  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
+  await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorSetting(
   backgroundHex: string,
   foregroundHex: string
 ) {
+  return await workspace
+    .getConfiguration()
+    .update(
+      'workbench.colorCustomizations',
+      colorCustomizations,
+      vscode.ConfigurationTarget.Workspace
+    );
+}
 
+function prepareColors(backgroundHex: string, foregroundHex: string) {
   const colorCustomizations = workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
-
   let newSettings = {
     titleBarSettings: {},
     activityBarSettings: {},
@@ -102,7 +134,6 @@ export async function changeColorSetting(
     settingsToReset.push(ColorSettings.titleBar_inactiveBackground);
     settingsToReset.push(ColorSettings.titleBar_inactiveForeground);
   }
-
   if (isSelected('activityBar')) {
     newSettings.activityBarSettings = {
       [ColorSettings.activityBar_background]: backgroundHex,
@@ -114,7 +145,6 @@ export async function changeColorSetting(
     settingsToReset.push(ColorSettings.activityBar_foreground);
     settingsToReset.push(ColorSettings.activityBar_inactiveForeground);
   }
-
   if (isSelected('statusBar')) {
     newSettings.statusBarSettings = {
       [ColorSettings.statusBar_background]: backgroundHex,
@@ -124,7 +154,6 @@ export async function changeColorSetting(
     settingsToReset.push(ColorSettings.statusBar_background);
     settingsToReset.push(ColorSettings.statusBar_foreground);
   }
-
   // Merge all color settings
   const newColorCustomizations : any = {
     ...colorCustomizations,
@@ -137,9 +166,7 @@ export async function changeColorSetting(
     delete newColorCustomizations[setting];
   });
 
-  return await workspace
-    .getConfiguration()
-    .update('workbench.colorCustomizations', newColorCustomizations, false);
+  return newColorCustomizations;
 }
 
 export async function promptForColor() {
@@ -220,10 +247,6 @@ export function readWorkspaceConfiguration<T>(
   colorSettings: ColorSettings,
   defaultValue?: T | undefined
 ) {
-  // const value = workspace.getConfiguration(Sections.workspacePeacockSection);
-  // // .get<T | undefined>(colorSettings, defaultValue);
-  // return value.get(colorSettings) || defaultValue;
-
   const value: T | undefined = workspace
     .getConfiguration(Sections.workspacePeacockSection)
     .get<T | undefined>(colorSettings, defaultValue);
@@ -234,10 +257,12 @@ export function readConfiguration<T>(
   setting: Settings,
   defaultValue?: T | undefined
 ) {
-  // const value: any = workspace.getConfiguration(Sections.userPeacockSection);
-  // return value[setting] || defaultValue;
   const value: T | undefined = workspace
     .getConfiguration(Sections.userPeacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
+}
+
+export function convertNameToHex(name: string) {
+  return namedColors[name];
 }
