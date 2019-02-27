@@ -105,8 +105,7 @@ suite('Extension Basic Tests', function() {
     assert.equal('#ff0000', config2['titleBar.activeBackground']);
   });
 
-  test('can set color', async function() {
-    // await vscode.commands.executeCommand('peacock.changeColorToVueGreen');
+  test('can set color to Angular Red', async function() {
     await vscode.commands.executeCommand('peacock.changeColorToAngularRed');
     let config = vscode.workspace.getConfiguration(
       'workbench.colorCustomizations'
