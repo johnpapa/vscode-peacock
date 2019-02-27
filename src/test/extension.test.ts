@@ -59,6 +59,7 @@ suite('Extension Basic Tests', function() {
       value,
       vscode.ConfigurationTarget.Global
     );
+    const x = 1;
   });
 
   setup(function() {
@@ -125,7 +126,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  teardown(async function() {
+  suiteTeardown(async function() {
     let config = vscode.workspace.getConfiguration();
     let value = {
       //'titleBar.activeBackground': '#ff0000'
