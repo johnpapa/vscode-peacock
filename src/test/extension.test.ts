@@ -109,13 +109,21 @@ suite('Extension Basic Tests', function() {
     // await vscode.commands.executeCommand('peacock.changeColorToVueGreen');
     await vscode.commands.executeCommand('peacock.changeColorToAngularRed');
     let config = vscode.workspace.getConfiguration(
-      ColorSettings.titleBar_activeBackground
+      'workbench.colorCustomizations'
     );
     assert.equal(
-      BuiltInColors.Vue,
+      BuiltInColors.Angular,
       // config[ColorSettings.titleBar_activeBackground]
       config['titleBar.activeBackground']
     );
+  });
+
+  teardown(async function () {
+    let config = vscode.workspace.getConfiguration();
+    let value = {
+      "titleBar.activeBackground": "#ff0000",
+    };
+    await config.update('workbench.colorCustomizations', value, vscode.ConfigurationTarget.Workspace);
   });
 
   // // Defines a Mocha unit test
