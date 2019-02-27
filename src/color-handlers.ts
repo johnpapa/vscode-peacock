@@ -1,9 +1,6 @@
 import * as vscode from 'vscode';
 import { namedColors } from './named-colors';
-import {
-  isValidHexColor,
-  isValidNamedColor
-} from "./color-validators";
+import { isValidHexColor, isValidNamedColor } from './color-validators';
 
 const { workspace } = vscode;
 
@@ -35,20 +32,20 @@ export async function resetColorsHandler() {
 }
 
 export async function changeColorHandler() {
-  const backgroundHex = await promptForHexColor();
-  let colorHex: string = '';
+  const backgroundColorInput = await promptForColor();
+  let backgroundColorHex: string = '';
 
-  if (isValidHexColor(backgroundHex)) {
-    colorHex = backgroundHex;
-  } else if (isValidNamedColor(backgroundHex)) {
-    colorHex = namedColors[backgroundHex.substr(1).toLowerCase()];
+  if (isValidHexColor(backgroundColorInput)) {
+    backgroundColorHex = backgroundColorInput;
+  } else if (isValidNamedColor(backgroundColorInput)) {
+    backgroundColorHex = namedColors[backgroundColorInput.toLowerCase()];
+  }
+  if (!backgroundColorHex) {
+    throw new Error(`Invalid HEX or named color ${backgroundColorHex}`);
   }
 
-  if (!colorHex) {
-    return;
-  }
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  await changeColorSetting(backgroundHex, foregroundHex);
+  const foregroundHex = formatHex(invertColor(backgroundColorHex));
+  await changeColorSetting(backgroundColorHex, foregroundHex);
 }
 
 export async function changeColorToRandomHandler() {
@@ -126,16 +123,16 @@ export async function changeColorSetting(
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
 
-export async function promptForHexColor() {
+export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: BuiltInColors.Vue,
-    prompt: 'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
+    prompt:
+      'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
     value: BuiltInColors.Vue
   };
-  const input = await vscode.window.showInputBox(options);
-  const hexInput = formatHex(input);
-  return hexInput;
+  const inputColor = await vscode.window.showInputBox(options);
+  return inputColor || '';
 }
 
 export function invertColor(hex: string) {
