@@ -36,7 +36,7 @@ interface IConfiguration {
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
 
-  setup(async function() {
+  suiteSetup(async function() {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
     if (!ext) {
       throw new Error('Extension was not found.');
@@ -52,6 +52,10 @@ suite('Extension Basic Tests', function() {
       value,
       vscode.ConfigurationTarget.Global
     );
+  });
+
+  setup(function() {
+    // runs before each test
   });
 
   test('Extension loads in VSCode and is active', function(done) {
