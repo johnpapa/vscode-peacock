@@ -59,11 +59,11 @@ suite('Extension Basic Tests', function() {
       value,
       vscode.ConfigurationTarget.Global
     );
-    const x = 1;
   });
 
-  setup(function() {
+  setup(async function() {
     // runs before each test
+    await vscode.commands.executeCommand(Commands.resetColors);
   });
 
   test('Extension loads in VSCode and is active', function(done) {
@@ -124,6 +124,36 @@ suite('Extension Basic Tests', function() {
       BuiltInColors.Angular,
       config[ColorSettings.titleBar_activeBackground]
     );
+  });
+  test('can set color to Vue Green', async function() {
+    await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    assert.equal(
+      BuiltInColors.Vue,
+      config[ColorSettings.titleBar_activeBackground]
+    );
+  });
+  test('can set color to React Blue', async function() {
+    await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    assert.equal(
+      BuiltInColors.React,
+      config[ColorSettings.titleBar_activeBackground]
+    );
+  });
+
+  test('can reset colors', async function() {
+    await vscode.commands.executeCommand(Commands.resetColors);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+    assert.ok(!config[ColorSettings.statusBar_background]);
+    assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
   suiteTeardown(async function() {
