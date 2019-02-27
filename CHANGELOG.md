@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## [0.2.0]
+## [0.2.1]
 
 Features
 
@@ -11,6 +11,7 @@ Features
 
 Other Changes
 
+- Implemented reset for each settings that isn't selected
 - Added unit tests
 - Updated README
 
