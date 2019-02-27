@@ -28,7 +28,11 @@ export async function resetColorsHandler() {
 
   return await workspace
     .getConfiguration()
-    .update('workbench.colorCustomizations', newColorCustomizations, false);
+    .update(
+      'workbench.colorCustomizations',
+      newColorCustomizations,
+      vscode.ConfigurationTarget.Workspace
+    );
 }
 
 export async function changeColorHandler() {
@@ -120,7 +124,11 @@ export async function changeColorSetting(
 
   return await workspace
     .getConfiguration()
-    .update('workbench.colorCustomizations', newColorCustomizations, false);
+    .update(
+      'workbench.colorCustomizations',
+      newColorCustomizations,
+      vscode.ConfigurationTarget.Workspace
+    );
 }
 
 export async function promptForColor() {
