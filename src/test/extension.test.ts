@@ -14,6 +14,7 @@ import {
   BuiltInColors,
   Sections
 } from '../enums';
+import { readConfiguration } from '../color-handlers';
 
 interface ICommand {
   title: string;
@@ -35,6 +36,7 @@ interface IConfiguration {
 // Defines a Mocha test suite to group tests of similar kind together
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
+  let originalAffectedElements: never[] | string[] = [];
 
   suiteSetup(async function() {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
@@ -44,6 +46,11 @@ suite('Extension Basic Tests', function() {
     if (ext) {
       extension = ext;
     }
+
+    originalAffectedElements = readConfiguration<string[]>(
+      Settings.affectedElements,
+      []
+    );
 
     let config = vscode.workspace.getConfiguration();
     let value = ['statusBar', 'activityBar', 'titleBar'];
@@ -128,5 +135,14 @@ suite('Extension Basic Tests', function() {
       value,
       vscode.ConfigurationTarget.Workspace
     );
+
+    // put back the original peacock user settings
+    await vscode.workspace
+      .getConfiguration()
+      .update(
+        `${extSuffix}.${Settings.affectedElements}`,
+        originalAffectedElements,
+        vscode.ConfigurationTarget.Global
+      );
   });
 });
