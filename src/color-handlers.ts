@@ -12,7 +12,7 @@ import {
 // Create the handlers for the commands
 export async function resetColorsHandler() {
   // Domain of all color settings we affect
-  const colorCustomizations = await workspace
+  const colorCustomizations = workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
 
@@ -23,7 +23,7 @@ export async function resetColorsHandler() {
     delete newColorCustomizations[setting];
   });
 
-  await workspace
+  return await workspace
     .getConfiguration()
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
@@ -33,31 +33,31 @@ export async function changeColorHandler() {
   if (!isValidHexColor(backgroundHex)) {
     return;
   }
-  const foregroundHex = formatHex(await invertColor(backgroundHex));
+  const foregroundHex = formatHex(invertColor(backgroundHex));
   await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToRandomHandler() {
   const backgroundHex = generateRandomHexColor();
-  const foregroundHex = formatHex(await invertColor(backgroundHex));
+  const foregroundHex = formatHex(invertColor(backgroundHex));
   await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToVueGreenHandler() {
   const backgroundHex = BuiltInColors.Vue;
-  const foregroundHex = formatHex(await invertColor(backgroundHex));
-  await changeColorSetting(backgroundHex, foregroundHex);
+  const foregroundHex = formatHex(invertColor(backgroundHex));
+  return await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToAngularRedHandler() {
   const backgroundHex = BuiltInColors.Angular;
-  const foregroundHex = formatHex(await invertColor(backgroundHex));
+  const foregroundHex = formatHex(invertColor(backgroundHex));
   await changeColorSetting(backgroundHex, foregroundHex);
 }
 
 export async function changeColorToReactBlueHandler() {
   const backgroundHex = BuiltInColors.React;
-  const foregroundHex = formatHex(await invertColor(backgroundHex));
+  const foregroundHex = formatHex(invertColor(backgroundHex));
   await changeColorSetting(backgroundHex, foregroundHex);
 }
 
@@ -65,7 +65,7 @@ export async function changeColorSetting(
   backgroundHex: string,
   foregroundHex: string
 ) {
-  const colorCustomizations = await workspace
+  const colorCustomizations = workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
 
@@ -75,7 +75,7 @@ export async function changeColorSetting(
     statusBarSettings: {}
   };
 
-  if (await isSelected('titleBar')) {
+  if (isSelected('titleBar')) {
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: backgroundHex,
       [ColorSettings.titleBar_activeForeground]: foregroundHex,
@@ -84,7 +84,7 @@ export async function changeColorSetting(
     };
   }
 
-  if (await isSelected('activityBar')) {
+  if (isSelected('activityBar')) {
     newSettings.activityBarSettings = {
       [ColorSettings.activityBar_background]: backgroundHex,
       [ColorSettings.activityBar_foreground]: foregroundHex,
@@ -92,7 +92,7 @@ export async function changeColorSetting(
     };
   }
 
-  if (await isSelected('statusBar')) {
+  if (isSelected('statusBar')) {
     newSettings.statusBarSettings = {
       [ColorSettings.statusBar_background]: backgroundHex,
       [ColorSettings.statusBar_foreground]: foregroundHex
@@ -124,7 +124,7 @@ export async function promptForHexColor() {
   return hexInput;
 }
 
-export async function invertColor(hex: string) {
+export function invertColor(hex: string) {
   // credit: https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
   if (hex.indexOf('#') === 0) {
     hex = hex.slice(1);
@@ -142,23 +142,19 @@ export async function invertColor(hex: string) {
 
   const useDark = r * 0.299 + g * 0.587 + b * 0.114 > 186;
 
-  let foreground = useDark
-    ? await getDarkForeground()
-    : await getLightForeground();
+  let foreground = useDark ? getDarkForeground() : getLightForeground();
 
   // credit: http://stackoverflow.com/a/3943023/112731
   return foreground;
 }
 
-async function getDarkForeground() {
-  const foregroundOverride = await readConfiguration<string>(
-    Settings.darkForeground
-  );
+function getDarkForeground() {
+  const foregroundOverride = readConfiguration<string>(Settings.darkForeground);
   return foregroundOverride || ForegroundColors.DarkForeground;
 }
 
-async function getLightForeground() {
-  const foregroundOverride = await readConfiguration<string>(
+function getLightForeground() {
+  const foregroundOverride = readConfiguration<string>(
     Settings.lightForeground
   );
   return foregroundOverride || ForegroundColors.LightForeground;
@@ -180,8 +176,8 @@ export function generateRandomHexColor() {
   return '#' + hex;
 }
 
-export async function isSelected(setting: string) {
-  const affectedElements = await readConfiguration<string[]>(
+export function isSelected(setting: string) {
+  const affectedElements = readConfiguration<string[]>(
     Settings.affectedElements,
     []
   );
@@ -194,21 +190,27 @@ export async function isSelected(setting: string) {
   return itExists;
 }
 
-export async function readWorkspaceConfiguration<T>(
+export function readWorkspaceConfiguration<T>(
   colorSettings: ColorSettings,
   defaultValue?: T | undefined
 ) {
-  const value: T | undefined = await workspace
+  // const value = workspace.getConfiguration(Sections.workspacePeacockSection);
+  // // .get<T | undefined>(colorSettings, defaultValue);
+  // return value.get(colorSettings) || defaultValue;
+
+  const value: T | undefined = workspace
     .getConfiguration(Sections.workspacePeacockSection)
     .get<T | undefined>(colorSettings, defaultValue);
   return value as T;
 }
 
-export async function readConfiguration<T>(
+export function readConfiguration<T>(
   setting: Settings,
   defaultValue?: T | undefined
 ) {
-  const value: T | undefined = await workspace
+  // const value: any = workspace.getConfiguration(Sections.userPeacockSection);
+  // return value[setting] || defaultValue;
+  const value: T | undefined = workspace
     .getConfiguration(Sections.userPeacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
