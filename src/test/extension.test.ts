@@ -11,7 +11,8 @@ import {
   Commands,
   Settings,
   ColorSettings,
-  BuiltInColors
+  BuiltInColors,
+  Sections
 } from '../enums';
 
 interface ICommand {
@@ -95,10 +96,31 @@ suite('Extension Basic Tests', function() {
     });
   });
 
+  test('can get workspace setting', function() {
+    let config = vscode.workspace.getConfiguration('debug.console');
+    assert.equal(7, config['fontSize']);
+    let config2 = vscode.workspace.getConfiguration(
+      'workbench.colorCustomizations'
+    );
+    assert.equal('#ff0000', config2['titleBar.activeBackground']);
+  });
+
+  test('can set color', async function() {
+    // await vscode.commands.executeCommand('peacock.changeColorToVueGreen');
+    await vscode.commands.executeCommand('peacock.changeColorToAngularRed');
+    let config = vscode.workspace.getConfiguration(
+      ColorSettings.titleBar_activeBackground
+    );
+    assert.equal(
+      BuiltInColors.Vue,
+      // config[ColorSettings.titleBar_activeBackground]
+      config['titleBar.activeBackground']
+    );
+  });
+
   // // Defines a Mocha unit test
   // test('Something 1', function() {
   //   assert.equal(-1, [1, 2, 3].indexOf(5));
   //   assert.equal(-1, [1, 2, 3].indexOf(0));
   // });
-
 });
