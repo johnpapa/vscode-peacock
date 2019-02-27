@@ -27,14 +27,7 @@
     "Fun"
   ],
   "preview": true,
-  "activationEvents": [
-    "onCommand:peacock.resetColors",
-    "onCommand:peacock.changeColor",
-    "onCommand:peacock.changeColorToRandom",
-    "onCommand:peacock.changeColorToVueGreen",
-    "onCommand:peacock.changeColorToAngularRed",
-    "onCommand:peacock.changeColorToReactBlue"
-  ],
+  "activationEvents": ["*"],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -99,6 +92,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
+    "just-test": "npm run compile && node ./node_modules/vscode/bin/test",
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
