@@ -9,6 +9,11 @@ Features
 - Updated Peacock logo
 - Added support for [HTML color names](https://www.w3schools.com/colors/colors_names.asp).
 
+Other Changes
+
+- Added unit tests
+- Updated README
+
 ## [0.1.1]
 
 Features
