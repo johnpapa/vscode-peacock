@@ -2,5 +2,6 @@
 {
   "debug.console.fontSize": 7,
   "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#ff0000"
   }
 }
