@@ -15,8 +15,8 @@ import {
   BuiltInColors,
   Sections
 } from '../enums';
-import { readConfiguration } from '../color-handlers';
-import { isValidHexColor } from '../color-validators';
+import { readConfiguration, convertNameToHex } from '../color-handlers';
+import { isValidHexColor, isValidNamedColor } from '../color-validators';
 
 interface ICommand {
   title: string;
@@ -158,10 +158,10 @@ suite('Extension Basic Tests', function() {
     assert.ok(isValidHexColor(config[ColorSettings.titleBar_activeBackground]));
   });
 
-  test.only('can set color using user input', async function() {
+  test('can set color using hex user input', async function() {
     // Stub the async input box to return a response
     const fakeResponse = '#771177';
-    await sinon
+    const stub = await sinon
       .stub(vscode.window, 'showInputBox')
       .returns(Promise.resolve(fakeResponse));
 
@@ -171,9 +171,29 @@ suite('Extension Basic Tests', function() {
       Sections.workspacePeacockSection
     );
     const value = config[ColorSettings.titleBar_activeBackground];
+    stub.restore();
 
     assert.ok(isValidHexColor(value));
     assert.ok(value === fakeResponse);
+  });
+
+  test('can set color using named color user input', async function() {
+    // Stub the async input box to return a response
+    const fakeResponse = 'purple';
+    const stub = await sinon
+      .stub(vscode.window, 'showInputBox')
+      .returns(Promise.resolve(fakeResponse));
+
+    // fire the command
+    await vscode.commands.executeCommand(Commands.changeColor);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    const value = config[ColorSettings.titleBar_activeBackground];
+    stub.restore();
+
+    assert.ok(isValidHexColor(value));
+    assert.ok(value === convertNameToHex(fakeResponse));
   });
 
   test('can reset colors', async function() {

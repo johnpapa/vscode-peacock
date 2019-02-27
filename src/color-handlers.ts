@@ -42,7 +42,7 @@ export async function changeColorHandler() {
   if (isValidHexColor(backgroundColorInput)) {
     backgroundColorHex = backgroundColorInput;
   } else if (isValidNamedColor(backgroundColorInput)) {
-    backgroundColorHex = namedColors[backgroundColorInput.toLowerCase()];
+    backgroundColorHex = convertNameToHex(backgroundColorInput.toLowerCase());
   }
   if (!backgroundColorHex) {
     throw new Error(`Invalid HEX or named color ${backgroundColorHex}`);
@@ -237,4 +237,8 @@ export function readConfiguration<T>(
     .getConfiguration(Sections.userPeacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
+}
+
+export function convertNameToHex(name: string) {
+  return namedColors[name];
 }
