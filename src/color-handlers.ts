@@ -65,7 +65,7 @@ export async function changeColorSetting(
   foregroundHex: string
 ) {
 
-  const colorCustomizations = await workspace
+  const colorCustomizations = workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
 
@@ -77,7 +77,7 @@ export async function changeColorSetting(
 
   let settingsToReset = [];
 
-  if (await isSelected('titleBar')) {
+  if (isSelected('titleBar')) {
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: backgroundHex,
       [ColorSettings.titleBar_activeForeground]: foregroundHex,
@@ -127,7 +127,7 @@ export async function changeColorSetting(
     delete newColorCustomizations[setting];
   });
 
-  await workspace
+  return await workspace
     .getConfiguration()
     .update('workbench.colorCustomizations', newColorCustomizations, false);
 }
