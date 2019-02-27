@@ -6,6 +6,7 @@
 // The module 'assert' provides assertion methods from node
 import * as assert from 'assert';
 import * as vscode from 'vscode';
+import * as sinon from 'sinon';
 import {
   extSuffix,
   Commands,
@@ -15,6 +16,7 @@ import {
   Sections
 } from '../enums';
 import { readConfiguration } from '../color-handlers';
+import { isValidHexColor } from '../color-validators';
 
 interface ICommand {
   title: string;
@@ -125,6 +127,7 @@ suite('Extension Basic Tests', function() {
       config[ColorSettings.titleBar_activeBackground]
     );
   });
+
   test('can set color to Vue Green', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
     let config = vscode.workspace.getConfiguration(
@@ -135,6 +138,7 @@ suite('Extension Basic Tests', function() {
       config[ColorSettings.titleBar_activeBackground]
     );
   });
+
   test('can set color to React Blue', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
     let config = vscode.workspace.getConfiguration(
@@ -144,6 +148,32 @@ suite('Extension Basic Tests', function() {
       BuiltInColors.React,
       config[ColorSettings.titleBar_activeBackground]
     );
+  });
+
+  test('can set color to Random color', async function() {
+    await vscode.commands.executeCommand(Commands.changeColorToRandom);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    assert.ok(isValidHexColor(config[ColorSettings.titleBar_activeBackground]));
+  });
+
+  test.only('can set color using user input', async function() {
+    // Stub the async input box to return a response
+    const fakeResponse = '#771177';
+    await sinon
+      .stub(vscode.window, 'showInputBox')
+      .returns(Promise.resolve(fakeResponse));
+
+    // fire the command
+    await vscode.commands.executeCommand(Commands.changeColor);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    const value = config[ColorSettings.titleBar_activeBackground];
+
+    assert.ok(isValidHexColor(value));
+    assert.ok(value === fakeResponse);
   });
 
   test('can reset colors', async function() {
