@@ -79,6 +79,16 @@
           ],
           "description": "prefixes of elements affected by peacock"
         },
+        "peacock.preferredColors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "purple"
+          ],
+          "description": "your preferred colors"
+        },
         "peacock.darkForeground": {
           "type": "string",
           "default": "#15202b",
