@@ -9,7 +9,7 @@ import {
   invertColor,
   generateRandomHexColor
 } from './color-library';
-import { promptForColor } from './inputs';
+import { promptForColor, promptForPreferedColor } from './inputs';
 
 const { workspace } = vscode;
 
@@ -83,11 +83,21 @@ export async function changeColorToReactBlueHandler() {
 }
 
 export async function changeColorToPreferredHandler() {
-  // TODO: read preferred color list
-  // TODO: prompt user with the list
-  // TODO: Verify selection and continue
-  const backgroundHex = BuiltInColors.React;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  await changeColorSetting(colorCustomizations);
+  const backgroundColorInput = await promptForPreferedColor();
+  let backgroundColorHex: string = '';
+
+  if (isValidHexColor(backgroundColorInput)) {
+    backgroundColorHex = backgroundColorInput;
+  } else if (isValidNamedColor(backgroundColorInput)) {
+    backgroundColorHex = convertNameToHex(backgroundColorInput.toLowerCase());
+  }
+
+  if (backgroundColorHex) {
+    const foregroundHex = formatHex(invertColor(backgroundColorHex));
+    const colorCustomizations = prepareColors(
+      backgroundColorHex,
+      foregroundHex
+    );
+    await changeColorSetting(colorCustomizations);
+  }
 }
