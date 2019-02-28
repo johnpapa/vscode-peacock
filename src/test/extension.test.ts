@@ -14,7 +14,12 @@ import {
   BuiltInColors,
   Sections
 } from '../constants/enums';
-import { readConfiguration } from '../configuration';
+import {
+  getAffectedElements,
+  getPreferredColors,
+  updateAffectedElements,
+  updatePreferredColors
+} from '../configuration';
 import { isValidHexColor, convertNameToHex } from '../color-library';
 
 interface ICommand {
@@ -29,9 +34,14 @@ interface IConfiguration {
   properties: any;
 }
 
+interface IPeacockSettings {
+  affectedElements: string[];
+  preferredColors: string[];
+}
+
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
-  let originalAffectedElements: never[] | string[] = [];
+  let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async function() {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
@@ -42,18 +52,14 @@ suite('Extension Basic Tests', function() {
       extension = ext;
     }
 
-    originalAffectedElements = readConfiguration<string[]>(
-      Settings.affectedElements,
-      []
-    );
+    originalValues.affectedElements = getAffectedElements();
+    originalValues.preferredColors = getPreferredColors();
 
-    let config = vscode.workspace.getConfiguration();
-    let value = ['statusBar', 'activityBar', 'titleBar'];
-    await config.update(
-      `${extSuffix}.${Settings.affectedElements}`,
-      value,
-      vscode.ConfigurationTarget.Global
-    );
+    let elements = ['statusBar', 'activityBar', 'titleBar'];
+    await updateAffectedElements(elements);
+
+    let preferredColors = ['purple', '#102030', 'dodgerblue'];
+    await updatePreferredColors(preferredColors);
   });
 
   setup(async function() {
@@ -99,9 +105,7 @@ suite('Extension Basic Tests', function() {
     );
 
     vscode.commands.getCommands(true).then((allCommands: string[]) => {
-      const commands: string[] = allCommands.filter(c =>
-        c.startsWith(`${extSuffix}.`)
-      );
+      const commands = allCommands.filter(c => c.startsWith(`${extSuffix}.`));
       commands.forEach(command => {
         const result = commandStrings.some(c => c === command);
         assert.ok(result);
@@ -213,13 +217,8 @@ suite('Extension Basic Tests', function() {
     );
 
     // put back the original peacock user settings
-    await vscode.workspace
-      .getConfiguration()
-      .update(
-        `${extSuffix}.${Settings.affectedElements}`,
-        originalAffectedElements,
-        vscode.ConfigurationTarget.Global
-      );
+    await updateAffectedElements(originalValues.affectedElements);
+    await updatePreferredColors(originalValues.preferredColors);
   });
 });
 

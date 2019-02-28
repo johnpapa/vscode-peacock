@@ -2,7 +2,8 @@ import {
   ColorSettings,
   Sections,
   Settings,
-  ForegroundColors
+  ForegroundColors,
+  extSuffix
 } from './constants/enums';
 import * as vscode from 'vscode';
 
@@ -131,6 +132,29 @@ export async function changeColorSetting(colorCustomizations: {}) {
 }
 
 export function getPreferredColors() {
-  const preferredColors = readConfiguration<string[]>(Settings.preferredColors);
-  return preferredColors || [];
+  const values = readConfiguration<string[]>(Settings.preferredColors);
+  return values || [];
+}
+
+export function getAffectedElements() {
+  const values = readConfiguration<string[]>(Settings.affectedElements);
+  return values || [];
+}
+
+export async function updateAffectedElements(values: string[]) {
+  let config = vscode.workspace.getConfiguration();
+  return await config.update(
+    `${extSuffix}.${Settings.affectedElements}`,
+    values,
+    vscode.ConfigurationTarget.Global
+  );
+}
+
+export async function updatePreferredColors(values: string[]) {
+  let config = vscode.workspace.getConfiguration();
+  return await config.update(
+    `${extSuffix}.${Settings.preferredColors}`,
+    values,
+    vscode.ConfigurationTarget.Global
+  );
 }
