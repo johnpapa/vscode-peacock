@@ -18,7 +18,8 @@ import {
   getAffectedElements,
   getPreferredColors,
   updateAffectedElements,
-  updatePreferredColors
+  updatePreferredColors,
+  updateConfiguration
 } from '../configuration';
 import { isValidHexColor, convertNameToHex } from '../color-library';
 
@@ -181,20 +182,42 @@ suite('Extension Basic Tests', function() {
     assert.ok(value === convertNameToHex(fakeResponse));
   });
 
-  test('can set color to preferred color', async function() {
-    // Stub the async qyuick pick to return a response
-    const fakeResponse = 'purple';
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
+  suite('Preferred colors', function() {
+    test('can set color to preferred color', async function() {
+      // Stub the async quick pick to return a response
+      const fakeResponse = 'purple';
+      const stub = await sinon
+        .stub(vscode.window, 'showQuickPick')
+        .returns(Promise.resolve<any>(fakeResponse));
 
-    await vscode.commands.executeCommand(Commands.changeColorToPreferred);
-    let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
+      await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+      let config = getPeacockWorkspaceConfig();
+      const value = config[ColorSettings.titleBar_activeBackground];
+      stub.restore();
 
-    assert.ok(isValidHexColor(value));
-    assert.ok(value === convertNameToHex(fakeResponse));
+      assert.ok(isValidHexColor(value));
+      assert.ok(value === convertNameToHex(fakeResponse));
+    });
+
+    test('set to preferred color with no preferrences is a noop', async function() {
+      // set the color to react blue to start
+      await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
+
+      // Stub the async quick pick to return a response
+      const fakeResponse = '';
+      const stub = await sinon
+        .stub(vscode.window, 'showQuickPick')
+        .returns(Promise.resolve<any>(fakeResponse));
+
+      let config = getPeacockWorkspaceConfig();
+      const valueBefore = config[ColorSettings.titleBar_activeBackground];
+
+      await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+      const valueAfter = config[ColorSettings.titleBar_activeBackground];
+      stub.restore();
+
+      assert.ok(valueBefore === valueAfter);
+    });
   });
 
   test('can reset colors', async function() {
@@ -206,16 +229,7 @@ suite('Extension Basic Tests', function() {
   });
 
   suiteTeardown(async function() {
-    let config = vscode.workspace.getConfiguration();
-    let value = {
-      //'titleBar.activeBackground': '#ff0000'
-    };
-    await config.update(
-      'workbench.colorCustomizations',
-      value,
-      vscode.ConfigurationTarget.Workspace
-    );
-
+    await vscode.commands.executeCommand(Commands.resetColors);
     // put back the original peacock user settings
     await updateAffectedElements(originalValues.affectedElements);
     await updatePreferredColors(originalValues.preferredColors);
