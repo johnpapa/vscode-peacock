@@ -129,3 +129,8 @@ export async function changeColorSetting(colorCustomizations: {}) {
       vscode.ConfigurationTarget.Workspace
     );
 }
+
+export function getPreferredColors() {
+  const preferredColors = readConfiguration<string[]>(Settings.preferredColors);
+  return preferredColors || [];
+}
