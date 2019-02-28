@@ -200,6 +200,25 @@ suite('Extension Basic Tests', function() {
     assert.ok(value === convertNameToHex(fakeResponse));
   });
 
+  test('can set color to preferred color', async function() {
+    // Stub the async input box to return a response
+    const fakeResponse = 'purple';
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
+
+    // fire the command
+    await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+    let config = vscode.workspace.getConfiguration(
+      Sections.workspacePeacockSection
+    );
+    const value = config[ColorSettings.titleBar_activeBackground];
+    stub.restore();
+
+    assert.ok(isValidHexColor(value));
+    assert.ok(value === convertNameToHex(fakeResponse));
+  });
+
   test('can reset colors', async function() {
     await vscode.commands.executeCommand(Commands.resetColors);
     let config = vscode.workspace.getConfiguration(
