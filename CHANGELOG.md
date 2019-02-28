@@ -2,6 +2,18 @@
 
 All notable changes to the code will be documented in this file.
 
+## [0.3.0]
+
+Features
+
+- New setting for `peacock.preferredColors` that stores an array of strings for color names and hex values
+- User can select `Peacock: Change to a Preferred Color` which prompts with the list from `peacock.preferredColors` from user settings
+
+Other Changes
+
+- Refactor modules to be clearer
+- Refactor changeColor to enterColor for internal names of the command
+
 ## [0.2.1]
 
 Features
