@@ -3,7 +3,8 @@ import {
   Sections,
   Settings,
   ForegroundColors,
-  extSuffix
+  extSuffix,
+  IPreferredColors
 } from './constants/enums';
 import * as vscode from 'vscode';
 
@@ -144,7 +145,9 @@ export async function changeColorSetting(colorCustomizations: {}) {
 }
 
 export function getPreferredColors() {
-  const values = readConfiguration<string[]>(Settings.preferredColors);
+  const values = readConfiguration<IPreferredColors[]>(
+    Settings.preferredColors
+  );
   return values || [];
 }
 

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BuiltInColors } from './constants/enums';
+import { BuiltInColors, preferredColorSeparator } from './constants/enums';
 import { getPreferredColors } from './configuration';
 
 export async function promptForColor() {
@@ -15,16 +15,21 @@ export async function promptForColor() {
 }
 
 export async function promptForPreferedColor() {
+  const sep = preferredColorSeparator;
   const preferredColors = getPreferredColors();
-  let selectedColor = '';
+  const menu = preferredColors.map(pc => `${pc.name} ${sep} ${pc.value}`);
+  let selection = '';
   if (preferredColors && preferredColors.length) {
-    selectedColor =
-      (await vscode.window.showQuickPick(preferredColors, {
+    selection =
+      (await vscode.window.showQuickPick(menu, {
         placeHolder: 'Pick a preferred color'
         // onDidSelectItem: item =>
         //   vscode.window.showInformationMessage(`Focus ${++i}: ${item}`)
       })) || '';
   }
   // vscode.window.showInformationMessage(`Got: ${result}`);
+  let selectedColor = selection.substring(
+    selection.indexOf(sep) + sep.length + 1
+  );
   return selectedColor || '';
 }

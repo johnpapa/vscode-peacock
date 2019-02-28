@@ -82,7 +82,7 @@
         "peacock.preferredColors": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "object"
           },
           "description": "your preferred colors"
         },
