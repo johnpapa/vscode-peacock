@@ -24,11 +24,26 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Properties
 
-| Property                 | Description                              |
-| ------------------------ | ---------------------------------------- |
-| peacock.affectedElements | prefixes of elements affected by peacock |
-| peacock.darkForeground   | override for the dark foreground         |
-| peacock.lightForeground  | override for the light foreground        |
+| Property                 | Description                                     |
+| ------------------------ | ----------------------------------------------- |
+| peacock.affectedElements | prefixes of elements affected by peacock        |
+| peacock.darkForeground   | override for the dark foreground                |
+| peacock.lightForeground  | override for the light foreground               |
+| peacock.preferredColors  | array of strings for color names and hex values |
+
+### Preferred Colors
+
+After setting 1 or more colors (hex or named) in the user setting for `peacock.preferredColors`, you can select `Peacock: Change to a Preferred Color` and you will be prompted with the list from `peacock.preferredColors` from user settings.
+
+```javascript
+"peacock.preferredColors": [
+  "purple",
+  "#102030",
+  "dodgerblue"
+]
+```
+
+### Affected Elements
 
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedElements` to one or more of the valid values below.
 

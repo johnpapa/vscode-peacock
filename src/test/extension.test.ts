@@ -3,9 +3,8 @@
 // Please refer to their documentation on https://mochajs.org/ for help.
 //
 
-// The module 'assert' provides assertion methods from node
-import * as assert from 'assert';
 import * as vscode from 'vscode';
+import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {
   extSuffix,
@@ -14,9 +13,15 @@ import {
   ColorSettings,
   BuiltInColors,
   Sections
-} from '../enums';
-import { readConfiguration, convertNameToHex } from '../color-handlers';
-import { isValidHexColor, isValidNamedColor } from '../color-validators';
+} from '../constants/enums';
+import {
+  getAffectedElements,
+  getPreferredColors,
+  updateAffectedElements,
+  updatePreferredColors,
+  updateConfiguration
+} from '../configuration';
+import { isValidHexColor, convertNameToHex } from '../color-library';
 
 interface ICommand {
   title: string;
@@ -30,15 +35,14 @@ interface IConfiguration {
   properties: any;
 }
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-// import * as vscode from 'vscode';
-// import * as myExtension from '../extension';
+interface IPeacockSettings {
+  affectedElements: string[];
+  preferredColors: string[];
+}
 
-// Defines a Mocha test suite to group tests of similar kind together
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
-  let originalAffectedElements: never[] | string[] = [];
+  let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async function() {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
@@ -49,18 +53,14 @@ suite('Extension Basic Tests', function() {
       extension = ext;
     }
 
-    originalAffectedElements = readConfiguration<string[]>(
-      Settings.affectedElements,
-      []
-    );
+    originalValues.affectedElements = getAffectedElements();
+    originalValues.preferredColors = getPreferredColors();
 
-    let config = vscode.workspace.getConfiguration();
-    let value = ['statusBar', 'activityBar', 'titleBar'];
-    await config.update(
-      `${extSuffix}.${Settings.affectedElements}`,
-      value,
-      vscode.ConfigurationTarget.Global
-    );
+    let elements = ['statusBar', 'activityBar', 'titleBar'];
+    await updateAffectedElements(elements);
+
+    let preferredColors = ['purple', '#102030', 'dodgerblue'];
+    await updatePreferredColors(preferredColors);
   });
 
   setup(async function() {
@@ -106,9 +106,7 @@ suite('Extension Basic Tests', function() {
     );
 
     vscode.commands.getCommands(true).then((allCommands: string[]) => {
-      const commands: string[] = allCommands.filter(c =>
-        c.startsWith(`${extSuffix}.`)
-      );
+      const commands = allCommands.filter(c => c.startsWith(`${extSuffix}.`));
       commands.forEach(command => {
         const result = commandStrings.some(c => c === command);
         assert.ok(result);
@@ -119,9 +117,7 @@ suite('Extension Basic Tests', function() {
 
   test('can set color to Angular Red', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    let config = getPeacockWorkspaceConfig();
     assert.equal(
       BuiltInColors.Angular,
       config[ColorSettings.titleBar_activeBackground]
@@ -130,9 +126,7 @@ suite('Extension Basic Tests', function() {
 
   test('can set color to Vue Green', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    let config = getPeacockWorkspaceConfig();
     assert.equal(
       BuiltInColors.Vue,
       config[ColorSettings.titleBar_activeBackground]
@@ -141,9 +135,7 @@ suite('Extension Basic Tests', function() {
 
   test('can set color to React Blue', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    let config = getPeacockWorkspaceConfig();
     assert.equal(
       BuiltInColors.React,
       config[ColorSettings.titleBar_activeBackground]
@@ -152,9 +144,7 @@ suite('Extension Basic Tests', function() {
 
   test('can set color to Random color', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToRandom);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    let config = getPeacockWorkspaceConfig();
     assert.ok(isValidHexColor(config[ColorSettings.titleBar_activeBackground]));
   });
 
@@ -166,10 +156,8 @@ suite('Extension Basic Tests', function() {
       .returns(Promise.resolve(fakeResponse));
 
     // fire the command
-    await vscode.commands.executeCommand(Commands.changeColor);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    await vscode.commands.executeCommand(Commands.enterColor);
+    let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
@@ -185,10 +173,8 @@ suite('Extension Basic Tests', function() {
       .returns(Promise.resolve(fakeResponse));
 
     // fire the command
-    await vscode.commands.executeCommand(Commands.changeColor);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    await vscode.commands.executeCommand(Commands.enterColor);
+    let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
@@ -196,34 +182,60 @@ suite('Extension Basic Tests', function() {
     assert.ok(value === convertNameToHex(fakeResponse));
   });
 
+  suite('Preferred colors', function() {
+    test('can set color to preferred color', async function() {
+      // Stub the async quick pick to return a response
+      const fakeResponse = 'purple';
+      const stub = await sinon
+        .stub(vscode.window, 'showQuickPick')
+        .returns(Promise.resolve<any>(fakeResponse));
+
+      await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+      let config = getPeacockWorkspaceConfig();
+      const value = config[ColorSettings.titleBar_activeBackground];
+      stub.restore();
+
+      assert.ok(isValidHexColor(value));
+      assert.ok(value === convertNameToHex(fakeResponse));
+    });
+
+    test('set to preferred color with no preferrences is a noop', async function() {
+      // set the color to react blue to start
+      await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
+
+      // Stub the async quick pick to return a response
+      const fakeResponse = '';
+      const stub = await sinon
+        .stub(vscode.window, 'showQuickPick')
+        .returns(Promise.resolve<any>(fakeResponse));
+
+      let config = getPeacockWorkspaceConfig();
+      const valueBefore = config[ColorSettings.titleBar_activeBackground];
+
+      await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+      const valueAfter = config[ColorSettings.titleBar_activeBackground];
+      stub.restore();
+
+      assert.ok(valueBefore === valueAfter);
+    });
+  });
+
   test('can reset colors', async function() {
     await vscode.commands.executeCommand(Commands.resetColors);
-    let config = vscode.workspace.getConfiguration(
-      Sections.workspacePeacockSection
-    );
+    let config = getPeacockWorkspaceConfig();
     assert.ok(!config[ColorSettings.titleBar_activeBackground]);
     assert.ok(!config[ColorSettings.statusBar_background]);
     assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
   suiteTeardown(async function() {
-    let config = vscode.workspace.getConfiguration();
-    let value = {
-      //'titleBar.activeBackground': '#ff0000'
-    };
-    await config.update(
-      'workbench.colorCustomizations',
-      value,
-      vscode.ConfigurationTarget.Workspace
-    );
-
+    await vscode.commands.executeCommand(Commands.resetColors);
     // put back the original peacock user settings
-    await vscode.workspace
-      .getConfiguration()
-      .update(
-        `${extSuffix}.${Settings.affectedElements}`,
-        originalAffectedElements,
-        vscode.ConfigurationTarget.Global
-      );
+    await updateAffectedElements(originalValues.affectedElements);
+    await updatePreferredColors(originalValues.preferredColors);
   });
 });
+
+function getPeacockWorkspaceConfig() {
+  return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
+}

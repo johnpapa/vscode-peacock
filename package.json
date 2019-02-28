@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -38,7 +38,7 @@
         "title": "Peacock: Reset Colors"
       },
       {
-        "command": "peacock.changeColor",
+        "command": "peacock.enterColor",
         "title": "Peacock: Enter a Color"
       },
       {
@@ -56,6 +56,10 @@
       {
         "command": "peacock.changeColorToReactBlue",
         "title": "Peacock: Color to React Blue"
+      },
+      {
+        "command": "peacock.changeColorToPreferred",
+        "title": "Peacock: Change to a Preferred Color"
       }
     ],
     "configuration": {
@@ -74,6 +78,13 @@
             "titleBar"
           ],
           "description": "prefixes of elements affected by peacock"
+        },
+        "peacock.preferredColors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "your preferred colors"
         },
         "peacock.darkForeground": {
           "type": "string",

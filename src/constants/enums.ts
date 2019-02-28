@@ -5,16 +5,18 @@ export const extSuffix = 'peacock';
 export enum Settings {
   'affectedElements' = 'affectedElements',
   'darkForeground' = 'darkForeground',
-  'lightForeground' = 'lightForeground'
+  'lightForeground' = 'lightForeground',
+  'preferredColors' = 'preferredColors'
 }
 
 export enum Commands {
   'resetColors' = 'peacock.resetColors',
-  'changeColor' = 'peacock.changeColor',
+  'enterColor' = 'peacock.enterColor',
   'changeColorToRandom' = 'peacock.changeColorToRandom',
   'changeColorToVueGreen' = 'peacock.changeColorToVueGreen',
   'changeColorToAngularRed' = 'peacock.changeColorToAngularRed',
-  'changeColorToReactBlue' = 'peacock.changeColorToReactBlue'
+  'changeColorToReactBlue' = 'peacock.changeColorToReactBlue',
+  'changeColorToPreferred' = 'peacock.changeColorToPreferred'
 }
 
 export enum ColorSettings {
