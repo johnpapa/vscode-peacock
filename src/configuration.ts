@@ -4,7 +4,8 @@ import {
   Settings,
   ForegroundColors,
   extSuffix,
-  IPreferredColors
+  IPreferredColors,
+  preferredColorSeparator
 } from './constants/enums';
 import * as vscode from 'vscode';
 
@@ -145,10 +146,14 @@ export async function changeColorSetting(colorCustomizations: {}) {
 }
 
 export function getPreferredColors() {
-  const values = readConfiguration<IPreferredColors[]>(
-    Settings.preferredColors
-  );
-  return values || [];
+  const sep = preferredColorSeparator;
+  let values = readConfiguration<IPreferredColors[]>(Settings.preferredColors);
+  const menu = values.map(pc => `${pc.name} ${sep} ${pc.value}`);
+  values = values || [];
+  return {
+    menu,
+    values
+  };
 }
 
 export function getAffectedElements() {
@@ -160,6 +165,6 @@ export async function updateAffectedElements(values: string[]) {
   return await updateConfiguration(Settings.affectedElements, values);
 }
 
-export async function updatePreferredColors(values: string[]) {
+export async function updatePreferredColors(values: IPreferredColors[]) {
   return await updateConfiguration(Settings.preferredColors, values);
 }

@@ -16,8 +16,7 @@ export async function promptForColor() {
 
 export async function promptForPreferedColor() {
   const sep = preferredColorSeparator;
-  const preferredColors = getPreferredColors();
-  const menu = preferredColors.map(pc => `${pc.name} ${sep} ${pc.value}`);
+  const { menu, values: preferredColors } = getPreferredColors();
   let selection = '';
   if (preferredColors && preferredColors.length) {
     selection =
@@ -28,8 +27,11 @@ export async function promptForPreferedColor() {
       })) || '';
   }
   // vscode.window.showInformationMessage(`Got: ${result}`);
-  let selectedColor = selection.substring(
-    selection.indexOf(sep) + sep.length + 1
-  );
+  let selectedColor = parsePreferredColorValue(selection);
   return selectedColor || '';
+}
+
+export function parsePreferredColorValue(text: string) {
+  const sep = preferredColorSeparator;
+  return text.substring(text.indexOf(sep) + sep.length + 1);
 }
