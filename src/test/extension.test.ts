@@ -14,9 +14,13 @@ import {
   ColorSettings,
   BuiltInColors,
   Sections
-} from '../enums';
-import { readConfiguration, convertNameToHex } from '../color-handlers';
-import { isValidHexColor, isValidNamedColor } from '../color-validators';
+} from '../constants/enums';
+import { readConfiguration } from '../configuration';
+import {
+  isValidHexColor,
+  isValidNamedColor,
+  convertNameToHex
+} from '../color-library';
 
 interface ICommand {
   title: string;
@@ -166,7 +170,7 @@ suite('Extension Basic Tests', function() {
       .returns(Promise.resolve(fakeResponse));
 
     // fire the command
-    await vscode.commands.executeCommand(Commands.changeColor);
+    await vscode.commands.executeCommand(Commands.enterColor);
     let config = vscode.workspace.getConfiguration(
       Sections.workspacePeacockSection
     );
@@ -185,7 +189,7 @@ suite('Extension Basic Tests', function() {
       .returns(Promise.resolve(fakeResponse));
 
     // fire the command
-    await vscode.commands.executeCommand(Commands.changeColor);
+    await vscode.commands.executeCommand(Commands.enterColor);
     let config = vscode.workspace.getConfiguration(
       Sections.workspacePeacockSection
     );

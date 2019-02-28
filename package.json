@@ -38,7 +38,7 @@
         "title": "Peacock: Reset Colors"
       },
       {
-        "command": "peacock.changeColor",
+        "command": "peacock.enterColor",
         "title": "Peacock: Enter a Color"
       },
       {
@@ -56,6 +56,10 @@
       {
         "command": "peacock.changeColorToReactBlue",
         "title": "Peacock: Color to React Blue"
+      },
+      {
+        "command": "peacock.changeColorToPreferred",
+        "title": "Peacock: Change to a Preferred Color"
       }
     ],
     "configuration": {

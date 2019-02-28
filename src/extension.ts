@@ -1,15 +1,16 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands } from './enums';
+import { Commands } from './constants/enums';
 import {
   resetColorsHandler,
-  changeColorHandler,
+  enterColorHandler,
   changeColorToRandomHandler,
   changeColorToVueGreenHandler,
   changeColorToAngularRedHandler,
-  changeColorToReactBlueHandler
-} from './color-handlers';
+  changeColorToReactBlueHandler,
+  changeColorToPreferredHandler
+} from './commands';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -25,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
   /// Register the commands
   vscode.commands.registerCommand(Commands.resetColors, resetColorsHandler);
 
-  vscode.commands.registerCommand(Commands.changeColor, changeColorHandler);
+  vscode.commands.registerCommand(Commands.enterColor, enterColorHandler);
 
   vscode.commands.registerCommand(
     Commands.changeColorToRandom,
@@ -45,6 +46,11 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     Commands.changeColorToReactBlue,
     changeColorToReactBlueHandler
+  );
+
+  vscode.commands.registerCommand(
+    Commands.changeColorToPreferred,
+    changeColorToPreferredHandler
   );
 
   // context.subscriptions.push(disposable);
