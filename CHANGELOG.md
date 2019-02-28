@@ -2,6 +2,26 @@
 
 All notable changes to the code will be documented in this file.
 
+## 0.4.0
+
+Features
+
+- Refactored Preferred Colors to display the user-defined name of a color and the color value in a quick pick list.
+
+The preferred colors require a custom name (`name`) and a value ( `value` ), as shown in the example below. See the README.md for details.
+
+```javascript
+  "peacock.preferredColors": [
+    { "name": "Gatsby Purple", "value": "#639" },
+    { "name": "Auth0 Orange", "value": "#eb5424" },
+    { "name": "Azure Blue", "value": "#007fff" }
+  ]
+```
+
+Bug Fix
+
+- fixed bug where 3 character hex values were not working
+
 ## [0.3.0]
 
 Features

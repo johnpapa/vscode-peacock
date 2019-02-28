@@ -12,7 +12,8 @@ import {
   Settings,
   ColorSettings,
   BuiltInColors,
-  Sections
+  Sections,
+  IPreferredColors
 } from '../constants/enums';
 import {
   getAffectedElements,
@@ -22,6 +23,7 @@ import {
   updateConfiguration
 } from '../configuration';
 import { isValidHexColor, convertNameToHex } from '../color-library';
+import { parsePreferredColorValue } from '../inputs';
 
 interface ICommand {
   title: string;
@@ -37,7 +39,7 @@ interface IConfiguration {
 
 interface IPeacockSettings {
   affectedElements: string[];
-  preferredColors: string[];
+  preferredColors: IPreferredColors[];
 }
 
 suite('Extension Basic Tests', function() {
@@ -54,13 +56,19 @@ suite('Extension Basic Tests', function() {
     }
 
     originalValues.affectedElements = getAffectedElements();
-    originalValues.preferredColors = getPreferredColors();
+
+    const { values: preferredColors } = getPreferredColors();
+    originalValues.preferredColors = preferredColors;
 
     let elements = ['statusBar', 'activityBar', 'titleBar'];
     await updateAffectedElements(elements);
 
-    let preferredColors = ['purple', '#102030', 'dodgerblue'];
-    await updatePreferredColors(preferredColors);
+    const testSetPreferredColors = [
+      { name: 'Gatsby Purple', value: '#639' },
+      { name: 'Auth0 Orange', value: '#eb5424' },
+      { name: 'Azure Blue', value: '#007fff' }
+    ];
+    await updatePreferredColors(testSetPreferredColors);
   });
 
   setup(async function() {
@@ -185,7 +193,7 @@ suite('Extension Basic Tests', function() {
   suite('Preferred colors', function() {
     test('can set color to preferred color', async function() {
       // Stub the async quick pick to return a response
-      const fakeResponse = 'purple';
+      const fakeResponse = 'Azure Blue -> #007fff';
       const stub = await sinon
         .stub(vscode.window, 'showQuickPick')
         .returns(Promise.resolve<any>(fakeResponse));
@@ -195,8 +203,10 @@ suite('Extension Basic Tests', function() {
       const value = config[ColorSettings.titleBar_activeBackground];
       stub.restore();
 
+      const parsedResponse = parsePreferredColorValue(fakeResponse);
+
       assert.ok(isValidHexColor(value));
-      assert.ok(value === convertNameToHex(fakeResponse));
+      assert.ok(value === parsedResponse);
     });
 
     test('set to preferred color with no preferrences is a noop', async function() {
