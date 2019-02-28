@@ -41,7 +41,7 @@ Auth0 Orange -> #eb5424
 Azure Blue -> #007fff
 ```
 
-Preferred colors require a custom name (`name`) and a value ( `value` ), as shown in the example below.
+Preferred colors require a user-defined name (`name`) and a value ( `value` ), as shown in the example below.
 
 ```javascript
   "peacock.preferredColors": [
@@ -95,12 +95,13 @@ See the [CHANGELOG](CHANGELOG.md) for the latest changes.
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
 
+- the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
 - [@josephrexme](https://twitter.com/josephrexme) for the name and icon for Peacock from [@musicfuel](https://twitter.com/musicfuel)
 - [@codebeast](https://twitter.com/codebeast) for the CLI suggestions
 - [@\_clarkio](https://twitter.com/_clarkio) and [@burkeholland](https://twitter.com/burkeholland) for several issues/ideas
 - [@kushalpanda](https://twitter.com/kushalpanda) for the HTML color name support
 - Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
-- the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
+- [@samjulien](https://twitter.com/samjulien) for the user-defined named preferred colors idea
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 
