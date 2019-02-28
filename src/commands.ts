@@ -51,14 +51,14 @@ export async function enterColorHandler() {
 
   const foregroundHex = formatHex(invertColor(backgroundColorHex));
   const colorCustomizations = prepareColors(backgroundColorHex, foregroundHex);
-  await changeColorSetting(colorCustomizations);
+  return await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToRandomHandler() {
   const backgroundHex = generateRandomHexColor();
   const foregroundHex = formatHex(invertColor(backgroundHex));
   const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  await changeColorSetting(colorCustomizations);
+  return await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToVueGreenHandler() {
@@ -79,7 +79,7 @@ export async function changeColorToReactBlueHandler() {
   const backgroundHex = BuiltInColors.React;
   const foregroundHex = formatHex(invertColor(backgroundHex));
   const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  await changeColorSetting(colorCustomizations);
+  return await changeColorSetting(colorCustomizations);
 }
 
 export async function changeColorToPreferredHandler() {
