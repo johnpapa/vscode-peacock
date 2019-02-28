@@ -84,9 +84,6 @@
           "items": {
             "type": "string"
           },
-          "default": [
-            "purple"
-          ],
           "description": "your preferred colors"
         },
         "peacock.darkForeground": {
