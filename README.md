@@ -29,19 +29,29 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.affectedElements | prefixes of elements affected by peacock        |
 | peacock.darkForeground   | override for the dark foreground                |
 | peacock.lightForeground  | override for the light foreground               |
-| peacock.preferredColors  | array of strings for color names and hex values |
+| peacock.preferredColors  | array of objects for color names and hex values |
 
 ### Preferred Colors
 
 After setting 1 or more colors (hex or named) in the user setting for `peacock.preferredColors`, you can select `Peacock: Change to a Preferred Color` and you will be prompted with the list from `peacock.preferredColors` from user settings.
 
-```javascript
-"peacock.preferredColors": [
-  "purple",
-  "#102030",
-  "dodgerblue"
-]
+```text
+Gatsby Purple -> #123456
+Auth0 Orange -> #eb5424
+Azure Blue -> #007fff
 ```
+
+Preferred colors require a user-defined name (`name`) and a value ( `value` ), as shown in the example below.
+
+```javascript
+  "peacock.preferredColors": [
+    { "name": "Gatsby Purple", "value": "#639" },
+    { "name": "Auth0 Orange", "value": "#eb5424" },
+    { "name": "Azure Blue", "value": "#007fff" }
+  ]
+```
+
+![Animated GIF](./resources/named-colors.gif)
 
 ### Affected Elements
 
@@ -85,11 +95,18 @@ See the [CHANGELOG](CHANGELOG.md) for the latest changes.
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
 
+- the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
 - [@josephrexme](https://twitter.com/josephrexme) for the name and icon for Peacock from [@musicfuel](https://twitter.com/musicfuel)
 - [@codebeast](https://twitter.com/codebeast) for the CLI suggestions
 - [@\_clarkio](https://twitter.com/_clarkio) and [@burkeholland](https://twitter.com/burkeholland) for several issues/ideas
 - [@kushalpanda](https://twitter.com/kushalpanda) for the HTML color name support
 - Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
-- the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
+- [@samjulien](https://twitter.com/samjulien) for the user-defined named preferred colors idea
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
+
+## Try the Code
+
+If you want to try the extension out start by cloning this repo, `cd` into the folder, and then run `npm install`.
+
+Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!

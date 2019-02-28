@@ -1,5 +1,12 @@
 // Constants
 export const extSuffix = 'peacock';
+export const preferredColorSeparator = '->';
+
+// interfaces
+export interface IPreferredColors {
+  name: string;
+  value: string;
+}
 
 // Enums
 export enum Settings {
