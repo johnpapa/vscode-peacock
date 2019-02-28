@@ -103,3 +103,9 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 - the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
+
+## Try the Code
+
+If you want to try the extension out start by cloning this repo, `cd` into the folder, and then run `npm install`.
+
+Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!
