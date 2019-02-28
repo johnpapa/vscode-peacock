@@ -42,7 +42,7 @@ export function convertNameToHex(name: string) {
 }
 
 export function isValidHexColor(input: string) {
-  return /^#[0-9A-F]{6}$/i.test(input);
+  return /^#[0-9A-F]{6}$/i.test(input) || /^#[0-9A-F]{3}$/i.test(input);
 }
 
 export function isValidNamedColor(input: string) {
