@@ -12,7 +12,8 @@ import {
   changeColorToPreferredHandler
 } from './commands';
 
-// this method is called when your extension is activated
+const { commands } = vscode;
+
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -24,31 +25,31 @@ export function activate(context: vscode.ExtensionContext) {
   // The commandId parameter must match the command field in package.json
 
   /// Register the commands
-  vscode.commands.registerCommand(Commands.resetColors, resetColorsHandler);
+  commands.registerCommand(Commands.resetColors, resetColorsHandler);
 
-  vscode.commands.registerCommand(Commands.enterColor, enterColorHandler);
+  commands.registerCommand(Commands.enterColor, enterColorHandler);
 
-  vscode.commands.registerCommand(
+  commands.registerCommand(
     Commands.changeColorToRandom,
     changeColorToRandomHandler
   );
 
-  vscode.commands.registerCommand(
+  commands.registerCommand(
     Commands.changeColorToVueGreen,
     changeColorToVueGreenHandler
   );
 
-  vscode.commands.registerCommand(
+  commands.registerCommand(
     Commands.changeColorToAngularRed,
     changeColorToAngularRedHandler
   );
 
-  vscode.commands.registerCommand(
+  commands.registerCommand(
     Commands.changeColorToReactBlue,
     changeColorToReactBlueHandler
   );
 
-  vscode.commands.registerCommand(
+  commands.registerCommand(
     Commands.changeColorToPreferred,
     changeColorToPreferredHandler
   );
@@ -56,5 +57,6 @@ export function activate(context: vscode.ExtensionContext) {
   // context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  console.log('Extension "vscode-peacock" is now deactive');
+}

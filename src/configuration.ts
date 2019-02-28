@@ -29,6 +29,18 @@ export function readConfiguration<T>(
   return value as T;
 }
 
+export async function updateConfiguration<T>(
+  setting: Settings,
+  value?: T | undefined
+) {
+  let config = vscode.workspace.getConfiguration();
+  return await config.update(
+    `${extSuffix}.${setting}`,
+    value,
+    vscode.ConfigurationTarget.Global
+  );
+}
+
 export function getDarkForeground() {
   const foregroundOverride = readConfiguration<string>(Settings.darkForeground);
   return foregroundOverride || ForegroundColors.DarkForeground;
@@ -142,19 +154,9 @@ export function getAffectedElements() {
 }
 
 export async function updateAffectedElements(values: string[]) {
-  let config = vscode.workspace.getConfiguration();
-  return await config.update(
-    `${extSuffix}.${Settings.affectedElements}`,
-    values,
-    vscode.ConfigurationTarget.Global
-  );
+  return await updateConfiguration(Settings.affectedElements, values);
 }
 
 export async function updatePreferredColors(values: string[]) {
-  let config = vscode.workspace.getConfiguration();
-  return await config.update(
-    `${extSuffix}.${Settings.preferredColors}`,
-    values,
-    vscode.ConfigurationTarget.Global
-  );
+  return await updateConfiguration(Settings.preferredColors, values);
 }
