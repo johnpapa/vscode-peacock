@@ -16,7 +16,7 @@ export function getForegroundColorHex(backgroundColor: string = '') {
 }
 
 export function getInactiveForegroundColorHex(backgroundColor: string = '') {
-  return tinycolor.mix(tinycolor(getForegroundColorHex(backgroundColor)), tinycolor(backgroundColor), 20);
+  return tinycolor.mix(tinycolor(getForegroundColorHex(backgroundColor)), tinycolor(backgroundColor), 50).toHexString();
 }
 
 export function getLightenedColorHex(color: string = '', amount: number = 10) {
