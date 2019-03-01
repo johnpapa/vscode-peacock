@@ -116,5 +116,8 @@
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
     "vscode": "^1.1.28"
+  },
+  "dependencies": {
+    "tinycolor2": "^1.4.1"
   }
 }
