@@ -10,7 +10,9 @@ import {
 import {
   getForegroundColorHex,
   getInactiveForegroundColorHex,
-  getLightenedColorHex
+  getLightenedColorHex,
+  getDarkenedColorHex,
+  getColorBrightness
 } from './color-library';
 import * as vscode from 'vscode';
 
@@ -100,6 +102,13 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
   }
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBackgroundHex = getLightenedColorHex(backgroundHex, 10);
+
+    // Generally lighten the activity bar unless the background is very bright
+    const backgroundBrightness = getColorBrightness(backgroundHex);
+    const activityBackgroundHex = backgroundBrightness < 0xee 
+      ? getLightenedColorHex(backgroundHex, 10)
+      : getDarkenedColorHex(backgroundHex, 10);
+
     const activityForegroundHex = getForegroundColorHex(activityBackgroundHex);
     const activityInactiveForegroundHex = getInactiveForegroundColorHex(activityBackgroundHex);
     newSettings.activityBarSettings = {

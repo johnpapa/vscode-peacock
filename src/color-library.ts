@@ -24,11 +24,15 @@ export function getLightenedColorHex(color: string = '', amount: number = 10) {
 }
 
 export function getDarkenedColorHex(color: string = '', amount: number = 10) {
-  return tinycolor(color).lighten(amount).toHexString();
+  return tinycolor(color).darken(amount).toHexString();
 }
 
 export function getRandomColorHex() {
   return tinycolor.random().toHexString();
+}
+
+export function getColorBrightness(input: string = '') {
+  return tinycolor(input).getBrightness();
 }
 
 export function formatHex(color: string = '') {
