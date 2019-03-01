@@ -4,12 +4,14 @@ import {
   StandardSettings,
   ForegroundColors,
   extSuffix,
-  preferredColorSeparator,
-  AffectedSettings,
-  AllSettings,
-  IPeacockAffectedElementSettings,
-  IPreferredColors
-} from './models';
+  IPreferredColors,
+  preferredColorSeparator
+} from './constants/enums';
+import {
+  getForegroundColorHex,
+  getInactiveForegroundColorHex,
+  getLightenedColorHex
+} from './color-library';
 import * as vscode from 'vscode';
 
 const { workspace } = vscode;
@@ -97,10 +99,13 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
     );
   }
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
+    const activityBackgroundHex = getLightenedColorHex(backgroundHex, 10);
+    const activityForegroundHex = getForegroundColorHex(activityBackgroundHex);
+    const activityInactiveForegroundHex = getInactiveForegroundColorHex(activityBackgroundHex);
     newSettings.activityBarSettings = {
-      [ColorSettings.activityBar_background]: backgroundHex,
-      [ColorSettings.activityBar_foreground]: foregroundHex,
-      [ColorSettings.activityBar_inactiveForeground]: foregroundHex
+      [ColorSettings.activityBar_background]: activityBackgroundHex,
+      [ColorSettings.activityBar_foreground]: activityForegroundHex,
+      [ColorSettings.activityBar_inactiveForeground]: activityInactiveForegroundHex
     };
   } else {
     settingsToReset.push(
