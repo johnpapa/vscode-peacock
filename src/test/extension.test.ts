@@ -25,7 +25,7 @@ import {
   updateAffectedElements,
   updatePreferredColors
 } from '../configuration';
-import { isValidHexColor, convertNameToHex } from '../color-library';
+import { isValidColorInput, getColorHex } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 
 suite('Extension Basic Tests', function() {
@@ -153,7 +153,7 @@ suite('Extension Basic Tests', function() {
   test('can set color to Random color', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToRandom);
     let config = getPeacockWorkspaceConfig();
-    assert.ok(isValidHexColor(config[ColorSettings.titleBar_activeBackground]));
+    assert.ok(isValidColorInput(config[ColorSettings.titleBar_activeBackground]));
   });
 
   test('can set color using hex user input', async function() {
@@ -169,7 +169,7 @@ suite('Extension Basic Tests', function() {
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
-    assert.ok(isValidHexColor(value));
+    assert.ok(isValidColorInput(value));
     assert.ok(value === fakeResponse);
   });
 
@@ -186,8 +186,8 @@ suite('Extension Basic Tests', function() {
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
-    assert.ok(isValidHexColor(value));
-    assert.ok(value === convertNameToHex(fakeResponse));
+    assert.ok(isValidColorInput(value));
+    assert.ok(value === getColorHex(fakeResponse));
   });
 
   suite('Preferred colors', function() {
@@ -205,11 +205,11 @@ suite('Extension Basic Tests', function() {
 
       const parsedResponse = parsePreferredColorValue(fakeResponse);
 
-      assert.ok(isValidHexColor(value));
+      assert.ok(isValidColorInput(value));
       assert.ok(value === parsedResponse);
     });
 
-    test('set to preferred color with no preferrences is a noop', async function() {
+    test('set to preferred color with no preferences is a noop', async function() {
       // set the color to react blue to start
       await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
 
