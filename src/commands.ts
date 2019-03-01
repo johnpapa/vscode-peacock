@@ -8,7 +8,7 @@ import {
 
 import { BuiltInColors, ColorSettings } from './models';
 import { prepareColors, changeColorSetting } from './configuration';
-import { promptForColor, promptForPreferedColor } from './inputs';
+import { promptForColor, promptForPreferredColor } from './inputs';
 
 const { workspace } = vscode;
 
@@ -68,7 +68,7 @@ export async function changeColorToReactBlueHandler() {
 }
 
 export async function changeColorToPreferredHandler() {
-  const input = await promptForPreferedColor();
+  const input = await promptForPreferredColor();
   if (isValidColorInput(input)) {
     await changeColor(input);
   }
