@@ -7,40 +7,26 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {
+  ICommand,
+  IPeacockSettings,
+  IConfiguration,
+  IPeacockAffectedElementSettings,
   extSuffix,
   Commands,
-  Settings,
   ColorSettings,
+  StandardSettings,
   BuiltInColors,
   Sections,
-  IPreferredColors
-} from '../constants/enums';
+  AffectedSettings
+} from '../models';
 import {
   getAffectedElements,
   getPreferredColors,
   updateAffectedElements,
-  updatePreferredColors,
-  updateConfiguration
+  updatePreferredColors
 } from '../configuration';
 import { isValidHexColor, convertNameToHex } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
-
-interface ICommand {
-  title: string;
-  command: string;
-  category: string;
-}
-
-interface IConfiguration {
-  type: string;
-  title: string;
-  properties: any;
-}
-
-interface IPeacockSettings {
-  affectedElements: string[];
-  preferredColors: IPreferredColors[];
-}
 
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
@@ -55,20 +41,22 @@ suite('Extension Basic Tests', function() {
       extension = ext;
     }
 
+    // Save the original values
     originalValues.affectedElements = getAffectedElements();
-
     const { values: preferredColors } = getPreferredColors();
     originalValues.preferredColors = preferredColors;
 
-    let elements = ['statusBar', 'activityBar', 'titleBar'];
-    await updateAffectedElements(elements);
-
-    const testSetPreferredColors = [
+    // Set the test values
+    await updateAffectedElements(<IPeacockAffectedElementSettings>{
+      statusBar: true,
+      activityBar: true,
+      titleBar: true
+    });
+    await updatePreferredColors([
       { name: 'Gatsby Purple', value: '#639' },
       { name: 'Auth0 Orange', value: '#eb5424' },
       { name: 'Azure Blue', value: '#007fff' }
-    ];
-    await updatePreferredColors(testSetPreferredColors);
+    ]);
   });
 
   setup(async function() {
@@ -100,9 +88,21 @@ suite('Extension Basic Tests', function() {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
-    for (let setting in Settings) {
+    for (let setting in StandardSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${Settings[setting]}`
+        property => property === `${extSuffix}.${StandardSettings[setting]}`
+      );
+      assert.ok(result);
+    }
+  });
+
+  test('constants.AffectedSettings exist in package.json', function() {
+    const config: IConfiguration =
+      extension.packageJSON.contributes.configuration;
+    const properties = Object.keys(config.properties);
+    for (let setting in AffectedSettings) {
+      const result = properties.some(
+        property => property === `${extSuffix}.${AffectedSettings[setting]}`
       );
       assert.ok(result);
     }

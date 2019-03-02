@@ -1,12 +1,15 @@
 import {
   ColorSettings,
   Sections,
-  Settings,
+  StandardSettings,
   ForegroundColors,
   extSuffix,
-  IPreferredColors,
-  preferredColorSeparator
-} from './constants/enums';
+  preferredColorSeparator,
+  AffectedSettings,
+  AllSettings,
+  IPeacockAffectedElementSettings,
+  IPreferredColors
+} from './models';
 import * as vscode from 'vscode';
 
 const { workspace } = vscode;
@@ -22,7 +25,7 @@ export function readWorkspaceConfiguration<T>(
 }
 
 export function readConfiguration<T>(
-  setting: Settings,
+  setting: AllSettings, //Settings | AffectedSettings,
   defaultValue?: T | undefined
 ) {
   const value: T | undefined = workspace
@@ -32,7 +35,7 @@ export function readConfiguration<T>(
 }
 
 export async function updateConfiguration<T>(
-  setting: Settings,
+  setting: AllSettings,
   value?: T | undefined
 ) {
   let config = vscode.workspace.getConfiguration();
@@ -44,29 +47,26 @@ export async function updateConfiguration<T>(
 }
 
 export function getDarkForeground() {
-  const foregroundOverride = readConfiguration<string>(Settings.darkForeground);
+  const foregroundOverride = readConfiguration<string>(
+    StandardSettings.DarkForeground
+  );
   return foregroundOverride || ForegroundColors.DarkForeground;
 }
 
+// export function getAffectedSetting() {
+//   return readConfiguration<boolean>(AffectedSettings.);
+// }
+
 export function getLightForeground() {
   const foregroundOverride = readConfiguration<string>(
-    Settings.lightForeground
+    StandardSettings.LightForeground
   );
   return foregroundOverride || ForegroundColors.LightForeground;
 }
 
-export function isSettingSelected(setting: string) {
-  const affectedElements = readConfiguration<string[]>(
-    Settings.affectedElements,
-    []
-  );
-
-  // check if they requested a setting
-  const itExists: boolean = !!(
-    affectedElements && affectedElements.includes(setting)
-  );
-
-  return itExists;
+export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
+  const isAffected = readConfiguration<boolean>(affectedSetting, false);
+  return isAffected;
 }
 
 export function prepareColors(backgroundHex: string, foregroundHex: string) {
@@ -81,7 +81,7 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
 
   let settingsToReset = [];
 
-  if (isSettingSelected('titleBar')) {
+  if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: backgroundHex,
       [ColorSettings.titleBar_activeForeground]: foregroundHex,
@@ -96,7 +96,7 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
       ColorSettings.titleBar_inactiveForeground
     );
   }
-  if (isSettingSelected('activityBar')) {
+  if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     newSettings.activityBarSettings = {
       [ColorSettings.activityBar_background]: backgroundHex,
       [ColorSettings.activityBar_foreground]: foregroundHex,
@@ -109,7 +109,7 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
       ColorSettings.activityBar_inactiveForeground
     );
   }
-  if (isSettingSelected('statusBar')) {
+  if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
     newSettings.statusBarSettings = {
       [ColorSettings.statusBar_background]: backgroundHex,
       [ColorSettings.statusBar_foreground]: foregroundHex
@@ -147,7 +147,9 @@ export async function changeColorSetting(colorCustomizations: {}) {
 
 export function getPreferredColors() {
   const sep = preferredColorSeparator;
-  let values = readConfiguration<IPreferredColors[]>(Settings.preferredColors);
+  let values = readConfiguration<IPreferredColors[]>(
+    StandardSettings.PreferredColors
+  );
   const menu = values.map(pc => `${pc.name} ${sep} ${pc.value}`);
   values = values || [];
   return {
@@ -157,14 +159,23 @@ export function getPreferredColors() {
 }
 
 export function getAffectedElements() {
-  const values = readConfiguration<string[]>(Settings.affectedElements);
-  return values || [];
+  return <IPeacockAffectedElementSettings>{
+    activityBar:
+      readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
+    statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
+    titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false
+  };
 }
 
-export async function updateAffectedElements(values: string[]) {
-  return await updateConfiguration(Settings.affectedElements, values);
+export async function updateAffectedElements(
+  values: IPeacockAffectedElementSettings
+) {
+  await updateConfiguration(AffectedSettings.ActivityBar, values.activityBar);
+  await updateConfiguration(AffectedSettings.StatusBar, values.statusBar);
+  await updateConfiguration(AffectedSettings.TitleBar, values.titleBar);
+  return true;
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
-  return await updateConfiguration(Settings.preferredColors, values);
+  return await updateConfiguration(StandardSettings.PreferredColors, values);
 }
