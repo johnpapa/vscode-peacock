@@ -156,38 +156,101 @@ suite('Extension Basic Tests', function() {
     assert.ok(isValidColorInput(config[ColorSettings.titleBar_activeBackground]));
   });
 
-  test('can set color using hex user input', async function() {
-    // Stub the async input box to return a response
-    const fakeResponse = '#771177';
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
+  suite('Enter color', function() {
+  
+   function createColorInputTest(fakeResponse: string, expectedValue: string) {
+        return async function() {
+          // Stub the async input box to return a response
+          const stub = await sinon
+            .stub(vscode.window, 'showInputBox')
+            .returns(Promise.resolve(fakeResponse));
 
-    // fire the command
-    await vscode.commands.executeCommand(Commands.enterColor);
-    let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
+          // fire the command
+          await vscode.commands.executeCommand(Commands.enterColor);
+          let config = getPeacockWorkspaceConfig();
+          const value = config[ColorSettings.titleBar_activeBackground];
+          stub.restore();
 
-    assert.ok(isValidColorInput(value));
-    assert.ok(value === fakeResponse);
-  });
+          assert.ok(isValidColorInput(value));
+          assert.equal(expectedValue, value);
+        };
+    }
 
-  test('can set color using named color user input', async function() {
-    // Stub the async input box to return a response
-    const fakeResponse = 'purple';
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
+    // Hex, Hex RGBA
 
-    // fire the command
-    await vscode.commands.executeCommand(Commands.enterColor);
-    let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
+    test('can set color using short hex user input', 
+      createColorInputTest('#000', '#000000'));
 
-    assert.ok(isValidColorInput(value));
-    assert.ok(value === getColorHex(fakeResponse));
+    test('can set color using short hex user input without hash', 
+      createColorInputTest('000', '#000000'));
+
+    test('can set color using short RGBA hex user input', 
+      createColorInputTest('#369C', '#336699cc'));
+
+    test('can set color using short RGBA hex user input without hash', 
+      createColorInputTest('369C', '#336699cc'));
+
+    test('can set color using hex user input', 
+      createColorInputTest('#f0f0f6', '#f0f0f6'));
+
+    test('can set color using hex user input without hash', 
+      createColorInputTest('f0f0f6', '#f0f0f6'));
+
+    test('can set color using RGBA hex user input', 
+      createColorInputTest('#f0f0f688', '#f0f0f688'));
+
+    test('can set color using RGBA hex user input without hash', 
+      createColorInputTest('f0f0f688',  '#f0f0f688'));
+
+    // Named colors
+
+    test('can set color using named color user input',
+      createColorInputTest('blanchedalmond', '#ffebcd'));
+
+    test('can set color using named color user input with any casing',
+      createColorInputTest('DarkBlue', '#00008b'));
+
+    // RGB, RGBA
+  
+    test('can set color using rgb() color user input',
+      createColorInputTest('rgb (255 0 0)', '#ff0000'));
+
+    test('can set color using rgb() color user input without parentheses',
+      createColorInputTest('rgb 255 0 0', '#ff0000'));
+
+    test('can set color using rgba() color user input',
+      createColorInputTest('rgba (255, 0, 0, .5)', '#ff000080'));
+
+    test('can set color using rgb() color user input with decimals or percentages',
+      createColorInputTest('rgb (100% 255 0)', '#ffff00'));
+
+    // HSL, HSLA
+
+    test('can set color using hsl() color user input',
+      createColorInputTest('hsl (0 100% 50%)', '#ff0000'));
+
+    test('can set color using hsl() color user input without parentheses',
+      createColorInputTest('hsl 0 100% 50%', '#ff0000'));
+
+    test('can set color using hsla() color user input',
+      createColorInputTest('hsla (0, 100%, 50%, .5)', '#ff000080'));
+
+    test('can set color using hsl() color user input with decimals or percentages',
+      createColorInputTest('hsl (0, 100%, .5)', '#ff0000'));
+
+    // HSV, HSVA
+
+    test('can set color using hsv() color user input',
+      createColorInputTest('hsv (0, 100%, 100%)', '#ff0000'));
+
+    test('can set color using hsv() color user input without parentheses',
+      createColorInputTest('hsv 0 100% 100%', '#ff0000'));
+
+    test('can set color using hsva() color user input',
+      createColorInputTest('hsva (0, 100%, 100%, .5)', '#ff000080'));
+
+    test('can set color using hsv() color user input with decimals or percentages',
+      createColorInputTest('hsv (0, 1, 100%)', '#ff0000'));
   });
 
   suite('Preferred colors', function() {
