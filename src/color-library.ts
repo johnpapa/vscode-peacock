@@ -9,6 +9,11 @@ export function getBackgroundColorHex(color: string = '') {
   return formatHex(tinycolor(color));
 }
 
+export function getInactiveBackgroundColorHex(backgroundColor: string = '') {
+  const background = tinycolor(backgroundColor);
+  return formatHex(tinycolor.mix(background, tinycolor('black'), 50));
+}
+
 export function getForegroundColorHex(backgroundColor: string = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight() ? getDarkForeground() : getLightForeground();
@@ -18,7 +23,7 @@ export function getForegroundColorHex(backgroundColor: string = '') {
 export function getInactiveForegroundColorHex(backgroundColor: string = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
   const background = tinycolor(backgroundColor);
-  return formatHex(tinycolor.mix(foreground, background, 50));
+  return formatHex(tinycolor.mix(foreground, background, 25));
 }
 
 export function getLightenedColorHex(color: string = '', amount: number = 10) {
