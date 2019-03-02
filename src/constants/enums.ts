@@ -3,13 +3,10 @@ export const extSuffix = 'peacock';
 export const preferredColorSeparator = '->';
 
 // Enums
-export enum Settings {
-  // affectActivityBar = 'affectActivityBar',
-  // affectStatusBar = 'affectStatusBar',
-  // affectTitleBar = 'affectTitleBar',
-  darkForeground = 'darkForeground',
-  lightForeground = 'lightForeground',
-  preferredColors = 'preferredColors'
+export enum StandardSettings {
+  DarkForeground = 'darkForeground',
+  LightForeground = 'lightForeground',
+  PreferredColors = 'preferredColors'
 }
 
 export enum AffectedSettings {
@@ -18,7 +15,7 @@ export enum AffectedSettings {
   TitleBar = 'affectTitleBar'
 }
 
-export type AllSettings = Settings | AffectedSettings;
+export type AllSettings = StandardSettings | AffectedSettings;
 
 export enum Commands {
   resetColors = 'peacock.resetColors',

@@ -1,7 +1,7 @@
 import {
   ColorSettings,
   Sections,
-  Settings,
+  StandardSettings,
   ForegroundColors,
   extSuffix,
   preferredColorSeparator,
@@ -37,7 +37,7 @@ export function readConfiguration<T>(
 }
 
 export async function updateConfiguration<T>(
-  setting: Settings | AffectedSettings,
+  setting: AllSettings,
   value?: T | undefined
 ) {
   let config = vscode.workspace.getConfiguration();
@@ -49,7 +49,9 @@ export async function updateConfiguration<T>(
 }
 
 export function getDarkForeground() {
-  const foregroundOverride = readConfiguration<string>(Settings.darkForeground);
+  const foregroundOverride = readConfiguration<string>(
+    StandardSettings.DarkForeground
+  );
   return foregroundOverride || ForegroundColors.DarkForeground;
 }
 
@@ -59,7 +61,7 @@ export function getDarkForeground() {
 
 export function getLightForeground() {
   const foregroundOverride = readConfiguration<string>(
-    Settings.lightForeground
+    StandardSettings.LightForeground
   );
   return foregroundOverride || ForegroundColors.LightForeground;
 }
@@ -147,7 +149,9 @@ export async function changeColorSetting(colorCustomizations: {}) {
 
 export function getPreferredColors() {
   const sep = preferredColorSeparator;
-  let values = readConfiguration<IPreferredColors[]>(Settings.preferredColors);
+  let values = readConfiguration<IPreferredColors[]>(
+    StandardSettings.PreferredColors
+  );
   const menu = values.map(pc => `${pc.name} ${sep} ${pc.value}`);
   values = values || [];
   return {
@@ -175,5 +179,5 @@ export async function updateAffectedElements(
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
-  return await updateConfiguration(Settings.preferredColors, values);
+  return await updateConfiguration(StandardSettings.PreferredColors, values);
 }

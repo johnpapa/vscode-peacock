@@ -15,10 +15,11 @@ import {
 import {
   extSuffix,
   Commands,
-  Settings,
   ColorSettings,
+  StandardSettings,
   BuiltInColors,
-  Sections
+  Sections,
+  AffectedSettings
 } from '../constants/enums';
 import {
   getAffectedElements,
@@ -89,9 +90,21 @@ suite('Extension Basic Tests', function() {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
-    for (let setting in Settings) {
+    for (let setting in StandardSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${Settings[setting]}`
+        property => property === `${extSuffix}.${StandardSettings[setting]}`
+      );
+      assert.ok(result);
+    }
+  });
+
+  test('constants.AffectedSettings exist in package.json', function() {
+    const config: IConfiguration =
+      extension.packageJSON.contributes.configuration;
+    const properties = Object.keys(config.properties);
+    for (let setting in AffectedSettings) {
+      const result = properties.some(
+        property => property === `${extSuffix}.${AffectedSettings[setting]}`
       );
       assert.ok(result);
     }
