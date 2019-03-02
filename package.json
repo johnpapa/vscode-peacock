@@ -64,20 +64,20 @@
     ],
     "configuration": {
       "properties": {
-        "peacock.affectedElements": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": [
-              "titleBar",
-              "activityBar",
-              "statusBar"
-            ]
-          },
-          "default": [
-            "titleBar"
-          ],
-          "description": "prefixes of elements affected by peacock"
+        "peacock.affectActivityBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the activity bar."
+        },
+        "peacock.affectStatusBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the status bar."
+        },
+        "peacock.affectTitleBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Specifies whether Peacock should affect the title bar."
         },
         "peacock.preferredColors": {
           "type": "array",

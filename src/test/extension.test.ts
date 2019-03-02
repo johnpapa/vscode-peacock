@@ -7,40 +7,27 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {
+  ICommand,
+  IPeacockSettings,
+  IConfiguration,
+  IPeacockAffectedElementSettings
+} from '../constants/interfaces';
+import {
   extSuffix,
   Commands,
   Settings,
   ColorSettings,
   BuiltInColors,
-  Sections,
-  IPreferredColors
+  Sections
 } from '../constants/enums';
 import {
   getAffectedElements,
   getPreferredColors,
   updateAffectedElements,
-  updatePreferredColors,
-  updateConfiguration
+  updatePreferredColors
 } from '../configuration';
 import { isValidHexColor, convertNameToHex } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
-
-interface ICommand {
-  title: string;
-  command: string;
-  category: string;
-}
-
-interface IConfiguration {
-  type: string;
-  title: string;
-  properties: any;
-}
-
-interface IPeacockSettings {
-  affectedElements: string[];
-  preferredColors: IPreferredColors[];
-}
 
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
@@ -55,20 +42,22 @@ suite('Extension Basic Tests', function() {
       extension = ext;
     }
 
+    // Save the original values
     originalValues.affectedElements = getAffectedElements();
-
     const { values: preferredColors } = getPreferredColors();
     originalValues.preferredColors = preferredColors;
 
-    let elements = ['statusBar', 'activityBar', 'titleBar'];
-    await updateAffectedElements(elements);
-
-    const testSetPreferredColors = [
+    // Set the test values
+    await updateAffectedElements(<IPeacockAffectedElementSettings>{
+      statusBar: true,
+      activityBar: true,
+      titleBar: true
+    });
+    await updatePreferredColors([
       { name: 'Gatsby Purple', value: '#639' },
       { name: 'Auth0 Orange', value: '#eb5424' },
       { name: 'Azure Blue', value: '#007fff' }
-    ];
-    await updatePreferredColors(testSetPreferredColors);
+    ]);
   });
 
   setup(async function() {
