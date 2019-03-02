@@ -2,43 +2,45 @@ import * as tinycolor from 'tinycolor2';
 import { getDarkForeground, getLightForeground } from './configuration';
 
 export function getColorHex(color: string = '') {
-  return tinycolor(color).toHexString();
+  return formatHex(tinycolor(color));
 }
 
 export function getBackgroundColorHex(color: string = '') {
-  return tinycolor(color).toHexString();
+  return formatHex(tinycolor(color));
 }
 
 export function getForegroundColorHex(backgroundColor: string = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight() ? getDarkForeground() : getLightForeground();
-  return tinycolor(foreground).toHexString();
+  return formatHex(tinycolor(foreground));
 }
 
 export function getInactiveForegroundColorHex(backgroundColor: string = '') {
-  return tinycolor.mix(tinycolor(getForegroundColorHex(backgroundColor)), tinycolor(backgroundColor), 50).toHexString();
+  const foreground = tinycolor(getForegroundColorHex(backgroundColor));
+  const background = tinycolor(backgroundColor);
+  return formatHex(tinycolor.mix(foreground, background, 50));
 }
 
 export function getLightenedColorHex(color: string = '', amount: number = 10) {
-  return tinycolor(color).lighten(amount).toHexString();
+  return formatHex(tinycolor(color).lighten(amount));
 }
 
 export function getDarkenedColorHex(color: string = '', amount: number = 10) {
-  return tinycolor(color).darken(amount).toHexString();
+  return formatHex(tinycolor(color).darken(amount));
 }
 
 export function getRandomColorHex() {
-  return tinycolor.random().toHexString();
+  return formatHex(tinycolor.random());
 }
 
 export function getColorBrightness(input: string = '') {
   return tinycolor(input).getBrightness();
 }
 
-export function formatHex(color: string = '') {
-  return tinycolor(color).toHexString();
-}
-
 export function isValidColorInput(input: string) {
   return tinycolor(input).isValid();
+}
+
+function formatHex(color: tinycolorInstance) {
+  return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
