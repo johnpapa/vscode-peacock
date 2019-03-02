@@ -1,7 +1,3 @@
-// Constants
-export const extSuffix = 'peacock';
-export const preferredColorSeparator = '->';
-
 // Enums
 export enum StandardSettings {
   DarkForeground = 'darkForeground',

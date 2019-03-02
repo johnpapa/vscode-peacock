@@ -6,13 +6,11 @@ import {
   extSuffix,
   preferredColorSeparator,
   AffectedSettings,
-  AllSettings
-} from './constants/enums';
-import * as vscode from 'vscode';
-import {
+  AllSettings,
   IPeacockAffectedElementSettings,
   IPreferredColors
-} from './constants/interfaces';
+} from './models';
+import * as vscode from 'vscode';
 
 const { workspace } = vscode;
 

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { isValidHexColor, isValidNamedColor } from './color-library';
 
-import { BuiltInColors, ColorSettings } from './constants/enums';
+import { BuiltInColors, ColorSettings } from './models';
 import { prepareColors, changeColorSetting } from './configuration';
 import {
   convertNameToHex,

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BuiltInColors, preferredColorSeparator } from './constants/enums';
+import { BuiltInColors, preferredColorSeparator } from './models';
 import { getPreferredColors } from './configuration';
 
 export async function promptForColor() {

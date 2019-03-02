@@ -1,5 +1,5 @@
 import { getDarkForeground, getLightForeground } from './configuration';
-import { namedColors } from './constants/named-colors';
+import { namedColors } from './models';
 
 export function invertColor(hex: string) {
   // credit: https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color

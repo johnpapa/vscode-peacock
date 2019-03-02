@@ -10,9 +10,7 @@ import {
   ICommand,
   IPeacockSettings,
   IConfiguration,
-  IPeacockAffectedElementSettings
-} from '../constants/interfaces';
-import {
+  IPeacockAffectedElementSettings,
   extSuffix,
   Commands,
   ColorSettings,
@@ -20,7 +18,7 @@ import {
   BuiltInColors,
   Sections,
   AffectedSettings
-} from '../constants/enums';
+} from '../models';
 import {
   getAffectedElements,
   getPreferredColors,
