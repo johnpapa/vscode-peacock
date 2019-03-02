@@ -14,8 +14,7 @@ export async function promptForColor() {
   return inputColor || '';
 }
 
-export async function promptForPreferedColor() {
-  const sep = preferredColorSeparator;
+export async function promptForPreferredColor() {
   const { menu, values: preferredColors } = getPreferredColors();
   let selection = '';
   if (preferredColors && preferredColors.length) {
