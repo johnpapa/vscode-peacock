@@ -1,6 +1,6 @@
 # vscode-peacock README
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=github-oss-jopapa)
 
 A Visual Studio Code extension that subtly changes the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.
 
@@ -55,20 +55,9 @@ Preferred colors require a user-defined name (`name`) and a value ( `value` ), a
 
 ### Affected Elements
 
-You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by setting the property `peacock.affectedElements` to one or more of the valid values below.
+You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. The choices are:
 
-```javascript
-// Valid settings you can choose to be affected
-"peacock.affectedElements": [
-    "activityBar",
-    "statusBar",
-    "titleBar"
-  ]
-```
-
-So you can choose to affect just one of those, two of them or all three of them. You do you!
-
-![Select the setting to affect](./resources/peacock-affectedElements.gif)
+![Animated GIF](./resources/affected-settings.jpg)
 
 ## Commands
 
@@ -80,8 +69,6 @@ So you can choose to affect just one of those, two of them or all three of them.
 | Peacock: Color to Angular Red | Sets the color to Angular's main color, #b52e31                          |
 | Peacock: Color to React Blue  | Sets the color to React.js's main color, #00b3e6                         |
 | Peacock: Color to Random      | Sets the color to a random color                                         |
-
-![Animated GIF](./resources/peacock.gif)
 
 ## Roadmap
 
@@ -95,13 +82,17 @@ See the [CHANGELOG](CHANGELOG.md) for the latest changes.
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
 
-- the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=devto-blog-jopapa)
-- [@josephrexme](https://twitter.com/josephrexme) for the name and icon for Peacock from [@musicfuel](https://twitter.com/musicfuel)
-- [@codebeast](https://twitter.com/codebeast) for the CLI suggestions
-- [@\_clarkio](https://twitter.com/_clarkio) and [@burkeholland](https://twitter.com/burkeholland) for several issues/ideas
-- [@kushalpanda](https://twitter.com/kushalpanda) for the HTML color name support
-- Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
-- [@samjulien](https://twitter.com/samjulien) for the user-defined named preferred colors idea
+- the VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=github-oss-jopapa)
+
+- Key Contributors of PRs:
+
+  - [@josephrexme](https://twitter.com/josephrexme) for the name
+  - [@musicfuel](https://twitter.com/musicfuel) for the icon
+  - [@kushalpanda](https://twitter.com/kushalpanda) for the HTML color name support
+  - Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
+
+- Key Contributors of issues, reviews, and/or ideas:
+  - [@codebeast](https://twitter.com/codebeast), [@\_clarkio](https://twitter.com/_clarkio), [@burkeholland](https://twitter.com/burkeholland), [JulianG](https://github.com/JulianG),[@samjulien](https://twitter.com/samjulien)
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 

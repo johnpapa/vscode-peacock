@@ -2,6 +2,38 @@
 
 All notable changes to the code will be documented in this file.
 
+## 0.5.0
+
+Breaking Changes
+
+Instead of an array, there are three separate configuration properties for the affected element settings:
+
+```json
+    "configuration": {
+      "properties": {
+        "peacock.affectTitleBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Specifies whether Peacock should affect the title bar."
+        },
+        "peacock.affectActivityBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the activity bar."
+        },
+        "peacock.affectStatusBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the status bar."
+        }
+      }
+    }
+```
+
+Other changes
+
+- Refactored the constants, enums, and interfaces into a `models` folder in the code with a barrel for access
+
 ## 0.4.0
 
 Features
