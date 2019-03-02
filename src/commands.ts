@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { 
   isValidColorInput,
   getBackgroundColorHex,
-  getForegroundColorHex,
   getRandomColorHex
 } from './color-library';
 
@@ -37,8 +36,7 @@ export async function resetColorsHandler() {
 
 async function changeColor(input: string = '') {
   const backgroundHex = getBackgroundColorHex(input);
-  const foregroundHex = getForegroundColorHex(backgroundHex);
-  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
+  const colorCustomizations = prepareColors(backgroundHex);
   return await changeColorSetting(colorCustomizations);
 }
 

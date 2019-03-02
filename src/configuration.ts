@@ -5,14 +5,17 @@ import {
   ForegroundColors,
   extSuffix,
   IPreferredColors,
-  preferredColorSeparator
+  preferredColorSeparator,
+  IElementAdjustments,
+  IElementStyle,
+  ColorAdjustment
 } from './constants/enums';
 import {
   getForegroundColorHex,
+  getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
   getLightenedColorHex,
-  getDarkenedColorHex,
-  getColorBrightness
+  getDarkenedColorHex
 } from './color-library';
 import * as vscode from 'vscode';
 
@@ -73,7 +76,7 @@ export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
   return isAffected;
 }
 
-export function prepareColors(backgroundHex: string, foregroundHex: string) {
+export function prepareColors(backgroundHex: string) {
   const colorCustomizations = workspace
     .getConfiguration()
     .get('workbench.colorCustomizations');
@@ -86,11 +89,12 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
   let settingsToReset = [];
 
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
+    const titleBarStyle = getElementStyle('titleBar', backgroundHex);
     newSettings.titleBarSettings = {
-      [ColorSettings.titleBar_activeBackground]: backgroundHex,
-      [ColorSettings.titleBar_activeForeground]: foregroundHex,
-      [ColorSettings.titleBar_inactiveBackground]: backgroundHex,
-      [ColorSettings.titleBar_inactiveForeground]: foregroundHex
+      [ColorSettings.titleBar_activeBackground]: titleBarStyle.backgroundHex,
+      [ColorSettings.titleBar_activeForeground]: titleBarStyle.foregroundHex,
+      [ColorSettings.titleBar_inactiveBackground]: titleBarStyle.inactiveBackgroundHex,
+      [ColorSettings.titleBar_inactiveForeground]: titleBarStyle.inactiveForegroundHex
     };
   } else {
     settingsToReset.push(
@@ -101,20 +105,11 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
     );
   }
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBackgroundHex = getLightenedColorHex(backgroundHex, 10);
-
-    // Generally lighten the activity bar unless the background is very bright
-    const backgroundBrightness = getColorBrightness(backgroundHex);
-    const activityBackgroundHex = backgroundBrightness < 0xee 
-      ? getLightenedColorHex(backgroundHex, 10)
-      : getDarkenedColorHex(backgroundHex, 10);
-
-    const activityForegroundHex = getForegroundColorHex(activityBackgroundHex);
-    const activityInactiveForegroundHex = getInactiveForegroundColorHex(activityBackgroundHex);
+    const activityBarStyle = getElementStyle('activityBar', backgroundHex);
     newSettings.activityBarSettings = {
-      [ColorSettings.activityBar_background]: activityBackgroundHex,
-      [ColorSettings.activityBar_foreground]: activityForegroundHex,
-      [ColorSettings.activityBar_inactiveForeground]: activityInactiveForegroundHex
+      [ColorSettings.activityBar_background]: activityBarStyle.backgroundHex,
+      [ColorSettings.activityBar_foreground]: activityBarStyle.foregroundHex,
+      [ColorSettings.activityBar_inactiveForeground]: activityBarStyle.inactiveForegroundHex
     };
   } else {
     settingsToReset.push(
@@ -124,9 +119,10 @@ export function prepareColors(backgroundHex: string, foregroundHex: string) {
     );
   }
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
+    const statusBarStyle = getElementStyle('statusBar', backgroundHex);
     newSettings.statusBarSettings = {
-      [ColorSettings.statusBar_background]: backgroundHex,
-      [ColorSettings.statusBar_foreground]: foregroundHex
+      [ColorSettings.statusBar_background]: statusBarStyle.backgroundHex,
+      [ColorSettings.statusBar_foreground]: statusBarStyle.foregroundHex
     };
   } else {
     settingsToReset.push(
@@ -188,6 +184,57 @@ export async function updateAffectedElements(
   await updateConfiguration(AffectedSettings.StatusBar, values.statusBar);
   await updateConfiguration(AffectedSettings.TitleBar, values.titleBar);
   return true;
+}
+
+export function getElementAdjustments(elementName: string): IElementAdjustments {
+  const elementAdjustments = readConfiguration<any>(
+    Settings.elementAdjustments,
+    {}
+  );
+
+  return elementAdjustments[elementName];
+}
+
+export function getElementStyle(elementName: string, backgroundHex: string): IElementStyle {
+  let style = {
+    backgroundHex: backgroundHex,
+    foregroundHex: getForegroundColorHex(backgroundHex),
+    inactiveBackgroundHex: getInactiveBackgroundColorHex(backgroundHex),
+    inactiveForegroundHex: getInactiveForegroundColorHex(backgroundHex)
+  };
+
+  const adjustments = getElementAdjustments(elementName);
+  if (adjustments) {
+    style = adjustElementStyle(style, adjustments);
+  }
+
+  return style;
+}
+
+export function adjustElementStyle(style: IElementStyle, adjustments: IElementAdjustments): IElementStyle {
+  if (adjustments.background) {
+    style.backgroundHex = applyAdjustment(style.backgroundHex, style.backgroundHex, adjustments.background);
+    style.foregroundHex = getForegroundColorHex(style.backgroundHex),
+    style.inactiveForegroundHex = getInactiveForegroundColorHex(style.backgroundHex);
+  }
+  if (adjustments.foreground) {
+    style.foregroundHex = applyAdjustment(style.foregroundHex, getForegroundColorHex(style.backgroundHex), adjustments.foreground);
+  }
+  if (adjustments.inactiveBackground) {
+    style.inactiveBackgroundHex = applyAdjustment(style.inactiveBackgroundHex, style.backgroundHex, adjustments.inactiveBackground);
+  }
+  if (adjustments.inactiveForeground) {
+    style.inactiveForegroundHex = applyAdjustment(style.inactiveForegroundHex, style.foregroundHex, adjustments.inactiveForeground);
+  }
+
+  return style;
+}
+
+function applyAdjustment(hex: string, ignoredHex: string, adjustment: ColorAdjustment) {
+  if (adjustment === 'ignore') {
+    return ignoredHex;
+  }
+  return adjustment === 'lighten' ? getLightenedColorHex(hex) : getDarkenedColorHex(hex);
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
