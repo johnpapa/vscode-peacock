@@ -1,6 +1,6 @@
 import * as tinycolor from 'tinycolor2';
 import { getDarkForeground, getLightForeground } from './configuration';
-import { ColorAdjustment } from './constants/enums';
+import { ColorAdjustment } from './models';
 
 export function getColorHex(color: string = '') {
   return formatHex(tinycolor(color));

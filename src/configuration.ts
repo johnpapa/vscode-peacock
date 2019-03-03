@@ -6,10 +6,13 @@ import {
   extSuffix,
   IPreferredColors,
   preferredColorSeparator,
-  IElementAdjustments,
+  IPeacockElementAdjustments,
   IElementStyle,
-  ColorAdjustment
-} from './constants/enums';
+  ColorAdjustment,
+  AllSettings,
+  AffectedSettings,
+  IPeacockAffectedElementSettings
+} from './models';
 import {
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
@@ -186,25 +189,21 @@ export async function updateAffectedElements(
 }
 
 export function getElementAdjustments() {
-  const adjustments = readConfiguration<IElementAdjustments>(Settings.elementAdjustments);
+  const adjustments = readConfiguration<IPeacockElementAdjustments>(StandardSettings.ElementAdjustments);
   return adjustments || {};
 }
 
-export async function updateAffectedElements(values: string[]) {
-  return await updateConfiguration(Settings.affectedElements, values);
-}
-
-export async function updateElementAdjustments(adjustments: IElementAdjustments) {
-  return await updateConfiguration(Settings.elementAdjustments, adjustments);
+export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
+  return await updateConfiguration(StandardSettings.ElementAdjustments, adjustments);
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
-  return await updateConfiguration(Settings.preferredColors, values);
+  return await updateConfiguration(StandardSettings.PreferredColors, values);
 }
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {
   const elementAdjustments = readConfiguration<any>(
-    Settings.elementAdjustments,
+    StandardSettings.ElementAdjustments,
     {}
   );
 

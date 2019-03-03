@@ -2,7 +2,8 @@
 export enum StandardSettings {
   DarkForeground = 'darkForeground',
   LightForeground = 'lightForeground',
-  PreferredColors = 'preferredColors'
+  PreferredColors = 'preferredColors',
+  ElementAdjustments = 'elementAdjustments'
 }
 
 export enum AffectedSettings {
@@ -33,6 +34,14 @@ export enum ColorSettings {
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground'
+}
+
+export type ColorAdjustment = 'lighten' | 'darken' | 'none';
+
+export enum ColorAdjustmentOptions {
+  'lighten' = 'lighten',
+  'darken' = 'darken',
+  'none' = 'none'
 }
 
 export enum BuiltInColors {

@@ -17,14 +17,14 @@ import {
   StandardSettings,
   BuiltInColors,
   Sections,
-  AffectedSettings
+  AffectedSettings,
+  IPeacockElementAdjustments
 } from '../models';
 import {
   getAffectedElements,
   getPreferredColors,
   updateAffectedElements,
   updatePreferredColors,
-  getElementAdjustments,
   updateElementAdjustments,
   getElementStyle
 } from '../configuration';
@@ -32,10 +32,7 @@ import {
   isValidColorInput,
   getLightenedColorHex,
   getDarkenedColorHex,
-  getColorBrightness, 
-  getForegroundColorHex,
-  getInactiveBackgroundColorHex,
-  getInactiveForegroundColorHex
+  getColorBrightness
 } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 
@@ -43,8 +40,13 @@ suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
 
-  const allAffectedElements = [ 'statusBar', 'activityBar', 'titleBar' ];
-  const noopElementAdjustments: IElementAdjustments = {
+  const allAffectedElements = <IPeacockAffectedElementSettings>{
+    statusBar: true,
+    activityBar: true,
+    titleBar: true
+  };
+
+  const noopElementAdjustments = <IPeacockElementAdjustments>{
     'activityBar': 'none',
     'statusBar': 'none',
     'titleBar': 'none'
@@ -321,7 +323,7 @@ suite('Extension Basic Tests', function() {
   });
 
   suite('Affected elements', function() {
-    test('sets all color customizations for elements in affected elements', async function() {
+    test('sets all color customizations for affected elements', async function() {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       const config = getPeacockWorkspaceConfig();
       const style = getElementStyle(BuiltInColors.Angular);
@@ -339,8 +341,11 @@ suite('Extension Basic Tests', function() {
       assert.equal(style.foregroundHex, config[ColorSettings.statusBar_foreground]);;
     });
 
-    test('does not set color customizations for elements not in affected elements', async function() {
-      await updateAffectedElements([ 'titleBar' ]);
+    test('does not set color customizations for elements not affected', async function() {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{ 
+        'activityBar': false,
+        'statusBar': false
+      });
 
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       const config = getPeacockWorkspaceConfig();
@@ -361,8 +366,12 @@ suite('Extension Basic Tests', function() {
       await updateAffectedElements(allAffectedElements);
     });
 
-    test('does not set any color customizations for empty affected elements', async function() {
-      await updateAffectedElements([]);
+    test('does not set any color customizations when no elements affected', async function() {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+        'activityBar': false,
+        'statusBar': false,
+        'titleBar': false
+      });
 
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
@@ -382,7 +391,7 @@ suite('Extension Basic Tests', function() {
   });
 
   suite('Element adjustments', function() {
-    const elementAdjustments: IElementAdjustments = {
+    const elementAdjustments: IPeacockElementAdjustments = {
       'activityBar': 'lighten',
       'statusBar': 'darken',
       'titleBar': 'none'
@@ -456,8 +465,12 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('cannot adjust the color of an element not in affected elements', async function() {
-      await updateAffectedElements([ 'statusBar' ]);
+    test('can only adjust the color of an element that is affected', async function() {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+        'activityBar': false,
+        'statusBar': true,
+        'titleBar': false        
+      });
       
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
