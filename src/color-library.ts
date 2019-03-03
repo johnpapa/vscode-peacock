@@ -1,5 +1,6 @@
 import * as tinycolor from 'tinycolor2';
 import { getDarkForeground, getLightForeground } from './configuration';
+import { ColorAdjustment } from './constants/enums';
 
 export function getColorHex(color: string = '') {
   return formatHex(tinycolor(color));
@@ -24,6 +25,19 @@ export function getInactiveForegroundColorHex(backgroundColor: string = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
   const background = tinycolor(backgroundColor);
   return formatHex(tinycolor.mix(foreground, background, 25));
+}
+
+export function getAdjustedColorHex(color: string = '', adjustment: ColorAdjustment) {
+  switch (adjustment) {
+    case 'lighten':
+      return getLightenedColorHex(color);
+
+    case 'darken':
+      return getDarkenedColorHex(color);
+
+    default: 
+      return color;
+  }
 }
 
 export function getLightenedColorHex(color: string = '', amount: number = 10) {

@@ -14,8 +14,7 @@ import {
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
-  getLightenedColorHex,
-  getDarkenedColorHex
+  getAdjustedColorHex
 } from './color-library';
 import * as vscode from 'vscode';
 
@@ -186,7 +185,24 @@ export async function updateAffectedElements(
   return true;
 }
 
-export function getElementAdjustments(elementName: string): IElementAdjustments {
+export function getElementAdjustments() {
+  const adjustments = readConfiguration<IElementAdjustments>(Settings.elementAdjustments);
+  return adjustments || {};
+}
+
+export async function updateAffectedElements(values: string[]) {
+  return await updateConfiguration(Settings.affectedElements, values);
+}
+
+export async function updateElementAdjustments(adjustments: IElementAdjustments) {
+  return await updateConfiguration(Settings.elementAdjustments, adjustments);
+}
+
+export async function updatePreferredColors(values: IPreferredColors[]) {
+  return await updateConfiguration(Settings.preferredColors, values);
+}
+
+export function getElementAdjustment(elementName: string): ColorAdjustment {
   const elementAdjustments = readConfiguration<any>(
     Settings.elementAdjustments,
     {}
@@ -196,47 +212,17 @@ export function getElementAdjustments(elementName: string): IElementAdjustments 
 }
 
 export function getElementStyle(elementName: string, backgroundHex: string): IElementStyle {
-  let style = {
-    backgroundHex: backgroundHex,
-    foregroundHex: getForegroundColorHex(backgroundHex),
-    inactiveBackgroundHex: getInactiveBackgroundColorHex(backgroundHex),
-    inactiveForegroundHex: getInactiveForegroundColorHex(backgroundHex)
+  let styleHex = backgroundHex;
+
+  const adjustment = getElementAdjustment(elementName);
+  if (adjustment) {
+    styleHex = getAdjustedColorHex(backgroundHex, adjustment);
+  }
+
+  return {
+    backgroundHex: styleHex,
+    foregroundHex: getForegroundColorHex(styleHex),
+    inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
+    inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
   };
-
-  const adjustments = getElementAdjustments(elementName);
-  if (adjustments) {
-    style = adjustElementStyle(style, adjustments);
-  }
-
-  return style;
-}
-
-export function adjustElementStyle(style: IElementStyle, adjustments: IElementAdjustments): IElementStyle {
-  if (adjustments.background) {
-    style.backgroundHex = applyAdjustment(style.backgroundHex, style.backgroundHex, adjustments.background);
-    style.foregroundHex = getForegroundColorHex(style.backgroundHex),
-    style.inactiveForegroundHex = getInactiveForegroundColorHex(style.backgroundHex);
-  }
-  if (adjustments.foreground) {
-    style.foregroundHex = applyAdjustment(style.foregroundHex, getForegroundColorHex(style.backgroundHex), adjustments.foreground);
-  }
-  if (adjustments.inactiveBackground) {
-    style.inactiveBackgroundHex = applyAdjustment(style.inactiveBackgroundHex, style.backgroundHex, adjustments.inactiveBackground);
-  }
-  if (adjustments.inactiveForeground) {
-    style.inactiveForegroundHex = applyAdjustment(style.inactiveForegroundHex, style.foregroundHex, adjustments.inactiveForeground);
-  }
-
-  return style;
-}
-
-function applyAdjustment(hex: string, ignoredHex: string, adjustment: ColorAdjustment) {
-  if (adjustment === 'ignore') {
-    return ignoredHex;
-  }
-  return adjustment === 'lighten' ? getLightenedColorHex(hex) : getDarkenedColorHex(hex);
-}
-
-export async function updatePreferredColors(values: IPreferredColors[]) {
-  return await updateConfiguration(StandardSettings.PreferredColors, values);
 }
