@@ -25,13 +25,17 @@ import {
   updateAffectedElements,
   updatePreferredColors,
   getElementAdjustments,
-  updateElementAdjustments
+  updateElementAdjustments,
+  getElementStyle
 } from '../configuration';
 import { 
   isValidColorInput,
   getLightenedColorHex,
   getDarkenedColorHex,
-  getColorBrightness 
+  getColorBrightness, 
+  getForegroundColorHex,
+  getInactiveBackgroundColorHex,
+  getInactiveForegroundColorHex
 } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 
@@ -313,6 +317,67 @@ suite('Extension Basic Tests', function() {
       stub.restore();
 
       assert.ok(valueBefore === valueAfter);
+    });
+  });
+
+  suite('Affected elements', function() {
+    test('sets all color customizations for elements in affected elements', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      const config = getPeacockWorkspaceConfig();
+      const style = getElementStyle(BuiltInColors.Angular);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.titleBar_activeBackground]);
+      assert.equal(style.foregroundHex, config[ColorSettings.titleBar_activeForeground]);
+      assert.equal(style.inactiveBackgroundHex, config[ColorSettings.titleBar_inactiveBackground]);
+      assert.equal(style.inactiveForegroundHex, config[ColorSettings.titleBar_inactiveForeground]);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.activityBar_background]);
+      assert.equal(style.foregroundHex, config[ColorSettings.activityBar_foreground]);
+      assert.equal(style.inactiveForegroundHex, config[ColorSettings.activityBar_inactiveForeground]);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.statusBar_background]);
+      assert.equal(style.foregroundHex, config[ColorSettings.statusBar_foreground]);;
+    });
+
+    test('does not set color customizations for elements not in affected elements', async function() {
+      await updateAffectedElements([ 'titleBar' ]);
+
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      const config = getPeacockWorkspaceConfig();
+      const style = getElementStyle(BuiltInColors.Angular);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.titleBar_activeBackground]);
+      assert.equal(style.foregroundHex, config[ColorSettings.titleBar_activeForeground]);
+      assert.equal(style.inactiveBackgroundHex, config[ColorSettings.titleBar_inactiveBackground]);
+      assert.equal(style.inactiveForegroundHex, config[ColorSettings.titleBar_inactiveForeground]);
+
+      // All others should not exist
+      assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_foreground]);
+      assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+      assert.ok(!config[ColorSettings.statusBar_foreground]);
+      assert.ok(!config[ColorSettings.statusBar_background]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('does not set any color customizations for empty affected elements', async function() {
+      await updateAffectedElements([]);
+
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+      assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+      assert.ok(!config[ColorSettings.titleBar_inactiveBackground]);
+      assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+      assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_foreground]);
+      assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+      assert.ok(!config[ColorSettings.statusBar_foreground]);
+      assert.ok(!config[ColorSettings.statusBar_background]);
+
+      await updateAffectedElements(allAffectedElements);
     });
   });
 

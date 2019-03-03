@@ -88,7 +88,7 @@ export function prepareColors(backgroundHex: string) {
   let settingsToReset = [];
 
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
-    const titleBarStyle = getElementStyle('titleBar', backgroundHex);
+    const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: titleBarStyle.backgroundHex,
       [ColorSettings.titleBar_activeForeground]: titleBarStyle.foregroundHex,
@@ -104,7 +104,7 @@ export function prepareColors(backgroundHex: string) {
     );
   }
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle('activityBar', backgroundHex);
+    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
     newSettings.activityBarSettings = {
       [ColorSettings.activityBar_background]: activityBarStyle.backgroundHex,
       [ColorSettings.activityBar_foreground]: activityBarStyle.foregroundHex,
@@ -118,7 +118,7 @@ export function prepareColors(backgroundHex: string) {
     );
   }
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
-    const statusBarStyle = getElementStyle('statusBar', backgroundHex);
+    const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
     newSettings.statusBarSettings = {
       [ColorSettings.statusBar_background]: statusBarStyle.backgroundHex,
       [ColorSettings.statusBar_foreground]: statusBarStyle.foregroundHex
@@ -211,12 +211,14 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
   return elementAdjustments[elementName];
 }
 
-export function getElementStyle(elementName: string, backgroundHex: string): IElementStyle {
+export function getElementStyle(backgroundHex: string, elementName?: string): IElementStyle {
   let styleHex = backgroundHex;
 
-  const adjustment = getElementAdjustment(elementName);
-  if (adjustment) {
-    styleHex = getAdjustedColorHex(backgroundHex, adjustment);
+  if (elementName) {
+    const adjustment = getElementAdjustment(elementName);
+    if (adjustment) {
+      styleHex = getAdjustedColorHex(backgroundHex, adjustment);
+    }
   }
 
   return {
