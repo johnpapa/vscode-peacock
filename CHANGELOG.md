@@ -2,6 +2,20 @@
 
 All notable changes to the code will be documented in this file.
 
+## 0.6.0
+
+Features
+
+- New setting for `peacock.elementAdjustments` that allows for slight value adjustments of affected elements to visually distinguish them from one another.
+- Activity Bar icons now reflect current active state with the current activity in the foreground color and inactive activities indicated.
+- Color entry now supports a larger variety of formats with more flexible entry restrictions (see [input formats](./README.md#input-formats) in [README](./README.md) for more information)
+
+Other Changes
+
+- Introduced the [tinycolor](https://www.npmjs.com/package/tinycolor2) library to handle color input validation, color conversion, and color manipulation
+- Refactored much of the internal color library
+- Added several unit tests for color input entry, affected elements, and element adjustments
+
 ## 0.5.0
 
 Breaking Changes
