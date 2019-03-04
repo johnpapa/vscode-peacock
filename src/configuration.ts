@@ -95,8 +95,10 @@ export function prepareColors(backgroundHex: string) {
     newSettings.titleBarSettings = {
       [ColorSettings.titleBar_activeBackground]: titleBarStyle.backgroundHex,
       [ColorSettings.titleBar_activeForeground]: titleBarStyle.foregroundHex,
-      [ColorSettings.titleBar_inactiveBackground]: titleBarStyle.inactiveBackgroundHex,
-      [ColorSettings.titleBar_inactiveForeground]: titleBarStyle.inactiveForegroundHex
+      [ColorSettings.titleBar_inactiveBackground]:
+        titleBarStyle.inactiveBackgroundHex,
+      [ColorSettings.titleBar_inactiveForeground]:
+        titleBarStyle.inactiveForegroundHex
     };
   } else {
     settingsToReset.push(
@@ -111,7 +113,8 @@ export function prepareColors(backgroundHex: string) {
     newSettings.activityBarSettings = {
       [ColorSettings.activityBar_background]: activityBarStyle.backgroundHex,
       [ColorSettings.activityBar_foreground]: activityBarStyle.foregroundHex,
-      [ColorSettings.activityBar_inactiveForeground]: activityBarStyle.inactiveForegroundHex
+      [ColorSettings.activityBar_inactiveForeground]:
+        activityBarStyle.inactiveForegroundHex
     };
   } else {
     settingsToReset.push(
@@ -189,12 +192,19 @@ export async function updateAffectedElements(
 }
 
 export function getElementAdjustments() {
-  const adjustments = readConfiguration<IPeacockElementAdjustments>(StandardSettings.ElementAdjustments);
+  const adjustments = readConfiguration<IPeacockElementAdjustments>(
+    StandardSettings.ElementAdjustments
+  );
   return adjustments || {};
 }
 
-export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
-  return await updateConfiguration(StandardSettings.ElementAdjustments, adjustments);
+export async function updateElementAdjustments(
+  adjustments: IPeacockElementAdjustments
+) {
+  return await updateConfiguration(
+    StandardSettings.ElementAdjustments,
+    adjustments
+  );
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
@@ -210,7 +220,10 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
   return elementAdjustments[elementName];
 }
 
-export function getElementStyle(backgroundHex: string, elementName?: string): IElementStyle {
+export function getElementStyle(
+  backgroundHex: string,
+  elementName?: string
+): IElementStyle {
   let styleHex = backgroundHex;
 
   if (elementName) {

@@ -17,7 +17,9 @@ export function getInactiveBackgroundColorHex(backgroundColor = '') {
 
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  const foreground = background.isLight() ? getDarkForeground() : getLightForeground();
+  const foreground = background.isLight()
+    ? getDarkForeground()
+    : getLightForeground();
   return formatHex(tinycolor(foreground));
 }
 

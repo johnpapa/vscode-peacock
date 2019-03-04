@@ -1,4 +1,4 @@
-import { ColorAdjustment } from ".";
+import { ColorAdjustment } from '.';
 
 export interface IPreferredColors {
   name: string;
@@ -30,7 +30,7 @@ export interface IPeacockAffectedElementSettings {
   titleBar: boolean;
 }
 
-export interface IPeacockElementAdjustments { 
+export interface IPeacockElementAdjustments {
   [elementName: string]: ColorAdjustment;
 }
 
