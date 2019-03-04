@@ -2,32 +2,32 @@ import * as tinycolor from 'tinycolor2';
 import { getDarkForeground, getLightForeground } from './configuration';
 import { ColorAdjustment } from './models';
 
-export function getColorHex(color: string = '') {
+export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
 }
 
-export function getBackgroundColorHex(color: string = '') {
+export function getBackgroundColorHex(color = '') {
   return formatHex(tinycolor(color));
 }
 
-export function getInactiveBackgroundColorHex(backgroundColor: string = '') {
+export function getInactiveBackgroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
   return formatHex(tinycolor.mix(background, tinycolor('black'), 50));
 }
 
-export function getForegroundColorHex(backgroundColor: string = '') {
+export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight() ? getDarkForeground() : getLightForeground();
   return formatHex(tinycolor(foreground));
 }
 
-export function getInactiveForegroundColorHex(backgroundColor: string = '') {
+export function getInactiveForegroundColorHex(backgroundColor = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
   const background = tinycolor(backgroundColor);
   return formatHex(tinycolor.mix(foreground, background, 25));
 }
 
-export function getAdjustedColorHex(color: string = '', adjustment: ColorAdjustment) {
+export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
   switch (adjustment) {
     case 'lighten':
       return getLightenedColorHex(color);
@@ -35,16 +35,16 @@ export function getAdjustedColorHex(color: string = '', adjustment: ColorAdjustm
     case 'darken':
       return getDarkenedColorHex(color);
 
-    default: 
+    default:
       return color;
   }
 }
 
-export function getLightenedColorHex(color: string = '', amount: number = 10) {
+export function getLightenedColorHex(color = '', amount = 10) {
   return formatHex(tinycolor(color).lighten(amount));
 }
 
-export function getDarkenedColorHex(color: string = '', amount: number = 10) {
+export function getDarkenedColorHex(color: string, amount = 10) {
   return formatHex(tinycolor(color).darken(amount));
 }
 
@@ -52,7 +52,7 @@ export function getRandomColorHex() {
   return formatHex(tinycolor.random());
 }
 
-export function getColorBrightness(input: string = '') {
+export function getColorBrightness(input = '') {
   return tinycolor(input).getBrightness();
 }
 
