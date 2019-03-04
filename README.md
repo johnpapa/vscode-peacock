@@ -24,12 +24,13 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Properties
 
-| Property                 | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| peacock.affectedElements | prefixes of elements affected by peacock        |
-| peacock.darkForeground   | override for the dark foreground                |
-| peacock.lightForeground  | override for the light foreground               |
-| peacock.preferredColors  | array of objects for color names and hex values |
+| Property                   | Description                                     |
+| -------------------------- | ----------------------------------------------- |
+| peacock.affectedElements   | prefixes of elements affected by peacock        |
+| peacock.elementAdjustments | fine tune coloring of affected elements         |
+| peacock.darkForeground     | override for the dark foreground                |
+| peacock.lightForeground    | override for the light foreground               |
+| peacock.preferredColors    | array of objects for color names and hex values |
 
 ### Preferred Colors
 
@@ -59,16 +60,63 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 ![Animated GIF](./resources/affected-settings.jpg)
 
+### Element Adjustments
+
+You can fine tune the coloring of affected elements by making them slightly darker or lighter to provide a subtle visual contrast between them. Options for adjusting elements are:
+
+- `"darken"`: reduces the value of the selected color to make it slightly darker
+- `"lighten"`: increases the value of the selected color to make it slightly lighter
+- `"none"`: no adjustment will be made to the selected color
+
+An example of using this might be to make the Activity Bar slightly lighter than the Status Bar and Title Bar to better visually distinguish it as present in several popular themes. This can be achieved with the setting in the example below.
+
+```javascript
+  "peacock.affectActivityBar": true,
+  "peacock.affectStatusBar": true,
+  "peacock.affectTitleBar": true,
+  "peacock.elementAdjustments" {
+    "activityBar": "lighten"
+  }
+```
+
+When using peacock with the React Blue color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar:
+
+![Animated GIF](./resources/element-adjustments.png)
+
 ## Commands
 
 | Command                       | Description                                                              |
 | ----------------------------- | ------------------------------------------------------------------------ |
 | Peacock: Reset Colors         | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color        | Prompts you to enter a color using hex and RGB format or HTML color name |
+| Peacock: Enter a Color        | Prompts you to enter a color (see [input formats](#input-formats))       |
 | Peacock: Color to Vue Green   | Sets the color to Vue.js's main color, #42b883                           |
 | Peacock: Color to Angular Red | Sets the color to Angular's main color, #b52e31                          |
 | Peacock: Color to React Blue  | Sets the color to React.js's main color, #00b3e6                         |
 | Peacock: Color to Random      | Sets the color to a random color                                         |
+
+## Input Formats
+
+When entering a color in Peacock several formats are acceptable. These include
+
+| Format            | Examples                                         |
+| ----------------- | ------------------------------------------------ |
+| Named HTML colors | purple, blanchedalmond                           |
+| Short Hex         | #8b2, f00                                        |
+| Short Hex8 (RGBA) | #8b2c, f00c                                      |
+| Hex               | #88bb22, ff0000                                  |
+| Hex8 (RGBA)       | #88bb22cc, ff0000cc                              |
+| RGB               | rgb (136, 187, 34), rgb 255 0 0                  |
+| RGBA              | rgba (136, 187, 34, .8), rgba 255 0 0 .8         |
+| HSL               | hsl (80, 69%, 43%), hsl (0 1 .5)                 |
+| HSLA              | hsla (80, 69%, 43%, 0.8), hsla (0 1 .5 .8)       |
+| HSV               | hsv (80, 82%, 73%), hsv (0 1 1)                  |
+| HSVA              | hsva (80, 82%, 73%, 0.8), hsva (0,100%,100%,0.8) |
+
+All formats offer flexible data validation:
+
+- For named HTML colors, case is insensitive
+- For any hex value, the `#` is optional.
+- For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
 ## Roadmap
 
@@ -90,12 +138,12 @@ Key Contributors of PRs:
 
 - [@josephrexme](https://twitter.com/josephrexme) for the name
 - [@musicfuel](https://twitter.com/musicfuel) for the icon
-- [@kushalpanda](https://twitter.com/kushalpanda) for the HTML color name support
 - Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
 
 Key Contributors of issues, reviews, and/or ideas:
 
-- [@codebeast](https://twitter.com/codebeast), [@\_clarkio](https://twitter.com/_clarkio), [@burkeholland](https://twitter.com/burkeholland), [JulianG](https://github.com/JulianG),[@samjulien](https://twitter.com/samjulien)
+- [@codebeast](https://twitter.com/codebeast), [@\_clarkio](https://twitter.com/_clarkio), [@burkeholland](https://twitter.com/burkeholland), [JulianG](https://github.com/JulianG),[@samjulien](https://twitter.com/samjulien),
+[@kushalpanda](https://twitter.com/kushalpanda)
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 

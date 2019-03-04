@@ -17,16 +17,36 @@ import {
   StandardSettings,
   BuiltInColors,
   Sections,
-  AffectedSettings
+  AffectedSettings,
+  IPeacockElementAdjustments
 } from '../models';
 import {
   getAffectedElements,
   getPreferredColors,
   updateAffectedElements,
-  updatePreferredColors
+  updatePreferredColors,
+  updateElementAdjustments,
+  getElementStyle
 } from '../configuration';
-import { isValidHexColor, convertNameToHex } from '../color-library';
+import {
+  isValidColorInput,
+  getLightenedColorHex,
+  getDarkenedColorHex,
+  getColorBrightness
+} from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
+
+const allAffectedElements = <IPeacockAffectedElementSettings>{
+  statusBar: true,
+  activityBar: true,
+  titleBar: true
+};
+
+const noopElementAdjustments = <IPeacockElementAdjustments>{
+  'activityBar': 'none',
+  'statusBar': 'none',
+  'titleBar': 'none'
+};
 
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
@@ -57,6 +77,7 @@ suite('Extension Basic Tests', function() {
       { name: 'Auth0 Orange', value: '#eb5424' },
       { name: 'Azure Blue', value: '#007fff' }
     ]);
+    await updateElementAdjustments(noopElementAdjustments);
   });
 
   setup(async function() {
@@ -153,41 +174,112 @@ suite('Extension Basic Tests', function() {
   test('can set color to Random color', async function() {
     await vscode.commands.executeCommand(Commands.changeColorToRandom);
     let config = getPeacockWorkspaceConfig();
-    assert.ok(isValidHexColor(config[ColorSettings.titleBar_activeBackground]));
+    assert.ok(isValidColorInput(config[ColorSettings.titleBar_activeBackground]));
   });
 
-  test('can set color using hex user input', async function() {
-    // Stub the async input box to return a response
-    const fakeResponse = '#771177';
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
-
-    // fire the command
-    await vscode.commands.executeCommand(Commands.enterColor);
+  test('can reset colors', async function() {
+    await vscode.commands.executeCommand(Commands.resetColors);
     let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
-
-    assert.ok(isValidHexColor(value));
-    assert.ok(value === fakeResponse);
+    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+    assert.ok(!config[ColorSettings.statusBar_background]);
+    assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
-  test('can set color using named color user input', async function() {
-    // Stub the async input box to return a response
-    const fakeResponse = 'purple';
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
+  suite('Enter color', function() {
 
-    // fire the command
-    await vscode.commands.executeCommand(Commands.enterColor);
-    let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
+    function createColorInputTest(fakeResponse: string, expectedValue: string) {
+      return async function() {
+        // Stub the async input box to return a response
+        const stub = await sinon
+          .stub(vscode.window, 'showInputBox')
+          .returns(Promise.resolve(fakeResponse));
 
-    assert.ok(isValidHexColor(value));
-    assert.ok(value === convertNameToHex(fakeResponse));
+        // fire the command
+        await vscode.commands.executeCommand(Commands.enterColor);
+        let config = getPeacockWorkspaceConfig();
+        const value = config[ColorSettings.titleBar_activeBackground];
+        stub.restore();
+
+        assert.ok(isValidColorInput(value));
+        assert.equal(expectedValue, value);
+      };
+    }
+
+    // Hex, Hex RGBA
+
+    test('can set color using short hex user input',
+      createColorInputTest('#000', '#000000'));
+
+    test('can set color using short hex user input without hash',
+      createColorInputTest('000', '#000000'));
+
+    test('can set color using short RGBA hex user input',
+      createColorInputTest('#369C', '#336699cc'));
+
+    test('can set color using short RGBA hex user input without hash',
+      createColorInputTest('369C', '#336699cc'));
+
+    test('can set color using hex user input',
+      createColorInputTest('#f0f0f6', '#f0f0f6'));
+
+    test('can set color using hex user input without hash',
+      createColorInputTest('f0f0f6', '#f0f0f6'));
+
+    test('can set color using RGBA hex user input',
+      createColorInputTest('#f0f0f688', '#f0f0f688'));
+
+    test('can set color using RGBA hex user input without hash',
+      createColorInputTest('f0f0f688',  '#f0f0f688'));
+
+    // Named colors
+
+    test('can set color using named color user input',
+      createColorInputTest('blanchedalmond', '#ffebcd'));
+
+    test('can set color using named color user input with any casing',
+      createColorInputTest('DarkBlue', '#00008b'));
+
+    // RGB, RGBA
+
+    test('can set color using rgb() color user input',
+      createColorInputTest('rgb (255 0 0)', '#ff0000'));
+
+    test('can set color using rgb() color user input without parentheses',
+      createColorInputTest('rgb 255 0 0', '#ff0000'));
+
+    test('can set color using rgba() color user input',
+      createColorInputTest('rgba (255, 0, 0, .5)', '#ff000080'));
+
+    test('can set color using rgb() color user input with decimals or percentages',
+      createColorInputTest('rgb (100% 255 0)', '#ffff00'));
+
+    // HSL, HSLA
+
+    test('can set color using hsl() color user input',
+      createColorInputTest('hsl (0 100% 50%)', '#ff0000'));
+
+    test('can set color using hsl() color user input without parentheses',
+      createColorInputTest('hsl 0 100% 50%', '#ff0000'));
+
+    test('can set color using hsla() color user input',
+      createColorInputTest('hsla (0, 100%, 50%, .5)', '#ff000080'));
+
+    test('can set color using hsl() color user input with decimals or percentages',
+      createColorInputTest('hsl (0, 100%, .5)', '#ff0000'));
+
+    // HSV, HSVA
+
+    test('can set color using hsv() color user input',
+      createColorInputTest('hsv (0, 100%, 100%)', '#ff0000'));
+
+    test('can set color using hsv() color user input without parentheses',
+      createColorInputTest('hsv 0 100% 100%', '#ff0000'));
+
+    test('can set color using hsva() color user input',
+      createColorInputTest('hsva (0, 100%, 100%, .5)', '#ff000080'));
+
+    test('can set color using hsv() color user input with decimals or percentages',
+      createColorInputTest('hsv (0, 1, 100%)', '#ff0000'));
   });
 
   suite('Preferred colors', function() {
@@ -205,11 +297,11 @@ suite('Extension Basic Tests', function() {
 
       const parsedResponse = parsePreferredColorValue(fakeResponse);
 
-      assert.ok(isValidHexColor(value));
+      assert.ok(isValidColorInput(value));
       assert.ok(value === parsedResponse);
     });
 
-    test('set to preferred color with no preferrences is a noop', async function() {
+    test('set to preferred color with no preferences is a noop', async function() {
       // set the color to react blue to start
       await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
 
@@ -230,18 +322,175 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  test('can reset colors', async function() {
-    await vscode.commands.executeCommand(Commands.resetColors);
-    let config = getPeacockWorkspaceConfig();
-    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
-    assert.ok(!config[ColorSettings.statusBar_background]);
-    assert.ok(!config[ColorSettings.activityBar_background]);
+  suite('Affected elements', function() {
+    test('sets all color customizations for affected elements', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      const config = getPeacockWorkspaceConfig();
+      const style = getElementStyle(BuiltInColors.Angular);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.titleBar_activeBackground]);
+      assert.equal(style.foregroundHex, config[ColorSettings.titleBar_activeForeground]);
+      assert.equal(style.inactiveBackgroundHex, config[ColorSettings.titleBar_inactiveBackground]);
+      assert.equal(style.inactiveForegroundHex, config[ColorSettings.titleBar_inactiveForeground]);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.activityBar_background]);
+      assert.equal(style.foregroundHex, config[ColorSettings.activityBar_foreground]);
+      assert.equal(style.inactiveForegroundHex, config[ColorSettings.activityBar_inactiveForeground]);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.statusBar_background]);
+      assert.equal(style.foregroundHex, config[ColorSettings.statusBar_foreground]);;
+    });
+
+    test('does not set color customizations for elements not affected', async function() {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+        'activityBar': false,
+        'statusBar': false
+      });
+
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      const config = getPeacockWorkspaceConfig();
+      const style = getElementStyle(BuiltInColors.Angular);
+
+      assert.equal(style.backgroundHex, config[ColorSettings.titleBar_activeBackground]);
+      assert.equal(style.foregroundHex, config[ColorSettings.titleBar_activeForeground]);
+      assert.equal(style.inactiveBackgroundHex, config[ColorSettings.titleBar_inactiveBackground]);
+      assert.equal(style.inactiveForegroundHex, config[ColorSettings.titleBar_inactiveForeground]);
+
+      // All others should not exist
+      assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_foreground]);
+      assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+      assert.ok(!config[ColorSettings.statusBar_foreground]);
+      assert.ok(!config[ColorSettings.statusBar_background]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('does not set any color customizations when no elements affected', async function() {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+        'activityBar': false,
+        'statusBar': false,
+        'titleBar': false
+      });
+
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+      assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+      assert.ok(!config[ColorSettings.titleBar_inactiveBackground]);
+      assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+      assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_foreground]);
+      assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+      assert.ok(!config[ColorSettings.statusBar_foreground]);
+      assert.ok(!config[ColorSettings.statusBar_background]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+  });
+
+  suite('Element adjustments', function() {
+    const elementAdjustments: IPeacockElementAdjustments = {
+      'activityBar': 'lighten',
+      'statusBar': 'darken',
+      'titleBar': 'none'
+    };
+
+    suiteSetup(async function() {
+      await updateElementAdjustments(elementAdjustments);
+    });
+
+    test('can lighten the color of an affected element', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        getLightenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.activityBar_background]
+      );
+    });
+
+    test('can darken the color of an affected element', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        getDarkenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.statusBar_background]
+      );
+    });
+
+    test('set adjustment to none for an affected element is noop', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        BuiltInColors.Angular,
+        config[ColorSettings.titleBar_activeBackground]
+      );
+    });
+
+    test('set adjustment to lighten for an affected element is lighter color', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      const originalBrightness = getColorBrightness(BuiltInColors.Angular);
+      const adjustedBrightness = getColorBrightness(config[ColorSettings.activityBar_background]);
+      assert.ok(originalBrightness < adjustedBrightness,
+        `Expected original brightness ${originalBrightness} to be less than ${adjustedBrightness}, but was greater`);
+    });
+
+    test('set adjustment to darken for an affected element is darker color', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      const originalBrightness = getColorBrightness(BuiltInColors.Angular);
+      const adjustedBrightness = getColorBrightness(config[ColorSettings.statusBar_background]);
+      assert.ok(originalBrightness > adjustedBrightness,
+        `Expected original brightness ${originalBrightness} to be greater than ${adjustedBrightness}, but was less`);
+    });
+
+    test('can adjust the color of an affected elements independently', async function() {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        getLightenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.activityBar_background]
+      );
+      assert.equal(
+        getDarkenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.statusBar_background]
+      );
+      assert.equal(
+        BuiltInColors.Angular,
+        config[ColorSettings.titleBar_activeBackground]
+      );
+    });
+
+    test('can only adjust the color of an element that is affected', async function() {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+        'activityBar': false,
+        'statusBar': true,
+        'titleBar': false
+      });
+
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      assert.equal(
+        getDarkenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.statusBar_background]
+      );
+      assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
   });
 
   suiteTeardown(async function() {
     await vscode.commands.executeCommand(Commands.resetColors);
     // put back the original peacock user settings
     await updateAffectedElements(originalValues.affectedElements);
+    await updateElementAdjustments(originalValues.elementAdjustments);
     await updatePreferredColors(originalValues.preferredColors);
   });
 });

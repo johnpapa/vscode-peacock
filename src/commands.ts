@@ -1,14 +1,12 @@
 import * as vscode from 'vscode';
-import { isValidHexColor, isValidNamedColor } from './color-library';
+import { 
+  isValidColorInput,
+  getBackgroundColorHex,
+  getRandomColorHex
+} from './color-library';
 
 import { BuiltInColors, ColorSettings } from './models';
 import { prepareColors, changeColorSetting } from './configuration';
-import {
-  convertNameToHex,
-  formatHex,
-  invertColor,
-  generateRandomHexColor
-} from './color-library';
 import { promptForColor, promptForPreferredColor } from './inputs';
 
 const { workspace } = vscode;
@@ -36,68 +34,40 @@ export async function resetColorsHandler() {
     );
 }
 
-export async function enterColorHandler() {
-  const backgroundColorInput = await promptForColor();
-  let backgroundColorHex: string = '';
-
-  if (isValidHexColor(backgroundColorInput)) {
-    backgroundColorHex = backgroundColorInput;
-  } else if (isValidNamedColor(backgroundColorInput)) {
-    backgroundColorHex = convertNameToHex(backgroundColorInput.toLowerCase());
-  }
-  if (!backgroundColorHex) {
-    throw new Error(`Invalid HEX or named color ${backgroundColorHex}`);
-  }
-
-  const foregroundHex = formatHex(invertColor(backgroundColorHex));
-  const colorCustomizations = prepareColors(backgroundColorHex, foregroundHex);
+async function changeColor(input: string = '') {
+  const backgroundHex = getBackgroundColorHex(input);
+  const colorCustomizations = prepareColors(backgroundHex);
   return await changeColorSetting(colorCustomizations);
+}
+
+export async function enterColorHandler() {
+  const input = await promptForColor();
+  if (!isValidColorInput(input)) {
+    throw new Error(`Invalid HEX or named color "${input}"`);
+  }
+
+  return await changeColor(input);
 }
 
 export async function changeColorToRandomHandler() {
-  const backgroundHex = generateRandomHexColor();
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  return await changeColorSetting(colorCustomizations);
+  return await changeColor(getRandomColorHex());
 }
 
 export async function changeColorToVueGreenHandler() {
-  const backgroundHex = BuiltInColors.Vue;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  return await changeColorSetting(colorCustomizations);
+  return await changeColor(BuiltInColors.Vue);
 }
 
 export async function changeColorToAngularRedHandler() {
-  const backgroundHex = BuiltInColors.Angular;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  return await changeColorSetting(colorCustomizations);
+  return await changeColor(BuiltInColors.Angular);
 }
 
 export async function changeColorToReactBlueHandler() {
-  const backgroundHex = BuiltInColors.React;
-  const foregroundHex = formatHex(invertColor(backgroundHex));
-  const colorCustomizations = prepareColors(backgroundHex, foregroundHex);
-  return await changeColorSetting(colorCustomizations);
+  return await changeColor(BuiltInColors.React);
 }
 
 export async function changeColorToPreferredHandler() {
-  const backgroundColorInput = await promptForPreferredColor();
-  let backgroundColorHex: string = '';
-
-  if (isValidHexColor(backgroundColorInput)) {
-    backgroundColorHex = backgroundColorInput;
-  } else if (isValidNamedColor(backgroundColorInput)) {
-    backgroundColorHex = convertNameToHex(backgroundColorInput.toLowerCase());
-  }
-
-  if (backgroundColorHex) {
-    const foregroundHex = formatHex(invertColor(backgroundColorHex));
-    const colorCustomizations = prepareColors(
-      backgroundColorHex,
-      foregroundHex
-    );
-    await changeColorSetting(colorCustomizations);
+  const input = await promptForPreferredColor();
+  if (isValidColorInput(input)) {
+    await changeColor(input);
   }
 }

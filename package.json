@@ -79,6 +79,41 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
+        "peacock.elementAdjustments": {
+          "type": "object",
+          "properties": {
+            "titleBar": {
+              "type": "string",
+              "enum": [
+                "none",
+                "lighten",
+                "darken"
+              ]
+            },
+            "activityBar": {
+              "type": "string",
+              "enum": [
+                "none",
+                "lighten",
+                "darken"
+              ]
+            },
+            "statusBar": {
+              "type": "string",
+              "enum": [
+                "none",
+                "lighten",
+                "darken"
+              ]
+            }
+          },
+          "default": {
+            "activityBar": "lighten",
+            "statusBar": "none",
+            "titleBar": "none"
+          },
+          "description": "adjusts the colorization of affected elements to provide visual contrast"
+        },
         "peacock.preferredColors": {
           "type": "array",
           "items": {
@@ -116,5 +151,9 @@
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
     "vscode": "^1.1.28"
+  },
+  "dependencies": {
+    "@types/tinycolor": "^1.1.27",
+    "tinycolor2": "^1.4.1"
   }
 }
