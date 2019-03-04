@@ -28,7 +28,7 @@ import {
   updateElementAdjustments,
   getElementStyle
 } from '../configuration';
-import { 
+import {
   isValidColorInput,
   getLightenedColorHex,
   getDarkenedColorHex,
@@ -36,21 +36,21 @@ import {
 } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 
+const allAffectedElements = <IPeacockAffectedElementSettings>{
+  statusBar: true,
+  activityBar: true,
+  titleBar: true
+};
+
+const noopElementAdjustments = <IPeacockElementAdjustments>{
+  'activityBar': 'none',
+  'statusBar': 'none',
+  'titleBar': 'none'
+};
+
 suite('Extension Basic Tests', function() {
   let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
-
-  const allAffectedElements = <IPeacockAffectedElementSettings>{
-    statusBar: true,
-    activityBar: true,
-    titleBar: true
-  };
-
-  const noopElementAdjustments = <IPeacockElementAdjustments>{
-    'activityBar': 'none',
-    'statusBar': 'none',
-    'titleBar': 'none'
-  };
 
   suiteSetup(async function() {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
@@ -186,7 +186,7 @@ suite('Extension Basic Tests', function() {
   });
 
   suite('Enter color', function() {
-  
+
     function createColorInputTest(fakeResponse: string, expectedValue: string) {
       return async function() {
         // Stub the async input box to return a response
@@ -207,28 +207,28 @@ suite('Extension Basic Tests', function() {
 
     // Hex, Hex RGBA
 
-    test('can set color using short hex user input', 
+    test('can set color using short hex user input',
       createColorInputTest('#000', '#000000'));
 
-    test('can set color using short hex user input without hash', 
+    test('can set color using short hex user input without hash',
       createColorInputTest('000', '#000000'));
 
-    test('can set color using short RGBA hex user input', 
+    test('can set color using short RGBA hex user input',
       createColorInputTest('#369C', '#336699cc'));
 
-    test('can set color using short RGBA hex user input without hash', 
+    test('can set color using short RGBA hex user input without hash',
       createColorInputTest('369C', '#336699cc'));
 
-    test('can set color using hex user input', 
+    test('can set color using hex user input',
       createColorInputTest('#f0f0f6', '#f0f0f6'));
 
-    test('can set color using hex user input without hash', 
+    test('can set color using hex user input without hash',
       createColorInputTest('f0f0f6', '#f0f0f6'));
 
-    test('can set color using RGBA hex user input', 
+    test('can set color using RGBA hex user input',
       createColorInputTest('#f0f0f688', '#f0f0f688'));
 
-    test('can set color using RGBA hex user input without hash', 
+    test('can set color using RGBA hex user input without hash',
       createColorInputTest('f0f0f688',  '#f0f0f688'));
 
     // Named colors
@@ -240,7 +240,7 @@ suite('Extension Basic Tests', function() {
       createColorInputTest('DarkBlue', '#00008b'));
 
     // RGB, RGBA
-  
+
     test('can set color using rgb() color user input',
       createColorInputTest('rgb (255 0 0)', '#ff0000'));
 
@@ -342,7 +342,7 @@ suite('Extension Basic Tests', function() {
     });
 
     test('does not set color customizations for elements not affected', async function() {
-      await updateAffectedElements(<IPeacockAffectedElementSettings>{ 
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
         'activityBar': false,
         'statusBar': false
       });
@@ -434,7 +434,7 @@ suite('Extension Basic Tests', function() {
 
       const originalBrightness = getColorBrightness(BuiltInColors.Angular);
       const adjustedBrightness = getColorBrightness(config[ColorSettings.activityBar_background]);
-      assert.ok(originalBrightness < adjustedBrightness, 
+      assert.ok(originalBrightness < adjustedBrightness,
         `Expected original brightness ${originalBrightness} to be less than ${adjustedBrightness}, but was greater`);
     });
 
@@ -444,7 +444,7 @@ suite('Extension Basic Tests', function() {
 
       const originalBrightness = getColorBrightness(BuiltInColors.Angular);
       const adjustedBrightness = getColorBrightness(config[ColorSettings.statusBar_background]);
-      assert.ok(originalBrightness > adjustedBrightness, 
+      assert.ok(originalBrightness > adjustedBrightness,
         `Expected original brightness ${originalBrightness} to be greater than ${adjustedBrightness}, but was less`);
     });
 
@@ -469,9 +469,9 @@ suite('Extension Basic Tests', function() {
       await updateAffectedElements(<IPeacockAffectedElementSettings>{
         'activityBar': false,
         'statusBar': true,
-        'titleBar': false        
+        'titleBar': false
       });
-      
+
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
 
