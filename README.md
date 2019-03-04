@@ -76,7 +76,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
   "peacock.affectActivityBar": true,
   "peacock.affectStatusBar": true,
   "peacock.affectTitleBar": true,
-  "peacock.elementAdjustments" {
+  "peacock.elementAdjustments": {
     "activityBar": "lighten"
   }
 ```
