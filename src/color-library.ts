@@ -1,6 +1,5 @@
 import * as tinycolor from 'tinycolor2';
-import { getDarkForeground, getLightForeground } from './configuration';
-import { ColorAdjustment } from './models';
+import { ColorAdjustment, ForegroundColors } from './models';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -18,8 +17,8 @@ export function getInactiveBackgroundColorHex(backgroundColor = '') {
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight()
-    ? getDarkForeground()
-    : getLightForeground();
+    ? ForegroundColors.DarkForeground
+    : ForegroundColors.LightForeground;
   return formatHex(tinycolor(foreground));
 }
 

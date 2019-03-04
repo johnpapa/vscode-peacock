@@ -2,7 +2,6 @@ import {
   ColorSettings,
   Sections,
   StandardSettings,
-  ForegroundColors,
   extSuffix,
   IPreferredColors,
   preferredColorSeparator,
@@ -55,13 +54,9 @@ export async function updateConfiguration<T>(
   );
 }
 
-export function getDarkForeground() {
-  return ForegroundColors.DarkForeground;
-}
-
-export function getLightForeground() {
-  return ForegroundColors.LightForeground;
-}
+// export function getAffectedSetting() {
+//   return readConfiguration<boolean>(AffectedSettings.);
+// }
 
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
   const isAffected = readConfiguration<boolean>(affectedSetting, false);
