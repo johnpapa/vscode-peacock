@@ -79,7 +79,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
   }
 ```
 
-When using peacock with the React Blue color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar:
+When using peacock with the Angular Red color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
 ![Animated GIF](./resources/element-adjustments.png)
 
@@ -143,7 +143,7 @@ Key Contributors of PRs:
 Key Contributors of issues, reviews, and/or ideas:
 
 - [@codebeast](https://twitter.com/codebeast), [@\_clarkio](https://twitter.com/_clarkio), [@burkeholland](https://twitter.com/burkeholland), [JulianG](https://github.com/JulianG),[@samjulien](https://twitter.com/samjulien),
-[@kushalpanda](https://twitter.com/kushalpanda)
+  [@kushalpanda](https://twitter.com/kushalpanda)
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 
