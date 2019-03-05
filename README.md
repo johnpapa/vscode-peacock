@@ -1,4 +1,4 @@
-# vscode-peacock README
+# Peacock, for Visual Studio Code
 
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=github-oss-jopapa)
 
