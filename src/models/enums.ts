@@ -1,7 +1,5 @@
 // Enums
 export enum StandardSettings {
-  DarkForeground = 'darkForeground',
-  LightForeground = 'lightForeground',
   PreferredColors = 'preferredColors',
   ElementAdjustments = 'elementAdjustments'
 }

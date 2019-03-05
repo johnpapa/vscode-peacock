@@ -120,16 +120,6 @@
             "type": "object"
           },
           "description": "your preferred colors"
-        },
-        "peacock.darkForeground": {
-          "type": "string",
-          "default": "#15202b",
-          "description": "override for the dark foreground"
-        },
-        "peacock.lightForeground": {
-          "type": "string",
-          "default": "#e7e7e7",
-          "description": "override for the light foreground"
         }
       }
     }

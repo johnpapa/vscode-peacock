@@ -12,6 +12,7 @@ Features
 
 Other Changes
 
+- Removed settings for dark and light foregrounds. Now defaults to DarkForeground = '15202b' and LightForeground = 'e7e7e7'. The value of these felt low vs the overhead of yet another setting
 - Introduced the [tinycolor](https://www.npmjs.com/package/tinycolor2) library to handle color input validation, color conversion, and color manipulation
 - Refactored much of the internal color library
 - Added several unit tests for color input entry, affected elements, and element adjustments
