@@ -18,7 +18,8 @@ import {
   BuiltInColors,
   Sections,
   AffectedSettings,
-  IPeacockElementAdjustments
+  IPeacockElementAdjustments,
+  ForegroundColors
 } from '../models';
 import {
   getAffectedElements,
@@ -324,6 +325,74 @@ suite('Extension Basic Tests', function() {
     test(
       'can set color using hsv() color user input with decimals or percentages',
       createColorInputTest('hsv (0, 1, 100%)', '#ff0000')
+    );
+  });
+
+  suite('Foreground color', function() {
+    function createForegroundTest(fakeResponse: string, expectedValue: string) {
+      return async function() {
+        // Stub the async input box to return a response
+        const stub = await sinon
+          .stub(vscode.window, 'showInputBox')
+          .returns(Promise.resolve(fakeResponse));
+
+        // fire the command
+        await vscode.commands.executeCommand(Commands.enterColor);
+        let config = getPeacockWorkspaceConfig();
+        const value = config[ColorSettings.activityBar_foreground];
+        stub.restore();
+
+        assert.ok(isValidColorInput(value));
+        assert.equal(expectedValue, value);
+      };
+    }
+
+    test(
+      'is set to light foreground on black backgrounds',
+      createForegroundTest(
+        'hsl (0, 0, 0)',
+        ForegroundColors.LightForeground
+      )
+    );
+
+    test(
+      'is set to light foreground on dark backgrounds',
+      createForegroundTest(
+        'hsl (0, 0, 25%)',
+        ForegroundColors.LightForeground
+      )
+    );
+
+    test(
+      'is set to light foreground on less than 50% bright backgrounds',
+      createForegroundTest(
+        'hsl (0, 0, 49%)',
+        ForegroundColors.LightForeground
+      )
+    );
+
+    test(
+      'is set to dark foreground on greater than or equal to 50% bright backgrounds',
+      createForegroundTest(
+        'hsl (0, 0, 50%)',
+        ForegroundColors.DarkForeground
+      )
+    );
+
+    test(
+      'is set to dark foreground on light backgrounds',
+      createForegroundTest(
+        'hsl (0, 0, 75%)',
+        ForegroundColors.DarkForeground
+      )
+    );
+
+    test(
+      'is set to dark foreground on white backgrounds',
+      createForegroundTest(
+        'hsl (0, 100%, 100%)',
+        ForegroundColors.DarkForeground
+      )
     );
   });
 
