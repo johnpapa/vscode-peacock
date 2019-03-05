@@ -25,13 +25,13 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Settings
 
-| Property                   | Description                                              |
-| -------------------------- | -------------------------------------------------------- |
-| peacock.affectActivityBar  | Specifies whether Peacock should affect the activity bar |
-| peacock.affectStatusBar    | Specifies whether Peacock should affect the status bar   |
-| peacock.affectTitleBar     | Specifies whether Peacock should affect the title bar    |
-| peacock.elementAdjustments | fine tune coloring of affected elements                  |
-| peacock.preferredColors    | array of objects for color names and hex values          |
+| Property                   | Description                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar  | Specifies whether Peacock should affect the activity bar                                              |
+| peacock.affectStatusBar    | Specifies whether Peacock should affect the status bar                                                |
+| peacock.affectTitleBar     | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
+| peacock.elementAdjustments | fine tune coloring of affected elements                                                               |
+| peacock.preferredColors    | array of objects for color names and hex values                                                       |
 
 ### Preferred Colors
 
@@ -60,6 +60,19 @@ Preferred colors require a user-defined name (`name`) and a value ( `value` ), a
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. The choices are:
 
 ![Animated GIF](./resources/affected-settings.jpg)
+
+#### Title Bar Coloring
+
+The VS Code Title Bar style can be configured to be custom or native with the `window.titleBarStyle` setting. When operating in native mode, Peacock is unable to colorize the Title Bar because VS Code defers Title Bar management to the OS. In order to leverage the Affect Title Bar setting to colorize the Title Bar, the `window.titleBarStyle` must be set to custom.
+
+On macOS there are additional settings that can impact the Title Bar style and force it into native mode regardless of the `window.titleBarStyle` setting. These include:
+
+* `window.nativeTabs` should be set to **false**. If using native tabs, the rendering of the title bar is deferred to the OS and native mode is forced.
+* `window.nativeFullScreen` should be set to **true**. If not using native full screen mode, the custom title bar rendering presents issues in the OS and native mode is forced.
+
+A successful and recommended settings configuration to colorize the Title Bar is:
+
+![Title Bar Settings](./resources/title-bar-coloring-settings.png)
 
 ### Element Adjustments
 
