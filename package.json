@@ -47,7 +47,7 @@
       },
       {
         "command": "peacock.changeColorToRandom",
-        "title": "Peacock: Color to Random"
+        "title": "Peacock: Surprise me with a Random Color"
       },
       {
         "command": "peacock.changeColorToAngularRed",
