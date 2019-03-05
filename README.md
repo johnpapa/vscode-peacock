@@ -86,14 +86,14 @@ When using peacock with the Angular Red color, this results in the Activity Bar 
 
 ## Commands
 
-| Command                       | Description                                                              |
-| ----------------------------- | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors         | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color        | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Vue Green   | Sets the color to Vue.js's main color, #42b883                           |
-| Peacock: Color to Angular Red | Sets the color to Angular's main color, #b52e31                          |
-| Peacock: Color to React Blue  | Sets the color to React.js's main color, #00b3e6                         |
-| Peacock: Color to Random      | Sets the color to a random color                                         |
+| Command                                  | Description                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------ |
+| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
+| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
+| Peacock: Color to Vue Green              | Sets the color to Vue.js's main color, #42b883                           |
+| Peacock: Color to Angular Red            | Sets the color to Angular's main color, #b52e31                          |
+| Peacock: Color to React Blue             | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
 
 ## Input Formats
 
