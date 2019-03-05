@@ -1,4 +1,3 @@
-// Enums
 export enum StandardSettings {
   PreferredColors = 'preferredColors',
   ElementAdjustments = 'elementAdjustments'
@@ -54,6 +53,6 @@ export enum Sections {
 }
 
 export enum ForegroundColors {
-  DarkForeground = '15202b',
-  LightForeground = 'e7e7e7'
+  DarkForeground = '#15202b',
+  LightForeground = '#e7e7e7'
 }

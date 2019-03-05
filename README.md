@@ -22,7 +22,6 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Set and select a user-defined color with the [Preferred Color](#Preferred-Colors) feature
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
-- Adjust the foreground for light and dark based on the contrast for the background color
 
 ## Settings
 
@@ -122,7 +121,7 @@ All formats offer flexible data validation:
 
 ## Roadmap
 
-There are may features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
+There are many features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
 
 ## Changes
 

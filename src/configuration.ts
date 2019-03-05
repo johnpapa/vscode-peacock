@@ -2,7 +2,6 @@ import {
   ColorSettings,
   Sections,
   StandardSettings,
-  ForegroundColors,
   extSuffix,
   IPreferredColors,
   preferredColorSeparator,
@@ -53,14 +52,6 @@ export async function updateConfiguration<T>(
     value,
     vscode.ConfigurationTarget.Global
   );
-}
-
-export function getDarkForeground() {
-  return ForegroundColors.DarkForeground;
-}
-
-export function getLightForeground() {
-  return ForegroundColors.LightForeground;
 }
 
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
