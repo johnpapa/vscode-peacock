@@ -10,7 +10,9 @@ import {
   ColorAdjustment,
   AllSettings,
   AffectedSettings,
-  IPeacockAffectedElementSettings
+  IPeacockAffectedElementSettings,
+  ISettingsIndexer,
+  IPeacockSettings
 } from './models';
 import {
   getForegroundColorHex,
@@ -33,7 +35,7 @@ export function readWorkspaceConfiguration<T>(
 }
 
 export function readConfiguration<T>(
-  setting: AllSettings, //Settings | AffectedSettings,
+  setting: AllSettings,
   defaultValue?: T | undefined
 ) {
   const value: T | undefined = workspace
@@ -60,73 +62,51 @@ export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
 }
 
 export function prepareColors(backgroundHex: string) {
-  const colorCustomizations = workspace
-    .getConfiguration()
-    .get('workbench.colorCustomizations');
-  let newSettings = {
-    titleBarSettings: {},
-    activityBarSettings: {},
-    statusBarSettings: {}
-  };
-
-  let settingsToReset = [];
+  let titleBarSettings = <ISettingsIndexer>{};
+  let activityBarSettings = <ISettingsIndexer>{};
+  let statusBarSettings = <ISettingsIndexer>{};
+  const keepForegroundColor = getKeepForegroundColor();
 
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
-    newSettings.titleBarSettings = {
-      [ColorSettings.titleBar_activeBackground]: titleBarStyle.backgroundHex,
-      [ColorSettings.titleBar_activeForeground]: titleBarStyle.foregroundHex,
-      [ColorSettings.titleBar_inactiveBackground]:
-        titleBarStyle.inactiveBackgroundHex,
-      [ColorSettings.titleBar_inactiveForeground]:
-        titleBarStyle.inactiveForegroundHex
-    };
-  } else {
-    settingsToReset.push(
-      ColorSettings.titleBar_activeBackground,
-      ColorSettings.titleBar_activeForeground,
-      ColorSettings.titleBar_inactiveBackground,
-      ColorSettings.titleBar_inactiveForeground
-    );
+    titleBarSettings[ColorSettings.titleBar_activeBackground] =
+      titleBarStyle.backgroundHex;
+    titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
+      titleBarStyle.inactiveBackgroundHex;
+    if (!keepForegroundColor) {
+      titleBarSettings[ColorSettings.titleBar_activeForeground] =
+        titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
+        titleBarStyle.inactiveForegroundHex;
+    }
   }
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
-    newSettings.activityBarSettings = {
-      [ColorSettings.activityBar_background]: activityBarStyle.backgroundHex,
-      [ColorSettings.activityBar_foreground]: activityBarStyle.foregroundHex,
-      [ColorSettings.activityBar_inactiveForeground]:
-        activityBarStyle.inactiveForegroundHex
-    };
-  } else {
-    settingsToReset.push(
-      ColorSettings.activityBar_background,
-      ColorSettings.activityBar_foreground,
-      ColorSettings.activityBar_inactiveForeground
-    );
+    activityBarSettings[ColorSettings.activityBar_background] =
+      activityBarStyle.backgroundHex;
+    if (!keepForegroundColor) {
+      activityBarSettings[ColorSettings.activityBar_foreground] =
+        activityBarStyle.foregroundHex;
+      activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
+        activityBarStyle.inactiveForegroundHex;
+    }
   }
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
     const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
-    newSettings.statusBarSettings = {
-      [ColorSettings.statusBar_background]: statusBarStyle.backgroundHex,
-      [ColorSettings.statusBar_foreground]: statusBarStyle.foregroundHex
-    };
-  } else {
-    settingsToReset.push(
-      ColorSettings.statusBar_background,
-      ColorSettings.statusBar_foreground
-    );
+    statusBarSettings[ColorSettings.statusBar_background] =
+      statusBarStyle.backgroundHex;
+    if (!keepForegroundColor) {
+      statusBarSettings[ColorSettings.statusBar_foreground] =
+        statusBarStyle.foregroundHex;
+    }
   }
+
   // Merge all color settings
   const newColorCustomizations: any = {
-    ...colorCustomizations,
-    ...newSettings.activityBarSettings,
-    ...newSettings.titleBarSettings,
-    ...newSettings.statusBarSettings
+    ...activityBarSettings,
+    ...titleBarSettings,
+    ...statusBarSettings
   };
-
-  Object.values(settingsToReset).forEach(setting => {
-    delete newColorCustomizations[setting];
-  });
 
   return newColorCustomizations;
 }
@@ -139,6 +119,13 @@ export async function changeColorSetting(colorCustomizations: {}) {
       colorCustomizations,
       vscode.ConfigurationTarget.Workspace
     );
+}
+
+export function getKeepForegroundColor() {
+  return readConfiguration<boolean>(
+    StandardSettings.KeepForegroundColor,
+    false
+  );
 }
 
 export function getPreferredColors() {
