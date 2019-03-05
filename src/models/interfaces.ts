@@ -1,5 +1,9 @@
 import { ColorAdjustment } from './enums';
 
+export interface ISettingsIndexer {
+  [key: string]: any;
+}
+
 export interface IPreferredColors {
   name: string;
   value: string;
@@ -38,4 +42,5 @@ export interface IPeacockSettings {
   affectedElements: IPeacockAffectedElementSettings;
   elementAdjustments: IPeacockElementAdjustments;
   preferredColors: IPreferredColors[];
+  keepForegroundColor: boolean;
 }
