@@ -54,10 +54,6 @@ export async function updateConfiguration<T>(
   );
 }
 
-// export function getAffectedSetting() {
-//   return readConfiguration<boolean>(AffectedSettings.);
-// }
-
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
   const isAffected = readConfiguration<boolean>(affectedSetting, false);
   return isAffected;
