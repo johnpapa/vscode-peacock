@@ -57,8 +57,7 @@ export async function updateConfiguration<T>(
 }
 
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
-  const isAffected = readConfiguration<boolean>(affectedSetting, false);
-  return isAffected;
+  return readConfiguration<boolean>(affectedSetting, false);
 }
 
 export function prepareColors(backgroundHex: string) {
