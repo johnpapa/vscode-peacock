@@ -1,4 +1,4 @@
-import { ColorAdjustment } from '.';
+import { ColorAdjustment } from './enums';
 
 export interface IPreferredColors {
   name: string;
