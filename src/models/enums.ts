@@ -1,4 +1,3 @@
-// Enums
 export enum StandardSettings {
   PreferredColors = 'preferredColors',
   ElementAdjustments = 'elementAdjustments'
