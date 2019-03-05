@@ -79,6 +79,11 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
+        "peacock.keepForegroundColor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
+        },
         "peacock.elementAdjustments": {
           "type": "object",
           "properties": {
@@ -112,14 +117,14 @@
             "statusBar": "none",
             "titleBar": "none"
           },
-          "description": "adjusts the colorization of affected elements to provide visual contrast"
+          "description": "Adjusts the colorization of affected elements to provide visual contrast"
         },
         "peacock.preferredColors": {
           "type": "array",
           "items": {
             "type": "object"
           },
-          "description": "your preferred colors"
+          "description": "Your preferred colors"
         }
       }
     }
