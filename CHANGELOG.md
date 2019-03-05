@@ -16,6 +16,7 @@ Other Changes
 - Introduced the [tinycolor](https://www.npmjs.com/package/tinycolor2) library to handle color input validation, color conversion, and color manipulation
 - Refactored much of the internal color library
 - Added several unit tests for color input entry, affected elements, and element adjustments
+- Updated README
 
 ## 0.5.0
 
