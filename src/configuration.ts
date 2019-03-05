@@ -61,44 +61,22 @@ export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
 }
 
 export function prepareColors(backgroundHex: string) {
-  let titleBarSettings = <ISettingsIndexer>{};
-  let activityBarSettings = <ISettingsIndexer>{};
-  let statusBarSettings = <ISettingsIndexer>{};
   const keepForegroundColor = getKeepForegroundColor();
 
-  if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
-    const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
-    titleBarSettings[ColorSettings.titleBar_activeBackground] =
-      titleBarStyle.backgroundHex;
-    titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
-      titleBarStyle.inactiveBackgroundHex;
-    if (!keepForegroundColor) {
-      titleBarSettings[ColorSettings.titleBar_activeForeground] =
-        titleBarStyle.foregroundHex;
-      titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
-        titleBarStyle.inactiveForegroundHex;
-    }
-  }
-  if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
-    activityBarSettings[ColorSettings.activityBar_background] =
-      activityBarStyle.backgroundHex;
-    if (!keepForegroundColor) {
-      activityBarSettings[ColorSettings.activityBar_foreground] =
-        activityBarStyle.foregroundHex;
-      activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
-        activityBarStyle.inactiveForegroundHex;
-    }
-  }
-  if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
-    const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
-    statusBarSettings[ColorSettings.statusBar_background] =
-      statusBarStyle.backgroundHex;
-    if (!keepForegroundColor) {
-      statusBarSettings[ColorSettings.statusBar_foreground] =
-        statusBarStyle.foregroundHex;
-    }
-  }
+  let titleBarSettings = collectTitleBarSettings(
+    backgroundHex,
+    keepForegroundColor
+  );
+
+  let activityBarSettings = collectActivityBarSettings(
+    backgroundHex,
+    keepForegroundColor
+  );
+
+  let statusBarSettings = collectStatusBarSettings(
+    backgroundHex,
+    keepForegroundColor
+  );
 
   // Merge all color settings
   const newColorCustomizations: any = {
@@ -206,4 +184,62 @@ export function getElementStyle(
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
   };
+}
+
+function collectTitleBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean
+) {
+  const titleBarSettings = <ISettingsIndexer>{};
+  if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
+    const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
+    titleBarSettings[ColorSettings.titleBar_activeBackground] =
+      titleBarStyle.backgroundHex;
+    titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
+      titleBarStyle.inactiveBackgroundHex;
+    if (!keepForegroundColor) {
+      titleBarSettings[ColorSettings.titleBar_activeForeground] =
+        titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
+        titleBarStyle.inactiveForegroundHex;
+    }
+  }
+  return titleBarSettings;
+}
+
+function collectActivityBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean
+) {
+  const activityBarSettings = <ISettingsIndexer>{};
+
+  if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
+    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
+    activityBarSettings[ColorSettings.activityBar_background] =
+      activityBarStyle.backgroundHex;
+    if (!keepForegroundColor) {
+      activityBarSettings[ColorSettings.activityBar_foreground] =
+        activityBarStyle.foregroundHex;
+      activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
+        activityBarStyle.inactiveForegroundHex;
+    }
+  }
+  return activityBarSettings;
+}
+
+function collectStatusBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean
+) {
+  const statusBarSettings = <ISettingsIndexer>{};
+  if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
+    const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
+    statusBarSettings[ColorSettings.statusBar_background] =
+      statusBarStyle.backgroundHex;
+    if (!keepForegroundColor) {
+      statusBarSettings[ColorSettings.statusBar_foreground] =
+        statusBarStyle.foregroundHex;
+    }
+  }
+  return statusBarSettings;
 }
