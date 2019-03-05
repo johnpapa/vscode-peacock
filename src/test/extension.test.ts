@@ -349,42 +349,27 @@ suite('Extension Basic Tests', function() {
 
     test(
       'is set to light foreground on black backgrounds',
-      createForegroundTest(
-        'hsl (0, 0, 0)',
-        ForegroundColors.LightForeground
-      )
+      createForegroundTest('hsl (0, 0, 0)', ForegroundColors.LightForeground)
     );
 
     test(
       'is set to light foreground on dark backgrounds',
-      createForegroundTest(
-        'hsl (0, 0, 25%)',
-        ForegroundColors.LightForeground
-      )
+      createForegroundTest('hsl (0, 0, 25%)', ForegroundColors.LightForeground)
     );
 
     test(
       'is set to light foreground on less than 50% bright backgrounds',
-      createForegroundTest(
-        'hsl (0, 0, 49%)',
-        ForegroundColors.LightForeground
-      )
+      createForegroundTest('hsl (0, 0, 49%)', ForegroundColors.LightForeground)
     );
 
     test(
       'is set to dark foreground on greater than or equal to 50% bright backgrounds',
-      createForegroundTest(
-        'hsl (0, 0, 50%)',
-        ForegroundColors.DarkForeground
-      )
+      createForegroundTest('hsl (0, 0, 50%)', ForegroundColors.DarkForeground)
     );
 
     test(
       'is set to dark foreground on light backgrounds',
-      createForegroundTest(
-        'hsl (0, 0, 75%)',
-        ForegroundColors.DarkForeground
-      )
+      createForegroundTest('hsl (0, 0, 75%)', ForegroundColors.DarkForeground)
     );
 
     test(
