@@ -56,21 +56,11 @@ export async function updateConfiguration<T>(
 }
 
 export function getDarkForeground() {
-  const foregroundOverride = readConfiguration<string>(
-    StandardSettings.DarkForeground
-  );
-  return foregroundOverride || ForegroundColors.DarkForeground;
+  return ForegroundColors.DarkForeground;
 }
 
-// export function getAffectedSetting() {
-//   return readConfiguration<boolean>(AffectedSettings.);
-// }
-
 export function getLightForeground() {
-  const foregroundOverride = readConfiguration<string>(
-    StandardSettings.LightForeground
-  );
-  return foregroundOverride || ForegroundColors.LightForeground;
+  return ForegroundColors.LightForeground;
 }
 
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {

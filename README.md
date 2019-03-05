@@ -24,15 +24,15 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Saves colors to your workspace in the `.vscode/settings.json` file
 - Adjust the foreground for light and dark based on the contrast for the background color
 
-## Properties
+## Settings
 
-| Property                   | Description                                     |
-| -------------------------- | ----------------------------------------------- |
-| peacock.affectedElements   | prefixes of elements affected by peacock        |
-| peacock.elementAdjustments | fine tune coloring of affected elements         |
-| peacock.darkForeground     | override for the dark foreground                |
-| peacock.lightForeground    | override for the light foreground               |
-| peacock.preferredColors    | array of objects for color names and hex values |
+| Property                   | Description                                              |
+| -------------------------- | -------------------------------------------------------- |
+| peacock.affectActivityBar  | Specifies whether Peacock should affect the activity bar |
+| peacock.affectStatusBar    | Specifies whether Peacock should affect the status bar   |
+| peacock.affectTitleBar     | Specifies whether Peacock should affect the title bar    |
+| peacock.elementAdjustments | fine tune coloring of affected elements                  |
+| peacock.preferredColors    | array of objects for color names and hex values          |
 
 ### Preferred Colors
 
