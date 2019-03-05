@@ -1,6 +1,7 @@
 export enum StandardSettings {
   PreferredColors = 'preferredColors',
-  ElementAdjustments = 'elementAdjustments'
+  ElementAdjustments = 'elementAdjustments',
+  KeepForegroundColor = 'keepForegroundColor'
 }
 
 export enum AffectedSettings {
