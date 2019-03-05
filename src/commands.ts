@@ -34,7 +34,7 @@ export async function resetColorsHandler() {
     );
 }
 
-async function changeColor(input: string = '') {
+async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
   const colorCustomizations = prepareColors(backgroundHex);
   return await changeColorSetting(colorCustomizations);
