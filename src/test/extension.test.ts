@@ -51,11 +51,11 @@ const noopElementAdjustments = <IPeacockElementAdjustments>{
   titleBar: 'none'
 };
 
-suite('Extension Basic Tests', function() {
+suite('Extension Basic Tests', () => {
   let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
 
-  suiteSetup(async function() {
+  suiteSetup(async () => {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
     if (!ext) {
       throw new Error('Extension was not found.');
@@ -85,21 +85,21 @@ suite('Extension Basic Tests', function() {
     await updateElementAdjustments(noopElementAdjustments);
   });
 
-  setup(async function() {
+  setup(async () => {
     // runs before each test
     await vscode.commands.executeCommand(Commands.resetColors);
   });
 
-  test('Extension loads in VSCode and is active', function(done) {
+  test('Extension loads in VSCode and is active', done => {
     // Hopefully a 200ms timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
-    setTimeout(function() {
+    setTimeout(() => {
       assert.equal(extension.isActive, true);
       done();
     }, 200);
   });
 
-  test('constants.Commands exist in package.json', function() {
+  test('constants.Commands exist in package.json', () => {
     const commandCollection: ICommand[] =
       extension.packageJSON.contributes.commands;
     for (let command in Commands) {
@@ -110,7 +110,7 @@ suite('Extension Basic Tests', function() {
     }
   });
 
-  test('constants.Settings exist in package.json', function() {
+  test('constants.Settings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
@@ -122,7 +122,7 @@ suite('Extension Basic Tests', function() {
     }
   });
 
-  test('constants.AffectedSettings exist in package.json', function() {
+  test('constants.AffectedSettings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
@@ -134,7 +134,7 @@ suite('Extension Basic Tests', function() {
     }
   });
 
-  test('package.json commands registered in extension', function(done) {
+  test('package.json commands registered in extension', done => {
     const commandStrings: string[] = extension.packageJSON.contributes.commands.map(
       (c: ICommand) => c.command
     );
@@ -149,7 +149,7 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  test('can set color to Angular Red', async function() {
+  test('can set color to Angular Red', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
     let config = getPeacockWorkspaceConfig();
     assert.equal(
@@ -158,7 +158,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can set color to Vue Green', async function() {
+  test('can set color to Vue Green', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
     let config = getPeacockWorkspaceConfig();
     assert.equal(
@@ -167,7 +167,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can set color to React Blue', async function() {
+  test('can set color to React Blue', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
     let config = getPeacockWorkspaceConfig();
     assert.equal(
@@ -176,7 +176,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can set color to Random color', async function() {
+  test('can set color to Random color', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToRandom);
     let config = getPeacockWorkspaceConfig();
     assert.ok(
@@ -184,7 +184,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can reset colors', async function() {
+  test('can reset colors', async () => {
     await vscode.commands.executeCommand(Commands.resetColors);
     let config = getPeacockWorkspaceConfig();
     assert.ok(!config[ColorSettings.titleBar_activeBackground]);
@@ -192,9 +192,9 @@ suite('Extension Basic Tests', function() {
     assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
-  suite('Enter color', function() {
+  suite('Enter color', () => {
     function createColorInputTest(fakeResponse: string, expectedValue: string) {
-      return async function() {
+      return async () => {
         // Stub the async input box to return a response
         const stub = await sinon
           .stub(vscode.window, 'showInputBox')
@@ -332,9 +332,9 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  suite('Foreground color', function() {
+  suite('Foreground color', () => {
     function createForegroundTest(fakeResponse: string, expectedValue: string) {
-      return async function() {
+      return async () => {
         // Stub the async input box to return a response
         const stub = await sinon
           .stub(vscode.window, 'showInputBox')
@@ -385,8 +385,8 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  suite('Preferred colors', function() {
-    test('can set color to preferred color', async function() {
+  suite('Preferred colors', () => {
+    test('can set color to preferred color', async () => {
       // Stub the async quick pick to return a response
       const fakeResponse = 'Azure Blue -> #007fff';
       const stub = await sinon
@@ -404,7 +404,7 @@ suite('Extension Basic Tests', function() {
       assert.ok(value === parsedResponse);
     });
 
-    test('set to preferred color with no preferences is a noop', async function() {
+    test('set to preferred color with no preferences is a noop', async () => {
       // set the color to react blue to start
       await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
 
@@ -425,7 +425,7 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  suite('Affected elements', function() {
+  suite('Affected elements', () => {
     suite('keep foreground color = false', () => {
       let originalValue: boolean;
       suiteSetup(async () => {
@@ -433,11 +433,11 @@ suite('Extension Basic Tests', function() {
         await updateKeepForegroundColor(false);
       });
 
-      test('sets all color customizations for affected elements', async function() {
+      test('sets all color customizations for affected elements', async () => {
         await testsSetsColorCustomizationsForAffectedElements();
       });
 
-      test('does not set color customizations for elements not affected', async function() {
+      test('does not set color customizations for elements not affected', async () => {
         await testsDoesNotSetColorCustomizationsForAffectedElements();
       });
 
@@ -453,11 +453,11 @@ suite('Extension Basic Tests', function() {
         await updateKeepForegroundColor(true);
       });
 
-      test('sets all color customizations for affected elements', async function() {
+      test('sets all color customizations for affected elements', async () => {
         await testsSetsColorCustomizationsForAffectedElements();
       });
 
-      test('does not set color customizations for elements not affected', async function() {
+      test('does not set color customizations for elements not affected', async () => {
         await testsDoesNotSetColorCustomizationsForAffectedElements();
       });
 
@@ -496,18 +496,18 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  suite('Element adjustments', function() {
+  suite('Element adjustments', () => {
     const elementAdjustments: IPeacockElementAdjustments = {
       activityBar: 'lighten',
       statusBar: 'darken',
       titleBar: 'none'
     };
 
-    suiteSetup(async function() {
+    suiteSetup(async () => {
       await updateElementAdjustments(elementAdjustments);
     });
 
-    test('can lighten the color of an affected element', async function() {
+    test('can lighten the color of an affected element', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
@@ -516,7 +516,7 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('can darken the color of an affected element', async function() {
+    test('can darken the color of an affected element', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
@@ -525,7 +525,7 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('set adjustment to none for an affected element is noop', async function() {
+    test('set adjustment to none for an affected element is noop', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
@@ -534,7 +534,7 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('set adjustment to lighten for an affected element is lighter color', async function() {
+    test('set adjustment to lighten for an affected element is lighter color', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
 
@@ -548,7 +548,7 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('set adjustment to darken for an affected element is darker color', async function() {
+    test('set adjustment to darken for an affected element is darker color', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
 
@@ -562,7 +562,7 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('can adjust the color of an affected elements independently', async function() {
+    test('can adjust the color of an affected elements independently', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
@@ -579,7 +579,7 @@ suite('Extension Basic Tests', function() {
       );
     });
 
-    test('can only adjust the color of an element that is affected', async function() {
+    test('can only adjust the color of an element that is affected', async () => {
       await updateAffectedElements(<IPeacockAffectedElementSettings>{
         activityBar: false,
         statusBar: true,
@@ -600,7 +600,7 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  suiteTeardown(async function() {
+  suiteTeardown(async () => {
     await vscode.commands.executeCommand(Commands.resetColors);
     // put back the original peacock user settings
     await updateAffectedElements(originalValues.affectedElements);
