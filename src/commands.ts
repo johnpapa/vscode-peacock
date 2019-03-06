@@ -25,13 +25,7 @@ export async function resetColorsHandler() {
     delete newColorCustomizations[setting];
   });
 
-  return await workspace
-    .getConfiguration()
-    .update(
-      'workbench.colorCustomizations',
-      newColorCustomizations,
-      vscode.ConfigurationTarget.Workspace
-    );
+  return changeColorSetting(newColorCustomizations);
 }
 
 async function changeColor(input = '') {

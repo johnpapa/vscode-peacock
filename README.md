@@ -25,13 +25,14 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Settings
 
-| Property                   | Description                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar  | Specifies whether Peacock should affect the activity bar                                              |
-| peacock.affectStatusBar    | Specifies whether Peacock should affect the status bar                                                |
-| peacock.affectTitleBar     | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
-| peacock.elementAdjustments | fine tune coloring of affected elements                                                               |
-| peacock.preferredColors    | array of objects for color names and hex values                                                       |
+| Property                    | Description                                                                                           |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar   | Specifies whether Peacock should affect the activity bar                                              |
+| peacock.affectStatusBar     | Specifies whether Peacock should affect the status bar                                                |
+| peacock.affectTitleBar      | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
+| peacock.elementAdjustments  | fine tune coloring of affected elements                                                               |
+| peacock.preferredColors     | array of objects for color names and hex values                                                       |
+| peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
 
 ### Preferred Colors
 
@@ -61,19 +62,6 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 ![Animated GIF](./resources/affected-settings.jpg)
 
-#### Title Bar Coloring
-
-The VS Code Title Bar style can be configured to be custom or native with the `window.titleBarStyle` setting. When operating in native mode, Peacock is unable to colorize the Title Bar because VS Code defers Title Bar management to the OS. In order to leverage the Affect Title Bar setting to colorize the Title Bar, the `window.titleBarStyle` must be set to custom.
-
-On macOS there are additional settings that can impact the Title Bar style and force it into native mode regardless of the `window.titleBarStyle` setting. These include:
-
-* `window.nativeTabs` should be set to **false**. If using native tabs, the rendering of the title bar is deferred to the OS and native mode is forced.
-* `window.nativeFullScreen` should be set to **true**. If not using native full screen mode, the custom title bar rendering presents issues in the OS and native mode is forced.
-
-A successful and recommended settings configuration to colorize the Title Bar is:
-
-![Title Bar Settings](./resources/title-bar-coloring-settings.png)
-
 ### Element Adjustments
 
 You can fine tune the coloring of affected elements by making them slightly darker or lighter to provide a subtle visual contrast between them. Options for adjusting elements are:
@@ -96,6 +84,12 @@ An example of using this might be to make the Activity Bar slightly lighter than
 When using peacock with the Angular Red color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
 ![Animated GIF](./resources/element-adjustments.png)
+
+## Keep Foreground Color
+
+Recommended to remain false (the default value).
+
+When set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background. Some users may desire this if their theme's foreground is their preference over Peacock. In this case, when set to true, the foreground will not be affected.
 
 ## Commands
 
@@ -139,6 +133,21 @@ There are many features in the roadmap. Please refer to the [issues list and fee
 ## Changes
 
 See the [CHANGELOG](CHANGELOG.md) for the latest changes.
+
+## FAQ
+
+### Title Bar Coloring
+
+The VS Code Title Bar style can be configured to be custom or native with the `window.titleBarStyle` setting. When operating in native mode, Peacock is unable to colorize the Title Bar because VS Code defers Title Bar management to the OS. In order to leverage the Affect Title Bar setting to colorize the Title Bar, the `window.titleBarStyle` must be set to custom.
+
+On macOS there are additional settings that can impact the Title Bar style and force it into native mode regardless of the `window.titleBarStyle` setting. These include:
+
+- `window.nativeTabs` should be set to **false**. If using native tabs, the rendering of the title bar is deferred to the OS and native mode is forced.
+- `window.nativeFullScreen` should be set to **true**. If not using native full screen mode, the custom title bar rendering presents issues in the OS and native mode is forced.
+
+A successful and recommended settings configuration to colorize the Title Bar is:
+
+![Title Bar Settings](./resources/title-bar-coloring-settings.png)
 
 ## Credits
 
