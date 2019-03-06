@@ -200,6 +200,7 @@ function collectTitleBarSettings(
       titleBarStyle.backgroundHex;
     titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
       titleBarStyle.inactiveBackgroundHex;
+
     if (!keepForegroundColor) {
       titleBarSettings[ColorSettings.titleBar_activeForeground] =
         titleBarStyle.foregroundHex;
@@ -220,6 +221,7 @@ function collectActivityBarSettings(
     const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
     activityBarSettings[ColorSettings.activityBar_background] =
       activityBarStyle.backgroundHex;
+
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] =
         activityBarStyle.foregroundHex;
@@ -239,6 +241,7 @@ function collectStatusBarSettings(
     const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
     statusBarSettings[ColorSettings.statusBar_background] =
       statusBarStyle.backgroundHex;
+
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] =
         statusBarStyle.foregroundHex;
