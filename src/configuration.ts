@@ -152,6 +152,10 @@ export async function updateElementAdjustments(
   );
 }
 
+export async function updateKeepForegroundColor(value: boolean) {
+  return await updateConfiguration(StandardSettings.KeepForegroundColor, value);
+}
+
 export async function updatePreferredColors(values: IPreferredColors[]) {
   return await updateConfiguration(StandardSettings.PreferredColors, values);
 }

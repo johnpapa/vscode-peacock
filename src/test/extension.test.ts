@@ -27,7 +27,9 @@ import {
   updateAffectedElements,
   updatePreferredColors,
   updateElementAdjustments,
-  getElementStyle
+  getElementStyle,
+  updateKeepForegroundColor,
+  getKeepForegroundColor
 } from '../configuration';
 import {
   isValidColorInput,
@@ -64,6 +66,7 @@ suite('Extension Basic Tests', function() {
 
     // Save the original values
     originalValues.affectedElements = getAffectedElements();
+    originalValues.keepForegroundColor = getKeepForegroundColor();
     const { values: preferredColors } = getPreferredColors();
     originalValues.preferredColors = preferredColors;
 
@@ -78,6 +81,7 @@ suite('Extension Basic Tests', function() {
       { name: 'Auth0 Orange', value: '#eb5424' },
       { name: 'Azure Blue', value: '#007fff' }
     ]);
+    await updateKeepForegroundColor(false);
     await updateElementAdjustments(noopElementAdjustments);
   });
 
@@ -422,109 +426,73 @@ suite('Extension Basic Tests', function() {
   });
 
   suite('Affected elements', function() {
-    test('sets all color customizations for affected elements', async function() {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
-      const config = getPeacockWorkspaceConfig();
-      const style = getElementStyle(BuiltInColors.Angular);
-
-      assert.equal(
-        style.backgroundHex,
-        config[ColorSettings.titleBar_activeBackground]
-      );
-      assert.equal(
-        style.foregroundHex,
-        config[ColorSettings.titleBar_activeForeground]
-      );
-      assert.equal(
-        style.inactiveBackgroundHex,
-        config[ColorSettings.titleBar_inactiveBackground]
-      );
-      assert.equal(
-        style.inactiveForegroundHex,
-        config[ColorSettings.titleBar_inactiveForeground]
-      );
-
-      assert.equal(
-        style.backgroundHex,
-        config[ColorSettings.activityBar_background]
-      );
-      assert.equal(
-        style.foregroundHex,
-        config[ColorSettings.activityBar_foreground]
-      );
-      assert.equal(
-        style.inactiveForegroundHex,
-        config[ColorSettings.activityBar_inactiveForeground]
-      );
-
-      assert.equal(
-        style.backgroundHex,
-        config[ColorSettings.statusBar_background]
-      );
-      assert.equal(
-        style.foregroundHex,
-        config[ColorSettings.statusBar_foreground]
-      );
-    });
-
-    test('does not set color customizations for elements not affected', async function() {
-      await updateAffectedElements(<IPeacockAffectedElementSettings>{
-        activityBar: false,
-        statusBar: false
+    suite('keep foreground color = false', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepForegroundColor();
+        await updateKeepForegroundColor(false);
       });
 
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
-      const config = getPeacockWorkspaceConfig();
-      const style = getElementStyle(BuiltInColors.Angular);
-
-      assert.equal(
-        style.backgroundHex,
-        config[ColorSettings.titleBar_activeBackground]
-      );
-      assert.equal(
-        style.foregroundHex,
-        config[ColorSettings.titleBar_activeForeground]
-      );
-      assert.equal(
-        style.inactiveBackgroundHex,
-        config[ColorSettings.titleBar_inactiveBackground]
-      );
-      assert.equal(
-        style.inactiveForegroundHex,
-        config[ColorSettings.titleBar_inactiveForeground]
-      );
-
-      // All others should not exist
-      assert.ok(!config[ColorSettings.activityBar_background]);
-      assert.ok(!config[ColorSettings.activityBar_foreground]);
-      assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
-      assert.ok(!config[ColorSettings.statusBar_foreground]);
-      assert.ok(!config[ColorSettings.statusBar_background]);
-
-      await updateAffectedElements(allAffectedElements);
-    });
-
-    test('does not set any color customizations when no elements affected', async function() {
-      await updateAffectedElements(<IPeacockAffectedElementSettings>{
-        activityBar: false,
-        statusBar: false,
-        titleBar: false
+      test('sets all color customizations for affected elements', async function() {
+        await testsSetsColorCustomizationsForAffectedElements();
       });
 
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
-      let config = getPeacockWorkspaceConfig();
+      test('does not set color customizations for elements not affected', async function() {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
 
-      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
-      assert.ok(!config[ColorSettings.titleBar_activeForeground]);
-      assert.ok(!config[ColorSettings.titleBar_inactiveBackground]);
-      assert.ok(!config[ColorSettings.titleBar_activeForeground]);
-      assert.ok(!config[ColorSettings.activityBar_background]);
-      assert.ok(!config[ColorSettings.activityBar_foreground]);
-      assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
-      assert.ok(!config[ColorSettings.statusBar_foreground]);
-      assert.ok(!config[ColorSettings.statusBar_background]);
+      suiteTeardown(async () => {
+        await updateKeepForegroundColor(originalValue);
+      });
+    });
 
-      await updateAffectedElements(allAffectedElements);
+    suite('keep foreground color = true', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepForegroundColor();
+        await updateKeepForegroundColor(true);
+      });
+
+      test('sets all color customizations for affected elements', async function() {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async function() {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepForegroundColor(originalValue);
+      });
+    });
+
+    suite('No affected elements', () => {
+      suiteSetup(async () => {
+        await updateAffectedElements(<IPeacockAffectedElementSettings>{
+          activityBar: false,
+          statusBar: false,
+          titleBar: false
+        });
+      });
+
+      test('does not set any color customizations when no elements affected', async () => {
+        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        let config = getPeacockWorkspaceConfig();
+
+        assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+        assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+        assert.ok(!config[ColorSettings.titleBar_inactiveBackground]);
+        assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+        assert.ok(!config[ColorSettings.activityBar_background]);
+        assert.ok(!config[ColorSettings.activityBar_foreground]);
+        assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+        assert.ok(!config[ColorSettings.statusBar_foreground]);
+        assert.ok(!config[ColorSettings.statusBar_background]);
+      });
+
+      suiteTeardown(async () => {
+        await updateAffectedElements(allAffectedElements);
+      });
     });
   });
 
@@ -638,9 +606,124 @@ suite('Extension Basic Tests', function() {
     await updateAffectedElements(originalValues.affectedElements);
     await updateElementAdjustments(originalValues.elementAdjustments);
     await updatePreferredColors(originalValues.preferredColors);
+    await updateKeepForegroundColor(originalValues.keepForegroundColor);
   });
 });
 
+async function testsDoesNotSetColorCustomizationsForAffectedElements() {
+  await updateAffectedElements(<IPeacockAffectedElementSettings>{
+    activityBar: false,
+    statusBar: false
+  });
+  await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+  const config = getPeacockWorkspaceConfig();
+  const keepForegroundColor = getKeepForegroundColor();
+  const style = getElementStyle(BuiltInColors.Angular);
+
+  assert.equal(
+    style.backgroundHex,
+    config[ColorSettings.titleBar_activeBackground]
+  );
+
+  assert.ok(
+    checkForegroundTest(
+      style.foregroundHex,
+      ColorSettings.titleBar_activeForeground,
+      keepForegroundColor
+    )
+  );
+
+  assert.equal(
+    style.inactiveBackgroundHex,
+    config[ColorSettings.titleBar_inactiveBackground]
+  );
+
+  assert.ok(
+    checkForegroundTest(
+      style.inactiveForegroundHex,
+      ColorSettings.titleBar_inactiveForeground,
+      keepForegroundColor
+    )
+  );
+
+  // All others should not exist
+  assert.ok(!config[ColorSettings.activityBar_background]);
+  assert.ok(!config[ColorSettings.activityBar_foreground]);
+  assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+  assert.ok(!config[ColorSettings.statusBar_foreground]);
+  assert.ok(!config[ColorSettings.statusBar_background]);
+
+  // reset
+  await updateAffectedElements(allAffectedElements);
+}
+
+async function testsSetsColorCustomizationsForAffectedElements() {
+  await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+  const config = getPeacockWorkspaceConfig();
+  const keepForegroundColor = getKeepForegroundColor();
+
+  const style = getElementStyle(BuiltInColors.Angular);
+  assert.equal(
+    style.backgroundHex,
+    config[ColorSettings.titleBar_activeBackground]
+  );
+
+  assert.ok(
+    checkForegroundTest(
+      style.foregroundHex,
+      ColorSettings.titleBar_activeForeground,
+      keepForegroundColor
+    )
+  );
+
+  assert.equal(
+    style.inactiveBackgroundHex,
+    config[ColorSettings.titleBar_inactiveBackground]
+  );
+
+  checkForegroundTest(
+    style.inactiveForegroundHex,
+    ColorSettings.titleBar_inactiveForeground,
+    keepForegroundColor
+  );
+
+  assert.equal(
+    style.backgroundHex,
+    config[ColorSettings.activityBar_background]
+  );
+
+  checkForegroundTest(
+    style.foregroundHex,
+    ColorSettings.activityBar_foreground,
+    keepForegroundColor
+  );
+
+  checkForegroundTest(
+    style.inactiveForegroundHex,
+    ColorSettings.activityBar_inactiveForeground,
+    keepForegroundColor
+  );
+
+  assert.equal(style.backgroundHex, config[ColorSettings.statusBar_background]);
+
+  checkForegroundTest(
+    style.foregroundHex,
+    ColorSettings.statusBar_foreground,
+    keepForegroundColor
+  );
+}
+
 function getPeacockWorkspaceConfig() {
   return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
+}
+
+function checkForegroundTest(
+  elementStyle: string,
+  colorSetting: ColorSettings,
+  keepForegroundColor: boolean
+) {
+  const config = getPeacockWorkspaceConfig();
+  let match = elementStyle === config[colorSetting];
+  let passesTest = keepForegroundColor ? !match : match;
+  return passesTest;
 }
