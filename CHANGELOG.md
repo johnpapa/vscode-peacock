@@ -2,6 +2,69 @@
 
 All notable changes to the code will be documented in this file.
 
+## 0.7.0
+
+Features
+
+- Added `peacock.keepForegroundColor` setting, which specifies whether Peacock should change affect colors (see [Keep Foreground Color](./README.md#keep-foreground-color))
+
+Other Changes
+
+- Added and udpated all tests to respect the `keepForegroundColor` setting
+- Refactored some functions to remove redundant code
+- Added more setup and teardown code to the test suites
+- Refactored tests to use arrow functions
+- Refactored prepareColors function to collect the element settings using sub-functions for readability
+- Created ISettingsIndexer to help indexing settings properties using enums
+
+## 0.6.0
+
+Features
+
+- New setting for `peacock.elementAdjustments` that allows for slight value adjustments of affected elements to visually distinguish them from one another.
+- Activity Bar icons now reflect current active state with the current activity in the foreground color and inactive activities indicated.
+- Color entry now supports a larger variety of formats with more flexible entry restrictions (see [input formats](./README.md#input-formats) in [README](./README.md) for more information)
+
+Other Changes
+
+- Removed settings for dark and light foregrounds. Now defaults to DarkForeground = '15202b' and LightForeground = 'e7e7e7'. The value of these felt low vs the overhead of yet another setting
+- Introduced the [tinycolor](https://www.npmjs.com/package/tinycolor2) library to handle color input validation, color conversion, and color manipulation
+- Refactored much of the internal color library
+- Added several unit tests for color input entry, affected elements, and element adjustments
+- Updated README
+
+## 0.5.0
+
+Breaking Changes
+
+Instead of an array, there are three separate configuration properties for the affected element settings:
+
+```json
+    "configuration": {
+      "properties": {
+        "peacock.affectTitleBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Specifies whether Peacock should affect the title bar."
+        },
+        "peacock.affectActivityBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the activity bar."
+        },
+        "peacock.affectStatusBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the status bar."
+        }
+      }
+    }
+```
+
+Other changes
+
+- Refactored the constants, enums, and interfaces into a `models` folder in the code with a barrel for access
+
 ## 0.4.0
 
 Features

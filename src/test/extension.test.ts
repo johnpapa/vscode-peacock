@@ -7,46 +7,55 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {
+  ICommand,
+  IPeacockSettings,
+  IConfiguration,
+  IPeacockAffectedElementSettings,
   extSuffix,
   Commands,
-  Settings,
   ColorSettings,
+  StandardSettings,
   BuiltInColors,
   Sections,
-  IPreferredColors
-} from '../constants/enums';
+  AffectedSettings,
+  IPeacockElementAdjustments,
+  ForegroundColors
+} from '../models';
 import {
   getAffectedElements,
   getPreferredColors,
   updateAffectedElements,
   updatePreferredColors,
-  updateConfiguration
+  updateElementAdjustments,
+  getElementStyle,
+  updateKeepForegroundColor,
+  getKeepForegroundColor
 } from '../configuration';
-import { isValidHexColor, convertNameToHex } from '../color-library';
+import {
+  isValidColorInput,
+  getLightenedColorHex,
+  getDarkenedColorHex,
+  getColorBrightness
+} from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 
-interface ICommand {
-  title: string;
-  command: string;
-  category: string;
-}
+const allAffectedElements = <IPeacockAffectedElementSettings>{
+  statusBar: true,
+  activityBar: true,
+  titleBar: true
+};
 
-interface IConfiguration {
-  type: string;
-  title: string;
-  properties: any;
-}
+const noopElementAdjustments = <IPeacockElementAdjustments>{
+  activityBar: 'none',
+  statusBar: 'none',
+  titleBar: 'none'
+};
 
-interface IPeacockSettings {
-  affectedElements: string[];
-  preferredColors: IPreferredColors[];
-}
-
-suite('Extension Basic Tests', function() {
+suite('Extension Basic Tests', () => {
   let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
 
-  suiteSetup(async function() {
+  suiteSetup(async () => {
     const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
     if (!ext) {
       throw new Error('Extension was not found.');
@@ -55,37 +64,42 @@ suite('Extension Basic Tests', function() {
       extension = ext;
     }
 
+    // Save the original values
     originalValues.affectedElements = getAffectedElements();
-
+    originalValues.keepForegroundColor = getKeepForegroundColor();
     const { values: preferredColors } = getPreferredColors();
     originalValues.preferredColors = preferredColors;
 
-    let elements = ['statusBar', 'activityBar', 'titleBar'];
-    await updateAffectedElements(elements);
-
-    const testSetPreferredColors = [
+    // Set the test values
+    await updateAffectedElements(<IPeacockAffectedElementSettings>{
+      statusBar: true,
+      activityBar: true,
+      titleBar: true
+    });
+    await updatePreferredColors([
       { name: 'Gatsby Purple', value: '#639' },
       { name: 'Auth0 Orange', value: '#eb5424' },
       { name: 'Azure Blue', value: '#007fff' }
-    ];
-    await updatePreferredColors(testSetPreferredColors);
+    ]);
+    await updateKeepForegroundColor(false);
+    await updateElementAdjustments(noopElementAdjustments);
   });
 
-  setup(async function() {
+  setup(async () => {
     // runs before each test
     await vscode.commands.executeCommand(Commands.resetColors);
   });
 
-  test('Extension loads in VSCode and is active', function(done) {
+  test('Extension loads in VSCode and is active', done => {
     // Hopefully a 200ms timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
-    setTimeout(function() {
+    setTimeout(() => {
       assert.equal(extension.isActive, true);
       done();
     }, 200);
   });
 
-  test('constants.Commands exist in package.json', function() {
+  test('constants.Commands exist in package.json', () => {
     const commandCollection: ICommand[] =
       extension.packageJSON.contributes.commands;
     for (let command in Commands) {
@@ -96,19 +110,31 @@ suite('Extension Basic Tests', function() {
     }
   });
 
-  test('constants.Settings exist in package.json', function() {
+  test('constants.Settings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
-    for (let setting in Settings) {
+    for (let setting in StandardSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${Settings[setting]}`
+        property => property === `${extSuffix}.${StandardSettings[setting]}`
       );
       assert.ok(result);
     }
   });
 
-  test('package.json commands registered in extension', function(done) {
+  test('constants.AffectedSettings exist in package.json', () => {
+    const config: IConfiguration =
+      extension.packageJSON.contributes.configuration;
+    const properties = Object.keys(config.properties);
+    for (let setting in AffectedSettings) {
+      const result = properties.some(
+        property => property === `${extSuffix}.${AffectedSettings[setting]}`
+      );
+      assert.ok(result);
+    }
+  });
+
+  test('package.json commands registered in extension', done => {
     const commandStrings: string[] = extension.packageJSON.contributes.commands.map(
       (c: ICommand) => c.command
     );
@@ -123,7 +149,7 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  test('can set color to Angular Red', async function() {
+  test('can set color to Angular Red', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
     let config = getPeacockWorkspaceConfig();
     assert.equal(
@@ -132,7 +158,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can set color to Vue Green', async function() {
+  test('can set color to Vue Green', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
     let config = getPeacockWorkspaceConfig();
     assert.equal(
@@ -141,7 +167,7 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can set color to React Blue', async function() {
+  test('can set color to React Blue', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
     let config = getPeacockWorkspaceConfig();
     assert.equal(
@@ -150,48 +176,217 @@ suite('Extension Basic Tests', function() {
     );
   });
 
-  test('can set color to Random color', async function() {
+  test('can set color to Random color', async () => {
     await vscode.commands.executeCommand(Commands.changeColorToRandom);
     let config = getPeacockWorkspaceConfig();
-    assert.ok(isValidHexColor(config[ColorSettings.titleBar_activeBackground]));
+    assert.ok(
+      isValidColorInput(config[ColorSettings.titleBar_activeBackground])
+    );
   });
 
-  test('can set color using hex user input', async function() {
-    // Stub the async input box to return a response
-    const fakeResponse = '#771177';
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
-
-    // fire the command
-    await vscode.commands.executeCommand(Commands.enterColor);
+  test('can reset colors', async () => {
+    await vscode.commands.executeCommand(Commands.resetColors);
     let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
-
-    assert.ok(isValidHexColor(value));
-    assert.ok(value === fakeResponse);
+    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+    assert.ok(!config[ColorSettings.statusBar_background]);
+    assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
-  test('can set color using named color user input', async function() {
-    // Stub the async input box to return a response
-    const fakeResponse = 'purple';
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
+  suite('Enter color', () => {
+    function createColorInputTest(fakeResponse: string, expectedValue: string) {
+      return async () => {
+        // Stub the async input box to return a response
+        const stub = await sinon
+          .stub(vscode.window, 'showInputBox')
+          .returns(Promise.resolve(fakeResponse));
 
-    // fire the command
-    await vscode.commands.executeCommand(Commands.enterColor);
-    let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
-    stub.restore();
+        // fire the command
+        await vscode.commands.executeCommand(Commands.enterColor);
+        let config = getPeacockWorkspaceConfig();
+        const value = config[ColorSettings.titleBar_activeBackground];
+        stub.restore();
 
-    assert.ok(isValidHexColor(value));
-    assert.ok(value === convertNameToHex(fakeResponse));
+        assert.ok(isValidColorInput(value));
+        assert.equal(expectedValue, value);
+      };
+    }
+
+    // Hex, Hex RGBA
+
+    test(
+      'can set color using short hex user input',
+      createColorInputTest('#000', '#000000')
+    );
+
+    test(
+      'can set color using short hex user input without hash',
+      createColorInputTest('000', '#000000')
+    );
+
+    test(
+      'can set color using short RGBA hex user input',
+      createColorInputTest('#369C', '#336699cc')
+    );
+
+    test(
+      'can set color using short RGBA hex user input without hash',
+      createColorInputTest('369C', '#336699cc')
+    );
+
+    test(
+      'can set color using hex user input',
+      createColorInputTest('#f0f0f6', '#f0f0f6')
+    );
+
+    test(
+      'can set color using hex user input without hash',
+      createColorInputTest('f0f0f6', '#f0f0f6')
+    );
+
+    test(
+      'can set color using RGBA hex user input',
+      createColorInputTest('#f0f0f688', '#f0f0f688')
+    );
+
+    test(
+      'can set color using RGBA hex user input without hash',
+      createColorInputTest('f0f0f688', '#f0f0f688')
+    );
+
+    // Named colors
+
+    test(
+      'can set color using named color user input',
+      createColorInputTest('blanchedalmond', '#ffebcd')
+    );
+
+    test(
+      'can set color using named color user input with any casing',
+      createColorInputTest('DarkBlue', '#00008b')
+    );
+
+    // RGB, RGBA
+
+    test(
+      'can set color using rgb() color user input',
+      createColorInputTest('rgb (255 0 0)', '#ff0000')
+    );
+
+    test(
+      'can set color using rgb() color user input without parentheses',
+      createColorInputTest('rgb 255 0 0', '#ff0000')
+    );
+
+    test(
+      'can set color using rgba() color user input',
+      createColorInputTest('rgba (255, 0, 0, .5)', '#ff000080')
+    );
+
+    test(
+      'can set color using rgb() color user input with decimals or percentages',
+      createColorInputTest('rgb (100% 255 0)', '#ffff00')
+    );
+
+    // HSL, HSLA
+
+    test(
+      'can set color using hsl() color user input',
+      createColorInputTest('hsl (0 100% 50%)', '#ff0000')
+    );
+
+    test(
+      'can set color using hsl() color user input without parentheses',
+      createColorInputTest('hsl 0 100% 50%', '#ff0000')
+    );
+
+    test(
+      'can set color using hsla() color user input',
+      createColorInputTest('hsla (0, 100%, 50%, .5)', '#ff000080')
+    );
+
+    test(
+      'can set color using hsl() color user input with decimals or percentages',
+      createColorInputTest('hsl (0, 100%, .5)', '#ff0000')
+    );
+
+    // HSV, HSVA
+
+    test(
+      'can set color using hsv() color user input',
+      createColorInputTest('hsv (0, 100%, 100%)', '#ff0000')
+    );
+
+    test(
+      'can set color using hsv() color user input without parentheses',
+      createColorInputTest('hsv 0 100% 100%', '#ff0000')
+    );
+
+    test(
+      'can set color using hsva() color user input',
+      createColorInputTest('hsva (0, 100%, 100%, .5)', '#ff000080')
+    );
+
+    test(
+      'can set color using hsv() color user input with decimals or percentages',
+      createColorInputTest('hsv (0, 1, 100%)', '#ff0000')
+    );
   });
 
-  suite('Preferred colors', function() {
-    test('can set color to preferred color', async function() {
+  suite('Foreground color', () => {
+    function createForegroundTest(fakeResponse: string, expectedValue: string) {
+      return async () => {
+        // Stub the async input box to return a response
+        const stub = await sinon
+          .stub(vscode.window, 'showInputBox')
+          .returns(Promise.resolve(fakeResponse));
+
+        // fire the command
+        await vscode.commands.executeCommand(Commands.enterColor);
+        let config = getPeacockWorkspaceConfig();
+        const value = config[ColorSettings.activityBar_foreground];
+        stub.restore();
+
+        assert.ok(isValidColorInput(value));
+        assert.equal(expectedValue, value);
+      };
+    }
+
+    test(
+      'is set to light foreground on black backgrounds',
+      createForegroundTest('hsl (0, 0, 0)', ForegroundColors.LightForeground)
+    );
+
+    test(
+      'is set to light foreground on dark backgrounds',
+      createForegroundTest('hsl (0, 0, 25%)', ForegroundColors.LightForeground)
+    );
+
+    test(
+      'is set to light foreground on less than 50% bright backgrounds',
+      createForegroundTest('hsl (0, 0, 49%)', ForegroundColors.LightForeground)
+    );
+
+    test(
+      'is set to dark foreground on greater than or equal to 50% bright backgrounds',
+      createForegroundTest('hsl (0, 0, 50%)', ForegroundColors.DarkForeground)
+    );
+
+    test(
+      'is set to dark foreground on light backgrounds',
+      createForegroundTest('hsl (0, 0, 75%)', ForegroundColors.DarkForeground)
+    );
+
+    test(
+      'is set to dark foreground on white backgrounds',
+      createForegroundTest(
+        'hsl (0, 100%, 100%)',
+        ForegroundColors.DarkForeground
+      )
+    );
+  });
+
+  suite('Preferred colors', () => {
+    test('can set color to preferred color', async () => {
       // Stub the async quick pick to return a response
       const fakeResponse = 'Azure Blue -> #007fff';
       const stub = await sinon
@@ -205,11 +400,11 @@ suite('Extension Basic Tests', function() {
 
       const parsedResponse = parsePreferredColorValue(fakeResponse);
 
-      assert.ok(isValidHexColor(value));
+      assert.ok(isValidColorInput(value));
       assert.ok(value === parsedResponse);
     });
 
-    test('set to preferred color with no preferrences is a noop', async function() {
+    test('set to preferred color with no preferences is a noop', async () => {
       // set the color to react blue to start
       await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
 
@@ -230,22 +425,305 @@ suite('Extension Basic Tests', function() {
     });
   });
 
-  test('can reset colors', async function() {
-    await vscode.commands.executeCommand(Commands.resetColors);
-    let config = getPeacockWorkspaceConfig();
-    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
-    assert.ok(!config[ColorSettings.statusBar_background]);
-    assert.ok(!config[ColorSettings.activityBar_background]);
+  suite('Affected elements', () => {
+    suite('keep foreground color = false', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepForegroundColor();
+        await updateKeepForegroundColor(false);
+      });
+
+      test('sets all color customizations for affected elements', async () => {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async () => {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepForegroundColor(originalValue);
+      });
+    });
+
+    suite('keep foreground color = true', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepForegroundColor();
+        await updateKeepForegroundColor(true);
+      });
+
+      test('sets all color customizations for affected elements', async () => {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async () => {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepForegroundColor(originalValue);
+      });
+    });
+
+    suite('No affected elements', () => {
+      suiteSetup(async () => {
+        await updateAffectedElements(<IPeacockAffectedElementSettings>{
+          activityBar: false,
+          statusBar: false,
+          titleBar: false
+        });
+      });
+
+      test('does not set any color customizations when no elements affected', async () => {
+        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        let config = getPeacockWorkspaceConfig();
+
+        assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+        assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+        assert.ok(!config[ColorSettings.titleBar_inactiveBackground]);
+        assert.ok(!config[ColorSettings.titleBar_activeForeground]);
+        assert.ok(!config[ColorSettings.activityBar_background]);
+        assert.ok(!config[ColorSettings.activityBar_foreground]);
+        assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+        assert.ok(!config[ColorSettings.statusBar_foreground]);
+        assert.ok(!config[ColorSettings.statusBar_background]);
+      });
+
+      suiteTeardown(async () => {
+        await updateAffectedElements(allAffectedElements);
+      });
+    });
   });
 
-  suiteTeardown(async function() {
+  suite('Element adjustments', () => {
+    const elementAdjustments: IPeacockElementAdjustments = {
+      activityBar: 'lighten',
+      statusBar: 'darken',
+      titleBar: 'none'
+    };
+
+    suiteSetup(async () => {
+      await updateElementAdjustments(elementAdjustments);
+    });
+
+    test('can lighten the color of an affected element', async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        getLightenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.activityBar_background]
+      );
+    });
+
+    test('can darken the color of an affected element', async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        getDarkenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.statusBar_background]
+      );
+    });
+
+    test('set adjustment to none for an affected element is noop', async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        BuiltInColors.Angular,
+        config[ColorSettings.titleBar_activeBackground]
+      );
+    });
+
+    test('set adjustment to lighten for an affected element is lighter color', async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      const originalBrightness = getColorBrightness(BuiltInColors.Angular);
+      const adjustedBrightness = getColorBrightness(
+        config[ColorSettings.activityBar_background]
+      );
+      assert.ok(
+        originalBrightness < adjustedBrightness,
+        `Expected original brightness ${originalBrightness} to be less than ${adjustedBrightness}, but was greater`
+      );
+    });
+
+    test('set adjustment to darken for an affected element is darker color', async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      const originalBrightness = getColorBrightness(BuiltInColors.Angular);
+      const adjustedBrightness = getColorBrightness(
+        config[ColorSettings.statusBar_background]
+      );
+      assert.ok(
+        originalBrightness > adjustedBrightness,
+        `Expected original brightness ${originalBrightness} to be greater than ${adjustedBrightness}, but was less`
+      );
+    });
+
+    test('can adjust the color of an affected elements independently', async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(
+        getLightenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.activityBar_background]
+      );
+      assert.equal(
+        getDarkenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.statusBar_background]
+      );
+      assert.equal(
+        BuiltInColors.Angular,
+        config[ColorSettings.titleBar_activeBackground]
+      );
+    });
+
+    test('can only adjust the color of an element that is affected', async () => {
+      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+        activityBar: false,
+        statusBar: true,
+        titleBar: false
+      });
+
+      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      let config = getPeacockWorkspaceConfig();
+
+      assert.equal(
+        getDarkenedColorHex(BuiltInColors.Angular),
+        config[ColorSettings.statusBar_background]
+      );
+      assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+  });
+
+  suiteTeardown(async () => {
     await vscode.commands.executeCommand(Commands.resetColors);
     // put back the original peacock user settings
     await updateAffectedElements(originalValues.affectedElements);
+    await updateElementAdjustments(originalValues.elementAdjustments);
     await updatePreferredColors(originalValues.preferredColors);
+    await updateKeepForegroundColor(originalValues.keepForegroundColor);
   });
 });
 
+async function testsDoesNotSetColorCustomizationsForAffectedElements() {
+  await updateAffectedElements(<IPeacockAffectedElementSettings>{
+    activityBar: false,
+    statusBar: false
+  });
+  await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+  const config = getPeacockWorkspaceConfig();
+  const keepForegroundColor = getKeepForegroundColor();
+  const style = getElementStyle(BuiltInColors.Angular);
+
+  assert.equal(
+    style.backgroundHex,
+    config[ColorSettings.titleBar_activeBackground]
+  );
+
+  assert.ok(
+    checkForegroundTest(
+      style.foregroundHex,
+      ColorSettings.titleBar_activeForeground,
+      keepForegroundColor
+    )
+  );
+
+  assert.equal(
+    style.inactiveBackgroundHex,
+    config[ColorSettings.titleBar_inactiveBackground]
+  );
+
+  assert.ok(
+    checkForegroundTest(
+      style.inactiveForegroundHex,
+      ColorSettings.titleBar_inactiveForeground,
+      keepForegroundColor
+    )
+  );
+
+  // All others should not exist
+  assert.ok(!config[ColorSettings.activityBar_background]);
+  assert.ok(!config[ColorSettings.activityBar_foreground]);
+  assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+  assert.ok(!config[ColorSettings.statusBar_foreground]);
+  assert.ok(!config[ColorSettings.statusBar_background]);
+
+  // reset
+  await updateAffectedElements(allAffectedElements);
+}
+
+async function testsSetsColorCustomizationsForAffectedElements() {
+  await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+  const config = getPeacockWorkspaceConfig();
+  const keepForegroundColor = getKeepForegroundColor();
+
+  const style = getElementStyle(BuiltInColors.Angular);
+  assert.equal(
+    style.backgroundHex,
+    config[ColorSettings.titleBar_activeBackground]
+  );
+
+  assert.ok(
+    checkForegroundTest(
+      style.foregroundHex,
+      ColorSettings.titleBar_activeForeground,
+      keepForegroundColor
+    )
+  );
+
+  assert.equal(
+    style.inactiveBackgroundHex,
+    config[ColorSettings.titleBar_inactiveBackground]
+  );
+
+  checkForegroundTest(
+    style.inactiveForegroundHex,
+    ColorSettings.titleBar_inactiveForeground,
+    keepForegroundColor
+  );
+
+  assert.equal(
+    style.backgroundHex,
+    config[ColorSettings.activityBar_background]
+  );
+
+  checkForegroundTest(
+    style.foregroundHex,
+    ColorSettings.activityBar_foreground,
+    keepForegroundColor
+  );
+
+  checkForegroundTest(
+    style.inactiveForegroundHex,
+    ColorSettings.activityBar_inactiveForeground,
+    keepForegroundColor
+  );
+
+  assert.equal(style.backgroundHex, config[ColorSettings.statusBar_background]);
+
+  checkForegroundTest(
+    style.foregroundHex,
+    ColorSettings.statusBar_foreground,
+    keepForegroundColor
+  );
+}
+
 function getPeacockWorkspaceConfig() {
   return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
+}
+
+function checkForegroundTest(
+  elementStyle: string,
+  colorSetting: ColorSettings,
+  keepForegroundColor: boolean
+) {
+  const config = getPeacockWorkspaceConfig();
+  let match = elementStyle === config[colorSetting];
+  let passesTest = keepForegroundColor ? !match : match;
+  return passesTest;
 }

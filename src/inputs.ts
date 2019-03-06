@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BuiltInColors, preferredColorSeparator } from './constants/enums';
+import { BuiltInColors, preferredColorSeparator } from './models';
 import { getPreferredColors } from './configuration';
 
 export async function promptForColor() {
@@ -14,8 +14,7 @@ export async function promptForColor() {
   return inputColor || '';
 }
 
-export async function promptForPreferedColor() {
-  const sep = preferredColorSeparator;
+export async function promptForPreferredColor() {
   const { menu, values: preferredColors } = getPreferredColors();
   let selection = '';
   if (preferredColors && preferredColors.length) {

@@ -1,12 +1,24 @@
 import {
   ColorSettings,
   Sections,
-  Settings,
-  ForegroundColors,
+  StandardSettings,
   extSuffix,
   IPreferredColors,
-  preferredColorSeparator
-} from './constants/enums';
+  preferredColorSeparator,
+  IPeacockElementAdjustments,
+  IElementStyle,
+  ColorAdjustment,
+  AllSettings,
+  AffectedSettings,
+  IPeacockAffectedElementSettings,
+  ISettingsIndexer
+} from './models';
+import {
+  getForegroundColorHex,
+  getInactiveBackgroundColorHex,
+  getInactiveForegroundColorHex,
+  getAdjustedColorHex
+} from './color-library';
 import * as vscode from 'vscode';
 
 const { workspace } = vscode;
@@ -22,7 +34,7 @@ export function readWorkspaceConfiguration<T>(
 }
 
 export function readConfiguration<T>(
-  setting: Settings,
+  setting: AllSettings,
   defaultValue?: T | undefined
 ) {
   const value: T | undefined = workspace
@@ -32,7 +44,7 @@ export function readConfiguration<T>(
 }
 
 export async function updateConfiguration<T>(
-  setting: Settings,
+  setting: AllSettings,
   value?: T | undefined
 ) {
   let config = vscode.workspace.getConfiguration();
@@ -43,94 +55,34 @@ export async function updateConfiguration<T>(
   );
 }
 
-export function getDarkForeground() {
-  const foregroundOverride = readConfiguration<string>(Settings.darkForeground);
-  return foregroundOverride || ForegroundColors.DarkForeground;
+export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
+  return readConfiguration<boolean>(affectedSetting, false);
 }
 
-export function getLightForeground() {
-  const foregroundOverride = readConfiguration<string>(
-    Settings.lightForeground
-  );
-  return foregroundOverride || ForegroundColors.LightForeground;
-}
+export function prepareColors(backgroundHex: string) {
+  const keepForegroundColor = getKeepForegroundColor();
 
-export function isSettingSelected(setting: string) {
-  const affectedElements = readConfiguration<string[]>(
-    Settings.affectedElements,
-    []
+  let titleBarSettings = collectTitleBarSettings(
+    backgroundHex,
+    keepForegroundColor
   );
 
-  // check if they requested a setting
-  const itExists: boolean = !!(
-    affectedElements && affectedElements.includes(setting)
+  let activityBarSettings = collectActivityBarSettings(
+    backgroundHex,
+    keepForegroundColor
   );
 
-  return itExists;
-}
+  let statusBarSettings = collectStatusBarSettings(
+    backgroundHex,
+    keepForegroundColor
+  );
 
-export function prepareColors(backgroundHex: string, foregroundHex: string) {
-  const colorCustomizations = workspace
-    .getConfiguration()
-    .get('workbench.colorCustomizations');
-  let newSettings = {
-    titleBarSettings: {},
-    activityBarSettings: {},
-    statusBarSettings: {}
-  };
-
-  let settingsToReset = [];
-
-  if (isSettingSelected('titleBar')) {
-    newSettings.titleBarSettings = {
-      [ColorSettings.titleBar_activeBackground]: backgroundHex,
-      [ColorSettings.titleBar_activeForeground]: foregroundHex,
-      [ColorSettings.titleBar_inactiveBackground]: backgroundHex,
-      [ColorSettings.titleBar_inactiveForeground]: foregroundHex
-    };
-  } else {
-    settingsToReset.push(
-      ColorSettings.titleBar_activeBackground,
-      ColorSettings.titleBar_activeForeground,
-      ColorSettings.titleBar_inactiveBackground,
-      ColorSettings.titleBar_inactiveForeground
-    );
-  }
-  if (isSettingSelected('activityBar')) {
-    newSettings.activityBarSettings = {
-      [ColorSettings.activityBar_background]: backgroundHex,
-      [ColorSettings.activityBar_foreground]: foregroundHex,
-      [ColorSettings.activityBar_inactiveForeground]: foregroundHex
-    };
-  } else {
-    settingsToReset.push(
-      ColorSettings.activityBar_background,
-      ColorSettings.activityBar_foreground,
-      ColorSettings.activityBar_inactiveForeground
-    );
-  }
-  if (isSettingSelected('statusBar')) {
-    newSettings.statusBarSettings = {
-      [ColorSettings.statusBar_background]: backgroundHex,
-      [ColorSettings.statusBar_foreground]: foregroundHex
-    };
-  } else {
-    settingsToReset.push(
-      ColorSettings.statusBar_background,
-      ColorSettings.statusBar_foreground
-    );
-  }
   // Merge all color settings
   const newColorCustomizations: any = {
-    ...colorCustomizations,
-    ...newSettings.activityBarSettings,
-    ...newSettings.titleBarSettings,
-    ...newSettings.statusBarSettings
+    ...activityBarSettings,
+    ...titleBarSettings,
+    ...statusBarSettings
   };
-
-  Object.values(settingsToReset).forEach(setting => {
-    delete newColorCustomizations[setting];
-  });
 
   return newColorCustomizations;
 }
@@ -145,9 +97,18 @@ export async function changeColorSetting(colorCustomizations: {}) {
     );
 }
 
+export function getKeepForegroundColor() {
+  return readConfiguration<boolean>(
+    StandardSettings.KeepForegroundColor,
+    false
+  );
+}
+
 export function getPreferredColors() {
   const sep = preferredColorSeparator;
-  let values = readConfiguration<IPreferredColors[]>(Settings.preferredColors);
+  let values = readConfiguration<IPreferredColors[]>(
+    StandardSettings.PreferredColors
+  );
   const menu = values.map(pc => `${pc.name} ${sep} ${pc.value}`);
   values = values || [];
   return {
@@ -157,14 +118,134 @@ export function getPreferredColors() {
 }
 
 export function getAffectedElements() {
-  const values = readConfiguration<string[]>(Settings.affectedElements);
-  return values || [];
+  return <IPeacockAffectedElementSettings>{
+    activityBar:
+      readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
+    statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
+    titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false
+  };
 }
 
-export async function updateAffectedElements(values: string[]) {
-  return await updateConfiguration(Settings.affectedElements, values);
+export async function updateAffectedElements(
+  values: IPeacockAffectedElementSettings
+) {
+  await updateConfiguration(AffectedSettings.ActivityBar, values.activityBar);
+  await updateConfiguration(AffectedSettings.StatusBar, values.statusBar);
+  await updateConfiguration(AffectedSettings.TitleBar, values.titleBar);
+  return true;
+}
+
+export function getElementAdjustments() {
+  const adjustments = readConfiguration<IPeacockElementAdjustments>(
+    StandardSettings.ElementAdjustments
+  );
+  return adjustments || {};
+}
+
+export async function updateElementAdjustments(
+  adjustments: IPeacockElementAdjustments
+) {
+  return await updateConfiguration(
+    StandardSettings.ElementAdjustments,
+    adjustments
+  );
+}
+
+export async function updateKeepForegroundColor(value: boolean) {
+  return await updateConfiguration(StandardSettings.KeepForegroundColor, value);
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
-  return await updateConfiguration(Settings.preferredColors, values);
+  return await updateConfiguration(StandardSettings.PreferredColors, values);
+}
+
+export function getElementAdjustment(elementName: string): ColorAdjustment {
+  const elementAdjustments = readConfiguration<any>(
+    StandardSettings.ElementAdjustments,
+    {}
+  );
+
+  return elementAdjustments[elementName];
+}
+
+export function getElementStyle(
+  backgroundHex: string,
+  elementName?: string
+): IElementStyle {
+  let styleHex = backgroundHex;
+
+  if (elementName) {
+    const adjustment = getElementAdjustment(elementName);
+    if (adjustment) {
+      styleHex = getAdjustedColorHex(backgroundHex, adjustment);
+    }
+  }
+
+  return {
+    backgroundHex: styleHex,
+    foregroundHex: getForegroundColorHex(styleHex),
+    inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
+    inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
+  };
+}
+
+function collectTitleBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean
+) {
+  const titleBarSettings = <ISettingsIndexer>{};
+  if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
+    const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
+    titleBarSettings[ColorSettings.titleBar_activeBackground] =
+      titleBarStyle.backgroundHex;
+    titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
+      titleBarStyle.inactiveBackgroundHex;
+
+    if (!keepForegroundColor) {
+      titleBarSettings[ColorSettings.titleBar_activeForeground] =
+        titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
+        titleBarStyle.inactiveForegroundHex;
+    }
+  }
+  return titleBarSettings;
+}
+
+function collectActivityBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean
+) {
+  const activityBarSettings = <ISettingsIndexer>{};
+
+  if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
+    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
+    activityBarSettings[ColorSettings.activityBar_background] =
+      activityBarStyle.backgroundHex;
+
+    if (!keepForegroundColor) {
+      activityBarSettings[ColorSettings.activityBar_foreground] =
+        activityBarStyle.foregroundHex;
+      activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
+        activityBarStyle.inactiveForegroundHex;
+    }
+  }
+  return activityBarSettings;
+}
+
+function collectStatusBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean
+) {
+  const statusBarSettings = <ISettingsIndexer>{};
+  if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
+    const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
+    statusBarSettings[ColorSettings.statusBar_background] =
+      statusBarStyle.backgroundHex;
+
+    if (!keepForegroundColor) {
+      statusBarSettings[ColorSettings.statusBar_foreground] =
+        statusBarStyle.foregroundHex;
+    }
+  }
+  return statusBarSettings;
 }

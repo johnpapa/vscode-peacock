@@ -1,51 +1,66 @@
-import { getDarkForeground, getLightForeground } from './configuration';
-import { namedColors } from './constants/named-colors';
+import * as tinycolor from 'tinycolor2';
+import { ColorAdjustment, ForegroundColors } from './models';
 
-export function invertColor(hex: string) {
-  // credit: https://stackoverflow.com/questions/35969656/how-can-i-generate-the-opposite-color-according-to-current-color
-  if (hex.indexOf('#') === 0) {
-    hex = hex.slice(1);
+export function getColorHex(color = '') {
+  return formatHex(tinycolor(color));
+}
+
+export function getBackgroundColorHex(color = '') {
+  return formatHex(tinycolor(color));
+}
+
+export function getInactiveBackgroundColorHex(backgroundColor = '') {
+  const background = tinycolor(backgroundColor);
+  return formatHex(tinycolor.mix(background, tinycolor('black'), 50));
+}
+
+export function getForegroundColorHex(backgroundColor = '') {
+  const background = tinycolor(backgroundColor);
+  const foreground = background.isLight()
+    ? ForegroundColors.DarkForeground
+    : ForegroundColors.LightForeground;
+  return formatHex(tinycolor(foreground));
+}
+
+export function getInactiveForegroundColorHex(backgroundColor = '') {
+  const foreground = tinycolor(getForegroundColorHex(backgroundColor));
+  const background = tinycolor(backgroundColor);
+  return formatHex(tinycolor.mix(foreground, background, 25));
+}
+
+export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
+  switch (adjustment) {
+    case 'lighten':
+      return getLightenedColorHex(color);
+
+    case 'darken':
+      return getDarkenedColorHex(color);
+
+    default:
+      return color;
   }
-  // convert 3-digit hex to 6-digits.
-  if (hex.length === 3) {
-    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-  }
-  if (hex.length !== 6) {
-    throw new Error(`Invalid HEX color ${hex}`);
-  }
-  const r = parseInt(hex.slice(0, 2), 16);
-  const g = parseInt(hex.slice(2, 4), 16);
-  const b = parseInt(hex.slice(4, 6), 16);
-
-  const useDark = r * 0.299 + g * 0.587 + b * 0.114 > 186;
-
-  let foreground = useDark ? getDarkForeground() : getLightForeground();
-
-  // credit: http://stackoverflow.com/a/3943023/112731
-  return foreground;
 }
 
-export function formatHex(input: string = '') {
-  return input.substr(0, 1) === '#' ? input : `#${input}`;
+export function getLightenedColorHex(color = '', amount = 10) {
+  return formatHex(tinycolor(color).lighten(amount));
 }
 
-export function generateRandomHexColor() {
-  // credit: https://www.paulirish.com/2009/random-hex-color-code-snippets/
-  const hex = (
-    '000000' + Math.floor(Math.random() * 16777215).toString(16)
-  ).slice(-6);
-  return '#' + hex;
+export function getDarkenedColorHex(color: string, amount = 10) {
+  return formatHex(tinycolor(color).darken(amount));
 }
 
-export function convertNameToHex(name: string) {
-  return namedColors[name];
+export function getRandomColorHex() {
+  return formatHex(tinycolor.random());
 }
 
-export function isValidHexColor(input: string) {
-  return /^#[0-9A-F]{6}$/i.test(input) || /^#[0-9A-F]{3}$/i.test(input);
+export function getColorBrightness(input = '') {
+  return tinycolor(input).getBrightness();
 }
 
-export function isValidNamedColor(input: string) {
-  const knownNamedColors = Object.keys(namedColors);
-  return knownNamedColors.indexOf(input.toLowerCase()) > -1;
+export function isValidColorInput(input: string) {
+  return tinycolor(input).isValid();
+}
+
+function formatHex(color: tinycolorInstance) {
+  return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
