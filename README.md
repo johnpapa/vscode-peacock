@@ -25,13 +25,14 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Settings
 
-| Property                   | Description                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar  | Specifies whether Peacock should affect the activity bar                                              |
-| peacock.affectStatusBar    | Specifies whether Peacock should affect the status bar                                                |
-| peacock.affectTitleBar     | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
-| peacock.elementAdjustments | fine tune coloring of affected elements                                                               |
-| peacock.preferredColors    | array of objects for color names and hex values                                                       |
+| Property                    | Description                                                                                           |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar   | Specifies whether Peacock should affect the activity bar                                              |
+| peacock.affectStatusBar     | Specifies whether Peacock should affect the status bar                                                |
+| peacock.affectTitleBar      | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
+| peacock.elementAdjustments  | fine tune coloring of affected elements                                                               |
+| peacock.preferredColors     | array of objects for color names and hex values                                                       |
+| peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
 
 ### Preferred Colors
 
@@ -83,6 +84,12 @@ An example of using this might be to make the Activity Bar slightly lighter than
 When using peacock with the Angular Red color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
 ![Animated GIF](./resources/element-adjustments.png)
+
+## Keep Foreground Color
+
+Recommended to remain false (the default value).
+
+When set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background. Some users may desire this if their theme's foreground is their preference over Peacock. In this case, when set to true, the foreground will not be affected.
 
 ## Commands
 

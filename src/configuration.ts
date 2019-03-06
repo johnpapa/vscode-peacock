@@ -11,8 +11,7 @@ import {
   AllSettings,
   AffectedSettings,
   IPeacockAffectedElementSettings,
-  ISettingsIndexer,
-  IPeacockSettings
+  ISettingsIndexer
 } from './models';
 import {
   getForegroundColorHex,

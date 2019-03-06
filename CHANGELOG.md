@@ -2,6 +2,21 @@
 
 All notable changes to the code will be documented in this file.
 
+## 0.7.0
+
+Features
+
+- Added `peacock.keepForegroundColor` setting, which specifies whether Peacock should change affect colors (see [Keep Foreground Color](./README.md#keep-foreground-color))
+
+Other Changes
+
+- Added and udpated all tests to respect the `keepForegroundColor` setting
+- Refactored some functions to remove redundant code
+- Added more setup and teardown code to the test suites
+- Refactored tests to use arrow functions
+- Refactored prepareColors function to collect the element settings using sub-functions for readability
+- Created ISettingsIndexer to help indexing settings properties using enums
+
 ## 0.6.0
 
 Features
