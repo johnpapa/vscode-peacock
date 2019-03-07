@@ -28,6 +28,32 @@ export function getInactiveForegroundColorHex(backgroundColor = '') {
   return formatHex(tinycolor.mix(foreground, background, 25));
 }
 
+export function getBadgeBackgroundColorHex(backgroundColor = '') {
+  const background = tinycolor(backgroundColor);
+  const complementHsl = background.toHsl();
+
+  // Grayscale colors get their hue shifted deterministically based
+  // on their lightness (mostly for fun so they aren't all red). All others
+  // get a triad color scheme complement shifted 120 degrees.
+  if (complementHsl.h === 0 && complementHsl.s === 0) {
+    complementHsl.h = Math.round(360 * complementHsl.l);
+  } else {
+    complementHsl.h = (complementHsl.h + 120) % 360;
+  }
+
+  // Force the saturation and brightness to the middle for best contrast with all colors
+  complementHsl.s = 0.5;
+  complementHsl.l = 0.5;
+
+  const badgeColor = tinycolor(complementHsl);
+  return formatHex(badgeColor);
+}
+
+export function getBadgeForegroundColorHex(backgroundColor = '') {
+  const background = tinycolor(getBadgeBackgroundColorHex(backgroundColor));
+  return getForegroundColorHex(formatHex(background));
+}
+
 export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
   switch (adjustment) {
     case 'lighten':
