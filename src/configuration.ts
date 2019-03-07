@@ -14,10 +14,12 @@ import {
   ISettingsIndexer
 } from './models';
 import {
+  getAdjustedColorHex,
+  getBadgeBackgroundColorHex,
+  getBadgeForegroundColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
-  getInactiveForegroundColorHex,
-  getAdjustedColorHex
+  getInactiveForegroundColorHex
 } from './color-library';
 import * as vscode from 'vscode';
 
@@ -170,7 +172,8 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
 
 export function getElementStyle(
   backgroundHex: string,
-  elementName?: string
+  elementName?: string,
+  includeBadgeStyles: boolean = false
 ): IElementStyle {
   let styleHex = backgroundHex;
 
@@ -181,12 +184,19 @@ export function getElementStyle(
     }
   }
 
-  return {
+  let style = <IElementStyle>{
     backgroundHex: styleHex,
     foregroundHex: getForegroundColorHex(styleHex),
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
   };
+
+  if (includeBadgeStyles) {
+    style.badgeBackgroundHex = getBadgeBackgroundColorHex(styleHex);
+    style.badgeForegroundHex = getBadgeForegroundColorHex(styleHex);
+  }
+
+  return style;
 }
 
 function collectTitleBarSettings(
@@ -218,9 +228,13 @@ function collectActivityBarSettings(
   const activityBarSettings = <ISettingsIndexer>{};
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
+    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar', true);
     activityBarSettings[ColorSettings.activityBar_background] =
       activityBarStyle.backgroundHex;
+    activityBarSettings[ColorSettings.activityBar_badgeBackground] =
+      activityBarStyle.badgeBackgroundHex;
+    activityBarSettings[ColorSettings.activityBar_badgeForeground] =
+      activityBarStyle.badgeForegroundHex;
 
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] =
