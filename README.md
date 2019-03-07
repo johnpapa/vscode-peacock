@@ -1,8 +1,9 @@
-# Peacock, for Visual Studio Code
+# Peacock for Visual Studio Code
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
+[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
 
-A Visual Studio Code extension that subtly changes the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.
+![Peacock Icon](./resources/peacock-icon-small.png 'Peacock') A Visual Studio Code extension that subtly changes the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.
 
 ## Install
 
@@ -10,6 +11,8 @@ A Visual Studio Code extension that subtly changes the workspace color of your w
 1. Search for `Peacock`
 1. Click **Install**
 1. Click **Reload**, if required
+
+![Peacock Windows](./resources/peacock-windows.png 'Peacock Windows')
 
 ## Features
 
@@ -55,6 +58,8 @@ Preferred colors require a user-defined name (`name`) and a value ( `value` ), a
 ```
 
 ![Animated GIF](./resources/named-colors.gif)
+
+> You can find brand color hex codes from <https://brandcolors.net/> or
 
 ### Affected Elements
 
