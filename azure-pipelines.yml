@@ -23,14 +23,6 @@ jobs:
       command: install
 
   - task: Npm@1
-    displayName: 'npm test'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run just-test'
-    enabled: false
-
-  - task: Npm@1
     displayName: 'Compile TypeScript'
     inputs:
       command: custom
@@ -51,11 +43,11 @@ jobs:
       command: custom
       verbose: false
       customCommand: 'run just-test'
-    enabled: false
+    enabled: true
 
   - script: 'node node_modules/vscode/bin/test'
     displayName: 'Run tests'
-    enabled: true
+    enabled: false
     env:
       DISPLAY: :10
 
