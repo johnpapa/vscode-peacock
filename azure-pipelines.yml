@@ -5,7 +5,7 @@ trigger:
     - master
 
 pool:
-  vmImage: Hosted macOS
+  vmImage: 'Ubuntu 16.04'
   demands: npm
 
 steps:
