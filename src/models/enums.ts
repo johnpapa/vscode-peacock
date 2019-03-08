@@ -60,6 +60,7 @@ export enum ForegroundColors {
   LightForeground = '#e7e7e7'
 }
 
+// See WebAIM contrast guidelines: https://webaim.org/articles/contrast/
 export enum ReadabilityRatios {
   UserInterface = 3,
   Text = 4.5
