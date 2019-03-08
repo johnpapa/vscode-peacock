@@ -30,7 +30,9 @@ import {
   updateElementAdjustments,
   getElementStyle,
   updateKeepForegroundColor,
-  getKeepForegroundColor
+  getKeepForegroundColor,
+  getKeepBadgeColor,
+  updateKeepBadgeColor
 } from '../configuration';
 import {
   isValidColorInput,
@@ -475,6 +477,46 @@ suite('Extension Basic Tests', () => {
       });
     });
 
+    suite('keep badge color = false', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepBadgeColor();
+        await updateKeepBadgeColor(false);
+      });
+
+      test('sets all color customizations for affected elements', async () => {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async () => {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepBadgeColor(originalValue);
+      });
+    });
+
+    suite('keep badge color = true', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepBadgeColor();
+        await updateKeepBadgeColor(true);
+      });
+
+      test('sets all color customizations for affected elements', async () => {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async () => {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepBadgeColor(originalValue);
+      });
+    });
+
     suite('No affected elements', () => {
       suiteSetup(async () => {
         await updateAffectedElements(<IPeacockAffectedElementSettings>{
@@ -586,7 +628,7 @@ suite('Extension Basic Tests', () => {
 
         assert.ok(
           getReadabilityRatio(backgroundHex, value) >
-            ReadabilityRatios.UserInterface
+            ReadabilityRatios.UserInterfaceLow
         );
       }
     });
@@ -722,7 +764,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   );
 
   assert.ok(
-    checkForegroundTest(
+    shouldKeepColorTest(
       style.foregroundHex,
       ColorSettings.titleBar_activeForeground,
       keepForegroundColor
@@ -735,7 +777,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   );
 
   assert.ok(
-    checkForegroundTest(
+    shouldKeepColorTest(
       style.inactiveForegroundHex,
       ColorSettings.titleBar_inactiveForeground,
       keepForegroundColor
@@ -757,55 +799,85 @@ async function testsSetsColorCustomizationsForAffectedElements() {
   await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
   const config = getPeacockWorkspaceConfig();
   const keepForegroundColor = getKeepForegroundColor();
+  const keepBadgeColor = getKeepBadgeColor();
 
-  const style = getElementStyle(BuiltInColors.Angular);
+  const titleBarStyle = getElementStyle(BuiltInColors.Angular, 'titleBar');
   assert.equal(
-    style.backgroundHex,
+    titleBarStyle.backgroundHex,
     config[ColorSettings.titleBar_activeBackground]
   );
 
   assert.ok(
-    checkForegroundTest(
-      style.foregroundHex,
+    shouldKeepColorTest(
+      titleBarStyle.foregroundHex,
       ColorSettings.titleBar_activeForeground,
       keepForegroundColor
     )
   );
 
   assert.equal(
-    style.inactiveBackgroundHex,
+    titleBarStyle.inactiveBackgroundHex,
     config[ColorSettings.titleBar_inactiveBackground]
   );
 
-  checkForegroundTest(
-    style.inactiveForegroundHex,
-    ColorSettings.titleBar_inactiveForeground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      titleBarStyle.inactiveForegroundHex,
+      ColorSettings.titleBar_inactiveForeground,
+      keepForegroundColor
+    )
   );
 
+  const activityBarStyle = getElementStyle(BuiltInColors.Angular, 'activityBar', true);
   assert.equal(
-    style.backgroundHex,
+    activityBarStyle.backgroundHex,
     config[ColorSettings.activityBar_background]
   );
 
-  checkForegroundTest(
-    style.foregroundHex,
-    ColorSettings.activityBar_foreground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.foregroundHex,
+      ColorSettings.activityBar_foreground,
+      keepForegroundColor
+    )
   );
 
-  checkForegroundTest(
-    style.inactiveForegroundHex,
-    ColorSettings.activityBar_inactiveForeground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.inactiveForegroundHex,
+      ColorSettings.activityBar_inactiveForeground,
+      keepForegroundColor
+    )
   );
 
-  assert.equal(style.backgroundHex, config[ColorSettings.statusBar_background]);
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.badgeBackgroundHex,
+      ColorSettings.activityBar_badgeBackground,
+      keepBadgeColor
+    )
+  );
 
-  checkForegroundTest(
-    style.foregroundHex,
-    ColorSettings.statusBar_foreground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.badgeForegroundHex,
+      ColorSettings.activityBar_badgeForeground,
+      keepBadgeColor
+    )
+  );
+
+  const statusBarStyle = getElementStyle(BuiltInColors.Angular, 'statusBar');
+  assert.equal(
+    statusBarStyle.backgroundHex, 
+    config[ColorSettings.statusBar_background]
+  );
+
+  assert.ok(
+    shouldKeepColorTest(
+      statusBarStyle.foregroundHex,
+      ColorSettings.statusBar_foreground,
+      keepForegroundColor
+    )
   );
 }
 
@@ -813,13 +885,13 @@ function getPeacockWorkspaceConfig() {
   return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
 }
 
-function checkForegroundTest(
-  elementStyle: string,
+function shouldKeepColorTest(
+  elementStyle: string | undefined,
   colorSetting: ColorSettings,
-  keepForegroundColor: boolean
+  keepColor: boolean
 ) {
   const config = getPeacockWorkspaceConfig();
   let match = elementStyle === config[colorSetting];
-  let passesTest = keepForegroundColor ? !match : match;
+  let passesTest = keepColor ? !match : match;
   return passesTest;
 }
