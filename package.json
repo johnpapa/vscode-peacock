@@ -84,6 +84,11 @@
           "default": false,
           "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
         },
+        "peacock.keepBadgeColor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Recommended to remain false. However, when set to true Peacock will not colorize badges in any of the affected elements in response to background alterations"
+        },
         "peacock.elementAdjustments": {
           "type": "object",
           "properties": {

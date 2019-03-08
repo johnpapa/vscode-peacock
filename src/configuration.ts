@@ -156,6 +156,10 @@ export async function updateKeepForegroundColor(value: boolean) {
   return await updateConfiguration(StandardSettings.KeepForegroundColor, value);
 }
 
+export async function updateKeepBadgeColor(value: boolean) {
+  return await updateConfiguration(StandardSettings.KeepBadgeColor, value);
+}
+
 export async function updatePreferredColors(values: IPreferredColors[]) {
   return await updateConfiguration(StandardSettings.PreferredColors, values);
 }
