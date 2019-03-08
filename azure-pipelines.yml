@@ -46,7 +46,7 @@ jobs:
     displayName: 'Start xvfb'
 
   - task: Npm@1
-    displayName: 'npm just-test'
+    displayName: 'Run tests via npm script'
     inputs:
       command: custom
       verbose: false
