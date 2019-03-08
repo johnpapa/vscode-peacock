@@ -130,6 +130,10 @@ jobs:
   - Linux
   - Windows
   condition: and(succeeded('macOS'), succeeded('Linux'), succeeded('Windows'))
+  pool:
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+    vmImage: macos-10.13
+    demands: npm
   steps:
   - task: NodeTool@0
     displayName: 'Use Node 8.x'
