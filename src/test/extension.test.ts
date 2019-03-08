@@ -92,9 +92,16 @@ suite('Extension Basic Tests', () => {
     await vscode.commands.executeCommand(Commands.resetColors);
   });
 
+  // test.only('Can Get Existing Color', async () => {
+  //   const color = new vscode.ThemeColor('activityBar.background');
+  //   assert.ok(!!color);
+  //   await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+  // });
+
   test('Extension loads in VSCode and is active', done => {
     // Hopefully a 200ms timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
+
     setTimeout(() => {
       assert.equal(extension.isActive, true);
       done();
@@ -525,15 +532,21 @@ suite('Extension Basic Tests', () => {
       });
 
       test('activity bar badge is readable over 25% luminance activity bar', async () => {
-        await testActivityBarBadgeColoringMeetsReadabilityThreshold('hsl (0 0 0.25)');
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          'hsl (0 0 0.25)'
+        );
       });
 
       test('activity bar badge is readable over 50% luminance activity bar', async () => {
-        await testActivityBarBadgeColoringMeetsReadabilityThreshold('hsl (0 0 0.50)');
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          'hsl (0 0 0.50)'
+        );
       });
 
       test('activity bar badge is readable over 75% luminance activity bar', async () => {
-        await testActivityBarBadgeColoringMeetsReadabilityThreshold('hsl (0 0 0.75)');
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          'hsl (0 0 0.75)'
+        );
       });
 
       test('activity bar badge is readable over black activity bar', async () => {
@@ -541,30 +554,40 @@ suite('Extension Basic Tests', () => {
       });
 
       test('activity bar badge is readable over Angular activity bar', async () => {
-        await testActivityBarBadgeColoringMeetsReadabilityThreshold(BuiltInColors.Angular);
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          BuiltInColors.Angular
+        );
       });
 
       test('activity bar badge is readable over React activity bar', async () => {
-        await testActivityBarBadgeColoringMeetsReadabilityThreshold(BuiltInColors.React);
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          BuiltInColors.React
+        );
       });
 
       test('activity bar badge is readable over Vue activity bar', async () => {
-        await testActivityBarBadgeColoringMeetsReadabilityThreshold(BuiltInColors.Vue);
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          BuiltInColors.Vue
+        );
       });
 
-      async function testActivityBarBadgeColoringMeetsReadabilityThreshold(backgroundHex: string) {
+      async function testActivityBarBadgeColoringMeetsReadabilityThreshold(
+        backgroundHex: string
+      ) {
         // Stub the async input box to return a response
         const stub = await sinon
           .stub(vscode.window, 'showInputBox')
           .returns(Promise.resolve(backgroundHex));
-      
         // fire the command
         await vscode.commands.executeCommand(Commands.enterColor);
         let config = getPeacockWorkspaceConfig();
         const value = config[ColorSettings.activityBar_badgeBackground];
         stub.restore();
-      
-        assert.ok(getReadabilityRatio(backgroundHex, value) > ReadabilityRatios.UserInterface);
+
+        assert.ok(
+          getReadabilityRatio(backgroundHex, value) >
+            ReadabilityRatios.UserInterface
+        );
       }
     });
   });

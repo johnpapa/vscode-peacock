@@ -173,7 +173,7 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
 export function getElementStyle(
   backgroundHex: string,
   elementName?: string,
-  includeBadgeStyles: boolean = false
+  includeBadgeStyles = false
 ): IElementStyle {
   let styleHex = backgroundHex;
 
