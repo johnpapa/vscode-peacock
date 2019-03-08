@@ -611,6 +611,8 @@ suite('Extension Basic Tests', () => {
         let config = getPeacockWorkspaceConfig();
         assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
         assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
+
+        await updateAffectedElements(allAffectedElements);
       });
 
       test('activity bar badge is readable over white activity bar', async () => {
