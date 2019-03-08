@@ -182,3 +182,5 @@ Key Contributors of issues, reviews, and/or ideas:
 If you want to try the extension out start by cloning this repo, `cd` into the folder, and then run `npm install`.
 
 Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!
+
+> testing builds here .
