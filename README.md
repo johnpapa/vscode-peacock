@@ -18,7 +18,7 @@
 
 Commands can be found in the command palette. Look for commands beginning with `Peacock:`
 
-- Change the color of [Affected Elements](#Affected-Elements) (see `peacock.affectedElements` in the Properties section) to
+- Change the color of [Affected Elements](#Affected-Elements) (see `peacock.affect*` in the [Settings](#Settings) section) to
   - [user defined color](#Input-Formats)
   - a random color
   - the primary color for angular, vue, or react
