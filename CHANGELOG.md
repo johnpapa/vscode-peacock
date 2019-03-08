@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.0.0
+
+Other Changes
+
+- Added colorization of the Activity Bar badge based on the background color applied by Peacock to improve readability
+
 ## 0.7.0
 
 Features
@@ -10,7 +16,7 @@ Features
 
 Other Changes
 
-- Added and udpated all tests to respect the `keepForegroundColor` setting
+- Added and updated all tests to respect the `keepForegroundColor` setting
 - Refactored some functions to remove redundant code
 - Added more setup and teardown code to the test suites
 - Refactored tests to use arrow functions
