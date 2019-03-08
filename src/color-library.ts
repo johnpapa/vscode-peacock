@@ -37,7 +37,17 @@ export function getReadableAccentColorHex(
 
   const shadeCount = 16;
   const shadeValue = 1 / shadeCount;
-  const { h, s } = foreground.toHsl();
+  let { h, s, l } = foreground.toHsl();
+
+  // Spin the hue in the case of a grayscale color to be a bit more fun
+  if (s === 0) {
+    h += 360 * l;
+  }
+
+  // Liven the accent up in the case of a near grayscale color
+  if (s < 0.15) {
+    s += 0.5;
+  }
 
   const shadesWithRatios = [...Array(shadeCount + 1).keys()].map(index => {
     const shade = tinycolor({ h, s, l: index * shadeValue });
@@ -47,6 +57,7 @@ export function getReadableAccentColorHex(
     };
   });
 
+  // Find the first shade above the readability threshold
   shadesWithRatios.sort((shade1, shade2) => shade1.contrast - shade2.contrast);
   const firstReadableShade = shadesWithRatios.find(shade => {
     return shade.contrast >= ratio;
