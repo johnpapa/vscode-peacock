@@ -48,7 +48,7 @@ jobs:
   pool:
     # macOS-10.13
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    name: 'Hosted VS2017'
+    name: 'Chu Hosted VS2017'
     vmImage: 'vs2017-win2016'
     demands: npm
   steps:
