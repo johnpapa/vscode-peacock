@@ -136,8 +136,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "just-test": "node ./node_modules/vscode/bin/test",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "just-test": "node node_modules/vscode/bin/test",
+    "test": "npm run compile && node node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
