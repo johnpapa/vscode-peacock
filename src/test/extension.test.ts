@@ -55,7 +55,7 @@ const noopElementAdjustments = <IPeacockElementAdjustments>{
   titleBar: 'none'
 };
 
-suite('Extension Basic Tests', () => {
+suite('Extension Tests', () => {
   let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
 
