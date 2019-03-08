@@ -43,6 +43,8 @@ jobs:
       command: custom
       verbose: false
       customCommand: 'run just-test'
+    env:
+      DISPLAY: :10
     enabled: true
 
   - script: 'node node_modules/vscode/bin/test'
@@ -83,6 +85,8 @@ jobs:
       command: custom
       verbose: false
       customCommand: 'run just-test'
+    env:
+      DISPLAY: :10
     enabled: true
 
   - script: 'node node_modules/vscode/bin/test'
@@ -121,6 +125,8 @@ jobs:
       command: custom
       verbose: false
       customCommand: 'run just-test'
+    env:
+      DISPLAY: :10
     enabled: true
 
   - script: 'node node_modules/vscode/bin/test'
