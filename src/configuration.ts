@@ -62,6 +62,7 @@ export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
 
 export function prepareColors(backgroundHex: string) {
   const keepForegroundColor = getKeepForegroundColor();
+  const keepBadgeColor = getKeepBadgeColor();
 
   let titleBarSettings = collectTitleBarSettings(
     backgroundHex,
@@ -70,7 +71,8 @@ export function prepareColors(backgroundHex: string) {
 
   let activityBarSettings = collectActivityBarSettings(
     backgroundHex,
-    keepForegroundColor
+    keepForegroundColor,
+    keepBadgeColor
   );
 
   let statusBarSettings = collectStatusBarSettings(
@@ -101,6 +103,13 @@ export async function changeColorSetting(colorCustomizations: {}) {
 export function getKeepForegroundColor() {
   return readConfiguration<boolean>(
     StandardSettings.KeepForegroundColor,
+    false
+  );
+}
+
+export function getKeepBadgeColor() {
+  return readConfiguration<boolean>(
+    StandardSettings.KeepBadgeColor,
     false
   );
 }
@@ -226,7 +235,8 @@ function collectTitleBarSettings(
 
 function collectActivityBarSettings(
   backgroundHex: string,
-  keepForegroundColor: boolean
+  keepForegroundColor: boolean,
+  keepBadgeColor: boolean
 ) {
   const activityBarSettings = <ISettingsIndexer>{};
 
@@ -234,16 +244,19 @@ function collectActivityBarSettings(
     const activityBarStyle = getElementStyle(backgroundHex, 'activityBar', true);
     activityBarSettings[ColorSettings.activityBar_background] =
       activityBarStyle.backgroundHex;
-    activityBarSettings[ColorSettings.activityBar_badgeBackground] =
-      activityBarStyle.badgeBackgroundHex;
-    activityBarSettings[ColorSettings.activityBar_badgeForeground] =
-      activityBarStyle.badgeForegroundHex;
 
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] =
         activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
+    }
+
+    if (!keepBadgeColor) {
+      activityBarSettings[ColorSettings.activityBar_badgeBackground] =
+        activityBarStyle.badgeBackgroundHex;
+      activityBarSettings[ColorSettings.activityBar_badgeForeground] =
+        activityBarStyle.badgeForegroundHex;
     }
   }
   return activityBarSettings;
