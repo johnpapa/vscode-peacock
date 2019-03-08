@@ -60,7 +60,7 @@ jobs:
       DISPLAY: :10
 
   - script: |
-    npx vsce package -o release.vsix
+      npx vsce package -o release.vsix
     displayName: 'create vsix'
 
   - task: PublishPipelineArtifact@0
