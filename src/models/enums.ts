@@ -1,6 +1,7 @@
 export enum StandardSettings {
   PreferredColors = 'preferredColors',
   ElementAdjustments = 'elementAdjustments',
+  KeepBadgeColor = 'keepBadgeColor',
   KeepForegroundColor = 'keepForegroundColor'
 }
 
@@ -30,6 +31,8 @@ export enum ColorSettings {
   activityBar_background = 'activityBar.background',
   activityBar_foreground = 'activityBar.foreground',
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
+  activityBar_badgeBackground = 'activityBarBadge.background',
+  activityBar_badgeForeground = 'activityBarBadge.foreground',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',
   statusBarItem_hoverBackground = 'statusBarItem.hoverBackground'
@@ -57,4 +60,11 @@ export enum Sections {
 export enum ForegroundColors {
   DarkForeground = '#15202b',
   LightForeground = '#e7e7e7'
+}
+
+// See WebAIM contrast guidelines: https://webaim.org/articles/contrast/
+export enum ReadabilityRatios {
+  UserInterfaceLow = 2,
+  UserInterface = 3,
+  Text = 4.5
 }

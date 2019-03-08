@@ -7,6 +7,7 @@ All notable changes to the code will be documented in this file.
 Other Changes
 
 - Added colorization of items in the status bar on hover to better fit with the color that Peacock applies.
+- Added colorization of the Activity Bar badge based on the background color applied by Peacock to improve readability
 
 ## 0.7.0
 
@@ -16,7 +17,7 @@ Features
 
 Other Changes
 
-- Added and udpated all tests to respect the `keepForegroundColor` setting
+- Added and updated all tests to respect the `keepForegroundColor` setting
 - Refactored some functions to remove redundant code
 - Added more setup and teardown code to the test suites
 - Refactored tests to use arrow functions

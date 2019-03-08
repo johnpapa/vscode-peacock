@@ -3,6 +3,8 @@
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
 
+[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/vscode-peacock-CI?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=1&branchName=master)
+
 ![Peacock Icon](./resources/peacock-icon-small.png 'Peacock') A Visual Studio Code extension that subtly changes the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.
 
 ## Install
@@ -180,3 +182,5 @@ Key Contributors of issues, reviews, and/or ideas:
 If you want to try the extension out start by cloning this repo, `cd` into the folder, and then run `npm install`.
 
 Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!
+
+> testing builds here .

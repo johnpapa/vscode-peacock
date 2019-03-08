@@ -14,11 +14,12 @@ import {
   ISettingsIndexer
 } from './models';
 import {
+  getAdjustedColorHex,
+  getBadgeBackgroundColorHex,
+  getBackgroundHoverColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
-  getInactiveForegroundColorHex,
-  getAdjustedColorHex,
-  getBackgroundHoverColorHex
+  getInactiveForegroundColorHex
 } from './color-library';
 import * as vscode from 'vscode';
 
@@ -62,6 +63,7 @@ export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
 
 export function prepareColors(backgroundHex: string) {
   const keepForegroundColor = getKeepForegroundColor();
+  const keepBadgeColor = getKeepBadgeColor();
 
   let titleBarSettings = collectTitleBarSettings(
     backgroundHex,
@@ -70,7 +72,8 @@ export function prepareColors(backgroundHex: string) {
 
   let activityBarSettings = collectActivityBarSettings(
     backgroundHex,
-    keepForegroundColor
+    keepForegroundColor,
+    keepBadgeColor
   );
 
   let statusBarSettings = collectStatusBarSettings(
@@ -101,6 +104,13 @@ export async function changeColorSetting(colorCustomizations: {}) {
 export function getKeepForegroundColor() {
   return readConfiguration<boolean>(
     StandardSettings.KeepForegroundColor,
+    false
+  );
+}
+
+export function getKeepBadgeColor() {
+  return readConfiguration<boolean>(
+    StandardSettings.KeepBadgeColor,
     false
   );
 }
@@ -156,6 +166,10 @@ export async function updateKeepForegroundColor(value: boolean) {
   return await updateConfiguration(StandardSettings.KeepForegroundColor, value);
 }
 
+export async function updateKeepBadgeColor(value: boolean) {
+  return await updateConfiguration(StandardSettings.KeepBadgeColor, value);
+}
+
 export async function updatePreferredColors(values: IPreferredColors[]) {
   return await updateConfiguration(StandardSettings.PreferredColors, values);
 }
@@ -171,7 +185,8 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
 
 export function getElementStyle(
   backgroundHex: string,
-  elementName?: string
+  elementName?: string,
+  includeBadgeStyles = false
 ): IElementStyle {
   let styleHex = backgroundHex;
 
@@ -182,13 +197,20 @@ export function getElementStyle(
     }
   }
 
-  return {
+  let style = <IElementStyle>{
     backgroundHex: styleHex,
     backgroundHoverHex: getBackgroundHoverColorHex(styleHex),
     foregroundHex: getForegroundColorHex(styleHex),
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
   };
+
+  if (includeBadgeStyles) {
+    style.badgeBackgroundHex = getBadgeBackgroundColorHex(styleHex);
+    style.badgeForegroundHex = getForegroundColorHex(style.badgeBackgroundHex);
+  }
+
+  return style;
 }
 
 function collectTitleBarSettings(
@@ -215,12 +237,13 @@ function collectTitleBarSettings(
 
 function collectActivityBarSettings(
   backgroundHex: string,
-  keepForegroundColor: boolean
+  keepForegroundColor: boolean,
+  keepBadgeColor: boolean
 ) {
   const activityBarSettings = <ISettingsIndexer>{};
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar');
+    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar', true);
     activityBarSettings[ColorSettings.activityBar_background] =
       activityBarStyle.backgroundHex;
 
@@ -229,6 +252,13 @@ function collectActivityBarSettings(
         activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
+    }
+
+    if (!keepBadgeColor) {
+      activityBarSettings[ColorSettings.activityBar_badgeBackground] =
+        activityBarStyle.badgeBackgroundHex;
+      activityBarSettings[ColorSettings.activityBar_badgeForeground] =
+        activityBarStyle.badgeForegroundHex;
     }
   }
   return activityBarSettings;
