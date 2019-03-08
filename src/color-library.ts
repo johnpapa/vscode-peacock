@@ -33,23 +33,37 @@ export function getReadableAccentColorHex(
   ratio: ReadabilityRatios = ReadabilityRatios.Text
 ) {
   const background = tinycolor(backgroundColor);
+
+  // Get an initial color for the badge as the first in a triad (120 degrees)
+  // from the background color since it will be a more pleasing shade than
+  // pure complementary (180 degrees).
   const foreground = background.triad()[1];
 
-  const shadeCount = 16;
-  const shadeValue = 1 / shadeCount;
+  // Convert the color to HSL to work with the channels individually
   let { h, s, l } = foreground.toHsl();
 
-  // Spin the hue in the case of a grayscale color to be a bit more fun
+  // When there is no saturation we have some kind of grayscale color,
+  // which for accent purposes should be colorized artificially
   if (s === 0) {
-    h += 360 * l;
+
+    // Spin the hue in the case of no saturation (grayscale). The spin is
+    // deterministic based on the lightness of the color (0 to 1) and will
+    // be mapped to one of the 6 primary and secondary hues (60 degree steps).
+    h = 60 * Math.round(l * 6);
   }
 
-  // Liven the accent up in the case of a near grayscale color
+  // Increase the saturation to 50% for any color that is very desaturated
+  // to provide more of an accent in the manner that themes normally would
   if (s < 0.15) {
-    s += 0.5;
+    s = 0.5;
   }
 
-  const shadesWithRatios = [...Array(shadeCount + 1).keys()].map(index => {
+  // Create an array of 16 shades of the accent color from no luminance 
+  // (black) to full luminance (white) and determine the contrast ratio
+  // of each against the background.
+  const shadeCount = 16;
+  const shadeValue = 1 / shadeCount;
+  const shadesWithRatios = [...Array(shadeCount).keys()].map(index => {
     const shade = tinycolor({ h, s, l: index * shadeValue });
     return {
       contrast: tinycolor.readability(shade, background),
@@ -57,25 +71,24 @@ export function getReadableAccentColorHex(
     };
   });
 
-  // Find the first shade above the readability threshold
+  // Sort the shades by their contrast ratio from least to greatest so that
+  // we can find the first shade that meets the readability threshold, but has
+  // the least contrast of those that do.
   shadesWithRatios.sort((shade1, shade2) => shade1.contrast - shade2.contrast);
   const firstReadableShade = shadesWithRatios.find(shade => {
     return shade.contrast >= ratio;
   });
 
+  // Return the first readable shade that meets 
+  // the threshold or white if none of them do
   return firstReadableShade ? firstReadableShade.hex : '#ffffff';
 }
 
 export function getBadgeBackgroundColorHex(backgroundColor = '') {
   return getReadableAccentColorHex(
     backgroundColor,
-    ReadabilityRatios.UserInterface
+    ReadabilityRatios.UserInterfaceLow
   );
-}
-
-export function getBadgeForegroundColorHex(backgroundColor = '') {
-  const background = tinycolor(getBadgeBackgroundColorHex(backgroundColor));
-  return getForegroundColorHex(formatHex(background));
 }
 
 export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {

@@ -16,7 +16,6 @@ import {
 import {
   getAdjustedColorHex,
   getBadgeBackgroundColorHex,
-  getBadgeForegroundColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex
@@ -193,7 +192,7 @@ export function getElementStyle(
 
   if (includeBadgeStyles) {
     style.badgeBackgroundHex = getBadgeBackgroundColorHex(styleHex);
-    style.badgeForegroundHex = getBadgeForegroundColorHex(styleHex);
+    style.badgeForegroundHex = getForegroundColorHex(style.badgeBackgroundHex);
   }
 
   return style;
