@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.0.0
+
+Other Changes
+
+- Added colorization of items in the status bar on hover to better fit with the color that Peacock applies.
+
 ## 0.7.0
 
 Features
