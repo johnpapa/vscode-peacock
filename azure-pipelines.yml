@@ -1,0 +1,37 @@
+pool:
+  vmImage: Hosted macOS
+  demands: npm
+
+steps:
+  - task: NodeTool@0
+    displayName: 'Use Node 10.x'
+    inputs:
+      versionSpec: 10.x
+
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      verbose: false
+
+  - task: Npm@1
+    displayName: 'npm test'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run test'
+
+  - script: |
+      node ./node_modules/vscode/bin/test
+
+    displayName: 'run tests'
+    enabled: false
+
+  - script: |
+      npx vsce package -o release.vsix
+
+    displayName: 'create vsix'
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      targetPath: release.vsix
