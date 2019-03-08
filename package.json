@@ -84,6 +84,11 @@
           "default": false,
           "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
         },
+        "peacock.keepBadgeColor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Recommended to remain false. However, when set to true Peacock will not colorize badges in any of the affected elements in response to background alterations"
+        },
         "peacock.elementAdjustments": {
           "type": "object",
           "properties": {
@@ -149,7 +154,7 @@
     "vscode": "^1.1.28"
   },
   "dependencies": {
-    "@types/tinycolor": "^1.1.27",
+    "@types/tinycolor2": "^1.4.1",
     "tinycolor2": "^1.4.1"
   }
 }

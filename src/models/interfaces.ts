@@ -26,6 +26,8 @@ export interface IElementStyle {
   foregroundHex: string;
   inactiveBackgroundHex: string;
   inactiveForegroundHex: string;
+  badgeBackgroundHex?: string;
+  badgeForegroundHex?: string;
 }
 
 export interface IPeacockAffectedElementSettings {
