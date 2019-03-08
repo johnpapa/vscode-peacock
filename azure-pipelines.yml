@@ -99,11 +99,17 @@ jobs:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
     vmImage: macos-10.13
     demands: npm
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
   steps:
   - task: NodeTool@0
     displayName: 'Use Node 8.x'
     inputs:
-      versionSpec: 8.x
+      versionSpec: $(node_version)
 
   - task: Npm@1
     displayName: 'Install dependencies'
