@@ -19,7 +19,8 @@ import {
   Sections,
   AffectedSettings,
   IPeacockElementAdjustments,
-  ForegroundColors
+  ForegroundColors,
+  ReadabilityRatios
 } from '../models';
 import {
   getAffectedElements,
@@ -29,13 +30,16 @@ import {
   updateElementAdjustments,
   getElementStyle,
   updateKeepForegroundColor,
-  getKeepForegroundColor
+  getKeepForegroundColor,
+  getKeepBadgeColor,
+  updateKeepBadgeColor
 } from '../configuration';
 import {
   isValidColorInput,
   getLightenedColorHex,
   getDarkenedColorHex,
-  getColorBrightness
+  getColorBrightness,
+  getReadabilityRatio
 } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 
@@ -90,9 +94,16 @@ suite('Extension Basic Tests', () => {
     await vscode.commands.executeCommand(Commands.resetColors);
   });
 
+  // test.only('Can Get Existing Color', async () => {
+  //   const color = new vscode.ThemeColor('activityBar.background');
+  //   assert.ok(!!color);
+  //   await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+  // });
+
   test('Extension loads in VSCode and is active', done => {
     // Hopefully a 200ms timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
+
     setTimeout(() => {
       assert.equal(extension.isActive, true);
       done();
@@ -466,6 +477,46 @@ suite('Extension Basic Tests', () => {
       });
     });
 
+    suite('keep badge color = false', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepBadgeColor();
+        await updateKeepBadgeColor(false);
+      });
+
+      test('sets all color customizations for affected elements', async () => {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async () => {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepBadgeColor(originalValue);
+      });
+    });
+
+    suite('keep badge color = true', () => {
+      let originalValue: boolean;
+      suiteSetup(async () => {
+        originalValue = getKeepBadgeColor();
+        await updateKeepBadgeColor(true);
+      });
+
+      test('sets all color customizations for affected elements', async () => {
+        await testsSetsColorCustomizationsForAffectedElements();
+      });
+
+      test('does not set color customizations for elements not affected', async () => {
+        await testsDoesNotSetColorCustomizationsForAffectedElements();
+      });
+
+      suiteTeardown(async () => {
+        await updateKeepBadgeColor(originalValue);
+      });
+    });
+
     suite('No affected elements', () => {
       suiteSetup(async () => {
         await updateAffectedElements(<IPeacockAffectedElementSettings>{
@@ -503,27 +554,127 @@ suite('Extension Basic Tests', () => {
           titleBar: true
         });
 
-        const value = await getColorSettingAfterEnterColor(BuiltInColors.Angular, ColorSettings.statusBarItem_hoverBackground);
+        const value = await getColorSettingAfterEnterColor(
+          BuiltInColors.Angular,
+          ColorSettings.statusBarItem_hoverBackground
+        );
         assert.ok(!value);
 
         await updateAffectedElements(allAffectedElements);
       });
 
       test('sets item hover color to darker on a light background', async () => {
-        const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.75)');
+        const config = await getPeacockWorkspaceConfigAfterEnterColor(
+          'hsl(0 0.5 0.75)'
+        );
         const backgroundHex = config[ColorSettings.statusBar_background];
-        const hoverBackgroundHex = config[ColorSettings.statusBarItem_hoverBackground];
+        const hoverBackgroundHex =
+          config[ColorSettings.statusBarItem_hoverBackground];
 
-        assert.ok(getColorBrightness(backgroundHex) > getColorBrightness(hoverBackgroundHex));
+        assert.ok(
+          getColorBrightness(backgroundHex) >
+            getColorBrightness(hoverBackgroundHex)
+        );
       });
 
       test('sets item hover color to lighter on a dark background', async () => {
-        const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.25)');
+        const config = await getPeacockWorkspaceConfigAfterEnterColor(
+          'hsl(0 0.5 0.25)'
+        );
         const backgroundHex = config[ColorSettings.statusBar_background];
-        const hoverBackgroundHex = config[ColorSettings.statusBarItem_hoverBackground];
+        const hoverBackgroundHex =
+          config[ColorSettings.statusBarItem_hoverBackground];
 
-        assert.ok(getColorBrightness(backgroundHex) < getColorBrightness(hoverBackgroundHex));
+        assert.ok(
+          getColorBrightness(backgroundHex) <
+            getColorBrightness(hoverBackgroundHex)
+        );
       });
+    });
+
+    suite('Activity bar badge', () => {
+      test('activity bar badge styles are set when activity bar is affected', async () => {
+        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        let config = getPeacockWorkspaceConfig();
+        assert.ok(config[ColorSettings.activityBar_badgeBackground]);
+        assert.ok(config[ColorSettings.activityBar_badgeForeground]);
+      });
+
+      test('activity bar badge styles are not set when activity bar is not affected', async () => {
+        await updateAffectedElements(<IPeacockAffectedElementSettings>{
+          activityBar: false,
+          statusBar: true,
+          titleBar: true
+        });
+
+        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        let config = getPeacockWorkspaceConfig();
+        assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
+        assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
+      });
+
+      test('activity bar badge is readable over white activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold('white');
+      });
+
+      test('activity bar badge is readable over 25% luminance activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          'hsl (0 0 0.25)'
+        );
+      });
+
+      test('activity bar badge is readable over 50% luminance activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          'hsl (0 0 0.50)'
+        );
+      });
+
+      test('activity bar badge is readable over 75% luminance activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          'hsl (0 0 0.75)'
+        );
+      });
+
+      test('activity bar badge is readable over black activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold('black');
+      });
+
+      test('activity bar badge is readable over Angular activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          BuiltInColors.Angular
+        );
+      });
+
+      test('activity bar badge is readable over React activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          BuiltInColors.React
+        );
+      });
+
+      test('activity bar badge is readable over Vue activity bar', async () => {
+        await testActivityBarBadgeColoringMeetsReadabilityThreshold(
+          BuiltInColors.Vue
+        );
+      });
+
+      async function testActivityBarBadgeColoringMeetsReadabilityThreshold(
+        backgroundHex: string
+      ) {
+        // Stub the async input box to return a response
+        const stub = await sinon
+          .stub(vscode.window, 'showInputBox')
+          .returns(Promise.resolve(backgroundHex));
+        // fire the command
+        await vscode.commands.executeCommand(Commands.enterColor);
+        let config = getPeacockWorkspaceConfig();
+        const value = config[ColorSettings.activityBar_badgeBackground];
+        stub.restore();
+
+        assert.ok(
+          getReadabilityRatio(backgroundHex, value) >
+            ReadabilityRatios.UserInterfaceLow
+        );
+      }
     });
   });
 
@@ -641,6 +792,7 @@ suite('Extension Basic Tests', () => {
   });
 });
 
+// Reusable tests
 async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     activityBar: false,
@@ -657,7 +809,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   );
 
   assert.ok(
-    checkForegroundTest(
+    shouldKeepColorTest(
       style.foregroundHex,
       ColorSettings.titleBar_activeForeground,
       keepForegroundColor
@@ -670,7 +822,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   );
 
   assert.ok(
-    checkForegroundTest(
+    shouldKeepColorTest(
       style.inactiveForegroundHex,
       ColorSettings.titleBar_inactiveForeground,
       keepForegroundColor
@@ -692,60 +844,94 @@ async function testsSetsColorCustomizationsForAffectedElements() {
   await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
   const config = getPeacockWorkspaceConfig();
   const keepForegroundColor = getKeepForegroundColor();
+  const keepBadgeColor = getKeepBadgeColor();
 
-  const style = getElementStyle(BuiltInColors.Angular);
+  const titleBarStyle = getElementStyle(BuiltInColors.Angular, 'titleBar');
   assert.equal(
-    style.backgroundHex,
+    titleBarStyle.backgroundHex,
     config[ColorSettings.titleBar_activeBackground]
   );
 
   assert.ok(
-    checkForegroundTest(
-      style.foregroundHex,
+    shouldKeepColorTest(
+      titleBarStyle.foregroundHex,
       ColorSettings.titleBar_activeForeground,
       keepForegroundColor
     )
   );
 
   assert.equal(
-    style.inactiveBackgroundHex,
+    titleBarStyle.inactiveBackgroundHex,
     config[ColorSettings.titleBar_inactiveBackground]
   );
 
-  checkForegroundTest(
-    style.inactiveForegroundHex,
-    ColorSettings.titleBar_inactiveForeground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      titleBarStyle.inactiveForegroundHex,
+      ColorSettings.titleBar_inactiveForeground,
+      keepForegroundColor
+    )
   );
 
+  const activityBarStyle = getElementStyle(
+    BuiltInColors.Angular,
+    'activityBar',
+    true
+  );
   assert.equal(
-    style.backgroundHex,
+    activityBarStyle.backgroundHex,
     config[ColorSettings.activityBar_background]
   );
 
-  checkForegroundTest(
-    style.foregroundHex,
-    ColorSettings.activityBar_foreground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.foregroundHex,
+      ColorSettings.activityBar_foreground,
+      keepForegroundColor
+    )
   );
 
-  checkForegroundTest(
-    style.inactiveForegroundHex,
-    ColorSettings.activityBar_inactiveForeground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.inactiveForegroundHex,
+      ColorSettings.activityBar_inactiveForeground,
+      keepForegroundColor
+    )
   );
 
-  assert.equal(style.backgroundHex, config[ColorSettings.statusBar_background]);
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.badgeBackgroundHex,
+      ColorSettings.activityBar_badgeBackground,
+      keepBadgeColor
+    )
+  );
 
-  checkForegroundTest(
-    style.foregroundHex,
-    ColorSettings.statusBar_foreground,
-    keepForegroundColor
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.badgeForegroundHex,
+      ColorSettings.activityBar_badgeForeground,
+      keepBadgeColor
+    )
+  );
+
+  const statusBarStyle = getElementStyle(BuiltInColors.Angular, 'statusBar');
+  assert.equal(
+    statusBarStyle.backgroundHex,
+    config[ColorSettings.statusBar_background]
+  );
+
+  assert.ok(
+    shouldKeepColorTest(
+      statusBarStyle.foregroundHex,
+      ColorSettings.statusBar_foreground,
+      keepForegroundColor
+    )
   );
 }
 
+// Helper functions
 async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
-
   // Stub the async input box to return a response
   const stub = await sinon
     .stub(vscode.window, 'showInputBox')
@@ -759,8 +945,10 @@ async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
   return config;
 }
 
-async function getColorSettingAfterEnterColor(colorInput: string, setting: ColorSettings) {
-
+async function getColorSettingAfterEnterColor(
+  colorInput: string,
+  setting: ColorSettings
+) {
   // Stub the async input box to return a response
   const stub = await sinon
     .stub(vscode.window, 'showInputBox')
@@ -778,13 +966,13 @@ function getPeacockWorkspaceConfig() {
   return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
 }
 
-function checkForegroundTest(
-  elementStyle: string,
+function shouldKeepColorTest(
+  elementStyle: string | undefined,
   colorSetting: ColorSettings,
-  keepForegroundColor: boolean
+  keepColor: boolean
 ) {
   const config = getPeacockWorkspaceConfig();
   let match = elementStyle === config[colorSetting];
-  let passesTest = keepForegroundColor ? !match : match;
+  let passesTest = keepColor ? !match : match;
   return passesTest;
 }
