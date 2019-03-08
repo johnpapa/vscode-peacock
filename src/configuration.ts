@@ -17,7 +17,8 @@ import {
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
-  getAdjustedColorHex
+  getAdjustedColorHex,
+  getBackgroundHoverColorHex
 } from './color-library';
 import * as vscode from 'vscode';
 
@@ -183,6 +184,7 @@ export function getElementStyle(
 
   return {
     backgroundHex: styleHex,
+    backgroundHoverHex: getBackgroundHoverColorHex(styleHex),
     foregroundHex: getForegroundColorHex(styleHex),
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
@@ -241,6 +243,8 @@ function collectStatusBarSettings(
     const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
     statusBarSettings[ColorSettings.statusBar_background] =
       statusBarStyle.backgroundHex;
+    statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
+      statusBarStyle.backgroundHoverHex;
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] =

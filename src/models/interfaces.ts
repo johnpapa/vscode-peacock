@@ -23,6 +23,7 @@ export interface IConfiguration {
 
 export interface IElementStyle {
   backgroundHex: string;
+  backgroundHoverHex: string;
   foregroundHex: string;
   inactiveBackgroundHex: string;
   inactiveForegroundHex: string;
