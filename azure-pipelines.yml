@@ -4,6 +4,8 @@ trigger:
     include:
     - master
 
+# macOS-10.13
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
 pool:
   vmImage: 'Ubuntu 16.04'
   demands: npm
@@ -25,6 +27,29 @@ steps:
     command: custom
     verbose: false
     customCommand: 'run test'
+  enabled: false
+
+- task: Npm@1
+  displayName: 'npm compile'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'run compile'
+  enabled: true
+
+- script: |
+   set -e
+   /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+   disown -ar
+  displayName: 'Start xvfb'
+
+- task: Npm@1
+  displayName: 'npm just-test'
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'run just-test'
+  enabled: true
 
 - script: |
    node ./node_modules/vscode/bin/test
