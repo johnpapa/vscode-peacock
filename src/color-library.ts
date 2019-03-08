@@ -69,6 +69,6 @@ export function isValidColorInput(input: string) {
   return tinycolor(input).isValid();
 }
 
-function formatHex(color: tinycolorInstance) {
+function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
