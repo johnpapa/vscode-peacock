@@ -98,7 +98,7 @@ jobs:
         node_version: 10.x
   steps:
   - task: NodeTool@0
-    displayName: 'Use Node 8.x'
+    displayName: 'Use $(node_version)'
     inputs:
       versionSpec: $(node_version)
 
@@ -122,15 +122,7 @@ jobs:
       command: custom
       verbose: false
       customCommand: 'run just-test'
-    env:
-      DISPLAY: :10
     enabled: true
-
-  # - script: 'node node_modules/vscode/bin/test'
-  #   displayName: 'Run tests'
-  #   enabled: false
-  #   env:
-  #     DISPLAY: :10
 
 - job: Finalize
   dependsOn:
@@ -139,6 +131,23 @@ jobs:
   - Windows
   condition: and(succeeded('macOS'), succeeded('Linux'), succeeded('Windows'))
   steps:
+  - task: NodeTool@0
+    displayName: 'Use Node 8.x'
+    inputs:
+      versionSpec: 8.x
+
+  - task: Npm@1
+    displayName: 'Install dependencies'
+    inputs:
+      verbose: false
+      command: install
+  - task: Npm@1
+    displayName: 'Compile TypeScript'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run compile'
+    enabled: true
   - script: |
       npx vsce package -o release.vsix
     displayName: 'create vsix'
