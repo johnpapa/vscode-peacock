@@ -50,6 +50,84 @@ jobs:
     enabled: false
     env:
       DISPLAY: :10
+- job: Windows
+  pool:
+    # macOS-10.13
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+    name: 'Hosted VS2017'
+    vmImage: 'vs2017-win2016'
+    demands: npm
+  steps:
+  - task: NodeTool@0
+    displayName: 'Use Node 8.x'
+    inputs:
+      versionSpec: 8.x
+
+  - task: Npm@1
+    displayName: 'Install dependencies'
+    inputs:
+      verbose: false
+      command: install
+
+  - task: Npm@1
+    displayName: 'Compile TypeScript'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run compile'
+    enabled: true
+
+  - task: Npm@1
+    displayName: 'Run tests via npm script'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run just-test'
+    enabled: true
+
+  - script: 'node node_modules/vscode/bin/test'
+    displayName: 'Run tests'
+    enabled: false
+    env:
+      DISPLAY: :10
+- job: macOS
+  pool:
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+    vmImage: macos-10.13
+    demands: npm
+  steps:
+  - task: NodeTool@0
+    displayName: 'Use Node 8.x'
+    inputs:
+      versionSpec: 8.x
+
+  - task: Npm@1
+    displayName: 'Install dependencies'
+    inputs:
+      verbose: false
+      command: install
+
+  - task: Npm@1
+    displayName: 'Compile TypeScript'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run compile'
+    enabled: true
+
+  - task: Npm@1
+    displayName: 'Run tests via npm script'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run just-test'
+    enabled: true
+
+  - script: 'node node_modules/vscode/bin/test'
+    displayName: 'Run tests'
+    enabled: false
+    env:
+      DISPLAY: :10
 
   - script: |
       npx vsce package -o release.vsix
