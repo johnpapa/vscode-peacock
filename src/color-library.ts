@@ -1,5 +1,5 @@
 import * as tinycolor from 'tinycolor2';
-import { ColorAdjustment, ForegroundColors } from './models';
+import { ColorAdjustment, ForegroundColors, ReadabilityRatios } from './models';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -28,25 +28,38 @@ export function getInactiveForegroundColorHex(backgroundColor = '') {
   return formatHex(tinycolor.mix(foreground, background, 25));
 }
 
-export function getBadgeBackgroundColorHex(backgroundColor = '') {
+export function getReadableAccentColorHex(
+  backgroundColor = '',
+  ratio: ReadabilityRatios = ReadabilityRatios.Text
+) {
   const background = tinycolor(backgroundColor);
-  const complementHsl = background.toHsl();
+  const foreground = background.triad()[1];
 
-  // Grayscale colors get their hue shifted deterministically based
-  // on their lightness (mostly for fun so they aren't all red). All others
-  // get a triad color scheme complement shifted 120 degrees.
-  if (complementHsl.h === 0 && complementHsl.s === 0) {
-    complementHsl.h = Math.round(360 * complementHsl.l);
-  } else {
-    complementHsl.h = (complementHsl.h + 120) % 360;
-  }
+  const shadeCount = 16;
+  const shadeValue = 1 / shadeCount;
+  const { h, s } = foreground.toHsl();
 
-  // Force the saturation and brightness to the middle for best contrast with all colors
-  complementHsl.s = 0.5;
-  complementHsl.l = 0.5;
+  const shadesWithRatios = [...Array(shadeCount + 1).keys()].map(index => {
+    const shade = tinycolor({ h, s, l: index * shadeValue });
+    return {
+      contrast: tinycolor.readability(shade, background),
+      hex: formatHex(shade)
+    };
+  });
 
-  const badgeColor = tinycolor(complementHsl);
-  return formatHex(badgeColor);
+  shadesWithRatios.sort((shade1, shade2) => shade1.contrast - shade2.contrast);
+  const firstReadableShade = shadesWithRatios.find(shade => {
+    return shade.contrast >= ratio;
+  });
+
+  return firstReadableShade ? firstReadableShade.hex : '#ffffff';
+}
+
+export function getBadgeBackgroundColorHex(backgroundColor = '') {
+  return getReadableAccentColorHex(
+    backgroundColor,
+    ReadabilityRatios.UserInterface
+  );
 }
 
 export function getBadgeForegroundColorHex(backgroundColor = '') {
@@ -83,10 +96,20 @@ export function getColorBrightness(input = '') {
   return tinycolor(input).getBrightness();
 }
 
+export function getReadabilityRatio(
+  backgroundColor = '',
+  foregroundColor = ''
+) {
+  return tinycolor.readability(
+    tinycolor(backgroundColor),
+    tinycolor(foregroundColor)
+  );
+}
+
 export function isValidColorInput(input: string) {
   return tinycolor(input).isValid();
 }
 
-function formatHex(color: tinycolorInstance) {
+function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }

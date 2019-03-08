@@ -59,3 +59,8 @@ export enum ForegroundColors {
   DarkForeground = '#15202b',
   LightForeground = '#e7e7e7'
 }
+
+export enum ReadabilityRatios {
+  UserInterface = 3,
+  Text = 4.5
+}
