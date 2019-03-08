@@ -30,7 +30,7 @@ export function getInactiveForegroundColorHex(backgroundColor = '') {
 
 export function getReadableAccentColorHex(
   backgroundColor = '',
-  ratio: ReadabilityRatios = ReadabilityRatios.Text
+  ratio = ReadabilityRatios.Text
 ) {
   const background = tinycolor(backgroundColor);
 
@@ -58,7 +58,7 @@ export function getReadableAccentColorHex(
     s = 0.5;
   }
 
-  // Create an array of 16 shades of the accent color from no luminance 
+  // Create an array of 16 shades of the accent color from no luminance
   // (black) to full luminance (white) and determine the contrast ratio
   // of each against the background.
   const shadeCount = 16;
@@ -79,7 +79,7 @@ export function getReadableAccentColorHex(
     return shade.contrast >= ratio;
   });
 
-  // Return the first readable shade that meets 
+  // Return the first readable shade that meets
   // the threshold or white if none of them do
   return firstReadableShade ? firstReadableShade.hex : '#ffffff';
 }
