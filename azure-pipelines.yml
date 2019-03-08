@@ -7,7 +7,8 @@ jobs:
 - job: Linux
   pool:
     # macOS-10.13
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent      name: Hosted Ubuntu 1604
+    name: Hosted Ubuntu 1604
     vmImage: 'Ubuntu 16.04'
     demands: npm
   steps:
@@ -37,21 +38,12 @@ jobs:
       disown -ar
     displayName: 'Start xvfb'
 
-  - task: Npm@1
+  - script: 'node node_modules/vscode/bin/test'
     displayName: 'Run tests via npm script'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run just-test'
     env:
       DISPLAY: :10
     enabled: true
 
-  - script: 'node node_modules/vscode/bin/test'
-    displayName: 'Run tests'
-    enabled: false
-    env:
-      DISPLAY: :10
 - job: Windows
   pool:
     # macOS-10.13
@@ -135,12 +127,19 @@ jobs:
       DISPLAY: :10
     enabled: true
 
-  - script: 'node node_modules/vscode/bin/test'
-    displayName: 'Run tests'
-    enabled: false
-    env:
-      DISPLAY: :10
+  # - script: 'node node_modules/vscode/bin/test'
+  #   displayName: 'Run tests'
+  #   enabled: false
+  #   env:
+  #     DISPLAY: :10
 
+- job: Finalize
+  dependsOn:
+  - macOS
+  - Linux
+  - Windows
+  condition: and(succeeded('macOS'), succeeded('Linux'), succeeded('Windows'))
+  steps:
   - script: |
       npx vsce package -o release.vsix
     displayName: 'create vsix'
@@ -149,3 +148,4 @@ jobs:
     displayName: 'Publish Pipeline Artifact'
     inputs:
       targetPath: release.vsix
+
