@@ -546,6 +546,52 @@ suite('Extension Basic Tests', () => {
       });
     });
 
+    suite('Status Bar', () => {
+      test('does not set item hover color when status bar is not affected', async () => {
+        await updateAffectedElements({
+          activityBar: true,
+          statusBar: false,
+          titleBar: true
+        });
+
+        const value = await getColorSettingAfterEnterColor(
+          BuiltInColors.Angular,
+          ColorSettings.statusBarItem_hoverBackground
+        );
+        assert.ok(!value);
+
+        await updateAffectedElements(allAffectedElements);
+      });
+
+      test('sets item hover color to darker on a light background', async () => {
+        const config = await getPeacockWorkspaceConfigAfterEnterColor(
+          'hsl(0 0.5 0.75)'
+        );
+        const backgroundHex = config[ColorSettings.statusBar_background];
+        const hoverBackgroundHex =
+          config[ColorSettings.statusBarItem_hoverBackground];
+
+        assert.ok(
+          getColorBrightness(backgroundHex) >
+            getColorBrightness(hoverBackgroundHex)
+        );
+      });
+
+      test('sets item hover color to lighter on a dark background', async () => {
+        const config = await getPeacockWorkspaceConfigAfterEnterColor(
+          'hsl(0 0.5 0.25)'
+        );
+        const backgroundHex = config[ColorSettings.statusBar_background];
+        const hoverBackgroundHex =
+          config[ColorSettings.statusBarItem_hoverBackground];
+
+        assert.ok(
+          getColorBrightness(backgroundHex) <
+            getColorBrightness(hoverBackgroundHex)
+        );
+      });
+    });
+
     suite('Activity bar badge', () => {
       test('activity bar badge styles are set when activity bar is affected', async () => {
         await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
@@ -748,6 +794,7 @@ suite('Extension Basic Tests', () => {
   });
 });
 
+// Reusable tests
 async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     activityBar: false,
@@ -828,7 +875,11 @@ async function testsSetsColorCustomizationsForAffectedElements() {
     )
   );
 
-  const activityBarStyle = getElementStyle(BuiltInColors.Angular, 'activityBar', true);
+  const activityBarStyle = getElementStyle(
+    BuiltInColors.Angular,
+    'activityBar',
+    true
+  );
   assert.equal(
     activityBarStyle.backgroundHex,
     config[ColorSettings.activityBar_background]
@@ -868,7 +919,7 @@ async function testsSetsColorCustomizationsForAffectedElements() {
 
   const statusBarStyle = getElementStyle(BuiltInColors.Angular, 'statusBar');
   assert.equal(
-    statusBarStyle.backgroundHex, 
+    statusBarStyle.backgroundHex,
     config[ColorSettings.statusBar_background]
   );
 
@@ -879,6 +930,38 @@ async function testsSetsColorCustomizationsForAffectedElements() {
       keepForegroundColor
     )
   );
+}
+
+// Helper functions
+async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
+  // Stub the async input box to return a response
+  const stub = await sinon
+    .stub(vscode.window, 'showInputBox')
+    .returns(Promise.resolve(colorInput));
+
+  // fire the command
+  await vscode.commands.executeCommand(Commands.enterColor);
+  const config = getPeacockWorkspaceConfig();
+  stub.restore();
+
+  return config;
+}
+
+async function getColorSettingAfterEnterColor(
+  colorInput: string,
+  setting: ColorSettings
+) {
+  // Stub the async input box to return a response
+  const stub = await sinon
+    .stub(vscode.window, 'showInputBox')
+    .returns(Promise.resolve(colorInput));
+
+  // fire the command
+  await vscode.commands.executeCommand(Commands.enterColor);
+  const config = getPeacockWorkspaceConfig();
+  stub.restore();
+
+  return config[setting];
 }
 
 function getPeacockWorkspaceConfig() {

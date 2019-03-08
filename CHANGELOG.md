@@ -6,6 +6,7 @@ All notable changes to the code will be documented in this file.
 
 Other Changes
 
+- Added colorization of items in the status bar on hover to better fit with the color that Peacock applies.
 - Added colorization of the Activity Bar badge based on the background color applied by Peacock to improve readability
 
 ## 0.7.0

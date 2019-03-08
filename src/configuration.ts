@@ -16,6 +16,7 @@ import {
 import {
   getAdjustedColorHex,
   getBadgeBackgroundColorHex,
+  getBackgroundHoverColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex
@@ -198,6 +199,7 @@ export function getElementStyle(
 
   let style = <IElementStyle>{
     backgroundHex: styleHex,
+    backgroundHoverHex: getBackgroundHoverColorHex(styleHex),
     foregroundHex: getForegroundColorHex(styleHex),
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
@@ -271,6 +273,8 @@ function collectStatusBarSettings(
     const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
     statusBarSettings[ColorSettings.statusBar_background] =
       statusBarStyle.backgroundHex;
+    statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
+      statusBarStyle.backgroundHoverHex;
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] =

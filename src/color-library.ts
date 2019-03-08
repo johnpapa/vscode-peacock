@@ -14,6 +14,14 @@ export function getInactiveBackgroundColorHex(backgroundColor = '') {
   return formatHex(tinycolor.mix(background, tinycolor('black'), 50));
 }
 
+export function getBackgroundHoverColorHex(backgroundColor = '') {
+  const background = tinycolor(backgroundColor);
+  const hoverColor = background.isLight()
+    ? background.darken()
+    : background.lighten();
+  return formatHex(hoverColor);
+}
+
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight()

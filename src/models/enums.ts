@@ -34,7 +34,8 @@ export enum ColorSettings {
   activityBar_badgeBackground = 'activityBarBadge.background',
   activityBar_badgeForeground = 'activityBarBadge.foreground',
   statusBar_background = 'statusBar.background',
-  statusBar_foreground = 'statusBar.foreground'
+  statusBar_foreground = 'statusBar.foreground',
+  statusBarItem_hoverBackground = 'statusBarItem.hoverBackground'
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
