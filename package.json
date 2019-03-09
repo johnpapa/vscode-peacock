@@ -28,7 +28,13 @@
   ],
   "preview": true,
   "activationEvents": [
-    "*"
+    "onCommand:peacock.resetColors",
+    "onCommand:peacock.enterColor",
+    "onCommand:peacock.changeColorToVueGreen",
+    "onCommand:peacock.changeColorToRandom",
+    "onCommand:peacock.changeColorToAngularRed",
+    "onCommand:peacock.changeColorToReactBlue",
+    "onCommand:peacock.changeColorToPreferred"
   ],
   "main": "./out/extension.js",
   "contributes": {
