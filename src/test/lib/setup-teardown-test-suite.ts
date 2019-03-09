@@ -13,14 +13,28 @@ import {
   updateKeepForegroundColor,
   getKeepForegroundColor
 } from '../../configuration';
-import { getExtension, noopElementAdjustments } from './helpers';
-import { executeCommand } from './helpers';
+import { getExtension } from './helpers';
+import { noopElementAdjustments, executeCommand } from './constants';
+
+export function allSetupAndTeardown(originalValues: IPeacockSettings) {
+  // suiteSetup(async () => {
+  //   extension = await setupTestSuite(extension, originalValues);
+  // });
+
+  suiteSetup(async () => {
+    await setupTestSuite(originalValues);
+  });
+  suiteTeardown(() => teardownTestSuite(originalValues));
+  setup(async () => {
+    await executeCommand(Commands.resetColors);
+  });
+}
 
 export async function setupTestSuite(
-  extension: vscode.Extension<any>,
+  // extension: vscode.Extension<any> | undefined,
   originalValues: IPeacockSettings
 ) {
-  extension = getExtension(extension);
+  let extension = getExtension();
   // Save the original values
   originalValues.affectedElements = getAffectedElements();
   originalValues.keepForegroundColor = getKeepForegroundColor();

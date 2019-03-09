@@ -1,23 +1,17 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import { executeCommand, getPeacockWorkspaceConfig } from './lib/helpers';
+import { getPeacockWorkspaceConfig } from './lib/helpers';
 import { ColorSettings, Commands, IPeacockSettings } from '../models';
 import { isValidColorInput } from '../color-library';
 import {
-  setupTestSuite,
-  teardownTestSuite
+  allSetupAndTeardown
 } from './lib/setup-teardown-test-suite';
+import { executeCommand } from './lib/constants';
 
 suite('Enter color', () => {
-  let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
-
-  suiteSetup(async () => {
-    extension = await setupTestSuite(extension, originalValues);
-  });
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
+  allSetupAndTeardown(originalValues);
 
   // Hex, Hex RGBA
   test(

@@ -7,26 +7,35 @@ import {
   IPeacockSettings
 } from '../models';
 import { getPeacockWorkspaceConfig } from './lib/helpers';
-import {
-  teardownTestSuite,
-  setupTestSuite
-} from './lib/setup-teardown-test-suite';
+import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import { executeCommand } from './lib/constants';
+import { isValidColorInput } from '../color-library';
 
 suite('can set color to built-in color', () => {
-  let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
-
-  suiteSetup(async () => {
-    extension = await setupTestSuite(extension, originalValues);
-  });
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
+  allSetupAndTeardown(originalValues);
 
   test('can set color to Angular Red', testChangingColorToAngularRed());
 
   test('can set color to Vue Green', testChangingColorToVueGreen());
 
   test('can set color to React Blue', testChangingColorToReactBlue());
+
+  test('can set color to Random color', async () => {
+    await executeCommand(Commands.changeColorToRandom);
+    let config = getPeacockWorkspaceConfig();
+    assert.ok(
+      isValidColorInput(config[ColorSettings.titleBar_activeBackground])
+    );
+  });
+
+  test('can reset colors', async () => {
+    await executeCommand(Commands.resetColors);
+    let config = getPeacockWorkspaceConfig();
+    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+    assert.ok(!config[ColorSettings.statusBar_background]);
+    assert.ok(!config[ColorSettings.activityBar_background]);
+  });
 });
 
 function testChangingColorToAngularRed():

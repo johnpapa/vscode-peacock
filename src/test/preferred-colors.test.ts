@@ -1,24 +1,16 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
 import { IPeacockSettings, Commands, ColorSettings } from '../models';
-import {
-  setupTestSuite,
-  teardownTestSuite
-} from './lib/setup-teardown-test-suite';
-import { executeCommand, getPeacockWorkspaceConfig } from './lib/helpers';
+import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import { getPeacockWorkspaceConfig } from './lib/helpers';
 import { parsePreferredColorValue } from '../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
+import { executeCommand } from './lib/constants';
 
 suite('Preferred colors', () => {
-  let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
-
-  suiteSetup(async () => {
-    extension = await setupTestSuite(extension, originalValues);
-  });
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
+  allSetupAndTeardown(originalValues);
 
   test('can set color to preferred color', async () => {
     // Stub the async quick pick to return a response

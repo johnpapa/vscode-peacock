@@ -10,16 +10,16 @@ import {
   setupTestSuite,
   teardownTestSuite
 } from './lib/setup-teardown-test-suite';
-import { executeCommand, getPeacockWorkspaceConfig } from './lib/helpers';
+import { getPeacockWorkspaceConfig } from './lib/helpers';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
+import { executeCommand } from './lib/constants';
 
 suite('Foreground color', () => {
-  let extension: vscode.Extension<any>;
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => {
-    extension = await setupTestSuite(extension, originalValues);
+    await setupTestSuite(originalValues);
   });
 
   suiteTeardown(() => teardownTestSuite(originalValues));
