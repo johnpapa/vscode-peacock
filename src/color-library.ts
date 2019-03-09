@@ -1,5 +1,10 @@
 import * as tinycolor from 'tinycolor2';
-import { ColorAdjustment, ForegroundColors, ReadabilityRatios } from './models';
+import { 
+  ColorAdjustment, 
+  ForegroundColors, 
+  ReadabilityRatios, 
+  inactiveElementAlpha 
+} from './models';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -11,7 +16,8 @@ export function getBackgroundColorHex(color = '') {
 
 export function getInactiveBackgroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  return formatHex(tinycolor.mix(background, tinycolor('black'), 50));
+  background.setAlpha(inactiveElementAlpha);
+  return formatHex(background);
 }
 
 export function getBackgroundHoverColorHex(backgroundColor = '') {
@@ -32,8 +38,8 @@ export function getForegroundColorHex(backgroundColor = '') {
 
 export function getInactiveForegroundColorHex(backgroundColor = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
-  const background = tinycolor(backgroundColor);
-  return formatHex(tinycolor.mix(foreground, background, 25));
+  foreground.setAlpha(inactiveElementAlpha);
+  return formatHex(foreground);
 }
 
 export function getReadableAccentColorHex(
