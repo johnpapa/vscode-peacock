@@ -7,16 +7,11 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import {
-  ICommand,
   IPeacockSettings,
-  IConfiguration,
   IPeacockAffectedElementSettings,
-  extSuffix,
   Commands,
   ColorSettings,
-  StandardSettings,
   BuiltInColors,
-  AffectedSettings,
   IPeacockElementAdjustments,
   ForegroundColors,
   ReadabilityRatios
