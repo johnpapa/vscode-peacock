@@ -78,58 +78,7 @@ suite('Extension Tests', () => {
     assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
-  suite('Foreground color', () => {
-    function createForegroundTest(fakeResponse: string, expectedValue: string) {
-      return async () => {
-        // Stub the async input box to return a response
-        const stub = await sinon
-          .stub(vscode.window, 'showInputBox')
-          .returns(Promise.resolve(fakeResponse));
 
-        // fire the command
-        await executeCommand(Commands.enterColor);
-        let config = getPeacockWorkspaceConfig();
-        const value = config[ColorSettings.activityBar_foreground];
-        stub.restore();
-
-        assert.ok(isValidColorInput(value));
-        assert.equal(expectedValue, value);
-      };
-    }
-
-    test(
-      'is set to light foreground on black backgrounds',
-      createForegroundTest('hsl (0, 0, 0)', ForegroundColors.LightForeground)
-    );
-
-    test(
-      'is set to light foreground on dark backgrounds',
-      createForegroundTest('hsl (0, 0, 25%)', ForegroundColors.LightForeground)
-    );
-
-    test(
-      'is set to light foreground on less than 50% bright backgrounds',
-      createForegroundTest('hsl (0, 0, 49%)', ForegroundColors.LightForeground)
-    );
-
-    test(
-      'is set to dark foreground on greater than or equal to 50% bright backgrounds',
-      createForegroundTest('hsl (0, 0, 50%)', ForegroundColors.DarkForeground)
-    );
-
-    test(
-      'is set to dark foreground on light backgrounds',
-      createForegroundTest('hsl (0, 0, 75%)', ForegroundColors.DarkForeground)
-    );
-
-    test(
-      'is set to dark foreground on white backgrounds',
-      createForegroundTest(
-        'hsl (0, 100%, 100%)',
-        ForegroundColors.DarkForeground
-      )
-    );
-  });
 
   suite('Preferred colors', () => {
     test('can set color to preferred color', async () => {
