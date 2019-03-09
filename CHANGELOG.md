@@ -8,7 +8,8 @@ Other Changes
 
 - Added colorization of items in the status bar on hover to better fit with the color that Peacock applies.
 - Added colorization of the Activity Bar badge based on the background color applied by Peacock to improve readability
-- Modified inactive element coloring to better match default behavior of VS Code and most themes.
+- Refactored inactive element coloring to better match default behavior of VS Code and most themes.
+- Added azure devops CI process to test on macos, linux and windows with Node 8 and 10
 
 ## 0.7.0
 
