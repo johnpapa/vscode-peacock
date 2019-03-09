@@ -20,12 +20,7 @@ import {
   updateAffectedElements,
   getElementStyle
 } from '../configuration';
-import {
-  getPeacockWorkspaceConfig,
-  getColorSettingAfterEnterColor,
-  getPeacockWorkspaceConfigAfterEnterColor,
-  shouldKeepColorTest
-} from './lib/helpers';
+import { getPeacockWorkspaceConfig } from './lib/helpers';
 import assert = require('assert');
 import { getColorBrightness, getReadabilityRatio } from '../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
@@ -417,4 +412,43 @@ async function testsSetsColorCustomizationsForAffectedElements() {
       keepForegroundColor
     )
   );
+}
+
+async function getColorSettingAfterEnterColor(
+  colorInput: string,
+  setting: ColorSettings
+) {
+  // Stub the async input box to return a response
+  const stub = await sinon
+    .stub(vscode.window, 'showInputBox')
+    .returns(Promise.resolve(colorInput));
+  // fire the command
+  await vscode.commands.executeCommand(Commands.enterColor);
+  const config = getPeacockWorkspaceConfig();
+  stub.restore();
+  return config[setting];
+}
+
+function shouldKeepColorTest(
+  elementStyle: string | undefined,
+  colorSetting: ColorSettings,
+  keepColor: boolean
+) {
+  const config = getPeacockWorkspaceConfig();
+  let match = elementStyle === config[colorSetting];
+  let passesTest = keepColor ? !match : match;
+  return passesTest;
+}
+async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
+  // Stub the async input box to return a response
+  const stub = await sinon
+    .stub(vscode.window, 'showInputBox')
+    .returns(Promise.resolve(colorInput));
+
+  // fire the command
+  await vscode.commands.executeCommand(Commands.enterColor);
+  const config = getPeacockWorkspaceConfig();
+  stub.restore();
+
+  return config;
 }

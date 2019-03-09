@@ -17,10 +17,6 @@ import { getExtension } from './helpers';
 import { noopElementAdjustments, executeCommand } from './constants';
 
 export function allSetupAndTeardown(originalValues: IPeacockSettings) {
-  // suiteSetup(async () => {
-  //   extension = await setupTestSuite(extension, originalValues);
-  // });
-
   suiteSetup(async () => {
     await setupTestSuite(originalValues);
   });
