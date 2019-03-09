@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { Commands, ColorSettings, BuiltInColors } from '../models';
-import { getPeacockWorkspaceConfig } from './test-helpers';
+import { getPeacockWorkspaceConfig } from './helpers';
 
 export function testChangingColorToAngularRed():
   | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)

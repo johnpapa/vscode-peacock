@@ -45,14 +45,15 @@ import {
   getPeacockWorkspaceConfig,
   getColorSettingAfterEnterColor,
   getPeacockWorkspaceConfigAfterEnterColor,
-  shouldKeepColorTest
-} from './test-helpers';
+  shouldKeepColorTest,
+  getExtension
+} from './helpers';
 import {
   testChangingColorToAngularRed,
   testChangingColorToVueGreen,
   testChangingColorToReactBlue
 } from './test-built-in-colors';
-
+import { testColorInputs } from './test-color-input';
 const allAffectedElements = <IPeacockAffectedElementSettings>{
   statusBar: true,
   activityBar: true,
@@ -72,99 +73,13 @@ suite('Extension Tests', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => {
-    const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
-    if (!ext) {
-      throw new Error('Extension was not found.');
-    }
-    if (ext) {
-      extension = ext;
-    }
-
-    // Save the original values
-    originalValues.affectedElements = getAffectedElements();
-    originalValues.keepForegroundColor = getKeepForegroundColor();
-    const { values: preferredColors } = getPreferredColors();
-    originalValues.preferredColors = preferredColors;
-
-    // Set the test values
-    await updateAffectedElements(<IPeacockAffectedElementSettings>{
-      statusBar: true,
-      activityBar: true,
-      titleBar: true
-    });
-    await updatePreferredColors([
-      { name: 'Gatsby Purple', value: '#639' },
-      { name: 'Auth0 Orange', value: '#eb5424' },
-      { name: 'Azure Blue', value: '#007fff' }
-    ]);
-    await updateKeepForegroundColor(false);
-    await updateElementAdjustments(noopElementAdjustments);
+    extension = await setupTestSuite(extension, originalValues);
   });
 
   setup(async () => {
-    // runs before each test
     await executeCommand(Commands.resetColors);
   });
 
-  test('Extension loads in VSCode and is active', done => {
-    // Hopefully a 200ms timeout will allow the extension to activate within Windows
-    // otherwise we get a false result.
-
-    setTimeout(() => {
-      assert.equal(extension.isActive, true);
-      done();
-    }, 200);
-  });
-
-  test('constants.Commands exist in package.json', () => {
-    const commandCollection: ICommand[] =
-      extension.packageJSON.contributes.commands;
-    for (let command in Commands) {
-      const result = commandCollection.some(
-        c => c.command === Commands[command]
-      );
-      assert.ok(result);
-    }
-  });
-
-  test('constants.Settings exist in package.json', () => {
-    const config: IConfiguration =
-      extension.packageJSON.contributes.configuration;
-    const properties = Object.keys(config.properties);
-    for (let setting in StandardSettings) {
-      const result = properties.some(
-        property => property === `${extSuffix}.${StandardSettings[setting]}`
-      );
-      assert.ok(result);
-    }
-  });
-
-  test('constants.AffectedSettings exist in package.json', () => {
-    const config: IConfiguration =
-      extension.packageJSON.contributes.configuration;
-    const properties = Object.keys(config.properties);
-    for (let setting in AffectedSettings) {
-      const result = properties.some(
-        property => property === `${extSuffix}.${AffectedSettings[setting]}`
-      );
-      assert.ok(result);
-    }
-  });
-
-  test('package.json commands registered in extension', done => {
-    const commandStrings: string[] = extension.packageJSON.contributes.commands.map(
-      (c: ICommand) => c.command
-    );
-
-    vscode.commands.getCommands(true).then((allCommands: string[]) => {
-      const commands = allCommands.filter(c => c.startsWith(`${extSuffix}.`));
-      commands.forEach(command => {
-        const result = commandStrings.some(c => c === command);
-        assert.ok(result);
-      });
-      done();
-    });
-  });
 
   suite('can set color to built-in color', () => {
     test('can set color to Angular Red', testChangingColorToAngularRed());
@@ -190,145 +105,7 @@ suite('Extension Tests', () => {
     assert.ok(!config[ColorSettings.activityBar_background]);
   });
 
-  suite('Enter color', () => {
-    function createColorInputTest(fakeResponse: string, expectedValue: string) {
-      return async () => {
-        // Stub the async input box to return a response
-        const stub = await sinon
-          .stub(vscode.window, 'showInputBox')
-          .returns(Promise.resolve(fakeResponse));
-
-        // fire the command
-        await executeCommand(Commands.enterColor);
-        let config = getPeacockWorkspaceConfig();
-        const value = config[ColorSettings.titleBar_activeBackground];
-        stub.restore();
-
-        assert.ok(isValidColorInput(value));
-        assert.equal(expectedValue, value);
-      };
-    }
-
-    // Hex, Hex RGBA
-
-    test(
-      'can set color using short hex user input',
-      createColorInputTest('#000', '#000000')
-    );
-
-    test(
-      'can set color using short hex user input without hash',
-      createColorInputTest('000', '#000000')
-    );
-
-    test(
-      'can set color using short RGBA hex user input',
-      createColorInputTest('#369C', '#336699cc')
-    );
-
-    test(
-      'can set color using short RGBA hex user input without hash',
-      createColorInputTest('369C', '#336699cc')
-    );
-
-    test(
-      'can set color using hex user input',
-      createColorInputTest('#f0f0f6', '#f0f0f6')
-    );
-
-    test(
-      'can set color using hex user input without hash',
-      createColorInputTest('f0f0f6', '#f0f0f6')
-    );
-
-    test(
-      'can set color using RGBA hex user input',
-      createColorInputTest('#f0f0f688', '#f0f0f688')
-    );
-
-    test(
-      'can set color using RGBA hex user input without hash',
-      createColorInputTest('f0f0f688', '#f0f0f688')
-    );
-
-    // Named colors
-
-    test(
-      'can set color using named color user input',
-      createColorInputTest('blanchedalmond', '#ffebcd')
-    );
-
-    test(
-      'can set color using named color user input with any casing',
-      createColorInputTest('DarkBlue', '#00008b')
-    );
-
-    // RGB, RGBA
-
-    test(
-      'can set color using rgb() color user input',
-      createColorInputTest('rgb (255 0 0)', '#ff0000')
-    );
-
-    test(
-      'can set color using rgb() color user input without parentheses',
-      createColorInputTest('rgb 255 0 0', '#ff0000')
-    );
-
-    test(
-      'can set color using rgba() color user input',
-      createColorInputTest('rgba (255, 0, 0, .5)', '#ff000080')
-    );
-
-    test(
-      'can set color using rgb() color user input with decimals or percentages',
-      createColorInputTest('rgb (100% 255 0)', '#ffff00')
-    );
-
-    // HSL, HSLA
-
-    test(
-      'can set color using hsl() color user input',
-      createColorInputTest('hsl (0 100% 50%)', '#ff0000')
-    );
-
-    test(
-      'can set color using hsl() color user input without parentheses',
-      createColorInputTest('hsl 0 100% 50%', '#ff0000')
-    );
-
-    test(
-      'can set color using hsla() color user input',
-      createColorInputTest('hsla (0, 100%, 50%, .5)', '#ff000080')
-    );
-
-    test(
-      'can set color using hsl() color user input with decimals or percentages',
-      createColorInputTest('hsl (0, 100%, .5)', '#ff0000')
-    );
-
-    // HSV, HSVA
-
-    test(
-      'can set color using hsv() color user input',
-      createColorInputTest('hsv (0, 100%, 100%)', '#ff0000')
-    );
-
-    test(
-      'can set color using hsv() color user input without parentheses',
-      createColorInputTest('hsv 0 100% 100%', '#ff0000')
-    );
-
-    test(
-      'can set color using hsva() color user input',
-      createColorInputTest('hsva (0, 100%, 100%, .5)', '#ff000080')
-    );
-
-    test(
-      'can set color using hsv() color user input with decimals or percentages',
-      createColorInputTest('hsv (0, 1, 100%)', '#ff0000')
-    );
-  });
+  suite('Enter color', testColorInputs());
 
   suite('Foreground color', () => {
     function createForegroundTest(fakeResponse: string, expectedValue: string) {
@@ -917,4 +694,30 @@ async function testsSetsColorCustomizationsForAffectedElements() {
       keepForegroundColor
     )
   );
+}
+
+async function setupTestSuite(
+  extension: vscode.Extension<any>,
+  originalValues: IPeacockSettings
+) {
+  extension = getExtension(extension);
+  // Save the original values
+  originalValues.affectedElements = getAffectedElements();
+  originalValues.keepForegroundColor = getKeepForegroundColor();
+  const { values: preferredColors } = getPreferredColors();
+  originalValues.preferredColors = preferredColors;
+  // Set the test values
+  await updateAffectedElements(<IPeacockAffectedElementSettings>{
+    statusBar: true,
+    activityBar: true,
+    titleBar: true
+  });
+  await updatePreferredColors([
+    { name: 'Gatsby Purple', value: '#639' },
+    { name: 'Auth0 Orange', value: '#eb5424' },
+    { name: 'Azure Blue', value: '#007fff' }
+  ]);
+  await updateKeepForegroundColor(false);
+  await updateElementAdjustments(noopElementAdjustments);
+  return extension;
 }

@@ -2,6 +2,17 @@ import * as vscode from 'vscode';
 import * as sinon from 'sinon';
 import { Commands, ColorSettings, Sections } from '../models';
 
+export function getExtension(extension: vscode.Extension<any>) {
+  const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
+  if (!ext) {
+    throw new Error('Extension was not found.');
+  }
+  if (ext) {
+    extension = ext;
+  }
+  return extension;
+}
+
 export async function getColorSettingAfterEnterColor(
   colorInput: string,
   setting: ColorSettings
