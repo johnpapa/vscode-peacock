@@ -143,6 +143,15 @@ See the [CHANGELOG](CHANGELOG.md) for the latest changes.
 
 ## FAQ
 
+### Peacock Behavior
+
+Peacock affects:
+
+- the titlebar, activitybar, and statusbar elements
+- anything regarding the readability of these elements
+- background and foreground colors
+- any elements that are displayed within these peacock elements (e.g. badges, hover)
+
 ### Title Bar Coloring
 
 The VS Code Title Bar style can be configured to be custom or native with the `window.titleBarStyle` setting. When operating in native mode, Peacock is unable to colorize the Title Bar because VS Code defers Title Bar management to the OS. In order to leverage the Affect Title Bar setting to colorize the Title Bar, the `window.titleBarStyle` must be set to custom.
