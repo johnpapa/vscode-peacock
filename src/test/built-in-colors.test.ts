@@ -20,13 +20,13 @@ suite('can set color to built-in color', () => {
     extension = await setupTestSuite(extension, originalValues);
   });
 
+  suiteTeardown(() => teardownTestSuite(originalValues));
+
   test('can set color to Angular Red', testChangingColorToAngularRed());
 
   test('can set color to Vue Green', testChangingColorToVueGreen());
 
   test('can set color to React Blue', testChangingColorToReactBlue());
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
 });
 
 function testChangingColorToAngularRed():

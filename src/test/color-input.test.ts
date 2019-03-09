@@ -17,9 +17,7 @@ suite('Enter color', () => {
     extension = await setupTestSuite(extension, originalValues);
   });
 
-  setup(async () => {
-    await executeCommand(Commands.resetColors);
-  });
+  suiteTeardown(() => teardownTestSuite(originalValues));
 
   // Hex, Hex RGBA
   test(
@@ -139,8 +137,6 @@ suite('Enter color', () => {
     'can set color using hsv() color user input with decimals or percentages',
     createColorInputTest('hsv (0, 1, 100%)', '#ff0000')
   );
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
 });
 
 function createColorInputTest(fakeResponse: string, expectedValue: string) {

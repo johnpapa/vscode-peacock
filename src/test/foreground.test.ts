@@ -22,6 +22,8 @@ suite('Foreground color', () => {
     extension = await setupTestSuite(extension, originalValues);
   });
 
+  suiteTeardown(() => teardownTestSuite(originalValues));
+
   setup(async () => {
     await executeCommand(Commands.resetColors);
   });
@@ -55,8 +57,6 @@ suite('Foreground color', () => {
     'is set to dark foreground on white backgrounds',
     createForegroundTest('hsl (0, 100%, 100%)', ForegroundColors.DarkForeground)
   );
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
 });
 
 function createForegroundTest(fakeResponse: string, expectedValue: string) {

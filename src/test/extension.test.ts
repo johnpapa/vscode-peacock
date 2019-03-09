@@ -13,7 +13,6 @@ import {
   ColorSettings,
   BuiltInColors,
   IPeacockElementAdjustments,
-  ForegroundColors,
   ReadabilityRatios
 } from '../models';
 import {
@@ -58,6 +57,8 @@ suite('Extension Tests', () => {
     extension = await setupTestSuite(extension, originalValues);
   });
 
+  suiteTeardown(() => teardownTestSuite(originalValues));
+
   setup(async () => {
     await executeCommand(Commands.resetColors);
   });
@@ -76,48 +77,6 @@ suite('Extension Tests', () => {
     assert.ok(!config[ColorSettings.titleBar_activeBackground]);
     assert.ok(!config[ColorSettings.statusBar_background]);
     assert.ok(!config[ColorSettings.activityBar_background]);
-  });
-
-
-
-  suite('Preferred colors', () => {
-    test('can set color to preferred color', async () => {
-      // Stub the async quick pick to return a response
-      const fakeResponse = 'Azure Blue -> #007fff';
-      const stub = await sinon
-        .stub(vscode.window, 'showQuickPick')
-        .returns(Promise.resolve<any>(fakeResponse));
-
-      await executeCommand(Commands.changeColorToPreferred);
-      let config = getPeacockWorkspaceConfig();
-      const value = config[ColorSettings.titleBar_activeBackground];
-      stub.restore();
-
-      const parsedResponse = parsePreferredColorValue(fakeResponse);
-
-      assert.ok(isValidColorInput(value));
-      assert.ok(value === parsedResponse);
-    });
-
-    test('set to preferred color with no preferences is a noop', async () => {
-      // set the color to react blue to start
-      await executeCommand(Commands.changeColorToReactBlue);
-
-      // Stub the async quick pick to return a response
-      const fakeResponse = '';
-      const stub = await sinon
-        .stub(vscode.window, 'showQuickPick')
-        .returns(Promise.resolve<any>(fakeResponse));
-
-      let config = getPeacockWorkspaceConfig();
-      const valueBefore = config[ColorSettings.titleBar_activeBackground];
-
-      await executeCommand(Commands.changeColorToPreferred);
-      const valueAfter = config[ColorSettings.titleBar_activeBackground];
-      stub.restore();
-
-      assert.ok(valueBefore === valueAfter);
-    });
   });
 
   suite('Affected elements', () => {
@@ -467,8 +426,6 @@ suite('Extension Tests', () => {
       await updateAffectedElements(allAffectedElements);
     });
   });
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
 });
 
 // Reusable tests
