@@ -16,7 +16,6 @@ import {
   ColorSettings,
   StandardSettings,
   BuiltInColors,
-  Sections,
   AffectedSettings,
   IPeacockElementAdjustments,
   ForegroundColors,
@@ -42,6 +41,12 @@ import {
   getReadabilityRatio
 } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
+import {
+  getPeacockWorkspaceConfig,
+  getColorSettingAfterEnterColor,
+  getPeacockWorkspaceConfigAfterEnterColor,
+  shouldKeepColorTest
+} from './test-helpers';
 
 const allAffectedElements = <IPeacockAffectedElementSettings>{
   statusBar: true,
@@ -93,12 +98,6 @@ suite('Extension Tests', () => {
     // runs before each test
     await vscode.commands.executeCommand(Commands.resetColors);
   });
-
-  // test.only('Can Get Existing Color', async () => {
-  //   const color = new vscode.ThemeColor('activityBar.background');
-  //   assert.ok(!!color);
-  //   await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
-  // });
 
   test('Extension loads in VSCode and is active', done => {
     // Hopefully a 200ms timeout will allow the extension to activate within Windows
@@ -930,51 +929,4 @@ async function testsSetsColorCustomizationsForAffectedElements() {
       keepForegroundColor
     )
   );
-}
-
-// Helper functions
-async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
-  // Stub the async input box to return a response
-  const stub = await sinon
-    .stub(vscode.window, 'showInputBox')
-    .returns(Promise.resolve(colorInput));
-
-  // fire the command
-  await vscode.commands.executeCommand(Commands.enterColor);
-  const config = getPeacockWorkspaceConfig();
-  stub.restore();
-
-  return config;
-}
-
-async function getColorSettingAfterEnterColor(
-  colorInput: string,
-  setting: ColorSettings
-) {
-  // Stub the async input box to return a response
-  const stub = await sinon
-    .stub(vscode.window, 'showInputBox')
-    .returns(Promise.resolve(colorInput));
-
-  // fire the command
-  await vscode.commands.executeCommand(Commands.enterColor);
-  const config = getPeacockWorkspaceConfig();
-  stub.restore();
-
-  return config[setting];
-}
-
-function getPeacockWorkspaceConfig() {
-  return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
-}
-
-function shouldKeepColorTest(
-  elementStyle: string | undefined,
-  colorSetting: ColorSettings,
-  keepColor: boolean
-) {
-  const config = getPeacockWorkspaceConfig();
-  let match = elementStyle === config[colorSetting];
-  let passesTest = keepColor ? !match : match;
-  return passesTest;
 }
