@@ -1,6 +1,19 @@
 import * as vscode from 'vscode';
 import * as sinon from 'sinon';
-import { Commands, ColorSettings, Sections } from '../models';
+import {
+  Commands,
+  ColorSettings,
+  Sections,
+  IPeacockElementAdjustments
+} from '../../models';
+
+export const executeCommand = vscode.commands.executeCommand;
+
+export const noopElementAdjustments = <IPeacockElementAdjustments>{
+  activityBar: 'none',
+  statusBar: 'none',
+  titleBar: 'none'
+};
 
 export function getExtension(extension: vscode.Extension<any>) {
   const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');

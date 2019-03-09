@@ -9,7 +9,7 @@ import {
   extSuffix,
   AffectedSettings
 } from '../models';
-import { getExtension } from './helpers';
+import { getExtension } from './lib/helpers';
 
 suite('Basic Extension Tests', () => {
   let extension: vscode.Extension<any>;

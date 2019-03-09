@@ -17,10 +17,7 @@ import {
   ReadabilityRatios
 } from '../models';
 import {
-  getAffectedElements,
-  getPreferredColors,
   updateAffectedElements,
-  updatePreferredColors,
   updateElementAdjustments,
   getElementStyle,
   updateKeepForegroundColor,
@@ -37,31 +34,21 @@ import {
 } from '../color-library';
 import { parsePreferredColorValue } from '../inputs';
 import {
+  executeCommand,
   getPeacockWorkspaceConfig,
   getColorSettingAfterEnterColor,
   getPeacockWorkspaceConfigAfterEnterColor,
-  shouldKeepColorTest,
-  getExtension
-} from './helpers';
+  shouldKeepColorTest
+} from './lib/helpers';
 import {
-  testChangingColorToAngularRed,
-  testChangingColorToVueGreen,
-  testChangingColorToReactBlue
-} from './test-built-in-colors';
-import { testColorInputs } from './test-color-input';
+  setupTestSuite,
+  teardownTestSuite
+} from './lib/setup-teardown-test-suite';
 const allAffectedElements = <IPeacockAffectedElementSettings>{
   statusBar: true,
   activityBar: true,
   titleBar: true
 };
-
-const noopElementAdjustments = <IPeacockElementAdjustments>{
-  activityBar: 'none',
-  statusBar: 'none',
-  titleBar: 'none'
-};
-
-const executeCommand = vscode.commands.executeCommand;
 
 suite('Extension Tests', () => {
   let extension: vscode.Extension<any>;
@@ -73,15 +60,6 @@ suite('Extension Tests', () => {
 
   setup(async () => {
     await executeCommand(Commands.resetColors);
-  });
-
-
-  suite('can set color to built-in color', () => {
-    test('can set color to Angular Red', testChangingColorToAngularRed());
-
-    test('can set color to Vue Green', testChangingColorToVueGreen);
-
-    test('can set color to React Blue', testChangingColorToReactBlue);
   });
 
   test('can set color to Random color', async () => {
@@ -99,8 +77,6 @@ suite('Extension Tests', () => {
     assert.ok(!config[ColorSettings.statusBar_background]);
     assert.ok(!config[ColorSettings.activityBar_background]);
   });
-
-  suite('Enter color', testColorInputs());
 
   suite('Foreground color', () => {
     function createForegroundTest(fakeResponse: string, expectedValue: string) {
@@ -543,14 +519,7 @@ suite('Extension Tests', () => {
     });
   });
 
-  suiteTeardown(async () => {
-    await executeCommand(Commands.resetColors);
-    // put back the original peacock user settings
-    await updateAffectedElements(originalValues.affectedElements);
-    await updateElementAdjustments(originalValues.elementAdjustments);
-    await updatePreferredColors(originalValues.preferredColors);
-    await updateKeepForegroundColor(originalValues.keepForegroundColor);
-  });
+  suiteTeardown(() => teardownTestSuite(originalValues));
 });
 
 // Reusable tests
@@ -689,30 +658,4 @@ async function testsSetsColorCustomizationsForAffectedElements() {
       keepForegroundColor
     )
   );
-}
-
-async function setupTestSuite(
-  extension: vscode.Extension<any>,
-  originalValues: IPeacockSettings
-) {
-  extension = getExtension(extension);
-  // Save the original values
-  originalValues.affectedElements = getAffectedElements();
-  originalValues.keepForegroundColor = getKeepForegroundColor();
-  const { values: preferredColors } = getPreferredColors();
-  originalValues.preferredColors = preferredColors;
-  // Set the test values
-  await updateAffectedElements(<IPeacockAffectedElementSettings>{
-    statusBar: true,
-    activityBar: true,
-    titleBar: true
-  });
-  await updatePreferredColors([
-    { name: 'Gatsby Purple', value: '#639' },
-    { name: 'Auth0 Orange', value: '#eb5424' },
-    { name: 'Azure Blue', value: '#007fff' }
-  ]);
-  await updateKeepForegroundColor(false);
-  await updateElementAdjustments(noopElementAdjustments);
-  return extension;
 }
