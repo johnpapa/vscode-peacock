@@ -47,6 +47,11 @@ import {
   getPeacockWorkspaceConfigAfterEnterColor,
   shouldKeepColorTest
 } from './test-helpers';
+import {
+  testChangingColorToAngularRed,
+  testChangingColorToVueGreen,
+  testChangingColorToReactBlue
+} from './test-built-in-colors';
 
 const allAffectedElements = <IPeacockAffectedElementSettings>{
   statusBar: true,
@@ -59,6 +64,8 @@ const noopElementAdjustments = <IPeacockElementAdjustments>{
   statusBar: 'none',
   titleBar: 'none'
 };
+
+const executeCommand = vscode.commands.executeCommand;
 
 suite('Extension Tests', () => {
   let extension: vscode.Extension<any>;
@@ -96,7 +103,7 @@ suite('Extension Tests', () => {
 
   setup(async () => {
     // runs before each test
-    await vscode.commands.executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetColors);
   });
 
   test('Extension loads in VSCode and is active', done => {
@@ -159,35 +166,16 @@ suite('Extension Tests', () => {
     });
   });
 
-  test('can set color to Angular Red', async () => {
-    await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
-    let config = getPeacockWorkspaceConfig();
-    assert.equal(
-      BuiltInColors.Angular,
-      config[ColorSettings.titleBar_activeBackground]
-    );
-  });
+  suite('can set color to built-in color', () => {
+    test('can set color to Angular Red', testChangingColorToAngularRed());
 
-  test('can set color to Vue Green', async () => {
-    await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
-    let config = getPeacockWorkspaceConfig();
-    assert.equal(
-      BuiltInColors.Vue,
-      config[ColorSettings.titleBar_activeBackground]
-    );
-  });
+    test('can set color to Vue Green', testChangingColorToVueGreen);
 
-  test('can set color to React Blue', async () => {
-    await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
-    let config = getPeacockWorkspaceConfig();
-    assert.equal(
-      BuiltInColors.React,
-      config[ColorSettings.titleBar_activeBackground]
-    );
+    test('can set color to React Blue', testChangingColorToReactBlue);
   });
 
   test('can set color to Random color', async () => {
-    await vscode.commands.executeCommand(Commands.changeColorToRandom);
+    await executeCommand(Commands.changeColorToRandom);
     let config = getPeacockWorkspaceConfig();
     assert.ok(
       isValidColorInput(config[ColorSettings.titleBar_activeBackground])
@@ -195,7 +183,7 @@ suite('Extension Tests', () => {
   });
 
   test('can reset colors', async () => {
-    await vscode.commands.executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetColors);
     let config = getPeacockWorkspaceConfig();
     assert.ok(!config[ColorSettings.titleBar_activeBackground]);
     assert.ok(!config[ColorSettings.statusBar_background]);
@@ -211,7 +199,7 @@ suite('Extension Tests', () => {
           .returns(Promise.resolve(fakeResponse));
 
         // fire the command
-        await vscode.commands.executeCommand(Commands.enterColor);
+        await executeCommand(Commands.enterColor);
         let config = getPeacockWorkspaceConfig();
         const value = config[ColorSettings.titleBar_activeBackground];
         stub.restore();
@@ -351,7 +339,7 @@ suite('Extension Tests', () => {
           .returns(Promise.resolve(fakeResponse));
 
         // fire the command
-        await vscode.commands.executeCommand(Commands.enterColor);
+        await executeCommand(Commands.enterColor);
         let config = getPeacockWorkspaceConfig();
         const value = config[ColorSettings.activityBar_foreground];
         stub.restore();
@@ -403,7 +391,7 @@ suite('Extension Tests', () => {
         .stub(vscode.window, 'showQuickPick')
         .returns(Promise.resolve<any>(fakeResponse));
 
-      await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+      await executeCommand(Commands.changeColorToPreferred);
       let config = getPeacockWorkspaceConfig();
       const value = config[ColorSettings.titleBar_activeBackground];
       stub.restore();
@@ -416,7 +404,7 @@ suite('Extension Tests', () => {
 
     test('set to preferred color with no preferences is a noop', async () => {
       // set the color to react blue to start
-      await vscode.commands.executeCommand(Commands.changeColorToReactBlue);
+      await executeCommand(Commands.changeColorToReactBlue);
 
       // Stub the async quick pick to return a response
       const fakeResponse = '';
@@ -427,7 +415,7 @@ suite('Extension Tests', () => {
       let config = getPeacockWorkspaceConfig();
       const valueBefore = config[ColorSettings.titleBar_activeBackground];
 
-      await vscode.commands.executeCommand(Commands.changeColorToPreferred);
+      await executeCommand(Commands.changeColorToPreferred);
       const valueAfter = config[ColorSettings.titleBar_activeBackground];
       stub.restore();
 
@@ -526,7 +514,7 @@ suite('Extension Tests', () => {
       });
 
       test('does not set any color customizations when no elements affected', async () => {
-        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        await executeCommand(Commands.changeColorToAngularRed);
         let config = getPeacockWorkspaceConfig();
 
         assert.ok(!config[ColorSettings.titleBar_activeBackground]);
@@ -593,7 +581,7 @@ suite('Extension Tests', () => {
 
     suite('Activity bar badge', () => {
       test('activity bar badge styles are set when activity bar is affected', async () => {
-        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        await executeCommand(Commands.changeColorToAngularRed);
         let config = getPeacockWorkspaceConfig();
         assert.ok(config[ColorSettings.activityBar_badgeBackground]);
         assert.ok(config[ColorSettings.activityBar_badgeForeground]);
@@ -606,7 +594,7 @@ suite('Extension Tests', () => {
           titleBar: true
         });
 
-        await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+        await executeCommand(Commands.changeColorToAngularRed);
         let config = getPeacockWorkspaceConfig();
         assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
         assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
@@ -666,7 +654,7 @@ suite('Extension Tests', () => {
           .stub(vscode.window, 'showInputBox')
           .returns(Promise.resolve(backgroundHex));
         // fire the command
-        await vscode.commands.executeCommand(Commands.enterColor);
+        await executeCommand(Commands.enterColor);
         let config = getPeacockWorkspaceConfig();
         const value = config[ColorSettings.activityBar_badgeBackground];
         stub.restore();
@@ -691,7 +679,7 @@ suite('Extension Tests', () => {
     });
 
     test('can lighten the color of an affected element', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
         getLightenedColorHex(BuiltInColors.Angular),
@@ -700,7 +688,7 @@ suite('Extension Tests', () => {
     });
 
     test('can darken the color of an affected element', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
         getDarkenedColorHex(BuiltInColors.Angular),
@@ -709,7 +697,7 @@ suite('Extension Tests', () => {
     });
 
     test('set adjustment to none for an affected element is noop', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
         BuiltInColors.Angular,
@@ -718,7 +706,7 @@ suite('Extension Tests', () => {
     });
 
     test('set adjustment to lighten for an affected element is lighter color', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
 
       const originalBrightness = getColorBrightness(BuiltInColors.Angular);
@@ -732,7 +720,7 @@ suite('Extension Tests', () => {
     });
 
     test('set adjustment to darken for an affected element is darker color', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
 
       const originalBrightness = getColorBrightness(BuiltInColors.Angular);
@@ -746,7 +734,7 @@ suite('Extension Tests', () => {
     });
 
     test('can adjust the color of an affected elements independently', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
       assert.equal(
         getLightenedColorHex(BuiltInColors.Angular),
@@ -769,7 +757,7 @@ suite('Extension Tests', () => {
         titleBar: false
       });
 
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToAngularRed);
       let config = getPeacockWorkspaceConfig();
 
       assert.equal(
@@ -784,7 +772,7 @@ suite('Extension Tests', () => {
   });
 
   suiteTeardown(async () => {
-    await vscode.commands.executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetColors);
     // put back the original peacock user settings
     await updateAffectedElements(originalValues.affectedElements);
     await updateElementAdjustments(originalValues.elementAdjustments);
@@ -799,7 +787,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
     activityBar: false,
     statusBar: false
   });
-  await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+  await executeCommand(Commands.changeColorToAngularRed);
   const config = getPeacockWorkspaceConfig();
   const keepForegroundColor = getKeepForegroundColor();
   const style = getElementStyle(BuiltInColors.Angular);
@@ -842,7 +830,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
 }
 
 async function testsSetsColorCustomizationsForAffectedElements() {
-  await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+  await executeCommand(Commands.changeColorToAngularRed);
   const config = getPeacockWorkspaceConfig();
   const keepForegroundColor = getKeepForegroundColor();
   const keepBadgeColor = getKeepBadgeColor();
