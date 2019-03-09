@@ -35,31 +35,38 @@
     "commands": [
       {
         "command": "peacock.resetColors",
-        "title": "Peacock: Reset Colors"
+        "title": "Reset Colors",
+        "category": "Peacock"
       },
       {
         "command": "peacock.enterColor",
-        "title": "Peacock: Enter a Color"
+        "title": "Enter a Color",
+        "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToVueGreen",
-        "title": "Peacock: Color to Vue Green"
+        "title": "Color to Vue Green",
+        "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToRandom",
-        "title": "Peacock: Surprise me with a Random Color"
+        "title": "Surprise me with a Random Color",
+        "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToAngularRed",
-        "title": "Peacock: Color to Angular Red"
+        "title": "Color to Angular Red",
+        "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToReactBlue",
-        "title": "Peacock: Color to React Blue"
+        "title": "Color to React Blue",
+        "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToPreferred",
-        "title": "Peacock: Change to a Preferred Color"
+        "title": "Change to a Preferred Color",
+        "category": "Peacock"
       }
     ],
     "configuration": {
