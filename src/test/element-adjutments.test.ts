@@ -11,10 +11,10 @@ import {
 } from './lib/setup-teardown-test-suite';
 import {
   updateElementAdjustments,
-  updateAffectedElements
+  updateAffectedElements,
+  getPeacockWorkspaceConfig
 } from '../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
-import { getPeacockWorkspaceConfig } from './lib/helpers';
 import assert = require('assert');
 import {
   getLightenedColorHex,

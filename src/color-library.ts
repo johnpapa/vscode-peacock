@@ -1,10 +1,12 @@
 import * as tinycolor from 'tinycolor2';
-import { 
-  ColorAdjustment, 
-  ForegroundColors, 
-  ReadabilityRatios, 
-  inactiveElementAlpha 
+import {
+  ColorAdjustment,
+  ForegroundColors,
+  ReadabilityRatios,
+  inactiveElementAlpha,
+  state
 } from './models';
+import { prepareColors, changeColorSetting } from './configuration';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -59,7 +61,6 @@ export function getReadableAccentColorHex(
   // When there is no saturation we have some kind of grayscale color,
   // which for accent purposes should be colorized artificially
   if (s === 0) {
-
     // Spin the hue in the case of no saturation (grayscale). The spin is
     // deterministic based on the lightness of the color (0 to 1) and will
     // be mapped to one of the 6 primary and secondary hues (60 degree steps).
@@ -150,4 +151,11 @@ export function isValidColorInput(input: string) {
 
 function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
+}
+
+export async function changeColor(input = '') {
+  const backgroundHex = getBackgroundColorHex(input);
+  state.recentColor = backgroundHex;
+  const colorCustomizations = prepareColors(backgroundHex);
+  return await changeColorSetting(colorCustomizations);
 }

@@ -2,11 +2,11 @@ import vscode = require('vscode');
 import sinon = require('sinon');
 import { IPeacockSettings, Commands, ColorSettings } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
-import { getPeacockWorkspaceConfig } from './lib/helpers';
 import { parsePreferredColorValue } from '../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
+import { getPeacockWorkspaceConfig } from '../configuration';
 
 suite('Preferred colors', () => {
   let originalValues = <IPeacockSettings>{};

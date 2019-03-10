@@ -23,6 +23,12 @@ export enum Commands {
   changeColorToPreferred = 'peacock.changeColorToPreferred'
 }
 
+export enum ElementNames {
+  activityBar = 'activityBar',
+  statusBar = 'statusBar',
+  titleBar = 'titleBar'
+}
+
 export enum ColorSettings {
   titleBar_activeBackground = 'titleBar.activeBackground',
   titleBar_activeForeground = 'titleBar.activeForeground',
@@ -41,9 +47,9 @@ export enum ColorSettings {
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
 
 export enum ColorAdjustmentOptions {
-  'lighten' = 'lighten',
-  'darken' = 'darken',
-  'none' = 'none'
+  lighten = 'lighten',
+  darken = 'darken',
+  none = 'none'
 }
 
 export enum BuiltInColors {

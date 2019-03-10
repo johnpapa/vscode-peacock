@@ -28,6 +28,7 @@
   ],
   "preview": false,
   "activationEvents": [
+    "*",
     "onCommand:peacock.resetColors",
     "onCommand:peacock.enterColor",
     "onCommand:peacock.changeColorToVueGreen",

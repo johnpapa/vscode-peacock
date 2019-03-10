@@ -13,6 +13,6 @@ export function getExtension() {
   return extension;
 }
 
-export function getPeacockWorkspaceConfig() {
-  return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
+export function timeout(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

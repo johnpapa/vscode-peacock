@@ -11,7 +11,10 @@ import {
   AllSettings,
   AffectedSettings,
   IPeacockAffectedElementSettings,
-  ISettingsIndexer
+  ISettingsIndexer,
+  ElementNames,
+  ColorAdjustmentOptions,
+  IElementColors
 } from './models';
 import {
   getAdjustedColorHex,
@@ -25,14 +28,23 @@ import * as vscode from 'vscode';
 
 const { workspace } = vscode;
 
-export function readWorkspaceConfiguration<T>(
-  colorSettings: ColorSettings,
-  defaultValue?: T | undefined
-) {
-  const value: T | undefined = workspace
-    .getConfiguration(Sections.workspacePeacockSection)
-    .get<T | undefined>(colorSettings, defaultValue);
-  return value as T;
+export function getPeacockWorkspaceConfig() {
+  return workspace.getConfiguration(Sections.workspacePeacockSection);
+}
+
+export function getUserConfig() {
+  return workspace.getConfiguration(Sections.userPeacockSection);
+}
+
+export function getOriginalColorBeforeAdjustments() {
+  let config = getPeacockWorkspaceConfig();
+  const elementColors = getElementColors(config);
+  let { color, adjustment } = getColorAndAdjustment(elementColors);
+  let originalColor = '';
+  if (color) {
+    originalColor = getOriginalColor(color, adjustment);
+  }
+  return originalColor;
 }
 
 export function readConfiguration<T>(
@@ -109,10 +121,7 @@ export function getKeepForegroundColor() {
 }
 
 export function getKeepBadgeColor() {
-  return readConfiguration<boolean>(
-    StandardSettings.KeepBadgeColor,
-    false
-  );
+  return readConfiguration<boolean>(StandardSettings.KeepBadgeColor, false);
 }
 
 export function getPreferredColors() {
@@ -175,11 +184,7 @@ export async function updatePreferredColors(values: IPreferredColors[]) {
 }
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {
-  const elementAdjustments = readConfiguration<any>(
-    StandardSettings.ElementAdjustments,
-    {}
-  );
-
+  const elementAdjustments = getElementAdjustments();
   return elementAdjustments[elementName];
 }
 
@@ -213,13 +218,36 @@ export function getElementStyle(
   return style;
 }
 
+export function getAllSettingNames() {
+  let settings = [];
+  const affectedSettings = Object.values(AffectedSettings).map(
+    value => `${extSuffix}.${value}`
+  );
+  const standardSettings = Object.values(StandardSettings).map(
+    value => `${extSuffix}.${value}`
+  );
+  settings.push(...affectedSettings);
+  settings.push(...standardSettings);
+  return settings;
+}
+
+export function checkIfPeacockSettingsChanged(
+  e: vscode.ConfigurationChangeEvent
+) {
+  return getAllSettingNames().some(setting => e.affectsConfiguration(setting));
+}
+
 function collectTitleBarSettings(
   backgroundHex: string,
   keepForegroundColor: boolean
 ) {
   const titleBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
-    const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
+    const titleBarStyle = getElementStyle(
+      backgroundHex,
+      // 'titleBar'
+      ElementNames.titleBar
+    );
     titleBarSettings[ColorSettings.titleBar_activeBackground] =
       titleBarStyle.backgroundHex;
     titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
@@ -243,7 +271,12 @@ function collectActivityBarSettings(
   const activityBarSettings = <ISettingsIndexer>{};
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar', true);
+    const activityBarStyle = getElementStyle(
+      backgroundHex,
+      // 'activityBar',
+      ElementNames.activityBar,
+      true
+    );
     activityBarSettings[ColorSettings.activityBar_background] =
       activityBarStyle.backgroundHex;
 
@@ -270,7 +303,11 @@ function collectStatusBarSettings(
 ) {
   const statusBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
-    const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
+    const statusBarStyle = getElementStyle(
+      backgroundHex,
+      // 'statusBar'
+      ElementNames.statusBar
+    );
     statusBarSettings[ColorSettings.statusBar_background] =
       statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
@@ -282,4 +319,74 @@ function collectStatusBarSettings(
     }
   }
   return statusBarSettings;
+}
+
+function getElementColors(
+  config: vscode.WorkspaceConfiguration
+): IElementColors {
+  return {
+    [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
+    [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
+    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground]
+  };
+}
+
+function getColorAndAdjustment(elementColors: IElementColors) {
+  let color = '';
+  let el: ElementNames = ElementNames.activityBar;
+  if (elementColors[ElementNames.activityBar]) {
+    el = ElementNames.activityBar;
+    color = elementColors[el];
+  } else if (elementColors[ElementNames.statusBar]) {
+    el = ElementNames.statusBar;
+    color = elementColors[el];
+  } else if (elementColors[ElementNames.titleBar]) {
+    el = ElementNames.titleBar;
+    color = elementColors[el];
+  }
+  const adjustment = getElementAdjustment(el);
+  return { color, adjustment };
+}
+
+export function getOriginalColorsForAllElements() {
+  let config = getPeacockWorkspaceConfig();
+
+  const elementColors = getElementColors(config);
+
+  const elementAdjustments = getElementAdjustments();
+
+  let originalElementColors: IElementColors = {
+    [ElementNames.activityBar]: getOriginalColor(
+      elementColors[ElementNames.activityBar],
+      elementAdjustments[ElementNames.activityBar]
+    ),
+    [ElementNames.statusBar]: getOriginalColor(
+      elementColors[ElementNames.statusBar],
+      elementAdjustments[ElementNames.statusBar]
+    ),
+    [ElementNames.titleBar]: getOriginalColor(
+      elementColors[ElementNames.titleBar],
+      elementAdjustments[ElementNames.titleBar]
+    )
+  };
+  return originalElementColors;
+}
+
+function getOriginalColor(color: string, adjustment: ColorAdjustment) {
+  let oppositeAdjustment: ColorAdjustmentOptions;
+
+  switch (adjustment) {
+    case ColorAdjustmentOptions.darken:
+      oppositeAdjustment = ColorAdjustmentOptions.lighten;
+      break;
+
+    case ColorAdjustmentOptions.lighten:
+      oppositeAdjustment = ColorAdjustmentOptions.darken;
+      break;
+
+    default:
+      oppositeAdjustment = ColorAdjustmentOptions.none;
+      break;
+  }
+  return getAdjustedColorHex(color, oppositeAdjustment);
 }

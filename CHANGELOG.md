@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.1.0
+
+Other Changes
+
+- When a setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session
+
 ## 1.0.0
 
 Other Changes

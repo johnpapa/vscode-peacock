@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import {
   isValidColorInput,
-  getBackgroundColorHex,
-  getRandomColorHex
+  getRandomColorHex,
+  changeColor
 } from './color-library';
 
-import { BuiltInColors, ColorSettings } from './models';
-import { prepareColors, changeColorSetting } from './configuration';
+import { BuiltInColors, ColorSettings, state } from './models';
+import { changeColorSetting } from './configuration';
 import { promptForColor, promptForPreferredColor } from './inputs';
 
 const { workspace } = vscode;
@@ -25,13 +25,9 @@ export async function resetColorsHandler() {
     delete newColorCustomizations[setting];
   });
 
-  return changeColorSetting(newColorCustomizations);
-}
+  state.recentColor = '';
 
-async function changeColor(input = '') {
-  const backgroundHex = getBackgroundColorHex(input);
-  const colorCustomizations = prepareColors(backgroundHex);
-  return await changeColorSetting(colorCustomizations);
+  return changeColorSetting(newColorCustomizations);
 }
 
 export async function enterColorHandler() {
