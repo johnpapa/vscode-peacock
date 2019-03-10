@@ -36,7 +36,7 @@ export function getUserConfig() {
   return workspace.getConfiguration(Sections.userPeacockSection);
 }
 
-export function getOriginalColorBeforeAdjustments() {
+export function getCurrentColorBeforeAdjustments() {
   // Get the current color, before any adjustments were made
   let config = getPeacockWorkspaceConfig();
   const elementColors = getElementColors(config);
@@ -178,6 +178,12 @@ export async function updateKeepForegroundColor(value: boolean) {
 
 export async function updateKeepBadgeColor(value: boolean) {
   return await updateConfiguration(StandardSettings.KeepBadgeColor, value);
+}
+
+export async function addNewPreferredColor(name: string, value: string) {
+  const { values: preferredColors } = getPreferredColors();
+  const newPreferredColors = [...preferredColors, { name, value }];
+  return await updatePreferredColors(newPreferredColors);
 }
 
 export async function updatePreferredColors(values: IPreferredColors[]) {
