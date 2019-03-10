@@ -38,7 +38,7 @@ export async function resetColorsHandler() {
   return changeColorSetting(newColorCustomizations);
 }
 
-export async function saveColorHandler() {
+export async function saveColorToFavoritesHandler() {
   const color = getCurrentColorBeforeAdjustments();
 
   const name = await promptForFavoriteColorName(color);

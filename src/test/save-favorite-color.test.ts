@@ -23,7 +23,7 @@ function createFavoriteColorTest(name: string) {
       .returns(Promise.resolve(name));
 
     // fire the command
-    await executeCommand(Commands.saveColor);
+    await executeCommand(Commands.saveColorToFavorites);
     const { values: favoriteColors } = getFavoriteColors();
     stub.restore();
 

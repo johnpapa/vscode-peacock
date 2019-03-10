@@ -46,8 +46,8 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.saveColor",
-        "title": "Save Current Color as a Favorite Color",
+        "command": "peacock.saveColorToFavorites",
+        "title": "Save Current Color to Favorites",
         "category": "Peacock"
       },
       {
