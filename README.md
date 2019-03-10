@@ -154,7 +154,7 @@ Peacock affects:
 
 ### Changing User Settings
 
-When a setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session.
+When any Peacock setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session.
 
 #### Example 1
 
