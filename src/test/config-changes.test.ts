@@ -60,8 +60,7 @@ suite('changes to configuration', () => {
   suite('when starting with a color in the workspace config', () => {
     suite('will change color when', () => {
       test('unselecting activitybar', async () => {
-        const startingColor = Commands.changeColorToVueGreen;
-        await vscode.commands.executeCommand(startingColor);
+        await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
 
         let config1 = getUserConfig();
         const colors1: IElementColors = getOriginalColorsForAllElements();
@@ -88,8 +87,7 @@ suite('changes to configuration', () => {
       });
 
       test('unselecting statusbar', async () => {
-        const startingColor = Commands.changeColorToVueGreen;
-        await vscode.commands.executeCommand(startingColor);
+        await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
 
         let config1 = getUserConfig();
         const colors1: IElementColors = getOriginalColorsForAllElements();
@@ -116,8 +114,7 @@ suite('changes to configuration', () => {
       });
 
       test('unselecting titlebar', async () => {
-        const startingColor = Commands.changeColorToVueGreen;
-        await vscode.commands.executeCommand(startingColor);
+        await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
 
         let config1 = getUserConfig();
         const colors1: IElementColors = getOriginalColorsForAllElements();
