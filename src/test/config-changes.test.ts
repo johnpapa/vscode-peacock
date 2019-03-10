@@ -40,7 +40,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.ActivityBar]
       );
 
-      await timeout(100);
+      await timeout(500);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
@@ -70,7 +70,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.ActivityBar]
       );
 
-      await timeout(100);
+      await timeout(500);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
@@ -94,7 +94,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.StatusBar]
       );
 
-      await timeout(100);
+      await timeout(500);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
