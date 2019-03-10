@@ -31,7 +31,7 @@ export function getPeacockWorkspaceConfig() {
   return workspace.getConfiguration(Sections.workspacePeacockSection);
 }
 
-export function getCurrentPeacockColorFromConfig() {
+export function getRealColorWithoutAdjustments() {
   let config = getPeacockWorkspaceConfig();
 
   const elementColors = {
