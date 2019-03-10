@@ -13,7 +13,7 @@ import {
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
-  getRealColorWithoutAdjustments
+  getOriginalColorBeforeAdjustments
 } from './configuration';
 import { changeColor } from './color-library';
 
@@ -59,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
     changeColorToPreferredHandler
   );
 
-  state.recentColor = getRealColorWithoutAdjustments();
+  state.recentColor = getOriginalColorBeforeAdjustments();
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(async e => {

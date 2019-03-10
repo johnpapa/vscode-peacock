@@ -31,55 +31,16 @@ export function getPeacockWorkspaceConfig() {
   return workspace.getConfiguration(Sections.workspacePeacockSection);
 }
 
-export function getRealColorWithoutAdjustments() {
+export function getOriginalColorBeforeAdjustments() {
   let config = getPeacockWorkspaceConfig();
 
-  const elementColors = {
-    [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
-    [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
-    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground]
-  };
+  const elementColors = getElementColors(config);
 
-  // Get the color in the workspace settings
-  let color: string;
-  let el: ElementNames;
-  if (elementColors[ElementNames.activityBar]) {
-    el = ElementNames.activityBar;
-    color = elementColors[el];
-  } else if (elementColors[ElementNames.statusBar]) {
-    el = ElementNames.statusBar;
-    color = elementColors[el];
-  } else if (elementColors[ElementNames.titleBar]) {
-    el = ElementNames.titleBar;
-    color = elementColors[el];
-  } else {
-    // if nothing is in there, get out
-    return '';
-  }
+  let { color, adjustment } = getColorAndAdjustment(elementColors);
 
-  const adjustment = getElementAdjustment(el);
+  const originalColor = getOriginalColor(color, adjustment);
 
-  let reverseEngineeredColor: string;
-  let oppositeAdjustment: ColorAdjustmentOptions;
-
-  switch (adjustment) {
-    case ColorAdjustmentOptions.darken:
-      oppositeAdjustment = ColorAdjustmentOptions.lighten;
-      break;
-
-    case ColorAdjustmentOptions.lighten:
-      oppositeAdjustment = ColorAdjustmentOptions.darken;
-      break;
-
-    default:
-      oppositeAdjustment = ColorAdjustmentOptions.none;
-      break;
-  }
-  reverseEngineeredColor = getAdjustedColorHex(color, oppositeAdjustment);
-
-  console.log(`color=${color}`);
-  console.log(`reverseEngineeredColor=${reverseEngineeredColor}`);
-  return reverseEngineeredColor;
+  return originalColor;
 }
 
 export function readConfiguration<T>(
@@ -360,4 +321,55 @@ function collectStatusBarSettings(
     }
   }
   return statusBarSettings;
+}
+
+interface IElementColors {
+  [ElementNames.activityBar]: string;
+  [ElementNames.statusBar]: string;
+  [ElementNames.titleBar]: string;
+}
+function getElementColors(
+  config: vscode.WorkspaceConfiguration
+): IElementColors {
+  return {
+    [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
+    [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
+    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground]
+  };
+}
+
+function getColorAndAdjustment(elementColors: IElementColors) {
+  let color = '';
+  let el: ElementNames = ElementNames.activityBar;
+  if (elementColors[ElementNames.activityBar]) {
+    el = ElementNames.activityBar;
+    color = elementColors[el];
+  } else if (elementColors[ElementNames.statusBar]) {
+    el = ElementNames.statusBar;
+    color = elementColors[el];
+  } else if (elementColors[ElementNames.titleBar]) {
+    el = ElementNames.titleBar;
+    color = elementColors[el];
+  }
+  const adjustment = getElementAdjustment(el);
+  return { color, adjustment };
+}
+
+function getOriginalColor(color: string, adjustment: ColorAdjustment) {
+  let oppositeAdjustment: ColorAdjustmentOptions;
+
+  switch (adjustment) {
+    case ColorAdjustmentOptions.darken:
+      oppositeAdjustment = ColorAdjustmentOptions.lighten;
+      break;
+
+    case ColorAdjustmentOptions.lighten:
+      oppositeAdjustment = ColorAdjustmentOptions.darken;
+      break;
+
+    default:
+      oppositeAdjustment = ColorAdjustmentOptions.none;
+      break;
+  }
+  return getAdjustedColorHex(color, oppositeAdjustment);
 }
