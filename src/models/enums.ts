@@ -47,9 +47,9 @@ export enum ColorSettings {
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
 
 export enum ColorAdjustmentOptions {
-  'lighten' = 'lighten',
-  'darken' = 'darken',
-  'none' = 'none'
+  lighten = 'lighten',
+  darken = 'darken',
+  none = 'none'
 }
 
 export enum BuiltInColors {
