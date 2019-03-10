@@ -9,11 +9,12 @@ import {
   changeColorToVueGreenHandler,
   changeColorToAngularRedHandler,
   changeColorToReactBlueHandler,
-  changeColorToPreferredHandler
+  changeColorToPreferredHandler,
+  saveColorHandler
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
-  getOriginalColorBeforeAdjustments
+  getCurrentColorBeforeAdjustments
 } from './configuration';
 import { changeColor } from './color-library';
 
@@ -31,6 +32,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   /// Register the commands
   commands.registerCommand(Commands.resetColors, resetColorsHandler);
+
+  commands.registerCommand(Commands.saveColor, saveColorHandler);
 
   commands.registerCommand(Commands.enterColor, enterColorHandler);
 
@@ -59,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
     changeColorToPreferredHandler
   );
 
-  state.recentColor = getOriginalColorBeforeAdjustments();
+  state.recentColor = getCurrentColorBeforeAdjustments();
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(async e => {

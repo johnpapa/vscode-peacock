@@ -25,6 +25,7 @@ Commands can be found in the command palette. Look for commands beginning with `
   - a random color
   - the primary color for angular, vue, or react
 - Set and select a user-defined color with the [Preferred Color](#Preferred-Colors) feature
+- Save a user-defined color with the [Save Preferred Color](#Save-Preferred-Color) feature
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
 
@@ -59,9 +60,15 @@ Preferred colors require a user-defined name (`name`) and a value ( `value` ), a
   ]
 ```
 
+> You can find brand color hex codes from <https://brandcolors.net/> or
+
 ![Animated GIF](./resources/named-colors.gif)
 
-> You can find brand color hex codes from <https://brandcolors.net/> or
+#### Save Preferred Color
+
+When you apply a color you enjoy, you can go to the workspace `settings.json` and copy the color's hex code, then create your own preferred color in your user `settings.json`. This involves a few manual steps and arguably is not obvious at first.
+
+The `Peacock: Save Current Color as Preferred Color` feature allows you to save the currently set color as a preferred color, and and prompts you to name it.
 
 ### Affected Elements
 
@@ -100,14 +107,16 @@ When set to true Peacock will not colorize the foreground of any of the affected
 
 ## Commands
 
-| Command                                  | Description                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Vue Green              | Sets the color to Vue.js's main color, #42b883                           |
-| Peacock: Color to Angular Red            | Sets the color to Angular's main color, #b52e31                          |
-| Peacock: Color to React Blue             | Sets the color to React.js's main color, #00b3e6                         |
-| Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
+| Command                                          | Description                                                              |
+| ------------------------------------------------ | ------------------------------------------------------------------------ |
+| Peacock: Reset Colors                            | Removes any of the color settings from the `.vscode/setttings.json` file |
+| Peacock: Enter a Color                           | Prompts you to enter a color (see [input formats](#input-formats))       |
+| Peacock: Color to Vue Green                      | Sets the color to Vue.js's main color, #42b883                           |
+| Peacock: Color to Angular Red                    | Sets the color to Angular's main color, #b52e31                          |
+| Peacock: Color to React Blue                     | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Surprise me with a Random Color         | Sets the color to a random color                                         |
+| Peacock: Change to a Preferred Color             | Prompts user to select a Preferred Color                                 |
+| Peacock: Save Current Color as a Preferred Color | Save Current Color as a Preferred Color                                  |
 
 ## Input Formats
 

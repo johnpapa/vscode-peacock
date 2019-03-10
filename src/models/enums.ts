@@ -15,6 +15,7 @@ export type AllSettings = StandardSettings | AffectedSettings;
 
 export enum Commands {
   resetColors = 'peacock.resetColors',
+  saveColor = 'peacock.saveColor',
   enterColor = 'peacock.enterColor',
   changeColorToRandom = 'peacock.changeColorToRandom',
   changeColorToVueGreen = 'peacock.changeColorToVueGreen',

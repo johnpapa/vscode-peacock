@@ -14,6 +14,20 @@ export async function promptForColor() {
   return inputColor || '';
 }
 
+export async function promptForPreferredColorName(color: string) {
+  if (!color) {
+    return;
+  }
+  const options: vscode.InputBoxOptions = {
+    ignoreFocusOut: true,
+    placeHolder: 'Mandalorian Blue',
+    prompt: `Enter a name for the color ${color}`,
+    value: ''
+  };
+  const inputName = await vscode.window.showInputBox(options);
+  return inputName || '';
+}
+
 export async function promptForPreferredColor() {
   const { menu, values: preferredColors } = getPreferredColors();
   let selection = '';

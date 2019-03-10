@@ -46,6 +46,11 @@
         "category": "Peacock"
       },
       {
+        "command": "peacock.saveColor",
+        "title": "Save Current Color as a Preferred Color",
+        "category": "Peacock"
+      },
+      {
         "command": "peacock.enterColor",
         "title": "Enter a Color",
         "category": "Peacock"

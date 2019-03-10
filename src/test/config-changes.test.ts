@@ -124,7 +124,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.TitleBar]
       );
 
-      await timeout(100);
+      await timeout(delayInMs);
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
         colors1[ElementNames.titleBar] !== colors2[ElementNames.titleBar]

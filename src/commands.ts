@@ -6,8 +6,16 @@ import {
 } from './color-library';
 
 import { BuiltInColors, ColorSettings, state } from './models';
-import { changeColorSetting } from './configuration';
-import { promptForColor, promptForPreferredColor } from './inputs';
+import {
+  changeColorSetting,
+  getCurrentColorBeforeAdjustments,
+  addNewPreferredColor
+} from './configuration';
+import {
+  promptForColor,
+  promptForPreferredColor,
+  promptForPreferredColorName
+} from './inputs';
 
 const { workspace } = vscode;
 
@@ -28,6 +36,17 @@ export async function resetColorsHandler() {
   state.recentColor = '';
 
   return changeColorSetting(newColorCustomizations);
+}
+
+export async function saveColorHandler() {
+  const color = getCurrentColorBeforeAdjustments();
+
+  const name = await promptForPreferredColorName(color);
+  if (!name) {
+    return;
+  }
+
+  return await addNewPreferredColor(name, color);
 }
 
 export async function enterColorHandler() {
