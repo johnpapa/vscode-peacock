@@ -11,7 +11,9 @@ import {
   AllSettings,
   AffectedSettings,
   IPeacockAffectedElementSettings,
-  ISettingsIndexer
+  ISettingsIndexer,
+  ElementNames,
+  ColorAdjustmentOptions
 } from './models';
 import {
   getAdjustedColorHex,
@@ -25,14 +27,59 @@ import * as vscode from 'vscode';
 
 const { workspace } = vscode;
 
-export function readWorkspaceConfiguration<T>(
-  colorSettings: ColorSettings,
-  defaultValue?: T | undefined
-) {
-  const value: T | undefined = workspace
-    .getConfiguration(Sections.workspacePeacockSection)
-    .get<T | undefined>(colorSettings, defaultValue);
-  return value as T;
+export function getPeacockWorkspaceConfig() {
+  return workspace.getConfiguration(Sections.workspacePeacockSection);
+}
+
+export function getCurrentPeacockColorFromConfig() {
+  let config = getPeacockWorkspaceConfig();
+
+  const elementColors = {
+    [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
+    [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
+    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground]
+  };
+
+  // Get the color in the workspace settings
+  let color: string;
+  let el: ElementNames;
+  if (elementColors[ElementNames.activityBar]) {
+    el = ElementNames.activityBar;
+    color = elementColors[el];
+  } else if (elementColors[ElementNames.statusBar]) {
+    el = ElementNames.statusBar;
+    color = elementColors[el];
+  } else if (elementColors[ElementNames.titleBar]) {
+    el = ElementNames.titleBar;
+    color = elementColors[el];
+  } else {
+    // if nothing is in there, get out
+    return '';
+  }
+
+  const adjustment = getElementAdjustment(el);
+
+  let reverseEngineeredColor: string;
+  let oppositeAdjustment: ColorAdjustmentOptions;
+
+  switch (adjustment) {
+    case ColorAdjustmentOptions.darken:
+      oppositeAdjustment = ColorAdjustmentOptions.lighten;
+      break;
+
+    case ColorAdjustmentOptions.lighten:
+      oppositeAdjustment = ColorAdjustmentOptions.darken;
+      break;
+
+    default:
+      oppositeAdjustment = ColorAdjustmentOptions.none;
+      break;
+  }
+  reverseEngineeredColor = getAdjustedColorHex(color, oppositeAdjustment);
+
+  console.log(`color=${color}`);
+  console.log(`reverseEngineeredColor=${reverseEngineeredColor}`);
+  return reverseEngineeredColor;
 }
 
 export function readConfiguration<T>(
@@ -172,10 +219,12 @@ export async function updatePreferredColors(values: IPreferredColors[]) {
 }
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {
-  const elementAdjustments = readConfiguration<any>(
-    StandardSettings.ElementAdjustments,
-    {}
-  );
+  const elementAdjustments = getElementAdjustments();
+  //TODO: remove ?
+  // readConfiguration<any>(
+  //   StandardSettings.ElementAdjustments,
+  //   {}
+  // );
 
   return elementAdjustments[elementName];
 }
@@ -235,7 +284,11 @@ function collectTitleBarSettings(
 ) {
   const titleBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
-    const titleBarStyle = getElementStyle(backgroundHex, 'titleBar');
+    const titleBarStyle = getElementStyle(
+      backgroundHex,
+      // 'titleBar'
+      ElementNames.titleBar
+    );
     titleBarSettings[ColorSettings.titleBar_activeBackground] =
       titleBarStyle.backgroundHex;
     titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
@@ -261,7 +314,8 @@ function collectActivityBarSettings(
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBarStyle = getElementStyle(
       backgroundHex,
-      'activityBar',
+      // 'activityBar',
+      ElementNames.activityBar,
       true
     );
     activityBarSettings[ColorSettings.activityBar_background] =
@@ -290,7 +344,11 @@ function collectStatusBarSettings(
 ) {
   const statusBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
-    const statusBarStyle = getElementStyle(backgroundHex, 'statusBar');
+    const statusBarStyle = getElementStyle(
+      backgroundHex,
+      // 'statusBar'
+      ElementNames.statusBar
+    );
     statusBarSettings[ColorSettings.statusBar_background] =
       statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
