@@ -18,6 +18,8 @@ import {
 } from '../configuration';
 import { timeout } from './lib/helpers';
 
+const delayInMs = 500;
+
 suite('changes to configuration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
@@ -40,7 +42,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.ActivityBar]
       );
 
-      await timeout(500);
+      await timeout(delayInMs);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
@@ -70,7 +72,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.ActivityBar]
       );
 
-      await timeout(500);
+      await timeout(delayInMs);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
@@ -94,7 +96,7 @@ suite('changes to configuration', () => {
         !config1[AffectedSettings.StatusBar]
       );
 
-      await timeout(500);
+      await timeout(delayInMs);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(
