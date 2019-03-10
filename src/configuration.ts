@@ -109,10 +109,7 @@ export function getKeepForegroundColor() {
 }
 
 export function getKeepBadgeColor() {
-  return readConfiguration<boolean>(
-    StandardSettings.KeepBadgeColor,
-    false
-  );
+  return readConfiguration<boolean>(StandardSettings.KeepBadgeColor, false);
 }
 
 export function getPreferredColors() {
@@ -213,6 +210,25 @@ export function getElementStyle(
   return style;
 }
 
+export function getAllSettingNames() {
+  let settings = [];
+  const affectedSettings = Object.values(AffectedSettings).map(
+    value => `${extSuffix}.${value}`
+  );
+  const standardSettings = Object.values(StandardSettings).map(
+    value => `${extSuffix}.${value}`
+  );
+  settings.push(...affectedSettings);
+  settings.push(...standardSettings);
+  return settings;
+}
+
+export function checkIfPeacockSettingsChanged(
+  e: vscode.ConfigurationChangeEvent
+) {
+  return getAllSettingNames().some(setting => e.affectsConfiguration(setting));
+}
+
 function collectTitleBarSettings(
   backgroundHex: string,
   keepForegroundColor: boolean
@@ -243,7 +259,11 @@ function collectActivityBarSettings(
   const activityBarSettings = <ISettingsIndexer>{};
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(backgroundHex, 'activityBar', true);
+    const activityBarStyle = getElementStyle(
+      backgroundHex,
+      'activityBar',
+      true
+    );
     activityBarSettings[ColorSettings.activityBar_background] =
       activityBarStyle.backgroundHex;
 
