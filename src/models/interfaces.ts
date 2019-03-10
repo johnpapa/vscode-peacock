@@ -4,7 +4,7 @@ export interface ISettingsIndexer {
   [key: string]: any;
 }
 
-export interface IPreferredColors {
+export interface IFavoriteColors {
   name: string;
   value: string;
 }
@@ -44,7 +44,7 @@ export interface IPeacockElementAdjustments {
 export interface IPeacockSettings {
   affectedElements: IPeacockAffectedElementSettings;
   elementAdjustments: IPeacockElementAdjustments;
-  preferredColors: IPreferredColors[];
+  favoriteColors: IFavoriteColors[];
   keepForegroundColor: boolean;
 }
 

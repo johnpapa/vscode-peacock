@@ -9,12 +9,12 @@ import { BuiltInColors, ColorSettings, state } from './models';
 import {
   changeColorSetting,
   getCurrentColorBeforeAdjustments,
-  addNewPreferredColor
+  addNewFavoriteColor
 } from './configuration';
 import {
   promptForColor,
-  promptForPreferredColor,
-  promptForPreferredColorName
+  promptForFavoriteColor,
+  promptForFavoriteColorName
 } from './inputs';
 
 const { workspace } = vscode;
@@ -41,12 +41,12 @@ export async function resetColorsHandler() {
 export async function saveColorHandler() {
   const color = getCurrentColorBeforeAdjustments();
 
-  const name = await promptForPreferredColorName(color);
+  const name = await promptForFavoriteColorName(color);
   if (!name) {
     return;
   }
 
-  return await addNewPreferredColor(name, color);
+  return await addNewFavoriteColor(name, color);
 }
 
 export async function enterColorHandler() {
@@ -74,8 +74,8 @@ export async function changeColorToReactBlueHandler() {
   return await changeColor(BuiltInColors.React);
 }
 
-export async function changeColorToPreferredHandler() {
-  const input = await promptForPreferredColor();
+export async function changeColorToFavoriteHandler() {
+  const input = await promptForFavoriteColor();
   if (isValidColorInput(input)) {
     await changeColor(input);
   }

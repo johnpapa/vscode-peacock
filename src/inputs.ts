@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { BuiltInColors, preferredColorSeparator } from './models';
-import { getPreferredColors } from './configuration';
+import { BuiltInColors, favoriteColorSeparator } from './models';
+import { getFavoriteColors } from './configuration';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -14,7 +14,7 @@ export async function promptForColor() {
   return inputColor || '';
 }
 
-export async function promptForPreferredColorName(color: string) {
+export async function promptForFavoriteColorName(color: string) {
   if (!color) {
     return;
   }
@@ -28,23 +28,23 @@ export async function promptForPreferredColorName(color: string) {
   return inputName || '';
 }
 
-export async function promptForPreferredColor() {
-  const { menu, values: preferredColors } = getPreferredColors();
+export async function promptForFavoriteColor() {
+  const { menu, values: favoriteColors } = getFavoriteColors();
   let selection = '';
-  if (preferredColors && preferredColors.length) {
+  if (favoriteColors && favoriteColors.length) {
     selection =
       (await vscode.window.showQuickPick(menu, {
-        placeHolder: 'Pick a preferred color'
+        placeHolder: 'Pick a favorite color'
         // onDidSelectItem: item =>
         //   vscode.window.showInformationMessage(`Focus ${++i}: ${item}`)
       })) || '';
   }
   // vscode.window.showInformationMessage(`Got: ${result}`);
-  let selectedColor = parsePreferredColorValue(selection);
+  let selectedColor = parseFavoriteColorValue(selection);
   return selectedColor || '';
 }
 
-export function parsePreferredColorValue(text: string) {
-  const sep = preferredColorSeparator;
+export function parseFavoriteColorValue(text: string) {
+  const sep = favoriteColorSeparator;
   return text.substring(text.indexOf(sep) + sep.length + 1);
 }

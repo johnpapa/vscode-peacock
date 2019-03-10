@@ -4,18 +4,18 @@ import * as sinon from 'sinon';
 import { Commands, IPeacockSettings } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import { getPreferredColors } from '../configuration';
+import { getFavoriteColors } from '../configuration';
 
-suite('Save preferred color', () => {
+suite('Save favorite color', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
-  test('with valid name', createPreferredColorTest('Dark Dark'));
+  test('with valid name', createFavoriteColorTest('Dark Dark'));
 
-  test('with no name', createPreferredColorTest(''));
+  test('with no name', createFavoriteColorTest(''));
 });
 
-function createPreferredColorTest(name: string) {
+function createFavoriteColorTest(name: string) {
   return async () => {
     // Stub the async input box to return a response
     const stub = await sinon
@@ -24,9 +24,9 @@ function createPreferredColorTest(name: string) {
 
     // fire the command
     await executeCommand(Commands.saveColor);
-    const { values: preferredColors } = getPreferredColors();
+    const { values: favoriteColors } = getFavoriteColors();
     stub.restore();
 
-    assert.ok(!preferredColors.some(pc => pc.name === name));
+    assert.ok(!favoriteColors.some(pc => pc.name === name));
   };
 }

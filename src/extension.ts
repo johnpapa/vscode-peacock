@@ -9,7 +9,7 @@ import {
   changeColorToVueGreenHandler,
   changeColorToAngularRedHandler,
   changeColorToReactBlueHandler,
-  changeColorToPreferredHandler,
+  changeColorToFavoriteHandler,
   saveColorHandler
 } from './commands';
 import {
@@ -58,8 +58,8 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   commands.registerCommand(
-    Commands.changeColorToPreferred,
-    changeColorToPreferredHandler
+    Commands.changeColorToFavorite,
+    changeColorToFavoriteHandler
   );
 
   state.recentColor = getCurrentColorBeforeAdjustments();

@@ -6,9 +6,9 @@ import {
 } from '../../models';
 import {
   getAffectedElements,
-  getPreferredColors,
+  getFavoriteColors,
   updateAffectedElements,
-  updatePreferredColors,
+  updateFavoriteColors,
   updateElementAdjustments,
   updateKeepForegroundColor,
   getKeepForegroundColor
@@ -34,15 +34,15 @@ export async function setupTestSuite(
   // Save the original values
   originalValues.affectedElements = getAffectedElements();
   originalValues.keepForegroundColor = getKeepForegroundColor();
-  const { values: preferredColors } = getPreferredColors();
-  originalValues.preferredColors = preferredColors;
+  const { values: favoriteColors } = getFavoriteColors();
+  originalValues.favoriteColors = favoriteColors;
   // Set the test values
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     statusBar: true,
     activityBar: true,
     titleBar: true
   });
-  await updatePreferredColors([
+  await updateFavoriteColors([
     { name: 'Gatsby Purple', value: '#639' },
     { name: 'Auth0 Orange', value: '#eb5424' },
     { name: 'Azure Blue', value: '#007fff' }
@@ -57,6 +57,6 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   // put back the original peacock user settings
   await updateAffectedElements(originalValues.affectedElements);
   await updateElementAdjustments(originalValues.elementAdjustments);
-  await updatePreferredColors(originalValues.preferredColors);
+  await updateFavoriteColors(originalValues.favoriteColors);
   await updateKeepForegroundColor(originalValues.keepForegroundColor);
 }

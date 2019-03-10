@@ -1,5 +1,5 @@
 export enum StandardSettings {
-  PreferredColors = 'preferredColors',
+  FavoriteColors = 'favoriteColors',
   ElementAdjustments = 'elementAdjustments',
   KeepBadgeColor = 'keepBadgeColor',
   KeepForegroundColor = 'keepForegroundColor'
@@ -21,7 +21,7 @@ export enum Commands {
   changeColorToVueGreen = 'peacock.changeColorToVueGreen',
   changeColorToAngularRed = 'peacock.changeColorToAngularRed',
   changeColorToReactBlue = 'peacock.changeColorToReactBlue',
-  changeColorToPreferred = 'peacock.changeColorToPreferred'
+  changeColorToFavorite = 'peacock.changeColorToFavorite'
 }
 
 export enum ElementNames {

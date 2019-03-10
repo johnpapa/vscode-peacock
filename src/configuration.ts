@@ -3,8 +3,8 @@ import {
   Sections,
   StandardSettings,
   extSuffix,
-  IPreferredColors,
-  preferredColorSeparator,
+  IFavoriteColors,
+  favoriteColorSeparator,
   IPeacockElementAdjustments,
   IElementStyle,
   ColorAdjustment,
@@ -125,10 +125,10 @@ export function getKeepBadgeColor() {
   return readConfiguration<boolean>(StandardSettings.KeepBadgeColor, false);
 }
 
-export function getPreferredColors() {
-  const sep = preferredColorSeparator;
-  let values = readConfiguration<IPreferredColors[]>(
-    StandardSettings.PreferredColors
+export function getFavoriteColors() {
+  const sep = favoriteColorSeparator;
+  let values = readConfiguration<IFavoriteColors[]>(
+    StandardSettings.FavoriteColors
   );
   const menu = values.map(pc => `${pc.name} ${sep} ${pc.value}`);
   values = values || [];
@@ -180,14 +180,14 @@ export async function updateKeepBadgeColor(value: boolean) {
   return await updateConfiguration(StandardSettings.KeepBadgeColor, value);
 }
 
-export async function addNewPreferredColor(name: string, value: string) {
-  const { values: preferredColors } = getPreferredColors();
-  const newPreferredColors = [...preferredColors, { name, value }];
-  return await updatePreferredColors(newPreferredColors);
+export async function addNewFavoriteColor(name: string, value: string) {
+  const { values: favoriteColors } = getFavoriteColors();
+  const newFavoriteColors = [...favoriteColors, { name, value }];
+  return await updateFavoriteColors(newFavoriteColors);
 }
 
-export async function updatePreferredColors(values: IPreferredColors[]) {
-  return await updateConfiguration(StandardSettings.PreferredColors, values);
+export async function updateFavoriteColors(values: IFavoriteColors[]) {
+  return await updateConfiguration(StandardSettings.FavoriteColors, values);
 }
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {

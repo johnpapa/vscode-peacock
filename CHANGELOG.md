@@ -6,7 +6,7 @@ All notable changes to the code will be documented in this file.
 
 Features
 
-- Added Save current color as a preferred color
+- Added Save current color as a favorite color
 - When a setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session
 
 ## 1.0.0
@@ -85,12 +85,12 @@ Other changes
 
 Features
 
-- Refactored Preferred Colors to display the user-defined name of a color and the color value in a quick pick list.
+- Refactored Favorite Colors to display the user-defined name of a color and the color value in a quick pick list.
 
-The preferred colors require a custom name (`name`) and a value ( `value` ), as shown in the example below. See the README.md for details.
+The favorite colors require a custom name (`name`) and a value ( `value` ), as shown in the example below. See the README.md for details.
 
 ```javascript
-  "peacock.preferredColors": [
+  "peacock.favoriteColors": [
     { "name": "Gatsby Purple", "value": "#639" },
     { "name": "Auth0 Orange", "value": "#eb5424" },
     { "name": "Azure Blue", "value": "#007fff" }
@@ -105,8 +105,8 @@ Bug Fix
 
 Features
 
-- New setting for `peacock.preferredColors` that stores an array of strings for color names and hex values
-- User can select `Peacock: Change to a Preferred Color` which prompts with the list from `peacock.preferredColors` from user settings
+- New setting for `peacock.favoriteColors` that stores an array of strings for color names and hex values
+- User can select `Peacock: Change to a Favorite Color` which prompts with the list from `peacock.favoriteColors` from user settings
 
 Other Changes
 
