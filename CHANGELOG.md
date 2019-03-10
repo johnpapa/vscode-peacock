@@ -6,8 +6,12 @@ All notable changes to the code will be documented in this file.
 
 Features
 
-- Added Save current color as a preferred color
+- Added Save current color as a favorite color
 - When a setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session
+
+Breaking Changes
+
+- Renamed commands and settings from 'preferred' to 'favorite'
 
 ## 1.0.0
 

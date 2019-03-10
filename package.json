@@ -35,7 +35,7 @@
     "onCommand:peacock.changeColorToRandom",
     "onCommand:peacock.changeColorToAngularRed",
     "onCommand:peacock.changeColorToReactBlue",
-    "onCommand:peacock.changeColorToPreferred"
+    "onCommand:peacock.changeColorToFavorite"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -46,8 +46,8 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.saveColor",
-        "title": "Save Current Color as a Preferred Color",
+        "command": "peacock.saveColorToFavorites",
+        "title": "Save Current Color to Favorites",
         "category": "Peacock"
       },
       {
@@ -76,8 +76,8 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.changeColorToPreferred",
-        "title": "Change to a Preferred Color",
+        "command": "peacock.changeColorToFavorite",
+        "title": "Change to a Favorite Color",
         "category": "Peacock"
       }
     ],
@@ -143,12 +143,12 @@
           },
           "description": "Adjusts the colorization of affected elements to provide visual contrast"
         },
-        "peacock.preferredColors": {
+        "peacock.favoriteColors": {
           "type": "array",
           "items": {
             "type": "object"
           },
-          "description": "Your preferred colors"
+          "description": "Your favorite colors"
         }
       }
     }
