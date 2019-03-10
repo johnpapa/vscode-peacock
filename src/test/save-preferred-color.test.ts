@@ -6,7 +6,7 @@ import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { getPreferredColors } from '../configuration';
 
-suite.only('Save preferred color', () => {
+suite('Save preferred color', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
