@@ -30,6 +30,18 @@ export async function resetColorsHandler() {
   return changeColorSetting(newColorCustomizations);
 }
 
+export async function saveColorHandler() {
+  // retrieve current background color
+  // prompt user to enter a name for the color
+  // add to their user settings.json
+  // const color = getOriginalColorBeforeAdjustments();
+  // const input = await promptForPreferredName();
+  // if (!input) {
+  //   return;
+  // }
+  // return await saveColor(input, color);
+}
+
 export async function enterColorHandler() {
   const input = await promptForColor();
   if (!isValidColorInput(input)) {

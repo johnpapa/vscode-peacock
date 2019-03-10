@@ -37,6 +37,7 @@ export function getUserConfig() {
 }
 
 export function getOriginalColorBeforeAdjustments() {
+  // Get the current color, before any adjustments were made
   let config = getPeacockWorkspaceConfig();
   const elementColors = getElementColors(config);
   let { color, adjustment } = getColorAndAdjustment(elementColors);
