@@ -252,7 +252,6 @@ function collectTitleBarSettings(
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     const titleBarStyle = getElementStyle(
       backgroundHex,
-      // 'titleBar'
       ElementNames.titleBar
     );
     titleBarSettings[ColorSettings.titleBar_activeBackground] =
@@ -280,7 +279,6 @@ function collectActivityBarSettings(
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBarStyle = getElementStyle(
       backgroundHex,
-      // 'activityBar',
       ElementNames.activityBar,
       true
     );
@@ -312,7 +310,6 @@ function collectStatusBarSettings(
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
     const statusBarStyle = getElementStyle(
       backgroundHex,
-      // 'statusBar'
       ElementNames.statusBar
     );
     statusBarSettings[ColorSettings.statusBar_background] =
