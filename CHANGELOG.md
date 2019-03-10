@@ -89,12 +89,12 @@ Other changes
 
 Features
 
-- Refactored Favorite Colors to display the user-defined name of a color and the color value in a quick pick list.
+- Refactored Preferred Colors to display the user-defined name of a color and the color value in a quick pick list.
 
-The favorite colors require a custom name (`name`) and a value ( `value` ), as shown in the example below. See the README.md for details.
+The preferred colors require a custom name (`name`) and a value ( `value` ), as shown in the example below. See the README.md for details.
 
 ```javascript
-  "peacock.favoriteColors": [
+  "peacock.preferredColors": [
     { "name": "Gatsby Purple", "value": "#639" },
     { "name": "Auth0 Orange", "value": "#eb5424" },
     { "name": "Azure Blue", "value": "#007fff" }
@@ -109,8 +109,8 @@ Bug Fix
 
 Features
 
-- New setting for `peacock.favoriteColors` that stores an array of strings for color names and hex values
-- User can select `Peacock: Change to a Favorite Color` which prompts with the list from `peacock.favoriteColors` from user settings
+- New setting for `peacock.preferredColors` that stores an array of strings for color names and hex values
+- User can select `Peacock: Change to a Preferred Color` which prompts with the list from `peacock.preferredColors` from user settings
 
 Other Changes
 
