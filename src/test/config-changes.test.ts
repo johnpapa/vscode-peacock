@@ -22,7 +22,7 @@ import {
 import sinon = require('sinon');
 import { timeout } from './lib/helpers';
 
-suite.only('changes to configuration', () => {
+suite('changes to configuration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
