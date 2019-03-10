@@ -18,7 +18,7 @@ import {
 } from '../configuration';
 import { timeout } from './lib/helpers';
 
-suite.skip('changes to configuration', () => {
+suite('changes to configuration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
