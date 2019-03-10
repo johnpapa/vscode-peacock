@@ -109,6 +109,12 @@ When set to true Peacock will not colorize the foreground of any of the affected
 | Peacock: Color to React Blue             | Sets the color to React.js's main color, #00b3e6                         |
 | Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
 
+### Save current color as a preferred color
+
+When you apply a color you like, you can go to the workspace `settings.json` and copy the color's hex code, then create your own preferred color in your user `settings.json`. This involves a few manual steps and arguably is not obvious at first.
+
+The `Peacock: Save Current Color as Preferred Color` feature allows you to save the currently set color as a preferred color, and and prompts you to name it.
+
 ## Input Formats
 
 When entering a color in Peacock several formats are acceptable. These include
