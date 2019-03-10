@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import {
   Commands,
-  ColorSettings,
   IPeacockSettings,
   AffectedSettings,
   IElementColors,
@@ -12,14 +11,11 @@ import {
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
-  getPeacockWorkspaceConfig,
   updateConfiguration,
-  getOriginalColorBeforeAdjustments,
   getOriginalColorsForAllElements,
   getUserConfig,
   updateAffectedElements
 } from '../configuration';
-import sinon = require('sinon');
 import { timeout } from './lib/helpers';
 
 suite('changes to configuration', () => {
