@@ -13,7 +13,8 @@ import {
   IPeacockAffectedElementSettings,
   ISettingsIndexer,
   ElementNames,
-  ColorAdjustmentOptions
+  ColorAdjustmentOptions,
+  IElementColors
 } from './models';
 import {
   getAdjustedColorHex,
@@ -31,15 +32,18 @@ export function getPeacockWorkspaceConfig() {
   return workspace.getConfiguration(Sections.workspacePeacockSection);
 }
 
+export function getUserConfig() {
+  return workspace.getConfiguration(Sections.userPeacockSection);
+}
+
 export function getOriginalColorBeforeAdjustments() {
   let config = getPeacockWorkspaceConfig();
-
   const elementColors = getElementColors(config);
-
   let { color, adjustment } = getColorAndAdjustment(elementColors);
-
-  const originalColor = getOriginalColor(color, adjustment);
-
+  let originalColor = '';
+  if (color) {
+    originalColor = getOriginalColor(color, adjustment);
+  }
   return originalColor;
 }
 
@@ -181,12 +185,6 @@ export async function updatePreferredColors(values: IPreferredColors[]) {
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {
   const elementAdjustments = getElementAdjustments();
-  //TODO: remove ?
-  // readConfiguration<any>(
-  //   StandardSettings.ElementAdjustments,
-  //   {}
-  // );
-
   return elementAdjustments[elementName];
 }
 
@@ -323,11 +321,6 @@ function collectStatusBarSettings(
   return statusBarSettings;
 }
 
-interface IElementColors {
-  [ElementNames.activityBar]: string;
-  [ElementNames.statusBar]: string;
-  [ElementNames.titleBar]: string;
-}
 function getElementColors(
   config: vscode.WorkspaceConfiguration
 ): IElementColors {
@@ -353,6 +346,30 @@ function getColorAndAdjustment(elementColors: IElementColors) {
   }
   const adjustment = getElementAdjustment(el);
   return { color, adjustment };
+}
+
+export function getOriginalColorsForAllElements() {
+  let config = getPeacockWorkspaceConfig();
+
+  const elementColors = getElementColors(config);
+
+  const elementAdjustments = getElementAdjustments();
+
+  let originalElementColors: IElementColors = {
+    [ElementNames.activityBar]: getOriginalColor(
+      elementColors[ElementNames.activityBar],
+      elementAdjustments[ElementNames.activityBar]
+    ),
+    [ElementNames.statusBar]: getOriginalColor(
+      elementColors[ElementNames.statusBar],
+      elementAdjustments[ElementNames.statusBar]
+    ),
+    [ElementNames.titleBar]: getOriginalColor(
+      elementColors[ElementNames.titleBar],
+      elementAdjustments[ElementNames.titleBar]
+    )
+  };
+  return originalElementColors;
 }
 
 function getOriginalColor(color: string, adjustment: ColorAdjustment) {
