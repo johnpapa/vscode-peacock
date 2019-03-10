@@ -152,6 +152,38 @@ Peacock affects:
 - background and foreground colors
 - any elements that are displayed within these peacock elements (e.g. badges, hover)
 
+### Changing User Settings
+
+When a setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session.
+
+#### Example 1
+
+User selects a color, then later changes which elements are affected.
+
+1. User chooses "surprise me" and sets the color to #ff0000
+1. Peacock saves #ff0000 in memory as the most recently used color
+1. User goes to settings and unchecks the "Peacock: Affect StatusBar"
+1. Peacock listens to this change, clears all colors and reapplies the #ff0000
+
+#### Example 2
+
+User opens VS Code, already has colors in their workspace, and immediately changes which elements are affected.
+
+1. User opens VS Code
+1. Workspace colors are set to #369
+1. User goes to settings and unchecks the "Peacock: Affect StatusBar"
+1. Peacock listens to this change, clears all colors and reapplies the #369
+
+#### Example 3
+
+User opens VS Code, has no colors in workspace, and immediately changes which elements are affected.
+
+1. User opens VS Code
+1. No workspace colors are set
+1. Peacock's most recently used color is not set
+1. User goes to settings and unchecks the "Peacock: Affect StatusBar"
+1. Peacock listens to this change but colors are applied
+
 ### Title Bar Coloring
 
 The VS Code Title Bar style can be configured to be custom or native with the `window.titleBarStyle` setting. When operating in native mode, Peacock is unable to colorize the Title Bar because VS Code defers Title Bar management to the OS. In order to leverage the Affect Title Bar setting to colorize the Title Bar, the `window.titleBarStyle` must be set to custom.
