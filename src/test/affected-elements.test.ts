@@ -18,9 +18,9 @@ import {
   getKeepBadgeColor,
   updateKeepBadgeColor,
   updateAffectedElements,
-  getElementStyle
+  getElementStyle,
+  getPeacockWorkspaceConfig
 } from '../configuration';
-import { getPeacockWorkspaceConfig } from './lib/helpers';
 import assert = require('assert');
 import { getColorBrightness, getReadabilityRatio } from '../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';

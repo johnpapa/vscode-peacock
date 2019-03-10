@@ -10,10 +10,10 @@ import {
   setupTestSuite,
   teardownTestSuite
 } from './lib/setup-teardown-test-suite';
-import { getPeacockWorkspaceConfig } from './lib/helpers';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
+import { getPeacockWorkspaceConfig } from '../configuration';
 
 suite('Foreground color', () => {
   let originalValues = <IPeacockSettings>{};

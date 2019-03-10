@@ -12,7 +12,3 @@ export function getExtension() {
   }
   return extension;
 }
-
-export function getPeacockWorkspaceConfig() {
-  return vscode.workspace.getConfiguration(Sections.workspacePeacockSection);
-}

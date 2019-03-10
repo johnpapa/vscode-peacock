@@ -6,10 +6,10 @@ import {
   BuiltInColors,
   IPeacockSettings
 } from '../models';
-import { getPeacockWorkspaceConfig } from './lib/helpers';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { isValidColorInput } from '../color-library';
+import { getPeacockWorkspaceConfig } from '../configuration';
 
 suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};

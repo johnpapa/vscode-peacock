@@ -11,7 +11,10 @@ import {
   changeColorToReactBlueHandler,
   changeColorToPreferredHandler
 } from './commands';
-import { checkIfPeacockSettingsChanged } from './configuration';
+import {
+  checkIfPeacockSettingsChanged,
+  getCurrentPeacockColorFromConfig
+} from './configuration';
 import { changeColor } from './color-library';
 
 const { commands } = vscode;
@@ -55,6 +58,8 @@ export function activate(context: vscode.ExtensionContext) {
     Commands.changeColorToPreferred,
     changeColorToPreferredHandler
   );
+
+  state.recentColor = getCurrentPeacockColorFromConfig();
 
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(async e => {
