@@ -18,7 +18,7 @@ import {
 } from '../configuration';
 import { timeout } from './lib/helpers';
 
-suite('changes to configuration', () => {
+suite.skip('changes to configuration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
@@ -58,86 +58,81 @@ suite('changes to configuration', () => {
   });
 
   suite('when starting with a color in the workspace config', () => {
-    suite('will change color when', () => {
-      test('unselecting activitybar', async () => {
-        await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+    setup(async () => {
+      await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+    });
 
-        let config1 = getUserConfig();
-        const colors1: IElementColors = getOriginalColorsForAllElements();
-        await updateConfiguration(
-          AffectedSettings.ActivityBar,
-          !config1[AffectedSettings.ActivityBar]
-        );
+    test('will change color when unselecting activitybar', async () => {
+      let config1 = getUserConfig();
+      const colors1: IElementColors = getOriginalColorsForAllElements();
+      await updateConfiguration(
+        AffectedSettings.ActivityBar,
+        !config1[AffectedSettings.ActivityBar]
+      );
 
-        await timeout(100);
+      await timeout(100);
 
-        const colors2: IElementColors = getOriginalColorsForAllElements();
-        assert.ok(
-          colors1[ElementNames.activityBar] !==
+      const colors2: IElementColors = getOriginalColorsForAllElements();
+      assert.ok(
+        colors1[ElementNames.activityBar] !== colors2[ElementNames.activityBar]
+      );
+      assert.ok(
+        !!config1[AffectedSettings.StatusBar] &&
+          colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar]
+      );
+      assert.ok(
+        !!config1[AffectedSettings.TitleBar] &&
+          colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar]
+      );
+    });
+
+    test('will change color when unselecting statusbar', async () => {
+      let config1 = getUserConfig();
+      const colors1: IElementColors = getOriginalColorsForAllElements();
+      await updateConfiguration(
+        AffectedSettings.StatusBar,
+        !config1[AffectedSettings.StatusBar]
+      );
+
+      await timeout(100);
+
+      const colors2: IElementColors = getOriginalColorsForAllElements();
+      assert.ok(
+        colors1[ElementNames.statusBar] !== colors2[ElementNames.statusBar]
+      );
+      assert.ok(
+        !!config1[AffectedSettings.ActivityBar] &&
+          colors1[ElementNames.activityBar] ===
             colors2[ElementNames.activityBar]
-        );
-        assert.ok(
-          !!config1[AffectedSettings.StatusBar] &&
-            colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar]
-        );
-        assert.ok(
-          !!config1[AffectedSettings.TitleBar] &&
-            colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar]
-        );
-      });
+      );
+      assert.ok(
+        !!config1[AffectedSettings.TitleBar] &&
+          colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar]
+      );
+    });
 
-      test('unselecting statusbar', async () => {
-        await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+    test('will change color when unselecting titlebar', async () => {
+      let config1 = getUserConfig();
+      const colors1: IElementColors = getOriginalColorsForAllElements();
+      await updateConfiguration(
+        AffectedSettings.TitleBar,
+        !config1[AffectedSettings.TitleBar]
+      );
 
-        let config1 = getUserConfig();
-        const colors1: IElementColors = getOriginalColorsForAllElements();
-        await updateConfiguration(
-          AffectedSettings.StatusBar,
-          !config1[AffectedSettings.StatusBar]
-        );
-
-        await timeout(100);
-
-        const colors2: IElementColors = getOriginalColorsForAllElements();
-        assert.ok(
-          colors1[ElementNames.statusBar] !== colors2[ElementNames.statusBar]
-        );
-        assert.ok(
-          !!config1[AffectedSettings.ActivityBar] &&
-            colors1[ElementNames.activityBar] ===
-              colors2[ElementNames.activityBar]
-        );
-        assert.ok(
-          !!config1[AffectedSettings.TitleBar] &&
-            colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar]
-        );
-      });
-
-      test('unselecting titlebar', async () => {
-        await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
-
-        let config1 = getUserConfig();
-        const colors1: IElementColors = getOriginalColorsForAllElements();
-        await updateConfiguration(
-          AffectedSettings.TitleBar,
-          !config1[AffectedSettings.TitleBar]
-        );
-
-        await timeout(100);
-        const colors2: IElementColors = getOriginalColorsForAllElements();
-        assert.ok(
-          colors1[ElementNames.titleBar] !== colors2[ElementNames.titleBar]
-        );
-        assert.ok(
-          !!config1[AffectedSettings.ActivityBar] &&
-            colors1[ElementNames.activityBar] ===
-              colors2[ElementNames.activityBar]
-        );
-        assert.ok(
-          !!config1[AffectedSettings.StatusBar] &&
-            colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar]
-        );
-      });
+      await timeout(100);
+      const colors2: IElementColors = getOriginalColorsForAllElements();
+      assert.ok(
+        colors1[ElementNames.titleBar] !== colors2[ElementNames.titleBar]
+      );
+      assert.ok(
+        !!config1[AffectedSettings.ActivityBar] &&
+          colors1[ElementNames.activityBar] ===
+            colors2[ElementNames.activityBar]
+      );
+      assert.ok(
+        !!config1[AffectedSettings.StatusBar] &&
+          colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar]
+      );
     });
   });
 });
