@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands } from './models';
+import { Commands, state } from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -11,6 +11,8 @@ import {
   changeColorToReactBlueHandler,
   changeColorToPreferredHandler
 } from './commands';
+import { checkIfPeacockSettingsChanged } from './configuration';
+import { changeColor } from './color-library';
 
 const { commands } = vscode;
 
@@ -52,6 +54,19 @@ export function activate(context: vscode.ExtensionContext) {
   commands.registerCommand(
     Commands.changeColorToPreferred,
     changeColorToPreferredHandler
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(async e => {
+      if (checkIfPeacockSettingsChanged(e) && state.recentColor) {
+        console.log(
+          `Configuration changed. Change the color to most recently selected color: ${
+            state.recentColor
+          }`
+        );
+        await changeColor(state.recentColor);
+      }
+    })
   );
 
   // context.subscriptions.push(disposable);
