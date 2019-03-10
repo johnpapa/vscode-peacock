@@ -182,7 +182,7 @@ User opens VS Code, has no colors in workspace, and immediately changes which el
 1. No workspace colors are set
 1. Peacock's most recently used color is not set
 1. User goes to settings and unchecks the "Peacock: Affect StatusBar"
-1. Peacock listens to this change but colors are applied
+1. Peacock listens to this change, however no colors are applied
 
 ### Title Bar Coloring
 
