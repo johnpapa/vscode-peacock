@@ -24,8 +24,8 @@ Commands can be found in the command palette. Look for commands beginning with `
   - [user defined color](#Input-Formats)
   - a random color
   - the primary color for angular, vue, or react
-- Set and select a user-defined color with the [Favorite Color](#Favorite-Colors) feature
-- Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color) feature
+- Select a user-defined color from your [Favorite Colors](#Favorite-Colors)
+- Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
 
@@ -68,7 +68,7 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
 
 When you apply a color you enjoy, you can go to the workspace `settings.json` and copy the color's hex code, then create your own favorite color in your user `settings.json`. This involves a few manual steps and arguably is not obvious at first.
 
-The `Peacock: Save Current Color as Favorite Color` feature allows you to save the currently set color as a favorite color, and and prompts you to name it.
+The `Peacock: Save Current Color as Favorite Color` feature allows you to save the currently set color as a favorite color, and prompts you to name it.
 
 ### Affected Elements
 
@@ -107,16 +107,16 @@ When set to true Peacock will not colorize the foreground of any of the affected
 
 ## Commands
 
-| Command                                         | Description                                                              |
-| ----------------------------------------------- | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors                           | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Vue Green                     | Sets the color to Vue.js's main color, #42b883                           |
-| Peacock: Color to Angular Red                   | Sets the color to Angular's main color, #b52e31                          |
-| Peacock: Color to React Blue                    | Sets the color to React.js's main color, #00b3e6                         |
-| Peacock: Surprise me with a Random Color        | Sets the color to a random color                                         |
-| Peacock: Change to a Favorite Color             | Prompts user to select a Favorite Color                                  |
-| Peacock: Save Current Color as a Favorite Color | Save Current Color as a Favorite Color                                   |
+| Command                                  | Description                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------ |
+| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
+| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
+| Peacock: Color to Vue Green              | Sets the color to Vue.js's main color, #42b883                           |
+| Peacock: Color to Angular Red            | Sets the color to Angular's main color, #b52e31                          |
+| Peacock: Color to React Blue             | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
+| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
+| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
 
 ## Input Formats
 
