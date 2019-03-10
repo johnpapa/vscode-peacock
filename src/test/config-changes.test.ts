@@ -25,6 +25,8 @@ suite('changes to configuration', () => {
   allSetupAndTeardown(originalValues);
 
   setup(async () => {
+    // This suite's tests flips these switches a lot,
+    // so we reset before each test just to be sure.
     await executeCommand(Commands.resetColors);
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,
@@ -35,8 +37,8 @@ suite('changes to configuration', () => {
 
   suite('when starting with no colors in the workspace config', () => {
     test('have no effect', async () => {
-      let config1 = getUserConfig();
       const colors1: IElementColors = getOriginalColorsForAllElements();
+      let config1 = getUserConfig();
       await updateConfiguration(
         AffectedSettings.ActivityBar,
         !config1[AffectedSettings.ActivityBar]
@@ -61,12 +63,13 @@ suite('changes to configuration', () => {
 
   suite('when starting with a color in the workspace config', () => {
     setup(async () => {
+      // Use Vue Green as the color the instance began with
       await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
     });
 
     test('will change color when unselecting activitybar', async () => {
-      let config1 = getUserConfig();
       const colors1: IElementColors = getOriginalColorsForAllElements();
+      let config1 = getUserConfig();
       await updateConfiguration(
         AffectedSettings.ActivityBar,
         !config1[AffectedSettings.ActivityBar]
@@ -89,8 +92,8 @@ suite('changes to configuration', () => {
     });
 
     test('will change color when unselecting statusbar', async () => {
-      let config1 = getUserConfig();
       const colors1: IElementColors = getOriginalColorsForAllElements();
+      let config1 = getUserConfig();
       await updateConfiguration(
         AffectedSettings.StatusBar,
         !config1[AffectedSettings.StatusBar]
