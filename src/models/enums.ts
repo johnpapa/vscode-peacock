@@ -23,6 +23,12 @@ export enum Commands {
   changeColorToPreferred = 'peacock.changeColorToPreferred'
 }
 
+export enum ElementNames {
+  activityBar = 'activityBar',
+  statusBar = 'statusBar',
+  titleBar = 'titleBar'
+}
+
 export enum ColorSettings {
   titleBar_activeBackground = 'titleBar.activeBackground',
   titleBar_activeForeground = 'titleBar.activeForeground',
