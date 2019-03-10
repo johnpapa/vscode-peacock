@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.onDidChangeConfiguration(async e => {
       if (checkIfPeacockSettingsChanged(e) && state.recentColor) {
         console.log(
-          `Configuration changed. Change the color to most recently selected color: ${
+          `Configuration changed. Changing the color to most recently selected color: ${
             state.recentColor
           }`
         );
