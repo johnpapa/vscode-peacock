@@ -5,7 +5,7 @@ import {
   changeColor
 } from './color-library';
 
-import { BuiltInColors, ColorSettings } from './models';
+import { BuiltInColors, ColorSettings, state } from './models';
 import { changeColorSetting } from './configuration';
 import { promptForColor, promptForPreferredColor } from './inputs';
 
@@ -24,6 +24,8 @@ export async function resetColorsHandler() {
   Object.values(ColorSettings).forEach(setting => {
     delete newColorCustomizations[setting];
   });
+
+  state.recentColor = '';
 
   return changeColorSetting(newColorCustomizations);
 }
