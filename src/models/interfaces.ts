@@ -1,4 +1,4 @@
-import { ColorAdjustment } from './enums';
+import { ColorAdjustment, ElementNames } from './enums';
 
 export interface ISettingsIndexer {
   [key: string]: any;
@@ -46,4 +46,10 @@ export interface IPeacockSettings {
   elementAdjustments: IPeacockElementAdjustments;
   preferredColors: IPreferredColors[];
   keepForegroundColor: boolean;
+}
+
+export interface IElementColors {
+  [ElementNames.activityBar]: string;
+  [ElementNames.statusBar]: string;
+  [ElementNames.titleBar]: string;
 }
