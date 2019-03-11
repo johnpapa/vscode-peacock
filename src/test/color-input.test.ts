@@ -11,6 +11,12 @@ suite('Enter color', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
+  suite('Invalid values do nothing', () => {
+    test('can hit ESC with no error', createColorInputTest('', undefined));
+
+    test('can hit ENTER with no error', createColorInputTest('', undefined));
+  });
+
   suite('Hex, Hex RGBA', () => {
     test(
       'can set color using short hex user input',
@@ -132,7 +138,10 @@ suite('Enter color', () => {
   });
 });
 
-function createColorInputTest(fakeResponse: string, expectedValue: string) {
+function createColorInputTest(
+  fakeResponse: string,
+  expectedValue: string | undefined
+) {
   return async () => {
     // Stub the async input box to return a response
     const stub = await sinon
@@ -145,7 +154,9 @@ function createColorInputTest(fakeResponse: string, expectedValue: string) {
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
-    assert.ok(isValidColorInput(value));
+    // undefined is OK, since that measn they hit ESC or blank
+    // Otherwise, we need a valid color
+    assert.ok(!value || isValidColorInput(value));
     assert.equal(expectedValue, value);
   };
 }

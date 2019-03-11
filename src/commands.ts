@@ -51,6 +51,10 @@ export async function saveColorToFavoritesHandler() {
 
 export async function enterColorHandler() {
   const input = await promptForColor();
+  if (!input) {
+    return;
+  }
+
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
