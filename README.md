@@ -64,7 +64,7 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
 
 #### Preview Your Favorite
 
-When opening the Favorites command in the command palette, you Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
+When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
 ![Animated GIF](./resources/named-colors.gif)
 
