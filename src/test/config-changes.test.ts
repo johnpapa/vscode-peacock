@@ -28,6 +28,7 @@ suite('changes to configuration', () => {
     // This suite's tests flips these switches a lot,
     // so we reset before each test just to be sure.
     await executeCommand(Commands.resetColors);
+    // Set the test values
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,
       activityBar: true,
