@@ -2,6 +2,16 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.2.0
+
+Features
+
+- *Preview Your Favorite*: When opening the Favorites command in the command palette, you Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
+
+Bug Fixes
+
+- When entering a color and canceling, or when entering an empty string, an error is no longer thrown
+
 ## 1.1.0
 
 Features
