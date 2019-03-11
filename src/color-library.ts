@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import * as tinycolor from 'tinycolor2';
 import {
   ColorAdjustment,
@@ -157,5 +158,10 @@ export async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
   state.recentColor = backgroundHex;
   const colorCustomizations = prepareColors(backgroundHex);
-  return await changeColorSetting(colorCustomizations);
+  await changeColorSetting(colorCustomizations);
+  // For testing
+  // vscode.window.showInformationMessage(
+  //   `Peacock is now using ${state.recentColor}`
+  // );
+  return backgroundHex;
 }
