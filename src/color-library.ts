@@ -5,7 +5,8 @@ import {
   ForegroundColors,
   ReadabilityRatios,
   inactiveElementAlpha,
-  state
+  state,
+  ColorSettings
 } from './models';
 import {
   prepareColors,
@@ -162,11 +163,18 @@ export async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
   state.recentColor = backgroundHex;
 
+  // Delete all Peacock color customizations from the workspace
+  // and return pre-existing color customizations (not Peacock ones)
+  const existingColors = deletePeacocksColorCustomizations();
+
+  // Get new Peacock colors
+  const newColors = prepareColors(backgroundHex);
+
   // merge the existing colors with the new ones
   // order is important here, so our new colors overwrite the old ones
   const colorCustomizations: any = {
-    ...getExistingColorCustomizations(),
-    ...prepareColors(backgroundHex)
+    ...existingColors,
+    ...newColors
   };
 
   await changeColorSetting(colorCustomizations);
@@ -175,4 +183,14 @@ export async function changeColor(input = '') {
   //   `Peacock is now using ${state.recentColor}`
   // );
   return backgroundHex;
+}
+
+export function deletePeacocksColorCustomizations() {
+  const newColorCustomizations: any = {
+    ...getExistingColorCustomizations()
+  };
+  Object.values(ColorSettings).forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
+  return newColorCustomizations;
 }

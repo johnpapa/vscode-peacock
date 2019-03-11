@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import {
   isValidColorInput,
   getRandomColorHex,
-  changeColor
+  changeColor,
+  deletePeacocksColorCustomizations
 } from './color-library';
 
 import { BuiltInColors, ColorSettings, state } from './models';
@@ -21,12 +22,7 @@ import { isObjectEmpty } from './test/lib/helpers';
 
 // Create the handlers for the commands
 export async function resetColorsHandler() {
-  const newColorCustomizations: any = {
-    ...getExistingColorCustomizations()
-  };
-  Object.values(ColorSettings).forEach(setting => {
-    delete newColorCustomizations[setting];
-  });
+  const newColorCustomizations = deletePeacocksColorCustomizations();
 
   state.recentColor = '';
 
