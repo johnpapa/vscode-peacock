@@ -9,25 +9,20 @@ import { BuiltInColors, ColorSettings, state } from './models';
 import {
   changeColorSetting,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor
+  addNewFavoriteColor,
+  getExistingColorCustomizations
 } from './configuration';
 import {
   promptForColor,
   promptForFavoriteColor,
   promptForFavoriteColorName
 } from './inputs';
-
-const { workspace } = vscode;
+import { isObjectEmpty } from './test/lib/helpers';
 
 // Create the handlers for the commands
 export async function resetColorsHandler() {
-  // Domain of all color settings we affect
-  const colorCustomizations = workspace
-    .getConfiguration()
-    .get('workbench.colorCustomizations');
-
   const newColorCustomizations: any = {
-    ...colorCustomizations
+    ...getExistingColorCustomizations()
   };
   Object.values(ColorSettings).forEach(setting => {
     delete newColorCustomizations[setting];
@@ -35,7 +30,11 @@ export async function resetColorsHandler() {
 
   state.recentColor = '';
 
-  return changeColorSetting(newColorCustomizations);
+  const config = isObjectEmpty(newColorCustomizations)
+    ? undefined
+    : newColorCustomizations;
+
+  return changeColorSetting(config);
 }
 
 export async function saveColorToFavoritesHandler() {
