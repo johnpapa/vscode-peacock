@@ -9,7 +9,10 @@ import {
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { isValidColorInput } from '../color-library';
-import { getPeacockWorkspaceConfig } from '../configuration';
+import {
+  getPeacockWorkspaceConfig,
+  changeColorSetting
+} from '../configuration';
 
 suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};
@@ -29,12 +32,29 @@ suite('can set color to built-in color', () => {
     );
   });
 
-  test('can reset colors', async () => {
-    await executeCommand(Commands.resetColors);
-    let config = getPeacockWorkspaceConfig();
-    assert.ok(!config[ColorSettings.titleBar_activeBackground]);
-    assert.ok(!config[ColorSettings.statusBar_background]);
-    assert.ok(!config[ColorSettings.activityBar_background]);
+  suite('when resetting colors', () => {
+    allSetupAndTeardown(originalValues);
+
+    test('leaves pre-existing colorCustomizations', async () => {
+      // Add one non Peacock setting
+      const extraSetting = { 'activityBar.border': '#ff0' };
+      await changeColorSetting(extraSetting);
+
+      await executeCommand(Commands.resetColors);
+      let config = getPeacockWorkspaceConfig();
+      assert.equal(config['activityBar.border'], '#ff0');
+      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+      assert.ok(!config[ColorSettings.statusBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_background]);
+    });
+
+    test('removes colorCustomizations if the object is empty', async () => {
+      await executeCommand(Commands.resetColors);
+      let config = getPeacockWorkspaceConfig();
+      assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+      assert.ok(!config[ColorSettings.statusBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_background]);
+    });
   });
 });
 
