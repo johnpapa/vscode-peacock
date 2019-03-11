@@ -5,9 +5,14 @@ import {
   ForegroundColors,
   ReadabilityRatios,
   inactiveElementAlpha,
-  state
+  state,
+  ColorSettings
 } from './models';
-import { prepareColors, changeColorSetting } from './configuration';
+import {
+  prepareColors,
+  changeColorSetting,
+  getExistingColorCustomizations
+} from './configuration';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -157,11 +162,35 @@ function formatHex(color: tinycolor.Instance) {
 export async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
   state.recentColor = backgroundHex;
-  const colorCustomizations = prepareColors(backgroundHex);
+
+  // Delete all Peacock color customizations from the workspace
+  // and return pre-existing color customizations (not Peacock ones)
+  const existingColors = deletePeacocksColorCustomizations();
+
+  // Get new Peacock colors
+  const newColors = prepareColors(backgroundHex);
+
+  // merge the existing colors with the new ones
+  // order is important here, so our new colors overwrite the old ones
+  const colorCustomizations: any = {
+    ...existingColors,
+    ...newColors
+  };
+
   await changeColorSetting(colorCustomizations);
   // For testing
   // vscode.window.showInformationMessage(
   //   `Peacock is now using ${state.recentColor}`
   // );
   return backgroundHex;
+}
+
+export function deletePeacocksColorCustomizations() {
+  const newColorCustomizations: any = {
+    ...getExistingColorCustomizations()
+  };
+  Object.values(ColorSettings).forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
+  return newColorCustomizations;
 }

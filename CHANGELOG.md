@@ -12,6 +12,10 @@ Bug Fixes
 
 - When entering a color and canceling, or when entering an empty string, an error is no longer thrown
 
+Other Changes
+
+- When resetting colors, Peacock wasn't removing the old `workbench.colorCustomizations` if it was empty. It now does
+
 ## 1.1.0
 
 Features

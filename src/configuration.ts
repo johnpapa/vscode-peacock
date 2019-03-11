@@ -104,7 +104,7 @@ export function prepareColors(backgroundHex: string) {
   return newColorCustomizations;
 }
 
-export async function changeColorSetting(colorCustomizations: {}) {
+export async function changeColorSetting(colorCustomizations: {} | undefined) {
   return await workspace
     .getConfiguration()
     .update(
@@ -250,10 +250,7 @@ function collectTitleBarSettings(
 ) {
   const titleBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
-    const titleBarStyle = getElementStyle(
-      backgroundHex,
-      ElementNames.titleBar
-    );
+    const titleBarStyle = getElementStyle(backgroundHex, ElementNames.titleBar);
     titleBarSettings[ColorSettings.titleBar_activeBackground] =
       titleBarStyle.backgroundHex;
     titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
@@ -374,6 +371,10 @@ export function getOriginalColorsForAllElements() {
     )
   };
   return originalElementColors;
+}
+
+export function getExistingColorCustomizations() {
+  return workspace.getConfiguration().get(Sections.workspacePeacockSection);
 }
 
 function getOriginalColor(color: string, adjustment: ColorAdjustment) {

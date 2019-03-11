@@ -9,8 +9,7 @@ import {
   ReadabilityRatios
 } from '../models';
 import {
-  setupTestSuite,
-  teardownTestSuite
+  allSetupAndTeardown
 } from './lib/setup-teardown-test-suite';
 import {
   getKeepForegroundColor,
@@ -28,11 +27,7 @@ import { executeCommand, allAffectedElements } from './lib/constants';
 suite('Affected elements', () => {
   let originalValues = <IPeacockSettings>{};
 
-  suiteSetup(async () => {
-    await setupTestSuite(originalValues);
-  });
-
-  suiteTeardown(() => teardownTestSuite(originalValues));
+  allSetupAndTeardown(originalValues);
 
   suite('keep foreground color = false', () => {
     let originalValue: boolean;
