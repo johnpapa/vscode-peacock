@@ -7,7 +7,11 @@ import {
   inactiveElementAlpha,
   state
 } from './models';
-import { prepareColors, changeColorSetting } from './configuration';
+import {
+  prepareColors,
+  changeColorSetting,
+  getExistingColorCustomizations
+} from './configuration';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -157,7 +161,14 @@ function formatHex(color: tinycolor.Instance) {
 export async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
   state.recentColor = backgroundHex;
-  const colorCustomizations = prepareColors(backgroundHex);
+
+  // merge the existing colors with the new ones
+  // order is important here, so our new colors overwrite the old ones
+  const colorCustomizations: any = {
+    ...getExistingColorCustomizations(),
+    ...prepareColors(backgroundHex)
+  };
+
   await changeColorSetting(colorCustomizations);
   // For testing
   // vscode.window.showInformationMessage(
