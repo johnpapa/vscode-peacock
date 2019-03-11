@@ -104,7 +104,7 @@ export function prepareColors(backgroundHex: string) {
   return newColorCustomizations;
 }
 
-export async function changeColorSetting(colorCustomizations: {}) {
+export async function changeColorSetting(colorCustomizations: {} | undefined) {
   return await workspace
     .getConfiguration()
     .update(
