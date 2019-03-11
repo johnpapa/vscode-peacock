@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
 import { BuiltInColors, favoriteColorSeparator } from './models';
-import { getFavoriteColors } from './configuration';
+import {
+  getFavoriteColors,
+  getCurrentColorBeforeAdjustments
+} from './configuration';
+import { changeColor } from './color-library';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -31,15 +35,20 @@ export async function promptForFavoriteColorName(color: string) {
 export async function promptForFavoriteColor() {
   const { menu, values: favoriteColors } = getFavoriteColors();
   let selection = '';
+  const startingColor = getCurrentColorBeforeAdjustments();
+  const options = {
+    placeHolder: 'Pick a favorite color',
+    onDidSelectItem: tryColorWithPeacock()
+  };
   if (favoriteColors && favoriteColors.length) {
-    selection =
-      (await vscode.window.showQuickPick(menu, {
-        placeHolder: 'Pick a favorite color'
-        // onDidSelectItem: item =>
-        //   vscode.window.showInformationMessage(`Focus ${++i}: ${item}`)
-      })) || '';
+    selection = (await vscode.window.showQuickPick(menu, options)) || '';
   }
-  // vscode.window.showInformationMessage(`Got: ${result}`);
+  if (!selection) {
+    // when there is no selection, revert to starting color
+    await changeColor(startingColor);
+    return '';
+  }
+
   let selectedColor = parseFavoriteColorValue(selection);
   return selectedColor || '';
 }
@@ -47,4 +56,11 @@ export async function promptForFavoriteColor() {
 export function parseFavoriteColorValue(text: string) {
   const sep = favoriteColorSeparator;
   return text.substring(text.indexOf(sep) + sep.length + 1);
+}
+
+function tryColorWithPeacock() {
+  return async (item: string) => {
+    const color = parseFavoriteColorValue(item as string);
+    return await changeColor(color);
+  };
 }
