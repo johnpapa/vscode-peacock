@@ -6,11 +6,15 @@ All notable changes to the code will be documented in this file.
 
 Features
 
-- *Preview Your Favorite*: When opening the Favorites command in the command palette, you Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
+- _Preview Your Favorite_: When opening the Favorites command in the command palette, you Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
 Bug Fixes
 
 - When entering a color and canceling, or when entering an empty string, an error is no longer thrown
+
+Other Changes
+
+- When resetting colors, Peacock wasn't removing the old `workbench.colorCustomizations` if it was empty. It now does
 
 ## 1.1.0
 
