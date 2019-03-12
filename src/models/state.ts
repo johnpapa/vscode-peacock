@@ -1,4 +1,4 @@
-import { log } from 'console';
+import { Logger } from '../logging';
 
 export class State {
   private static _recentColor = '';
@@ -6,10 +6,6 @@ export class State {
   constructor() {}
 
   public static get recentColor(): string {
-    const message = `Retrieving the most recently used color ${
-      this._recentColor
-    } from state`;
-    log(message);
     return this._recentColor;
   }
 
@@ -18,6 +14,6 @@ export class State {
     const message = `Saving the most recently used color ${
       this._recentColor
     } to state`;
-    log(message);
+    Logger.info(message);
   }
 }

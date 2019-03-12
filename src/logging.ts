@@ -1,18 +1,36 @@
+import { window } from 'vscode';
 import { OutputChannel } from 'vscode';
 
-let outputChannel: OutputChannel;
+export class Logger {
+  private static _outputChannel: OutputChannel;
 
-export function log(value: string | object | undefined) {
-  let message = '';
-  if (value === typeof Object) {
-    message = JSON.stringify(value);
-  } else {
-    message = value + '';
+  static initialize() {
+    if (!this._outputChannel) {
+      // Only init once
+      this._outputChannel = window.createOutputChannel('Peacock');
+    }
   }
 
-  outputChannel.appendLine(message);
+  static getChannel() {
+    this.initialize();
+    return this._outputChannel;
+  }
+
+  static info(value: string | object | undefined, indent?: boolean) {
+    const prefix = '  ';
+    let message = '';
+    if (typeof value === 'object') {
+      let o = '';
+      Object.entries(value).map(item => {
+        let prefix = indent ? '  ' : '';
+        o += `${prefix}${item[0]} = ${item[1]}\n`;
+      });
+      message = o;
+    } else {
+      message = (indent ? prefix : '') + value + '';
+    }
+    this._outputChannel.appendLine(message);
+  }
 }
 
-export function setLogChannel(channel: OutputChannel) {
-  outputChannel = channel;
-}
+Logger.initialize();

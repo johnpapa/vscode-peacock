@@ -25,7 +25,7 @@ import {
   getInactiveForegroundColorHex
 } from './color-library';
 import * as vscode from 'vscode';
-import { log } from './logging';
+import { Logger } from './logging';
 
 const { workspace } = vscode;
 
@@ -64,11 +64,10 @@ export async function updateGlobalConfiguration<T>(
   value?: T | undefined
 ) {
   let config = vscode.workspace.getConfiguration();
-  return await config.update(
-    `${extSuffix}.${setting}`,
-    value,
-    vscode.ConfigurationTarget.Global
-  );
+  const section = `${extSuffix}.${setting}`;
+  Logger.info('Updating the user settings with the following changes:');
+  Logger.info(`${section} = ${value}`, true);
+  return await config.update(section, value, vscode.ConfigurationTarget.Global);
 }
 
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
@@ -108,8 +107,8 @@ export function prepareColors(backgroundHex: string) {
 export async function updateWorkspaceConfiguration(
   colorCustomizations: {} | undefined
 ) {
-  log('Updating the workspace with the following color customizations');
-  log(colorCustomizations);
+  Logger.info('Updating the workspace with the following color customizations');
+  Logger.info(colorCustomizations, true);
   return await workspace
     .getConfiguration()
     .update(
@@ -150,23 +149,6 @@ export function getAffectedElements() {
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false
   };
-}
-
-export async function updateAffectedElements(
-  values: IPeacockAffectedElementSettings
-) {
-  await updateGlobalConfiguration(
-    AffectedSettings.ActivityBar,
-    values.activityBar
-  );
-  await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
-  await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
-
-  log('Updating the user settings with the following changes');
-  log(`${AffectedSettings.ActivityBar} = ${values.activityBar}`);
-  log(`${AffectedSettings.StatusBar} = ${values.statusBar}`);
-  log(`${AffectedSettings.TitleBar} = ${values.titleBar}`);
-  return true;
 }
 
 export function getElementAdjustments() {

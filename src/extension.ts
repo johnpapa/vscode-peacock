@@ -17,8 +17,7 @@ import {
   getCurrentColorBeforeAdjustments
 } from './configuration';
 import { changeColor } from './color-library';
-import { setLogChannel } from './logging';
-import { window } from 'vscode';
+import { Logger } from './logging';
 
 const { commands, workspace } = vscode;
 
@@ -35,9 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function addSubscriptions(context: vscode.ExtensionContext) {
-  const outputChannel = window.createOutputChannel('peacockOutput');
-  setLogChannel(outputChannel);
-  context.subscriptions.push(outputChannel);
+  context.subscriptions.push(Logger.getChannel());
 
   context.subscriptions.push(
     workspace.onDidChangeConfiguration(applyPeacock())
@@ -47,11 +44,11 @@ function addSubscriptions(context: vscode.ExtensionContext) {
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
-      // console.log(
-      //   `Configuration changed. Changing the color to most recently selected color: ${
-      //     State.recentColor
-      //   }`
-      // );
+      Logger.info(
+        `Configuration changed. Changing the color to most recently selected color: ${
+          State.recentColor
+        }`
+      );
       await changeColor(State.recentColor);
     }
   };
