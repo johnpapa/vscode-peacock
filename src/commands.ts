@@ -18,19 +18,18 @@ import {
   promptForFavoriteColor,
   promptForFavoriteColorName
 } from './inputs';
-import { isObjectEmpty } from './test/lib/helpers';
+import { isObjectEmpty } from './helpers';
 
 // Create the handlers for the commands
 export async function resetColorsHandler() {
-  const newColorCustomizations = deletePeacocksColorCustomizations();
+  const colorCustomizations = deletePeacocksColorCustomizations();
 
   state.recentColor = '';
 
-  const config = isObjectEmpty(newColorCustomizations)
+  const newColorCustomizations = isObjectEmpty(colorCustomizations)
     ? undefined
-    : newColorCustomizations;
-
-  return changeColorSetting(config);
+    : colorCustomizations;
+  return await changeColorSetting(newColorCustomizations);
 }
 
 export async function saveColorToFavoritesHandler() {
