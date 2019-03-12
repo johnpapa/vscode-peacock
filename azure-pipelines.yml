@@ -12,11 +12,17 @@ jobs:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
     name: Hosted Ubuntu 1604
     demands: npm
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
   steps:
   - task: NodeTool@0
-    displayName: 'Use Node 8.x'
+    displayName: 'Use $(node_version)'
     inputs:
-      versionSpec: 8.x
+      versionSpec: $(node_version)
 
   - task: Npm@1
     displayName: 'Install dependencies'
@@ -52,9 +58,9 @@ jobs:
     demands: npm
   steps:
   - task: NodeTool@0
-    displayName: 'Use Node 8.x'
+    displayName: 'Use Node 10.x'
     inputs:
-      versionSpec: 8.x
+      versionSpec: 10.x
 
   - task: Npm@1
     displayName: 'Install dependencies'
@@ -91,17 +97,11 @@ jobs:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
     name: Hosted macOS
     demands: npm
-  strategy:
-    matrix:
-      node_8_x:
-        node_version: 8.x
-      node_10_x:
-        node_version: 10.x
   steps:
   - task: NodeTool@0
-    displayName: 'Use $(node_version)'
+    displayName: 'Use Node 10.x'
     inputs:
-      versionSpec: $(node_version)
+      versionSpec: 10.x
 
   - task: Npm@1
     displayName: 'Install dependencies'
