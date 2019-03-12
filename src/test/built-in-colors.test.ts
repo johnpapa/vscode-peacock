@@ -11,7 +11,7 @@ import { executeCommand } from './lib/constants';
 import { isValidColorInput } from '../color-library';
 import {
   getPeacockWorkspaceConfig,
-  changeColorSetting
+  updateWorkspaceConfiguration
 } from '../configuration';
 
 suite('can set color to built-in color', () => {
@@ -38,7 +38,7 @@ suite('can set color to built-in color', () => {
     test('leaves pre-existing colorCustomizations', async () => {
       // Add one non Peacock setting
       const extraSetting = { 'activityBar.border': '#ff0' };
-      await changeColorSetting(extraSetting);
+      await updateWorkspaceConfiguration(extraSetting);
 
       await executeCommand(Commands.resetColors);
       let config = getPeacockWorkspaceConfig();

@@ -58,7 +58,7 @@ export function readConfiguration<T>(
   return value as T;
 }
 
-export async function updateConfiguration<T>(
+export async function updateGlobalConfiguration<T>(
   setting: AllSettings,
   value?: T | undefined
 ) {
@@ -104,7 +104,9 @@ export function prepareColors(backgroundHex: string) {
   return newColorCustomizations;
 }
 
-export async function changeColorSetting(colorCustomizations: {} | undefined) {
+export async function updateWorkspaceConfiguration(
+  colorCustomizations: {} | undefined
+) {
   return await workspace
     .getConfiguration()
     .update(
@@ -150,9 +152,12 @@ export function getAffectedElements() {
 export async function updateAffectedElements(
   values: IPeacockAffectedElementSettings
 ) {
-  await updateConfiguration(AffectedSettings.ActivityBar, values.activityBar);
-  await updateConfiguration(AffectedSettings.StatusBar, values.statusBar);
-  await updateConfiguration(AffectedSettings.TitleBar, values.titleBar);
+  await updateGlobalConfiguration(
+    AffectedSettings.ActivityBar,
+    values.activityBar
+  );
+  await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
+  await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
   return true;
 }
 
@@ -166,18 +171,24 @@ export function getElementAdjustments() {
 export async function updateElementAdjustments(
   adjustments: IPeacockElementAdjustments
 ) {
-  return await updateConfiguration(
+  return await updateGlobalConfiguration(
     StandardSettings.ElementAdjustments,
     adjustments
   );
 }
 
 export async function updateKeepForegroundColor(value: boolean) {
-  return await updateConfiguration(StandardSettings.KeepForegroundColor, value);
+  return await updateGlobalConfiguration(
+    StandardSettings.KeepForegroundColor,
+    value
+  );
 }
 
 export async function updateKeepBadgeColor(value: boolean) {
-  return await updateConfiguration(StandardSettings.KeepBadgeColor, value);
+  return await updateGlobalConfiguration(
+    StandardSettings.KeepBadgeColor,
+    value
+  );
 }
 
 export async function addNewFavoriteColor(name: string, value: string) {
@@ -187,7 +198,10 @@ export async function addNewFavoriteColor(name: string, value: string) {
 }
 
 export async function updateFavoriteColors(values: IFavoriteColors[]) {
-  return await updateConfiguration(StandardSettings.FavoriteColors, values);
+  return await updateGlobalConfiguration(
+    StandardSettings.FavoriteColors,
+    values
+  );
 }
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {

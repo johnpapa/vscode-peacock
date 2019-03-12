@@ -8,7 +8,7 @@ import {
 
 import { BuiltInColors, ColorSettings, state } from './models';
 import {
-  changeColorSetting,
+  updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
   addNewFavoriteColor,
   getExistingColorCustomizations
@@ -29,7 +29,7 @@ export async function resetColorsHandler() {
   const newColorCustomizations = isObjectEmpty(colorCustomizations)
     ? undefined
     : colorCustomizations;
-  return await changeColorSetting(newColorCustomizations);
+  return await updateWorkspaceConfiguration(newColorCustomizations);
 }
 
 export async function saveColorToFavoritesHandler() {

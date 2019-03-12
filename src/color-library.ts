@@ -9,7 +9,7 @@ import {
 } from './models';
 import {
   prepareColors,
-  changeColorSetting,
+  updateWorkspaceConfiguration,
   getExistingColorCustomizations
 } from './configuration';
 
@@ -176,7 +176,7 @@ export async function changeColor(input = '') {
     ...newColors
   };
 
-  await changeColorSetting(colorCustomizations);
+  await updateWorkspaceConfiguration(colorCustomizations);
   // For testing
   // vscode.window.showInformationMessage(
   //   `Peacock is now using ${state.recentColor}`
