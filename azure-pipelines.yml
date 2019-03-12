@@ -35,7 +35,7 @@ jobs:
     inputs:
       command: custom
       verbose: false
-      customCommand: 'run compile'
+      customCommand: 'run test-compile'
     enabled: true
 
   # starts a process that allows the vscode test environment to run
@@ -73,7 +73,7 @@ jobs:
     inputs:
       command: custom
       verbose: false
-      customCommand: 'run compile'
+      customCommand: 'run test-compile'
     enabled: true
 
   - task: Npm@1
@@ -114,7 +114,7 @@ jobs:
     inputs:
       command: custom
       verbose: false
-      customCommand: 'run compile'
+      customCommand: 'run test-compile'
     enabled: true
 
   - task: Npm@1
