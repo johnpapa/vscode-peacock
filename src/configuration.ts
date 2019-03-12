@@ -161,6 +161,11 @@ export async function updateAffectedElements(
   );
   await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
   await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
+
+  log('Updating the user settings with the following changes');
+  log(`${AffectedSettings.ActivityBar} = ${values.activityBar}`);
+  log(`${AffectedSettings.StatusBar} = ${values.statusBar}`);
+  log(`${AffectedSettings.TitleBar} = ${values.titleBar}`);
   return true;
 }
 
