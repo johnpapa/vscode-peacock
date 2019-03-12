@@ -25,6 +25,7 @@ import {
   getInactiveForegroundColorHex
 } from './color-library';
 import * as vscode from 'vscode';
+import { log } from './logging';
 
 const { workspace } = vscode;
 
@@ -107,6 +108,8 @@ export function prepareColors(backgroundHex: string) {
 export async function updateWorkspaceConfiguration(
   colorCustomizations: {} | undefined
 ) {
+  log('Updating the workspace with the following color customizations');
+  log(colorCustomizations);
   return await workspace
     .getConfiguration()
     .update(

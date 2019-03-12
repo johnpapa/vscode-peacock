@@ -4,8 +4,8 @@ import {
   ForegroundColors,
   ReadabilityRatios,
   inactiveElementAlpha,
-  state,
-  ColorSettings
+  ColorSettings,
+  State
 } from './models';
 import {
   prepareColors,
@@ -160,7 +160,7 @@ function formatHex(color: tinycolor.Instance) {
 
 export async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
-  state.recentColor = backgroundHex;
+  State.recentColor = backgroundHex;
 
   // Delete all Peacock color customizations from the workspace
   // and return pre-existing color customizations (not Peacock ones)

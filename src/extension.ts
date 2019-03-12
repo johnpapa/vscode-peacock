@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands, state } from './models';
+import { Commands, State } from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -17,6 +17,8 @@ import {
   getCurrentColorBeforeAdjustments
 } from './configuration';
 import { changeColor } from './color-library';
+import { setLogChannel } from './logging';
+import { window } from 'vscode';
 
 const { commands, workspace } = vscode;
 
@@ -25,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
 
-  state.recentColor = getCurrentColorBeforeAdjustments();
+  State.recentColor = getCurrentColorBeforeAdjustments();
 
   addSubscriptions(context);
 
@@ -33,6 +35,10 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function addSubscriptions(context: vscode.ExtensionContext) {
+  const outputChannel = window.createOutputChannel('peacockOutput');
+  setLogChannel(outputChannel);
+  context.subscriptions.push(outputChannel);
+
   context.subscriptions.push(
     workspace.onDidChangeConfiguration(applyPeacock())
   );
@@ -40,13 +46,13 @@ function addSubscriptions(context: vscode.ExtensionContext) {
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
-    if (checkIfPeacockSettingsChanged(e) && state.recentColor) {
+    if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
       // console.log(
       //   `Configuration changed. Changing the color to most recently selected color: ${
-      //     state.recentColor
+      //     State.recentColor
       //   }`
       // );
-      await changeColor(state.recentColor);
+      await changeColor(State.recentColor);
     }
   };
 }

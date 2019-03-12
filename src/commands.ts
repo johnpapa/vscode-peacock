@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import {
   isValidColorInput,
   getRandomColorHex,
@@ -6,13 +5,11 @@ import {
   deletePeacocksColorCustomizations
 } from './color-library';
 
-import { BuiltInColors, ColorSettings, state } from './models';
+import { BuiltInColors, State } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor,
-  getExistingColorCustomizations
-} from './configuration';
+  addNewFavoriteColor} from './configuration';
 import {
   promptForColor,
   promptForFavoriteColor,
@@ -24,7 +21,7 @@ import { isObjectEmpty } from './helpers';
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
 
-  state.recentColor = '';
+  State.recentColor = '';
 
   const newColorCustomizations = isObjectEmpty(colorCustomizations)
     ? undefined
