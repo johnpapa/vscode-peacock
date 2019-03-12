@@ -9,7 +9,8 @@ import { BuiltInColors, State } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor} from './configuration';
+  addNewFavoriteColor
+} from './configuration';
 import {
   promptForColor,
   promptForFavoriteColor,
@@ -17,12 +18,9 @@ import {
 } from './inputs';
 import { isObjectEmpty } from './helpers';
 
-// Create the handlers for the commands
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
-
   State.recentColor = '';
-
   const newColorCustomizations = isObjectEmpty(colorCustomizations)
     ? undefined
     : colorCustomizations;
@@ -31,12 +29,10 @@ export async function resetColorsHandler() {
 
 export async function saveColorToFavoritesHandler() {
   const color = getCurrentColorBeforeAdjustments();
-
   const name = await promptForFavoriteColorName(color);
   if (!name) {
     return;
   }
-
   return await addNewFavoriteColor(name, color);
 }
 
@@ -45,11 +41,9 @@ export async function enterColorHandler() {
   if (!input) {
     return;
   }
-
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
-
   return await changeColor(input);
 }
 
