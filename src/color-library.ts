@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import * as tinycolor from 'tinycolor2';
 import {
   ColorAdjustment,
