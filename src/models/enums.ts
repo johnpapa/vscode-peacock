@@ -2,7 +2,8 @@ export enum StandardSettings {
   FavoriteColors = 'favoriteColors',
   ElementAdjustments = 'elementAdjustments',
   KeepBadgeColor = 'keepBadgeColor',
-  KeepForegroundColor = 'keepForegroundColor'
+  KeepForegroundColor = 'keepForegroundColor',
+  SurpriseMeOnStartup = 'surpriseMeOnStartup'
 }
 
 export enum AffectedSettings {

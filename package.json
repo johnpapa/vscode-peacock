@@ -149,6 +149,11 @@
             "type": "object"
           },
           "description": "Your favorite colors"
+        },
+        "peacock.surpriseMeOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies that Peacock should surprise you at the start of every editing session"
         }
       }
     }
