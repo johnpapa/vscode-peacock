@@ -8,3 +8,10 @@ vsc-extension-quickstart.md
 **/tslint.json
 **/*.map
 **/*.ts
+
+# Extra file to ignore
+azure-pipelines.yml
+ISSUE_TEMPLATE.md
+PULL_REQUEST_TEMPLATE.md
+vsc-extension-quickstart.md
+node_modules/**/test/**

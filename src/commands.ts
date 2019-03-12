@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import {
   isValidColorInput,
   getRandomColorHex,
@@ -6,12 +5,11 @@ import {
   deletePeacocksColorCustomizations
 } from './color-library';
 
-import { BuiltInColors, ColorSettings, state } from './models';
+import { BuiltInColors, State } from './models';
 import {
-  changeColorSetting,
+  updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor,
-  getExistingColorCustomizations
+  addNewFavoriteColor
 } from './configuration';
 import {
   promptForColor,
@@ -20,26 +18,21 @@ import {
 } from './inputs';
 import { isObjectEmpty } from './helpers';
 
-// Create the handlers for the commands
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
-
-  state.recentColor = '';
-
+  State.recentColor = '';
   const newColorCustomizations = isObjectEmpty(colorCustomizations)
     ? undefined
     : colorCustomizations;
-  return await changeColorSetting(newColorCustomizations);
+  return await updateWorkspaceConfiguration(newColorCustomizations);
 }
 
 export async function saveColorToFavoritesHandler() {
   const color = getCurrentColorBeforeAdjustments();
-
   const name = await promptForFavoriteColorName(color);
   if (!name) {
     return;
   }
-
   return await addNewFavoriteColor(name, color);
 }
 
@@ -48,11 +41,9 @@ export async function enterColorHandler() {
   if (!input) {
     return;
   }
-
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
-
   return await changeColor(input);
 }
 

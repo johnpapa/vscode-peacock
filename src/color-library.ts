@@ -4,12 +4,12 @@ import {
   ForegroundColors,
   ReadabilityRatios,
   inactiveElementAlpha,
-  state,
-  ColorSettings
+  ColorSettings,
+  State
 } from './models';
 import {
   prepareColors,
-  changeColorSetting,
+  updateWorkspaceConfiguration,
   getExistingColorCustomizations
 } from './configuration';
 
@@ -160,7 +160,7 @@ function formatHex(color: tinycolor.Instance) {
 
 export async function changeColor(input = '') {
   const backgroundHex = getBackgroundColorHex(input);
-  state.recentColor = backgroundHex;
+  State.recentColor = backgroundHex;
 
   // Delete all Peacock color customizations from the workspace
   // and return pre-existing color customizations (not Peacock ones)
@@ -176,7 +176,7 @@ export async function changeColor(input = '') {
     ...newColors
   };
 
-  await changeColorSetting(colorCustomizations);
+  await updateWorkspaceConfiguration(colorCustomizations);
   // For testing
   // vscode.window.showInformationMessage(
   //   `Peacock is now using ${state.recentColor}`

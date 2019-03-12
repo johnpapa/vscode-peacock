@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands, state } from './models';
+import { Commands, State } from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -17,70 +17,70 @@ import {
   getCurrentColorBeforeAdjustments
 } from './configuration';
 import { changeColor } from './color-library';
+import { Logger } from './logging';
 
-const { commands } = vscode;
+const { commands, workspace } = vscode;
 
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
   console.log('Extension "vscode-peacock" is now active!');
 
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
+  registerCommands();
 
-  /// Register the commands
+  State.recentColor = getCurrentColorBeforeAdjustments();
+
+  addSubscriptions(context);
+
+  // context.subscriptions.push(disposable);
+}
+
+function addSubscriptions(context: vscode.ExtensionContext) {
+  context.subscriptions.push(Logger.getChannel());
+
+  context.subscriptions.push(
+    workspace.onDidChangeConfiguration(applyPeacock())
+  );
+}
+
+function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
+  return async e => {
+    if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
+      Logger.info(
+        `Configuration changed. Changing the color to most recently selected color: ${
+          State.recentColor
+        }`
+      );
+      await changeColor(State.recentColor);
+    }
+  };
+}
+
+function registerCommands() {
   commands.registerCommand(Commands.resetColors, resetColorsHandler);
-
   commands.registerCommand(
     Commands.saveColorToFavorites,
     saveColorToFavoritesHandler
   );
-
   commands.registerCommand(Commands.enterColor, enterColorHandler);
-
   commands.registerCommand(
     Commands.changeColorToRandom,
     changeColorToRandomHandler
   );
-
   commands.registerCommand(
     Commands.changeColorToVueGreen,
     changeColorToVueGreenHandler
   );
-
   commands.registerCommand(
     Commands.changeColorToAngularRed,
     changeColorToAngularRedHandler
   );
-
   commands.registerCommand(
     Commands.changeColorToReactBlue,
     changeColorToReactBlueHandler
   );
-
   commands.registerCommand(
     Commands.changeColorToFavorite,
     changeColorToFavoriteHandler
   );
-
-  state.recentColor = getCurrentColorBeforeAdjustments();
-
-  context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(async e => {
-      if (checkIfPeacockSettingsChanged(e) && state.recentColor) {
-        // console.log(
-        //   `Configuration changed. Changing the color to most recently selected color: ${
-        //     state.recentColor
-        //   }`
-        // );
-        await changeColor(state.recentColor);
-      }
-    })
-  );
-
-  // context.subscriptions.push(disposable);
 }
 
 export function deactivate() {

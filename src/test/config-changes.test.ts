@@ -11,12 +11,11 @@ import {
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
-  updateConfiguration,
+  updateGlobalConfiguration,
   getOriginalColorsForAllElements,
-  getUserConfig,
-  updateAffectedElements
+  getUserConfig
 } from '../configuration';
-import { timeout } from './lib/helpers';
+import { timeout, updateAffectedElements } from './lib/helpers';
 
 const delayInMs = 500;
 
@@ -40,7 +39,7 @@ suite('changes to configuration', () => {
     test('have no effect', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
       let config1 = getUserConfig();
-      await updateConfiguration(
+      await updateGlobalConfiguration(
         AffectedSettings.ActivityBar,
         !config1[AffectedSettings.ActivityBar]
       );
@@ -71,7 +70,7 @@ suite('changes to configuration', () => {
     test('will change color when unselecting activitybar', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
       let config1 = getUserConfig();
-      await updateConfiguration(
+      await updateGlobalConfiguration(
         AffectedSettings.ActivityBar,
         !config1[AffectedSettings.ActivityBar]
       );
@@ -95,7 +94,7 @@ suite('changes to configuration', () => {
     test('will change color when unselecting statusbar', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
       let config1 = getUserConfig();
-      await updateConfiguration(
+      await updateGlobalConfiguration(
         AffectedSettings.StatusBar,
         !config1[AffectedSettings.StatusBar]
       );
@@ -120,7 +119,7 @@ suite('changes to configuration', () => {
     test('will change color when unselecting titlebar', async () => {
       let config1 = getUserConfig();
       const colors1: IElementColors = getOriginalColorsForAllElements();
-      await updateConfiguration(
+      await updateGlobalConfiguration(
         AffectedSettings.TitleBar,
         !config1[AffectedSettings.TitleBar]
       );

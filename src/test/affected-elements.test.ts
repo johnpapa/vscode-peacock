@@ -8,21 +8,19 @@ import {
   BuiltInColors,
   ReadabilityRatios
 } from '../models';
-import {
-  allSetupAndTeardown
-} from './lib/setup-teardown-test-suite';
+import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import {
   getKeepForegroundColor,
   updateKeepForegroundColor,
   getKeepBadgeColor,
   updateKeepBadgeColor,
-  updateAffectedElements,
   getElementStyle,
   getPeacockWorkspaceConfig
 } from '../configuration';
 import assert = require('assert');
 import { getColorBrightness, getReadabilityRatio } from '../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
+import { updateAffectedElements } from './lib/helpers';
 
 suite('Affected elements', () => {
   let originalValues = <IPeacockSettings>{};
