@@ -16,8 +16,3 @@ export function getExtension() {
 export function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-export function isObjectEmpty(o: Object) {
-  return !Object.keys(o).length;
-}
-

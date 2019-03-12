@@ -4,9 +4,15 @@ All notable changes to the code will be documented in this file.
 
 ## 1.2.1
 
+Bug Fixes
+
+- Resolved error for "command peacock.\* not found". Was due to a missing file and function for `isObjectEmpty`. The code was in the test folder and thus worked locally, in debug mode, and in CI for testing (which is why CI was green). This is now resolved bu moving the file and function to the `src` folder.
+
+## 1.2.0
+
 Features
 
-- *Preview Your Favorite*: When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
+- _Preview Your Favorite_: When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
 Bug Fixes
 
