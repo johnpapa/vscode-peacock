@@ -11,7 +11,8 @@ import { executeCommand } from './lib/constants';
 import { isValidColorInput } from '../color-library';
 import {
   getPeacockWorkspaceConfig,
-  updateWorkspaceConfiguration
+  updateWorkspaceConfiguration,
+  getExistingColorCustomizations
 } from '../configuration';
 
 suite('can set color to built-in color', () => {
@@ -34,18 +35,23 @@ suite('can set color to built-in color', () => {
 
   suite('when resetting colors', () => {
     allSetupAndTeardown(originalValues);
+    const extraSettingName = 'activityBar.border';
+    const extraSettingValue = '#ff0';
+    const extraSetting = { 'activityBar.border': extraSettingValue };
 
     test('leaves pre-existing colorCustomizations', async () => {
+      removeExtraSetting(extraSettingName);
       // Add one non Peacock setting
-      const extraSetting = { 'activityBar.border': '#ff0' };
       await updateWorkspaceConfiguration(extraSetting);
 
       await executeCommand(Commands.resetColors);
       let config = getPeacockWorkspaceConfig();
-      assert.equal(config['activityBar.border'], '#ff0');
+      assert.equal(config[extraSettingName], extraSettingValue);
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
       assert.ok(!config[ColorSettings.activityBar_background]);
+
+      removeExtraSetting(extraSettingName);
     });
 
     test('removes colorCustomizations if the object is empty', async () => {
@@ -59,7 +65,7 @@ suite('can set color to built-in color', () => {
 });
 
 function testChangingColorToAngularRed():
-  | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
+  |((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
   | undefined {
   return testBuiltInColor(
     Commands.changeColorToAngularRed,
@@ -67,12 +73,12 @@ function testChangingColorToAngularRed():
   );
 }
 function testChangingColorToVueGreen():
-  | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
+  |((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
   | undefined {
   return testBuiltInColor(Commands.changeColorToVueGreen, BuiltInColors.Vue);
 }
 function testChangingColorToReactBlue():
-  | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
+  |((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
   | undefined {
   return testBuiltInColor(Commands.changeColorToReactBlue, BuiltInColors.React);
 }
@@ -86,4 +92,12 @@ function testBuiltInColor(
     let config = getPeacockWorkspaceConfig();
     assert.equal(builtInColor, config[ColorSettings.titleBar_activeBackground]);
   };
+}
+
+async function removeExtraSetting(extraSettingName: string) {
+  const newColorCustomizations: any = {
+    ...getExistingColorCustomizations()
+  };
+  delete newColorCustomizations[extraSettingName];
+  await updateWorkspaceConfiguration(newColorCustomizations);
 }
