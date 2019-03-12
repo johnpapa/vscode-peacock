@@ -9,9 +9,8 @@ pr:
 jobs:
 - job: Linux
   pool:
-    # macOS-10.13
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent      name: Hosted Ubuntu 1604
-    vmImage: 'Ubuntu 16.04'
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+    name: Hosted Ubuntu 1604
     demands: npm
   steps:
   - task: NodeTool@0
@@ -48,9 +47,8 @@ jobs:
 
 - job: Windows
   pool:
-    # macOS-10.13
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    vmImage: 'vs2017-win2016'
+    name: Hosted VS2017
     demands: npm
   steps:
   - task: NodeTool@0
@@ -91,7 +89,7 @@ jobs:
 - job: macOS
   pool:
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    vmImage: macos-10.13
+    name: Hosted macOS
     demands: npm
   strategy:
     matrix:
@@ -147,7 +145,7 @@ jobs:
 #   condition: and(succeeded('macOS'), succeeded('Linux'), succeeded('Windows'))
 #   pool:
 #     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-#     vmImage: macos-10.13
+#     name: Hosted macOS
 #     demands: npm
 #   steps:
 #   - task: NodeTool@0
