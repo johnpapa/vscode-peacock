@@ -8,6 +8,7 @@ Other Changes
 
 - Added logging to an output channel for diagnostics
 - Refactored internal state to be a static class, to make it easy to log when state changes
+- Added [webpack bundling](https://code.visualstudio.com/api/working-with-extensions/bundling-extension)
 
 ## 1.2.1
 
