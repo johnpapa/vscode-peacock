@@ -14,7 +14,8 @@ import {
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
-  getCurrentColorBeforeAdjustments
+  getCurrentColorBeforeAdjustments,
+  getSurpriseMeOnStartup
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
@@ -81,6 +82,25 @@ function registerCommands() {
     Commands.changeColorToFavorite,
     changeColorToFavoriteHandler
   );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(async e => {
+      if (checkIfPeacockSettingsChanged(e) && state.recentColor) {
+        await changeColor(state.recentColor);
+      }
+    })
+  );
+
+  applyInitialConfiguration();
+}
+
+export async function applyInitialConfiguration()
+{
+  state.recentColor = getCurrentColorBeforeAdjustments();
+
+  if (!state.recentColor && getSurpriseMeOnStartup()) {
+    await changeColorToRandomHandler();
+  }
 }
 
 export function deactivate() {

@@ -14,7 +14,8 @@ import {
   ISettingsIndexer,
   ElementNames,
   ColorAdjustmentOptions,
-  IElementColors
+  IElementColors,
+  state
 } from './models';
 import {
   getAdjustedColorHex,
@@ -22,7 +23,8 @@ import {
   getBackgroundHoverColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
-  getInactiveForegroundColorHex
+  getInactiveForegroundColorHex,
+  changeColor
 } from './color-library';
 import * as vscode from 'vscode';
 import { Logger } from './logging';
@@ -142,6 +144,13 @@ export function getFavoriteColors() {
   };
 }
 
+export function getSurpriseMeOnStartup() {
+  return readConfiguration<boolean>(
+    StandardSettings.SurpriseMeOnStartup,
+    false
+  );
+}
+
 export function getAffectedElements() {
   return <IPeacockAffectedElementSettings>{
     activityBar:
@@ -179,6 +188,10 @@ export async function updateKeepBadgeColor(value: boolean) {
     StandardSettings.KeepBadgeColor,
     value
   );
+}
+
+export async function updateSurpriseMeOnStartup(value: boolean) {
+  return await updateConfiguration(StandardSettings.SurpriseMeOnStartup, value);
 }
 
 export async function addNewFavoriteColor(name: string, value: string) {
