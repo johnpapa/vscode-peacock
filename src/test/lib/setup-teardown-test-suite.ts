@@ -7,13 +7,13 @@ import {
 import {
   getAffectedElements,
   getFavoriteColors,
-  updateAffectedElements,
   updateFavoriteColors,
   updateElementAdjustments,
   updateKeepForegroundColor,
   getKeepForegroundColor
 } from '../../configuration';
-import { getExtension } from './helpers';
+
+import { getExtension, updateAffectedElements } from './helpers';
 import { noopElementAdjustments, executeCommand } from './constants';
 
 export function allSetupAndTeardown(originalValues: IPeacockSettings) {

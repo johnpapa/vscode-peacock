@@ -13,10 +13,9 @@ import { executeCommand } from './lib/constants';
 import {
   updateGlobalConfiguration,
   getOriginalColorsForAllElements,
-  getUserConfig,
-  updateAffectedElements
+  getUserConfig
 } from '../configuration';
-import { timeout } from './lib/helpers';
+import { timeout, updateAffectedElements } from './lib/helpers';
 
 const delayInMs = 500;
 

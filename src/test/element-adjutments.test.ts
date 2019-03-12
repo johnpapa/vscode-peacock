@@ -11,7 +11,6 @@ import {
 } from './lib/setup-teardown-test-suite';
 import {
   updateElementAdjustments,
-  updateAffectedElements,
   getPeacockWorkspaceConfig
 } from '../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
@@ -21,6 +20,7 @@ import {
   getDarkenedColorHex,
   getColorBrightness
 } from '../color-library';
+import { updateAffectedElements } from './lib/helpers';
 
 suite('Element adjustments', () => {
   let originalValues = <IPeacockSettings>{};
