@@ -2,6 +2,13 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.2.2
+
+Other Changes
+
+- Added logging to an output channel for diagnostics
+- Refactored internal state to be a static class, to make it easy to log when state changes
+
 ## 1.2.1
 
 Bug Fixes
