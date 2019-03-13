@@ -168,7 +168,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
-    "@types/node": "11.11.1",
+    "@types/node": "11.11.2",
     "@types/sinon": "^7.0.7",
     "sinon": "^7.2.5",
     "ts-loader": "^5.3.3",
