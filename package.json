@@ -156,12 +156,16 @@
   "scripts": {
     "package": "npx vsce package",
     "publish": "npx vsce publish",
+    "yvscode:prepublish": "npm run compile",
+    "ycompile": "tsc -p ./",
+    "ywatch": "tsc -watch -p ./",
+
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
     "watch": "webpack --mode none --watch",
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
-    "test-compile": "tsc -p ./",
+    "test-compile": "tsc -p ./ && npm run compile",
     "test": "npm run test-compile && node node_modules/vscode/bin/test"
   },
   "devDependencies": {
