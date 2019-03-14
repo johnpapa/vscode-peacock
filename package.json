@@ -166,8 +166,8 @@
     "watch": "webpack --mode none --watch",
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
-    "test-compile": "tsc -p ./",
-    "test": "npm run test-compile && webpack && node node_modules/vscode/bin/test"
+    "test-compile": "tsc -p ./ && npm run && webpack",
+    "test": "npm run test-compile && node node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
