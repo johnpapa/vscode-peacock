@@ -10,7 +10,8 @@ import {
   updateFavoriteColors,
   updateElementAdjustments,
   updateKeepForegroundColor,
-  getKeepForegroundColor
+  getKeepForegroundColor,
+  updateSurpriseMeOnStartup
 } from '../../configuration';
 
 import { getExtension, updateAffectedElements } from './helpers';
@@ -48,6 +49,7 @@ export async function setupTestSuite(
     { name: 'Azure Blue', value: '#007fff' }
   ]);
   await updateKeepForegroundColor(false);
+  await updateSurpriseMeOnStartup(false);
   await updateElementAdjustments(noopElementAdjustments);
   return extension;
 }
@@ -59,4 +61,5 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateElementAdjustments(originalValues.elementAdjustments);
   await updateFavoriteColors(originalValues.favoriteColors);
   await updateKeepForegroundColor(originalValues.keepForegroundColor);
+  await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
 }

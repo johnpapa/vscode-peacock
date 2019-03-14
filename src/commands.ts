@@ -5,7 +5,7 @@ import {
   deletePeacocksColorCustomizations
 } from './color-library';
 
-import { BuiltInColors, State } from './models';
+import { BuiltInColors, State, StandardSettings } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
@@ -17,6 +17,7 @@ import {
   promptForFavoriteColorName
 } from './inputs';
 import { isObjectEmpty } from './helpers';
+import { window } from 'vscode';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -48,7 +49,12 @@ export async function enterColorHandler() {
 }
 
 export async function changeColorToRandomHandler() {
-  return await changeColor(getRandomColorHex());
+  const color = await changeColor(getRandomColorHex());
+  const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
+    StandardSettings.SurpriseMeOnStartup
+  }`;
+  window.showInformationMessage(message);
+  return color;
 }
 
 export async function changeColorToVueGreenHandler() {

@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -149,6 +149,11 @@
             "type": "object"
           },
           "description": "Your favorite colors"
+        },
+        "peacock.surpriseMeOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies that Peacock should surprise you at the start of every editing session"
         }
       }
     }

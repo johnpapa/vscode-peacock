@@ -39,6 +39,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.elementAdjustments  | fine tune coloring of affected elements                                                               |
 | peacock.favoriteColors      | array of objects for color names and hex values                                                       |
 | peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
+| peacock.surpriseMeOnStartup | Specifies whether Peacock apply a random color on startup                                           |
 
 ### Favorite Colors
 
@@ -108,6 +109,12 @@ When using peacock with the Angular Red color, this results in the Activity Bar 
 Recommended to remain false (the default value).
 
 When set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background. Some users may desire this if their theme's foreground is their preference over Peacock. In this case, when set to true, the foreground will not be affected.
+
+## Surprise Me On Startup
+
+Recommended to remain false (the default value).
+
+When set to true Peacock will automatically apply a random color when opening a workspace that does not define color customizations. This can be useful if you frequently open many instances of VS Code and you are interested in quickly and easily telling them apart, but are not overly committed to the specific color applied.
 
 ## Commands
 

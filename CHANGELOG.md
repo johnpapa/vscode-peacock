@@ -2,7 +2,11 @@
 
 All notable changes to the code will be documented in this file.
 
-## 1.2.2
+## 1.3.0
+
+Features
+
+- _Surprise Me On Startup_: When enabled, Peacock will automatically apply a random color on startup when opening any workspace that does not already have color customizations defined. It will also show an information dialog in case the user forgot this setting is enabled.
 
 Other Changes
 

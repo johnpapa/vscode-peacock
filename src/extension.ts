@@ -14,23 +14,20 @@ import {
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
-  getCurrentColorBeforeAdjustments
+  getCurrentColorBeforeAdjustments,
+  getSurpriseMeOnStartup
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
 
 const { commands, workspace } = vscode;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   console.log('Extension "vscode-peacock" is now active!');
 
   registerCommands();
-
-  State.recentColor = getCurrentColorBeforeAdjustments();
-
   addSubscriptions(context);
-
-  // context.subscriptions.push(disposable);
+  await applyInitialConfiguration();
 }
 
 function addSubscriptions(context: vscode.ExtensionContext) {
@@ -81,6 +78,15 @@ function registerCommands() {
     Commands.changeColorToFavorite,
     changeColorToFavoriteHandler
   );
+}
+
+export async function applyInitialConfiguration()
+{
+  State.recentColor = getCurrentColorBeforeAdjustments();
+
+  if (!State.recentColor && getSurpriseMeOnStartup()) {
+    await changeColorToRandomHandler();
+  }
 }
 
 export function deactivate() {
