@@ -22,12 +22,12 @@ import { Logger } from './logging';
 
 const { commands, workspace } = vscode;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   console.log('Extension "vscode-peacock" is now active!');
 
   registerCommands();
   addSubscriptions(context);
-  applyInitialConfiguration();
+  await applyInitialConfiguration();
 }
 
 function addSubscriptions(context: vscode.ExtensionContext) {
