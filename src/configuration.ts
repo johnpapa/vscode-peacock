@@ -14,8 +14,7 @@ import {
   ISettingsIndexer,
   ElementNames,
   ColorAdjustmentOptions,
-  IElementColors,
-  state
+  IElementColors
 } from './models';
 import {
   getAdjustedColorHex,
@@ -191,7 +190,7 @@ export async function updateKeepBadgeColor(value: boolean) {
 }
 
 export async function updateSurpriseMeOnStartup(value: boolean) {
-  return await updateConfiguration(StandardSettings.SurpriseMeOnStartup, value);
+  return await updateGlobalConfiguration(StandardSettings.SurpriseMeOnStartup, value);
 }
 
 export async function addNewFavoriteColor(name: string, value: string) {
