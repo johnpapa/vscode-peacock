@@ -161,15 +161,13 @@
   "scripts": {
     "package": "npx vsce package",
     "publish": "npx vsce publish",
-
     "vscode:prepublish": "webpack --mode production",
-    "compile": "webpack --mode none",
+    "webpack": "webpack --mode none",
     "watch": "webpack --mode none --watch",
-
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
-    "test-compile": "tsc -p ./ && npm run compile",
-    "test": "npm run test-compile && node node_modules/vscode/bin/test"
+    "test-compile": "tsc -p ./",
+    "test": "npm run test-compile && webpack && node node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
