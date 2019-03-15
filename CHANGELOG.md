@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.3.1
+
+Bug fixes
+
+fix issue where surprise me message shows up anytime a surprise me command is run.
+
 ## 1.3.0
 
 Features

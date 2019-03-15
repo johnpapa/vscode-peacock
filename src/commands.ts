@@ -49,12 +49,7 @@ export async function enterColorHandler() {
 }
 
 export async function changeColorToRandomHandler() {
-  const color = await changeColor(getRandomColorHex());
-  const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
-    StandardSettings.SurpriseMeOnStartup
-  }`;
-  window.showInformationMessage(message);
-  return color;
+  return await changeColor(getRandomColorHex());
 }
 
 export async function changeColorToVueGreenHandler() {

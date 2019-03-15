@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands, State } from './models';
+import { Commands, State, StandardSettings } from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -64,7 +64,7 @@ function registerCommands() {
   );
   commands.registerCommand(
     Commands.changeColorToVueGreen,
-    changeColorToVueGreenHandler
+  changeColorToVueGreenHandler
   );
   commands.registerCommand(
     Commands.changeColorToAngularRed,
@@ -80,12 +80,15 @@ function registerCommands() {
   );
 }
 
-export async function applyInitialConfiguration()
-{
+export async function applyInitialConfiguration() {
   State.recentColor = getCurrentColorBeforeAdjustments();
 
   if (!State.recentColor && getSurpriseMeOnStartup()) {
-    await changeColorToRandomHandler();
+    const color = await changeColorToRandomHandler();
+    const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
+      StandardSettings.SurpriseMeOnStartup
+    }`;
+    vscode.window.showInformationMessage(message);
   }
 }
 
