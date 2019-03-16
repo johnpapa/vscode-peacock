@@ -39,7 +39,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.elementAdjustments  | fine tune coloring of affected elements                                                               |
 | peacock.favoriteColors      | array of objects for color names and hex values                                                       |
 | peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
-| peacock.surpriseMeOnStartup | Specifies whether Peacock apply a random color on startup                                           |
+| peacock.surpriseMeOnStartup | Specifies whether Peacock apply a random color on startup                                             |
 
 ### Favorite Colors
 
@@ -245,3 +245,10 @@ If you want to try the extension out start by cloning this repo, `cd` into the f
 Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!
 
 > testing builds here .
+
+## Resources
+
+- [Get VS Code](https://code.visualstudio.com/?wt.mc_id=peacock-github-jopapa]
+- [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=peacock-github-jopapa)
+- [Get VS Code](https://code.visualstudio.com/?wt.mc_id=peacock-github-jopapa]
+- [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
