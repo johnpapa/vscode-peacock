@@ -1,5 +1,4 @@
-import { window } from 'vscode';
-import { OutputChannel } from 'vscode';
+import { OutputChannel, window } from 'vscode';
 
 export class Logger {
   private static _outputChannel: OutputChannel;
