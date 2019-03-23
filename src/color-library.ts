@@ -5,7 +5,10 @@ import {
   ReadabilityRatios,
   inactiveElementAlpha,
   ColorSettings,
-  State
+  State,
+  ColorAdjustmentOptions,
+  defaultAmountToLighten,
+  defaultSaturation
 } from './models';
 import {
   prepareColors,
@@ -72,10 +75,11 @@ export function getReadableAccentColorHex(
     h = 60 * Math.round(l * 6);
   }
 
-  // Increase the saturation to 50% for any color that is very desaturated
+  // Increase the saturation to 50% (defaultSaturation)
+  // for any color that is very desaturated
   // to provide more of an accent in the manner that themes normally would
   if (s < 0.15) {
-    s = 0.5;
+    s = defaultSaturation;
   }
 
   // Create an array of 16 shades of the accent color from no luminance
@@ -113,22 +117,21 @@ export function getBadgeBackgroundColorHex(backgroundColor = '') {
 
 export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
   switch (adjustment) {
-    case 'lighten':
+    case ColorAdjustmentOptions.lighten:
       return getLightenedColorHex(color);
 
-    case 'darken':
+    case ColorAdjustmentOptions.darken:
       return getDarkenedColorHex(color);
 
     default:
       return color;
   }
 }
-
-export function getLightenedColorHex(color = '', amount = 10) {
+export function getLightenedColorHex(color = '', amount = defaultAmountToLighten) {
   return formatHex(tinycolor(color).lighten(amount));
 }
 
-export function getDarkenedColorHex(color: string, amount = 10) {
+export function getDarkenedColorHex(color: string, amount = defaultAmountToLighten) {
   return formatHex(tinycolor(color).darken(amount));
 }
 

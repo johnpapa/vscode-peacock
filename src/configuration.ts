@@ -22,8 +22,7 @@ import {
   getBackgroundHoverColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
-  getInactiveForegroundColorHex,
-  changeColor
+  getInactiveForegroundColorHex
 } from './color-library';
 import * as vscode from 'vscode';
 import { Logger } from './logging';

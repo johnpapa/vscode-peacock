@@ -5,7 +5,7 @@ import {
   deletePeacocksColorCustomizations
 } from './color-library';
 
-import { BuiltInColors, State, StandardSettings } from './models';
+import { BuiltInColors, State } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
@@ -17,7 +17,6 @@ import {
   promptForFavoriteColorName
 } from './inputs';
 import { isObjectEmpty } from './helpers';
-import { window } from 'vscode';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
