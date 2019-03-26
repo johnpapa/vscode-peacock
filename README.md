@@ -219,6 +219,38 @@ A successful and recommended settings configuration to colorize the Title Bar is
 
 ![Title Bar Settings](./resources/title-bar-coloring-settings.png)
 
+### How Foreground Colors are Calculated
+
+Peacock is using tinycolor which provides some basic color theory mechanisms to determine whether or not to show a light or dark foreground color based on the perceived brightness of the background. More or less, if it thinks the background is darker than 50% then Peacock uses the light foreground. If it thinks the background is greater than 50% then Peacock uses the dark foreground.
+
+Brightness is measured on a scale of 0-255 where a value of 127.5 is perfectly 50%.
+
+Example:
+
+```javascript
+const lightForeground = '#e7e7e7';
+const darkForegound = '#15202b';
+const background = '#498aff';
+
+const perceivedBrightness = tinycolor(background).getBrightness(); // 131.903, so 51.7%
+const isDark = tinycolor(background).isDark(); // false, since brightness is above 50%
+const textColor = isDark ? lightForeground : darkForeground; // We end up using dark text
+```
+
+This particular color (`#498aff`) is very near 50% on the perceived brightness, but the determination is binary so the color is either light or dark based on which side of 50% it is (exactly 50% is considered as light by the library). For the particular color `#498aff`, all of the theory aspects that tinycolor provides show that using the dark foreground is the right approach.
+
+```javascript
+const readability = tinycolor.readability(darkForeground, background); // 4.996713
+const isReadable = tinycolor.isReadable(darkForeground, background); // true
+```
+
+The readability calculations and metrics are based on Web Content Accessibility Guidelines (Version 2.0) and, in general, a ratio close to 5 is considered good based on that information. If we run the lightForeground through the same algorithm you can see that readability actually suffers with a reduced contrast ratio:
+
+```javascript
+const readability = tinycolor.readability(lightForeground, background); // 2.669008
+const isReadable = tinycolor.isReadable(lightForeground, background); // false
+```
+
 ## Credits
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
