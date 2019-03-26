@@ -37,8 +37,8 @@ export async function saveColorToFavoritesHandler() {
   return await addNewFavoriteColor(name, color);
 }
 
-export async function enterColorHandler() {
-  const input = await promptForColor();
+export async function enterColorHandler(color: string) {
+  const input = color ? color : await promptForColor();
   if (!input) {
     return;
   }
