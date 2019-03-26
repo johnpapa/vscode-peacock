@@ -128,11 +128,17 @@ export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
       return color;
   }
 }
-export function getLightenedColorHex(color = '', amount = defaultAmountToLighten) {
+export function getLightenedColorHex(
+  color = '',
+  amount = defaultAmountToLighten
+) {
   return formatHex(tinycolor(color).lighten(amount));
 }
 
-export function getDarkenedColorHex(color: string, amount = defaultAmountToLighten) {
+export function getDarkenedColorHex(
+  color: string,
+  amount = defaultAmountToLighten
+) {
   return formatHex(tinycolor(color).darken(amount));
 }
 
