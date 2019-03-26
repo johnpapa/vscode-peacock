@@ -1,7 +1,6 @@
 import * as tinycolor from 'tinycolor2';
 import {
   ColorAdjustment,
-  ForegroundColors,
   ReadabilityRatios,
   inactiveElementAlpha,
   ColorSettings,
@@ -13,7 +12,9 @@ import {
 import {
   prepareColors,
   updateWorkspaceConfiguration,
-  getExistingColorCustomizations
+  getExistingColorCustomizations,
+  getDarkForegroundColor,
+  getLightForegroundColor
 } from './configuration';
 
 export function getColorHex(color = '') {
@@ -41,8 +42,8 @@ export function getBackgroundHoverColorHex(backgroundColor = '') {
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight()
-    ? ForegroundColors.DarkForeground
-    : ForegroundColors.LightForeground;
+    ? getDarkForegroundColor()
+    : getLightForegroundColor();
   return formatHex(tinycolor(foreground));
 }
 

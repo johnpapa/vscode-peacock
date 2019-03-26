@@ -40,6 +40,8 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.favoriteColors      | array of objects for color names and hex values                                                       |
 | peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
 | peacock.surpriseMeOnStartup | Specifies whether Peacock apply a random color on startup                                             |
+| peacock.darkForeground      | override for the dark foreground                                                                      |
+| peacock.lightForeground     | override for the light foreground                                                                     |
 
 ### Favorite Colors
 

@@ -3,7 +3,9 @@ export enum StandardSettings {
   ElementAdjustments = 'elementAdjustments',
   KeepBadgeColor = 'keepBadgeColor',
   KeepForegroundColor = 'keepForegroundColor',
-  SurpriseMeOnStartup = 'surpriseMeOnStartup'
+  SurpriseMeOnStartup = 'surpriseMeOnStartup',
+  DarkForegroundColor = 'darkForegroundColor',
+  LightForegroundColor = 'lightForegroundColor'
 }
 
 export enum AffectedSettings {

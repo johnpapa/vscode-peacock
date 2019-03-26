@@ -1,8 +1,8 @@
-import * as vscode from 'vscode';
 import {
   IPeacockSettings,
   IPeacockAffectedElementSettings,
-  Commands
+  Commands,
+  ForegroundColors
 } from '../../models';
 import {
   getAffectedElements,
@@ -11,7 +11,11 @@ import {
   updateElementAdjustments,
   updateKeepForegroundColor,
   getKeepForegroundColor,
-  updateSurpriseMeOnStartup
+  updateSurpriseMeOnStartup,
+  getDarkForegroundColor,
+  getLightForegroundColor,
+  updateDarkForegroundColor,
+  updateLightForegroundColor
 } from '../../configuration';
 
 import { getExtension, updateAffectedElements } from './helpers';
@@ -37,6 +41,8 @@ export async function setupTestSuite(
   originalValues.keepForegroundColor = getKeepForegroundColor();
   const { values: favoriteColors } = getFavoriteColors();
   originalValues.favoriteColors = favoriteColors;
+  originalValues.darkForegroundColor = getDarkForegroundColor();
+  originalValues.lightForegroundColor = getLightForegroundColor();
   // Set the test values
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     statusBar: true,
@@ -51,6 +57,8 @@ export async function setupTestSuite(
   await updateKeepForegroundColor(false);
   await updateSurpriseMeOnStartup(false);
   await updateElementAdjustments(noopElementAdjustments);
+  await updateDarkForegroundColor(ForegroundColors.DarkForeground);
+  await updateLightForegroundColor(ForegroundColors.LightForeground);
   return extension;
 }
 
@@ -62,4 +70,6 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateFavoriteColors(originalValues.favoriteColors);
   await updateKeepForegroundColor(originalValues.keepForegroundColor);
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
+  await updateDarkForegroundColor(originalValues.darkForegroundColor);
+  await updateLightForegroundColor(originalValues.lightForegroundColor);
 }

@@ -154,6 +154,16 @@
           "type": "boolean",
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session"
+        },
+        "peacock.darkForegroundColor": {
+          "type": "string",
+          "default": "#15202b",
+          "description": "Specifies the override value for the dark foreground color"
+        },
+        "peacock.lightForegroundColor": {
+          "type": "string",
+          "default": "#e7e7e7e",
+          "description": "Specifies the override value for the light foreground color"
         }
       }
     }

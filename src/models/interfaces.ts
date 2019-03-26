@@ -47,6 +47,8 @@ export interface IPeacockSettings {
   favoriteColors: IFavoriteColors[];
   keepForegroundColor: boolean;
   surpriseMeOnStartup: boolean;
+  darkForegroundColor: string;
+  lightForegroundColor: string;
 }
 
 export interface IElementColors {
