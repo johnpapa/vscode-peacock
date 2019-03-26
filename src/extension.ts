@@ -15,7 +15,8 @@ import {
   changeColorToAngularRedHandler,
   changeColorToReactBlueHandler,
   changeColorToFavoriteHandler,
-  saveColorToFavoritesHandler
+  saveColorToFavoritesHandler,
+  addRecommendedFavoritesHandler
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -71,6 +72,10 @@ function registerCommands() {
     changeColorToRandomHandler
   );
   commands.registerCommand(
+    Commands.addRecommendedFavorites,
+    addRecommendedFavoritesHandler
+  );
+  commands.registerCommand(
     Commands.changeColorToVueGreen,
     changeColorToVueGreenHandler
   );
@@ -100,6 +105,10 @@ export async function applyInitialConfiguration() {
   }
 }
 
+export function deactivate() {
+  console.log('Extension "vscode-peacock" is now deactive');
+}
+
 async function initializeTheStarterSetOfFavorites(
   context: vscode.ExtensionContext
 ) {
@@ -110,17 +119,10 @@ async function initializeTheStarterSetOfFavorites(
 
   if (starterSetOfFavoritesVersion !== version) {
     context.globalState.update(key, version);
-    let msg = `${extensionShortName}: Adding recommended favorite colors to user settings`;
-    Logger.info(msg);
-    vscode.window.showInformationMessage(msg);
     await writeRecommendedFavoriteColors();
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;
     Logger.info(msg);
     vscode.window.showInformationMessage(msg);
   }
-}
-
-export function deactivate() {
-  console.log('Extension "vscode-peacock" is now deactive');
 }

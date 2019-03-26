@@ -24,7 +24,8 @@ export enum Commands {
   changeColorToVueGreen = 'peacock.changeColorToVueGreen',
   changeColorToAngularRed = 'peacock.changeColorToAngularRed',
   changeColorToReactBlue = 'peacock.changeColorToReactBlue',
-  changeColorToFavorite = 'peacock.changeColorToFavorite'
+  changeColorToFavorite = 'peacock.changeColorToFavorite',
+  addRecommendedFavorites = 'peacock.addRecommendedFavorites'
 }
 
 export enum ElementNames {

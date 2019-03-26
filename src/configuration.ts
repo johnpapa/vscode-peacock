@@ -236,6 +236,10 @@ export async function addNewFavoriteColor(name: string, value: string) {
 export async function writeRecommendedFavoriteColors(
   overrideFavorites?: IFavoriteColors[]
 ) {
+  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings`;
+  Logger.info(msg);
+  vscode.window.showInformationMessage(msg);
+
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
   return await updateFavoriteColors(newFavoriteColors);
 }

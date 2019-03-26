@@ -9,7 +9,8 @@ import { BuiltInColors, State } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor
+  addNewFavoriteColor,
+  writeRecommendedFavoriteColors
 } from './configuration';
 import {
   promptForColor,
@@ -49,6 +50,10 @@ export async function enterColorHandler() {
 
 export async function changeColorToRandomHandler() {
   return await changeColor(getRandomColorHex());
+}
+
+export async function addRecommendedFavoritesHandler() {
+  await writeRecommendedFavoriteColors();
 }
 
 export async function changeColorToVueGreenHandler() {
