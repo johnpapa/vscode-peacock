@@ -7,6 +7,6 @@ export const starterSetOfFavorites = [
   { name: 'Mandalorian Blue', value: '#1857a4' },
   { name: 'Node Green', value: '#215732' },
   { name: 'React Blue', value: '#00b3e6' },
-  { name: 'Vue Green', value: '#42b883' },
-  { name: 'Something Different', value: '#832561' }
+  { name: 'Something Different', value: '#832561' },
+  { name: 'Vue Green', value: '#42b883' }
 ];
