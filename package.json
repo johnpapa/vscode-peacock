@@ -55,12 +55,12 @@
       },
       {
         "command": "peacock.addRecommendedFavorites",
-        "title": "Add the recommended favorites",
+        "title": "Add the Recommended Favorites",
         "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToRandom",
-        "title": "Surprise me with a Random Color",
+        "title": "Surprise Me with a Random Color",
         "category": "Peacock"
       },
       {
