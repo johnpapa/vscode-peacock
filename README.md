@@ -127,7 +127,7 @@ When set to true Peacock will automatically apply a random color when opening a 
 | Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
-| Peacock: Add recommended favorites       | Add the recommended favorites to user settings (override same names)     |
+| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)     |
 
 ## Input Formats
 
