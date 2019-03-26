@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## 1.4.0
+## 2.0.0
 
 Features
 
@@ -11,6 +11,11 @@ Features
   - _lightForegroundColor_ setting (defaults to `e7e7e7`) which can override the light foreground on what is calculated as a dark background
 - `Add recommended favorites` is now a command
 - Recommended favorites are now being saved when a new version is installed. Avoid using the same names.
+  - Recommended favorites are a list of constants found in `favorites.ts`. These are alphabetized.
+  - Recommended favorites are a starting point for favorites. They will be installed whenever a new version is installed. They will extend your existing favorites, so feel free to continue to add to your local favorites! However be careful not to change the color of the recommended favorites as they will be overridden when a new version is installed.
+  - This list may change from version to version depending on the Peacock authoring team.
+- Built-in colors for Angular, React and Vue have been removed in favor of "favorites"
+- One Built-in color exists: Peacock Green. This gives a user an easy color choice :)
 
 ## 1.3.1
 

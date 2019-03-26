@@ -252,6 +252,14 @@ const readability = tinycolor.readability(lightForeground, background); // 2.669
 const isReadable = tinycolor.isReadable(lightForeground, background); // false
 ```
 
+### Recommended Favorites
+
+Recommended favorites are a list of constants found in `favorites.ts`. These are alphabetized.
+
+Recommended favorites are a starting point for favorites. They will be installed whenever a new version is installed. They will extend your existing favorites, so feel free to continue to add to your local favorites! However be careful not to change the color of the recommended favorites as they will be overridden when a new version is installed.
+
+This list may change from version to version depending on the Peacock authoring team.
+
 ## Credits
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
