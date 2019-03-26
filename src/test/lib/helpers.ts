@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 import {
   IPeacockAffectedElementSettings,
-  AffectedSettings
+  AffectedSettings,
+  extensionId
 } from '../../models';
 import { updateGlobalConfiguration } from '../../configuration';
 
 export function getExtension() {
   let extension: vscode.Extension<any> | undefined;
-  const ext = vscode.extensions.getExtension('johnpapa.vscode-peacock');
+  const ext = vscode.extensions.getExtension(extensionId);
   if (!ext) {
     throw new Error('Extension was not found.');
   }
@@ -21,7 +22,9 @@ export function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function updateAffectedElements(values: IPeacockAffectedElementSettings) {
+export async function updateAffectedElements(
+  values: IPeacockAffectedElementSettings
+) {
   await updateGlobalConfiguration(
     AffectedSettings.ActivityBar,
     values.activityBar

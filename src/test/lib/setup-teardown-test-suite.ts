@@ -2,7 +2,8 @@ import {
   IPeacockSettings,
   IPeacockAffectedElementSettings,
   Commands,
-  ForegroundColors
+  ForegroundColors,
+  starterSetOfFavorites
 } from '../../models';
 import {
   getAffectedElements,
@@ -49,11 +50,7 @@ export async function setupTestSuite(
     activityBar: true,
     titleBar: true
   });
-  await updateFavoriteColors([
-    { name: 'Gatsby Purple', value: '#639' },
-    { name: 'Auth0 Orange', value: '#eb5424' },
-    { name: 'Azure Blue', value: '#007fff' }
-  ]);
+  await updateFavoriteColors(starterSetOfFavorites);
   await updateKeepForegroundColor(false);
   await updateSurpriseMeOnStartup(false);
   await updateElementAdjustments(noopElementAdjustments);

@@ -1,7 +1,12 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands, State, StandardSettings } from './models';
+import {
+  Commands,
+  State,
+  StandardSettings,
+  extensionShortName
+} from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -15,10 +20,12 @@ import {
 import {
   checkIfPeacockSettingsChanged,
   getCurrentColorBeforeAdjustments,
-  getSurpriseMeOnStartup
+  getSurpriseMeOnStartup,
+  writeRecommendedFavoriteColors
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
+import { getExtension } from './test/lib/helpers';
 
 const { commands, workspace } = vscode;
 
@@ -27,6 +34,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   addSubscriptions(context);
+  await initializeTheStarterSetOfFavorites(context);
   await applyInitialConfiguration();
 }
 
@@ -64,7 +72,7 @@ function registerCommands() {
   );
   commands.registerCommand(
     Commands.changeColorToVueGreen,
-  changeColorToVueGreenHandler
+    changeColorToVueGreenHandler
   );
   commands.registerCommand(
     Commands.changeColorToAngularRed,
@@ -89,6 +97,27 @@ export async function applyInitialConfiguration() {
       StandardSettings.SurpriseMeOnStartup
     }`;
     vscode.window.showInformationMessage(message);
+  }
+}
+
+async function initializeTheStarterSetOfFavorites(
+  context: vscode.ExtensionContext
+) {
+  let extension = getExtension();
+  let version = extension ? extension.packageJSON.version : '';
+  const key = `${extensionShortName}.starterSetOfFavoritesVersion`;
+  let starterSetOfFavoritesVersion = context.globalState.get(key, undefined);
+
+  if (starterSetOfFavoritesVersion !== version) {
+    context.globalState.update(key, version);
+    let msg = `${extensionShortName}: Adding recommended favorite colors to user settings`;
+    Logger.info(msg);
+    vscode.window.showInformationMessage(msg);
+    await writeRecommendedFavoriteColors();
+  } else {
+    let msg = `${extensionShortName}: already wrote the favorite colors once`;
+    Logger.info(msg);
+    vscode.window.showInformationMessage(msg);
   }
 }
 

@@ -22,11 +22,10 @@ function createFavoriteColorTest(name: string) {
       .stub(vscode.window, 'showInputBox')
       .returns(Promise.resolve(name));
 
-    // fire the command
     await executeCommand(Commands.saveColorToFavorites);
     const { values: favoriteColors } = getFavoriteColors();
     stub.restore();
 
-    assert.ok(!favoriteColors.some(pc => pc.name === name));
+    assert.ok(!favoriteColors.some(f => f.name === name));
   };
 }

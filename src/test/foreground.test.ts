@@ -1,10 +1,6 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
-import {
-  IPeacockSettings,
-  Commands,
-  ColorSettings
-} from '../models';
+import { IPeacockSettings, Commands, ColorSettings } from '../models';
 import {
   setupTestSuite,
   teardownTestSuite
@@ -14,8 +10,8 @@ import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
 import {
   getPeacockWorkspaceConfig,
-  getLightForegroundColor,
-  getDarkForegroundColor
+  getLightForegroundColorOrOverride,
+  getDarkForegroundColorOrOverride
 } from '../configuration';
 
 suite('Foreground color', () => {
@@ -33,32 +29,35 @@ suite('Foreground color', () => {
 
   test(
     'is set to light foreground on black backgrounds',
-    createForegroundTest('hsl (0, 0, 0)', getLightForegroundColor())
+    createForegroundTest('hsl (0, 0, 0)', getLightForegroundColorOrOverride())
   );
 
   test(
     'is set to light foreground on dark backgrounds',
-    createForegroundTest('hsl (0, 0, 25%)', getLightForegroundColor())
+    createForegroundTest('hsl (0, 0, 25%)', getLightForegroundColorOrOverride())
   );
 
   test(
     'is set to light foreground on less than 50% bright backgrounds',
-    createForegroundTest('hsl (0, 0, 49%)', getLightForegroundColor())
+    createForegroundTest('hsl (0, 0, 49%)', getLightForegroundColorOrOverride())
   );
 
   test(
     'is set to dark foreground on greater than or equal to 50% bright backgrounds',
-    createForegroundTest('hsl (0, 0, 50%)', getDarkForegroundColor())
+    createForegroundTest('hsl (0, 0, 50%)', getDarkForegroundColorOrOverride())
   );
 
   test(
     'is set to dark foreground on light backgrounds',
-    createForegroundTest('hsl (0, 0, 75%)', getDarkForegroundColor())
+    createForegroundTest('hsl (0, 0, 75%)', getDarkForegroundColorOrOverride())
   );
 
   test(
     'is set to dark foreground on white backgrounds',
-    createForegroundTest('hsl (0, 100%, 100%)', getDarkForegroundColor())
+    createForegroundTest(
+      'hsl (0, 100%, 100%)',
+      getDarkForegroundColorOrOverride()
+    )
   );
 });
 

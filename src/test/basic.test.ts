@@ -6,7 +6,7 @@ import {
   Commands,
   IConfiguration,
   StandardSettings,
-  extSuffix,
+  extensionShortName,
   AffectedSettings
 } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
@@ -45,7 +45,7 @@ suite('Basic Extension Tests', () => {
     const properties = Object.keys(config.properties);
     for (let setting in StandardSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${StandardSettings[setting]}`
+        property => property === `${extensionShortName}.${StandardSettings[setting]}`
       );
       assert.ok(result);
     }
@@ -57,7 +57,7 @@ suite('Basic Extension Tests', () => {
     const properties = Object.keys(config.properties);
     for (let setting in AffectedSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${AffectedSettings[setting]}`
+        property => property === `${extensionShortName}.${AffectedSettings[setting]}`
       );
       assert.ok(result);
     }
@@ -69,7 +69,7 @@ suite('Basic Extension Tests', () => {
     );
 
     vscode.commands.getCommands(true).then((allCommands: string[]) => {
-      const commands = allCommands.filter(c => c.startsWith(`${extSuffix}.`));
+      const commands = allCommands.filter(c => c.startsWith(`${extensionShortName}.`));
       commands.forEach(command => {
         const result = commandStrings.some(c => c === command);
         assert.ok(result);

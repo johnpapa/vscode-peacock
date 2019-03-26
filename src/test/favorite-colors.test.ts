@@ -6,7 +6,7 @@ import { parseFavoriteColorValue } from '../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
-import { getPeacockWorkspaceConfig } from '../configuration';
+import { getPeacockWorkspaceConfig, writeRecommendedFavoriteColors } from '../configuration';
 
 suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};

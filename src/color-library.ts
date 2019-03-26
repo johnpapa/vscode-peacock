@@ -13,8 +13,8 @@ import {
   prepareColors,
   updateWorkspaceConfiguration,
   getExistingColorCustomizations,
-  getDarkForegroundColor,
-  getLightForegroundColor
+  getDarkForegroundColorOrOverride,
+  getLightForegroundColorOrOverride
 } from './configuration';
 
 export function getColorHex(color = '') {
@@ -42,8 +42,8 @@ export function getBackgroundHoverColorHex(backgroundColor = '') {
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
   const foreground = background.isLight()
-    ? getDarkForegroundColor()
-    : getLightForegroundColor();
+    ? getDarkForegroundColorOrOverride()
+    : getLightForegroundColorOrOverride();
   return formatHex(tinycolor(foreground));
 }
 
