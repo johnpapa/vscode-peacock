@@ -31,8 +31,8 @@ suite('Favorite colors', () => {
   });
 
   test('set to favorite color with no preferences is a noop', async () => {
-    // set the color to react blue to start
-    await executeCommand(Commands.changeColorToReactBlue);
+    // set the color to peacock green to start
+    await executeCommand(Commands.changeColorToPeacockGreen);
 
     // Stub the async quick pick to return a response
     const fakeResponse = '';

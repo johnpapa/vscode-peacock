@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BuiltInColors, favoriteColorSeparator } from './models';
+import { favoriteColorSeparator, peacockGreen } from './models';
 import {
   getFavoriteColors,
   getCurrentColorBeforeAdjustments
@@ -9,10 +9,10 @@ import { changeColor } from './color-library';
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
-    placeHolder: BuiltInColors.Vue,
+    placeHolder: peacockGreen,
     prompt:
       'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
-    value: BuiltInColors.Vue
+    value: peacockGreen
   };
   const inputColor = await vscode.window.showInputBox(options);
   return inputColor || '';

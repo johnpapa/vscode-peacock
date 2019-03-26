@@ -21,10 +21,9 @@ export enum Commands {
   saveColorToFavorites = 'peacock.saveColorToFavorites',
   enterColor = 'peacock.enterColor',
   changeColorToRandom = 'peacock.changeColorToRandom',
-  changeColorToVueGreen = 'peacock.changeColorToVueGreen',
-  changeColorToAngularRed = 'peacock.changeColorToAngularRed',
-  changeColorToReactBlue = 'peacock.changeColorToReactBlue',
-  changeColorToFavorite = 'peacock.changeColorToFavorite'
+  changeColorToPeacockGreen = 'peacock.changeColorToPeacockGreen',
+  changeColorToFavorite = 'peacock.changeColorToFavorite',
+  addRecommendedFavorites = 'peacock.addRecommendedFavorites'
 }
 
 export enum ElementNames {
@@ -54,12 +53,6 @@ export enum ColorAdjustmentOptions {
   lighten = 'lighten',
   darken = 'darken',
   none = 'none'
-}
-
-export enum BuiltInColors {
-  Vue = '#42b883',
-  Angular = '#b52e31',
-  React = '#00b3e6'
 }
 
 export enum Sections {

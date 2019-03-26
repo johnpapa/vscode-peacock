@@ -2,7 +2,7 @@ import {
   ColorSettings,
   Sections,
   StandardSettings,
-  extSuffix,
+  extensionShortName,
   IFavoriteColors,
   favoriteColorSeparator,
   IPeacockElementAdjustments,
@@ -15,7 +15,8 @@ import {
   ElementNames,
   ColorAdjustmentOptions,
   IElementColors,
-  ForegroundColors
+  ForegroundColors,
+  starterSetOfFavorites
 } from './models';
 import {
   getAdjustedColorHex,
@@ -65,7 +66,7 @@ export async function updateGlobalConfiguration<T>(
   value?: T | undefined
 ) {
   let config = vscode.workspace.getConfiguration();
-  const section = `${extSuffix}.${setting}`;
+  const section = `${extensionShortName}.${setting}`;
   Logger.info('Updating the user settings with the following changes:');
   Logger.info(`${section} = ${value}`, true);
   return await config.update(section, value, vscode.ConfigurationTarget.Global);
@@ -120,19 +121,19 @@ export async function updateWorkspaceConfiguration(
 }
 
 export function getDarkForegroundColor() {
-  const color = readConfiguration<string>(
-    StandardSettings.DarkForegroundColor,
-    ''
-  );
-  return color || ForegroundColors.DarkForeground;
+  return readConfiguration<string>(StandardSettings.DarkForegroundColor, '');
+}
+
+export function getDarkForegroundColorOrOverride() {
+  return getDarkForegroundColor() || ForegroundColors.DarkForeground;
 }
 
 export function getLightForegroundColor() {
-  const color = readConfiguration<string>(
-    StandardSettings.LightForegroundColor,
-    ''
-  );
-  return color || ForegroundColors.LightForeground;
+  return readConfiguration<string>(StandardSettings.LightForegroundColor, '');
+}
+
+export function getLightForegroundColorOrOverride() {
+  return getLightForegroundColor() || ForegroundColors.LightForeground;
 }
 
 export function getKeepForegroundColor() {
@@ -151,7 +152,7 @@ export function getFavoriteColors() {
   let values = readConfiguration<IFavoriteColors[]>(
     StandardSettings.FavoriteColors
   );
-  const menu = values.map(pc => `${pc.name} ${sep} ${pc.value}`);
+  const menu = values.map(fav => `${fav.name} ${sep} ${fav.value}`);
   values = values || [];
   return {
     menu,
@@ -232,6 +233,17 @@ export async function addNewFavoriteColor(name: string, value: string) {
   return await updateFavoriteColors(newFavoriteColors);
 }
 
+export async function writeRecommendedFavoriteColors(
+  overrideFavorites?: IFavoriteColors[]
+) {
+  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings`;
+  Logger.info(msg);
+  vscode.window.showInformationMessage(msg);
+
+  const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
+  return await updateFavoriteColors(newFavoriteColors);
+}
+
 export async function updateFavoriteColors(values: IFavoriteColors[]) {
   return await updateGlobalConfiguration(
     StandardSettings.FavoriteColors,
@@ -277,10 +289,10 @@ export function getElementStyle(
 export function getAllSettingNames() {
   let settings = [];
   const affectedSettings = Object.values(AffectedSettings).map(
-    value => `${extSuffix}.${value}`
+    value => `${extensionShortName}.${value}`
   );
   const standardSettings = Object.values(StandardSettings).map(
-    value => `${extSuffix}.${value}`
+    value => `${extensionShortName}.${value}`
   );
   settings.push(...affectedSettings);
   settings.push(...standardSettings);
@@ -426,6 +438,38 @@ export function getExistingColorCustomizations() {
   return workspace.getConfiguration().get(Sections.workspacePeacockSection);
 }
 
+export function hasFavorites() {
+  const s = getAllUserSettings();
+  return s.favoriteColors.values.length;
+}
+
+function getAllUserSettings() {
+  const favoriteColors = getFavoriteColors();
+  const elementAdjustments = getElementAdjustments();
+  const keepBadgeColor = getKeepBadgeColor();
+  const keepForegroundColor = getKeepForegroundColor();
+  const surpriseMeOnStartup = getSurpriseMeOnStartup();
+  const darkForegroundColor = getDarkForegroundColor();
+  const lightForegroundColor = getLightForegroundColor();
+  const {
+    activityBar: affectActivityBar,
+    statusBar: affectStatusBar,
+    titleBar: affectTitleBar
+  } = getAffectedElements();
+  return {
+    favoriteColors,
+    elementAdjustments,
+    keepBadgeColor,
+    keepForegroundColor,
+    surpriseMeOnStartup,
+    darkForegroundColor,
+    lightForegroundColor,
+    affectActivityBar,
+    affectStatusBar,
+    affectTitleBar
+  };
+}
+
 function getOriginalColor(color: string, adjustment: ColorAdjustment) {
   let oppositeAdjustment: ColorAdjustmentOptions;
 
@@ -443,4 +487,16 @@ function getOriginalColor(color: string, adjustment: ColorAdjustment) {
       break;
   }
   return getAdjustedColorHex(color, oppositeAdjustment);
+}
+
+function removeDuplicatesToStarterSet(overrideFavorites?: IFavoriteColors[]) {
+  let starter = overrideFavorites || starterSetOfFavorites;
+
+  const { values: existingFavoriteColors } = getFavoriteColors();
+
+  // starter set must be first, so it overrides the existing ones if their are dupes.
+  let faves = [...starter, ...existingFavoriteColors];
+  return faves.filter((fav, position, arr) => {
+    return arr.map(o => o.name).indexOf(fav.name) === position;
+  });
 }

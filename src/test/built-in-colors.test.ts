@@ -3,8 +3,8 @@ import * as assert from 'assert';
 import {
   Commands,
   ColorSettings,
-  BuiltInColors,
-  IPeacockSettings
+  IPeacockSettings,
+  peacockGreen
 } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
@@ -19,11 +19,7 @@ suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
-  test('can set color to Angular Red', testChangingColorToAngularRed());
-
-  test('can set color to Vue Green', testChangingColorToVueGreen());
-
-  test('can set color to React Blue', testChangingColorToReactBlue());
+  test('can set color to Peacock Green', testChangingColorToPeacockGreen());
 
   test('can set color to Random color', async () => {
     await executeCommand(Commands.changeColorToRandom);
@@ -64,28 +60,15 @@ suite('can set color to built-in color', () => {
   });
 });
 
-function testChangingColorToAngularRed():
-  |((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
+function testChangingColorToPeacockGreen():
+  | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
   | undefined {
-  return testBuiltInColor(
-    Commands.changeColorToAngularRed,
-    BuiltInColors.Angular
-  );
-}
-function testChangingColorToVueGreen():
-  |((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
-  | undefined {
-  return testBuiltInColor(Commands.changeColorToVueGreen, BuiltInColors.Vue);
-}
-function testChangingColorToReactBlue():
-  |((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
-  | undefined {
-  return testBuiltInColor(Commands.changeColorToReactBlue, BuiltInColors.React);
+  return testBuiltInColor(Commands.changeColorToPeacockGreen, peacockGreen);
 }
 
 function testBuiltInColor(
   cmd: Commands,
-  builtInColor: BuiltInColors
+  builtInColor: string
 ): ((this: Mocha.ITestCallbackContext, done: MochaDone) => any) | undefined {
   return async () => {
     await vscode.commands.executeCommand(cmd);
