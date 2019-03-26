@@ -123,6 +123,5 @@ async function initializeTheStarterSetOfFavorites(
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;
     Logger.info(msg);
-    vscode.window.showInformationMessage(msg);
   }
 }
