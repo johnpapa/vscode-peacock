@@ -4,7 +4,7 @@ All notable changes to the code will be documented in this file.
 
 ## 2.0.0
 
-Features
+Features and Breaking Changes
 
 - Added settings which allow the user to override the dark and light foreground colors
   - _darkForegroundColor_ setting (defaults to `15202b`) which can override the dark foreground on what is calculated as a light background
