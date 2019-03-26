@@ -14,7 +14,8 @@ import {
   ISettingsIndexer,
   ElementNames,
   ColorAdjustmentOptions,
-  IElementColors
+  IElementColors,
+  ForegroundColors
 } from './models';
 import {
   getAdjustedColorHex,
@@ -118,6 +119,22 @@ export async function updateWorkspaceConfiguration(
     );
 }
 
+export function getDarkForegroundColor() {
+  const color = readConfiguration<string>(
+    StandardSettings.DarkForegroundColor,
+    ''
+  );
+  return color || ForegroundColors.DarkForeground;
+}
+
+export function getLightForegroundColor() {
+  const color = readConfiguration<string>(
+    StandardSettings.LightForegroundColor,
+    ''
+  );
+  return color || ForegroundColors.LightForeground;
+}
+
 export function getKeepForegroundColor() {
   return readConfiguration<boolean>(
     StandardSettings.KeepForegroundColor,
@@ -189,7 +206,24 @@ export async function updateKeepBadgeColor(value: boolean) {
 }
 
 export async function updateSurpriseMeOnStartup(value: boolean) {
-  return await updateGlobalConfiguration(StandardSettings.SurpriseMeOnStartup, value);
+  return await updateGlobalConfiguration(
+    StandardSettings.SurpriseMeOnStartup,
+    value
+  );
+}
+
+export async function updateDarkForegroundColor(value: string) {
+  return await updateGlobalConfiguration(
+    StandardSettings.DarkForegroundColor,
+    value
+  );
+}
+
+export async function updateLightForegroundColor(value: string) {
+  return await updateGlobalConfiguration(
+    StandardSettings.LightForegroundColor,
+    value
+  );
 }
 
 export async function addNewFavoriteColor(name: string, value: string) {

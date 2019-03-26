@@ -3,7 +3,6 @@ import sinon = require('sinon');
 import {
   IPeacockSettings,
   Commands,
-  ForegroundColors,
   ColorSettings
 } from '../models';
 import {
@@ -13,7 +12,11 @@ import {
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
-import { getPeacockWorkspaceConfig } from '../configuration';
+import {
+  getPeacockWorkspaceConfig,
+  getLightForegroundColor,
+  getDarkForegroundColor
+} from '../configuration';
 
 suite('Foreground color', () => {
   let originalValues = <IPeacockSettings>{};
@@ -30,32 +33,32 @@ suite('Foreground color', () => {
 
   test(
     'is set to light foreground on black backgrounds',
-    createForegroundTest('hsl (0, 0, 0)', ForegroundColors.LightForeground)
+    createForegroundTest('hsl (0, 0, 0)', getLightForegroundColor())
   );
 
   test(
     'is set to light foreground on dark backgrounds',
-    createForegroundTest('hsl (0, 0, 25%)', ForegroundColors.LightForeground)
+    createForegroundTest('hsl (0, 0, 25%)', getLightForegroundColor())
   );
 
   test(
     'is set to light foreground on less than 50% bright backgrounds',
-    createForegroundTest('hsl (0, 0, 49%)', ForegroundColors.LightForeground)
+    createForegroundTest('hsl (0, 0, 49%)', getLightForegroundColor())
   );
 
   test(
     'is set to dark foreground on greater than or equal to 50% bright backgrounds',
-    createForegroundTest('hsl (0, 0, 50%)', ForegroundColors.DarkForeground)
+    createForegroundTest('hsl (0, 0, 50%)', getDarkForegroundColor())
   );
 
   test(
     'is set to dark foreground on light backgrounds',
-    createForegroundTest('hsl (0, 0, 75%)', ForegroundColors.DarkForeground)
+    createForegroundTest('hsl (0, 0, 75%)', getDarkForegroundColor())
   );
 
   test(
     'is set to dark foreground on white backgrounds',
-    createForegroundTest('hsl (0, 100%, 100%)', ForegroundColors.DarkForeground)
+    createForegroundTest('hsl (0, 100%, 100%)', getDarkForegroundColor())
   );
 });
 

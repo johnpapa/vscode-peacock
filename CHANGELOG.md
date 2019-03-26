@@ -2,11 +2,19 @@
 
 All notable changes to the code will be documented in this file.
 
+## 1.4.0
+
+Features
+
+- Added settings which allow the user to override the dark and light foreground colors
+  - _darkForegroundColor_ setting (defaults to `15202b`) which can override the dark foreground on what is calculated as a light background
+  - _lightForegroundColor_ setting (defaults to `e7e7e7`) which can override the light foreground on what is calculated as a dark background
+
 ## 1.3.1
 
 Bug fixes
 
-fix issue where surprise me message shows up anytime a surprise me command is run.
+- fix issue where surprise me message shows up anytime a surprise me command is run.
 
 ## 1.3.0
 
