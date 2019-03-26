@@ -63,8 +63,8 @@ suite('changes to configuration', () => {
 
   suite('when starting with a color in the workspace config', () => {
     setup(async () => {
-      // Use Vue Green as the color the instance began with
-      await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+      // Use Peacock Green as the color the instance began with
+      await vscode.commands.executeCommand(Commands.changeColorToPeacockGreen);
     });
 
     test('will change color when unselecting activitybar', async () => {

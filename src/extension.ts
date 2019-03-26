@@ -11,9 +11,7 @@ import {
   resetColorsHandler,
   enterColorHandler,
   changeColorToRandomHandler,
-  changeColorToVueGreenHandler,
-  changeColorToAngularRedHandler,
-  changeColorToReactBlueHandler,
+  changeColorToPeacockGreenHandler,
   changeColorToFavoriteHandler,
   saveColorToFavoritesHandler,
   addRecommendedFavoritesHandler
@@ -76,16 +74,8 @@ function registerCommands() {
     addRecommendedFavoritesHandler
   );
   commands.registerCommand(
-    Commands.changeColorToVueGreen,
-    changeColorToVueGreenHandler
-  );
-  commands.registerCommand(
-    Commands.changeColorToAngularRed,
-    changeColorToAngularRedHandler
-  );
-  commands.registerCommand(
-    Commands.changeColorToReactBlue,
-    changeColorToReactBlueHandler
+    Commands.changeColorToPeacockGreen,
+    changeColorToPeacockGreenHandler
   );
   commands.registerCommand(
     Commands.changeColorToFavorite,

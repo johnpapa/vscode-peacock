@@ -9,3 +9,5 @@ export const inactiveElementAlpha = 0x99 / 0xff;
 export const defaultAmountToLighten = 10;
 
 export const defaultSaturation = 0.5;
+
+export const peacockGreen = '#42b883';

@@ -28,14 +28,7 @@
   ],
   "preview": false,
   "activationEvents": [
-    "*",
-    "onCommand:peacock.resetColors",
-    "onCommand:peacock.enterColor",
-    "onCommand:peacock.changeColorToVueGreen",
-    "onCommand:peacock.changeColorToRandom",
-    "onCommand:peacock.changeColorToAngularRed",
-    "onCommand:peacock.changeColorToReactBlue",
-    "onCommand:peacock.changeColorToFavorite"
+    "*"
   ],
   "main": "./dist/extension",
   "contributes": {
@@ -56,8 +49,8 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.changeColorToVueGreen",
-        "title": "Color to Vue Green",
+        "command": "peacock.changeColorToPeacockGreen",
+        "title": "Color to Peacock Green",
         "category": "Peacock"
       },
       {
@@ -68,16 +61,6 @@
       {
         "command": "peacock.changeColorToRandom",
         "title": "Surprise me with a Random Color",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorToAngularRed",
-        "title": "Color to Angular Red",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorToReactBlue",
-        "title": "Color to React Blue",
         "category": "Peacock"
       },
       {

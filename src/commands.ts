@@ -5,7 +5,7 @@ import {
   deletePeacocksColorCustomizations
 } from './color-library';
 
-import { BuiltInColors, State } from './models';
+import { State, peacockGreen } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
@@ -56,16 +56,8 @@ export async function addRecommendedFavoritesHandler() {
   await writeRecommendedFavoriteColors();
 }
 
-export async function changeColorToVueGreenHandler() {
-  return await changeColor(BuiltInColors.Vue);
-}
-
-export async function changeColorToAngularRedHandler() {
-  return await changeColor(BuiltInColors.Angular);
-}
-
-export async function changeColorToReactBlueHandler() {
-  return await changeColor(BuiltInColors.React);
+export async function changeColorToPeacockGreenHandler() {
+  return await changeColor(peacockGreen);
 }
 
 export async function changeColorToFavoriteHandler() {
