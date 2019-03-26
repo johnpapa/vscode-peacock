@@ -162,7 +162,7 @@
         },
         "peacock.lightForegroundColor": {
           "type": "string",
-          "default": "#e7e7e7e",
+          "default": "#e7e7e7",
           "description": "Specifies the override value for the light foreground color"
         }
       }
