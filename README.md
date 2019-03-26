@@ -23,7 +23,6 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Change the color of [Affected Elements](#Affected-Elements) (see `peacock.affect*` in the [Settings](#Settings) section) to
   - [user defined color](#Input-Formats)
   - a random color
-  - the primary color for angular, vue, or react
 - Select a user-defined color from your [Favorite Colors](#Favorite-Colors)
 - Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
@@ -102,7 +101,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
   }
 ```
 
-When using peacock with the Angular Red color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
+This results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
 ![Animated GIF](./resources/element-adjustments.png)
 
@@ -124,9 +123,7 @@ When set to true Peacock will automatically apply a random color when opening a 
 | ---------------------------------------- | ------------------------------------------------------------------------ |
 | Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
 | Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Vue Green              | Sets the color to Vue.js's main color, #42b883                           |
-| Peacock: Color to Angular Red            | Sets the color to Angular's main color, #b52e31                          |
-| Peacock: Color to React Blue             | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                            |
 | Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
