@@ -1,6 +1,11 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { Commands, ColorSettings, IPeacockSettings, peacockGreen } from '../models';
+import {
+  Commands,
+  ColorSettings,
+  IPeacockSettings,
+  peacockGreen
+} from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { isValidColorInput } from '../color-library';

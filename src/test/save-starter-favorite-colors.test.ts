@@ -1,9 +1,6 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
-import * as sinon from 'sinon';
-import { Commands, IPeacockSettings, starterSetOfFavorites } from '../models';
+import { IPeacockSettings } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
-import { executeCommand } from './lib/constants';
 import {
   getFavoriteColors,
   writeRecommendedFavoriteColors
