@@ -2,6 +2,13 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.0.1
+
+Bug Fixes
+
+- Added color parameter to enterColor handler which allow the developer to call the 
+extension programmatically without promping user input
+
 ## 2.0.0
 
 Features and Breaking Changes
