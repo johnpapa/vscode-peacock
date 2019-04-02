@@ -4,7 +4,7 @@ All notable changes to the code will be documented in this file.
 
 ## 2.0.1
 
-Bug Fixes
+Enhancements
 
 - Added color parameter to enterColor handler which allow the developer to call the 
 extension programmatically without promping user input
