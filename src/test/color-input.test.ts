@@ -145,7 +145,7 @@ suite('Enter color', () => {
 
     test(
       'cannot set invalid color using command parameters programmatically',
-      createColorInputTestWithParam('invalid', undefined, true)
+      createColorInputTestWithParamThatThrowsError('invalid')
     );
   });
 });
@@ -176,15 +176,9 @@ function createColorInputTest(
 function createColorInputTestWithParam(
   fakeResponse: string,
   expectedValue: string | undefined,
-  throwsError: boolean = false
 ) {
   return async () => {
-    // fire the command
-    try {
-      await executeCommand(Commands.enterColor, fakeResponse);
-    } catch (err) {
-      assert.ok(throwsError);
-    }
+    await executeCommand(Commands.enterColor, fakeResponse);
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
@@ -193,5 +187,17 @@ function createColorInputTestWithParam(
     // Otherwise, we need a valid color
     assert.ok(!value || isValidColorInput(value));
     assert.equal(expectedValue, value);
+  };
+}
+
+function createColorInputTestWithParamThatThrowsError(
+  fakeResponse: string
+) {
+  return async () => {
+    assert.rejects(async () => await executeCommand(Commands.enterColor, fakeResponse), Error);
+    let config = getPeacockWorkspaceConfig();
+    const value = config[ColorSettings.titleBar_activeBackground];
+    // The value should be undefined when invalid color is set
+    assert.ok(!value);
   };
 }
