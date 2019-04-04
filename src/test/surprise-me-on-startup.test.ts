@@ -11,10 +11,10 @@ import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
   getOriginalColorsForAllElements,
-  updateSurpriseMeOnStartup
+  updateSurpriseMeOnStartup,
+  updateAffectedElements
 } from '../configuration';
 import { applyInitialConfiguration } from '../extension';
-import { updateAffectedElements } from './lib/helpers';
 
 suite('Surprise me on startup', () => {
   let originalValues = <IPeacockSettings>{};

@@ -5,7 +5,8 @@ import {
   Commands,
   State,
   StandardSettings,
-  extensionShortName
+  extensionShortName,
+  getExtension
 } from './models';
 import {
   resetColorsHandler,
@@ -24,7 +25,6 @@ import {
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
-import { getExtension } from './test/lib/helpers';
 
 const { commands, workspace } = vscode;
 

@@ -2,6 +2,14 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.0.1
+
+Maintenance
+
+- Refactored to remove a dependency on a testing file
+- Removed `helpers` file, since I don't feel that was descriptive or helpful (pun intended)
+  - Moved functions in that file to better existing modules
+
 ## 2.0.0
 
 Features and Breaking Changes
