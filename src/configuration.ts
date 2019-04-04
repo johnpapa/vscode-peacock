@@ -443,6 +443,19 @@ export function hasFavorites() {
   return s.favoriteColors.values.length;
 }
 
+export async function updateAffectedElements(
+  values: IPeacockAffectedElementSettings
+) {
+  await updateGlobalConfiguration(
+    AffectedSettings.ActivityBar,
+    values.activityBar
+  );
+  await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
+  await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
+
+  return true;
+}
+
 function getAllUserSettings() {
   const favoriteColors = getFavoriteColors();
   const elementAdjustments = getElementAdjustments();

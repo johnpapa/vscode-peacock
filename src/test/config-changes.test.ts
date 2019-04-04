@@ -13,9 +13,9 @@ import { executeCommand } from './lib/constants';
 import {
   updateGlobalConfiguration,
   getOriginalColorsForAllElements,
-  getUserConfig
+  getUserConfig,
+  updateAffectedElements
 } from '../configuration';
-import { timeout, updateAffectedElements } from './lib/helpers';
 
 const delayInMs = 500;
 
@@ -141,3 +141,7 @@ suite('changes to configuration', () => {
     });
   });
 });
+
+function timeout(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

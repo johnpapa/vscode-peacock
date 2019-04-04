@@ -3,7 +3,8 @@ import {
   IPeacockAffectedElementSettings,
   Commands,
   ForegroundColors,
-  starterSetOfFavorites
+  starterSetOfFavorites,
+  getExtension
 } from '../../models';
 import {
   getAffectedElements,
@@ -16,10 +17,10 @@ import {
   getDarkForegroundColor,
   getLightForegroundColor,
   updateDarkForegroundColor,
-  updateLightForegroundColor
+  updateLightForegroundColor,
+  updateAffectedElements
 } from '../../configuration';
 
-import { getExtension, updateAffectedElements } from './helpers';
 import { noopElementAdjustments, executeCommand } from './constants';
 
 export function allSetupAndTeardown(originalValues: IPeacockSettings) {

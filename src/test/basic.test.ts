@@ -7,10 +7,10 @@ import {
   IConfiguration,
   StandardSettings,
   extensionShortName,
-  AffectedSettings
+  AffectedSettings,
+  getExtension
 } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
-import { getExtension } from './lib/helpers';
 
 suite('Basic Extension Tests', () => {
   let extension = <vscode.Extension<any>>getExtension();
