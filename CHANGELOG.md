@@ -2,12 +2,19 @@
 
 All notable changes to the code will be documented in this file.
 
-## 2.0.1
+## 2.1.0
 
 Enhancements
 
-- Added color parameter to enterColor handler which allow the developer to call the 
-extension programmatically without promping user input
+- Extension as API: Added color parameter to enterColor handler which allow the developer to call the extension programmatically without promping user input
+
+## 2.0.1
+
+Maintenance
+
+- Refactored to remove a dependency on a testing file
+- Removed `helpers` file, since I don't feel that was descriptive or helpful (pun intended)
+  - Moved functions in that file to better existing modules
 
 ## 2.0.0
 

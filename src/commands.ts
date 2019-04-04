@@ -17,7 +17,6 @@ import {
   promptForFavoriteColor,
   promptForFavoriteColorName
 } from './inputs';
-import { isObjectEmpty } from './helpers';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -65,4 +64,8 @@ export async function changeColorToFavoriteHandler() {
   if (isValidColorInput(input)) {
     await changeColor(input);
   }
+}
+
+function isObjectEmpty(o: {}) {
+  return !Object.keys(o).length;
 }
