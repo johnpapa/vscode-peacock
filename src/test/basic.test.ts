@@ -28,7 +28,7 @@ suite('Basic Extension Tests', () => {
     }, 200);
   });
 
-  test('constants.Commands exist in package.json', () => {
+  test('Commands exist in package.json', () => {
     const commandCollection: ICommand[] =
       extension.packageJSON.contributes.commands;
     for (let command in Commands) {
@@ -39,7 +39,7 @@ suite('Basic Extension Tests', () => {
     }
   });
 
-  test('constants.Settings exist in package.json', () => {
+  test('Settings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
@@ -52,7 +52,7 @@ suite('Basic Extension Tests', () => {
     }
   });
 
-  test('constants.AffectedSettings exist in package.json', () => {
+  test('AffectedSettings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
