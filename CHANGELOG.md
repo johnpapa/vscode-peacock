@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.1.0
+
+Enhancements
+
+- Extension as API: Added color parameter to enterColor handler which allow the developer to call the extension programmatically without prompting user input
+
 ## 2.0.1
 
 Maintenance
