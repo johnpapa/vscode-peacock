@@ -164,7 +164,7 @@
     "watch": "webpack --mode none --watch",
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
-    "test-compile": "tsc -p ./ && npm run && webpack",
+    "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && node node_modules/vscode/bin/test"
   },
   "devDependencies": {
