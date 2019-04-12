@@ -6,7 +6,7 @@ All notable changes to the code will be documented in this file.
 
 Enhancements
 
-- Extension as API: Added color parameter to enterColor handler which allow the developer to call the extension programmatically without promping user input
+- Extension as API: Added color parameter to enterColor handler which allow the developer to call the extension programmatically without prompting user input
 
 ## 2.0.1
 
