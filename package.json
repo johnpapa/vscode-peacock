@@ -171,7 +171,7 @@
     "@types/mocha": "^5.2.6",
     "@types/node": "11.13.1",
     "@types/sinon": "^7.0.7",
-    "sinon": "7.3.0",
+    "sinon": "7.3.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
