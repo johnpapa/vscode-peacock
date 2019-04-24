@@ -2,6 +2,7 @@ export const starterSetOfFavorites = [
   { name: 'Angular Red', value: '#b52e31' },
   { name: 'Auth0 Orange', value: '#eb5424' },
   { name: 'Azure Blue', value: '#007fff' },
+  { name: 'C# Purple', value: '#68217A' },
   { name: 'Gatsby Purple', value: '#639' },
   { name: 'JavaScript Yellow', value: '#f9e64f' },
   { name: 'Mandalorian Blue', value: '#1857a4' },
