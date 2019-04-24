@@ -7,7 +7,6 @@ All notable changes to the code will be documented in this file.
 Features
 
 - Added _C# Purple_ `#68217A` to favorites for .NET Core
-- Refactored to remove dead code and remove helper functions
 
 ## 2.1.0
 
