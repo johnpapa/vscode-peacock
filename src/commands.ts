@@ -5,18 +5,18 @@ import {
   deletePeacocksColorCustomizations
 } from './color-library';
 
-import { BuiltInColors, State } from './models';
+import { State, peacockGreen } from './models';
 import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor
+  addNewFavoriteColor,
+  writeRecommendedFavoriteColors
 } from './configuration';
 import {
   promptForColor,
   promptForFavoriteColor,
   promptForFavoriteColorName
 } from './inputs';
-import { isObjectEmpty } from './helpers';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -36,8 +36,8 @@ export async function saveColorToFavoritesHandler() {
   return await addNewFavoriteColor(name, color);
 }
 
-export async function enterColorHandler() {
-  const input = await promptForColor();
+export async function enterColorHandler(color?: string) {
+  const input = color ? color : await promptForColor();
   if (!input) {
     return;
   }
@@ -51,16 +51,12 @@ export async function changeColorToRandomHandler() {
   return await changeColor(getRandomColorHex());
 }
 
-export async function changeColorToVueGreenHandler() {
-  return await changeColor(BuiltInColors.Vue);
+export async function addRecommendedFavoritesHandler() {
+  await writeRecommendedFavoriteColors();
 }
 
-export async function changeColorToAngularRedHandler() {
-  return await changeColor(BuiltInColors.Angular);
-}
-
-export async function changeColorToReactBlueHandler() {
-  return await changeColor(BuiltInColors.React);
+export async function changeColorToPeacockGreenHandler() {
+  return await changeColor(peacockGreen);
 }
 
 export async function changeColorToFavoriteHandler() {
@@ -68,4 +64,8 @@ export async function changeColorToFavoriteHandler() {
   if (isValidColorInput(input)) {
     await changeColor(input);
   }
+}
+
+function isObjectEmpty(o: {}) {
+  return !Object.keys(o).length;
 }

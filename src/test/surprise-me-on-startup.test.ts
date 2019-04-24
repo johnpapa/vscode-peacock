@@ -5,16 +5,16 @@ import {
   IPeacockSettings,
   IPeacockAffectedElementSettings,
   IElementColors,
-  ElementNames,
+  ElementNames
 } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
   getOriginalColorsForAllElements,
-  updateSurpriseMeOnStartup
+  updateSurpriseMeOnStartup,
+  updateAffectedElements
 } from '../configuration';
 import { applyInitialConfiguration } from '../extension';
-import { updateAffectedElements } from './lib/helpers';
 
 suite('Surprise me on startup', () => {
   let originalValues = <IPeacockSettings>{};
@@ -43,7 +43,7 @@ suite('Surprise me on startup', () => {
     });
 
     test('has no effect when color customizations exist', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToAngularRed);
+      await vscode.commands.executeCommand(Commands.changeColorToPeacockGreen);
       await testColorsBeforeAndAfterInitialConfiguration(assert.equal);
     });
 
@@ -52,13 +52,24 @@ suite('Surprise me on startup', () => {
     });
   });
 
-  async function testColorsBeforeAndAfterInitialConfiguration(assertEquality: EqualityAssertion) {
+  async function testColorsBeforeAndAfterInitialConfiguration(
+    assertEquality: EqualityAssertion
+  ) {
     const colors1: IElementColors = getOriginalColorsForAllElements();
     await applyInitialConfiguration();
     const colors2: IElementColors = getOriginalColorsForAllElements();
-    assertEquality(colors1[ElementNames.activityBar], colors2[ElementNames.activityBar]);
-    assertEquality(colors1[ElementNames.statusBar], colors2[ElementNames.statusBar]);
-    assertEquality(colors1[ElementNames.titleBar], colors2[ElementNames.titleBar]);
+    assertEquality(
+      colors1[ElementNames.activityBar],
+      colors2[ElementNames.activityBar]
+    );
+    assertEquality(
+      colors1[ElementNames.statusBar],
+      colors2[ElementNames.statusBar]
+    );
+    assertEquality(
+      colors1[ElementNames.titleBar],
+      colors2[ElementNames.titleBar]
+    );
   }
 
   interface EqualityAssertion {

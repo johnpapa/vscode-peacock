@@ -2,11 +2,40 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.1.0
+
+Enhancements
+
+- Extension as API: Added color parameter to enterColor handler which allow the developer to call the extension programmatically without prompting user input
+
+## 2.0.1
+
+Maintenance
+
+- Refactored to remove a dependency on a testing file
+- Removed `helpers` file, since I don't feel that was descriptive or helpful (pun intended)
+  - Moved functions in that file to better existing modules
+
+## 2.0.0
+
+Features and Breaking Changes
+
+- Added settings which allow the user to override the dark and light foreground colors
+  - _darkForegroundColor_ setting (defaults to `15202b`) which can override the dark foreground on what is calculated as a light background
+  - _lightForegroundColor_ setting (defaults to `e7e7e7`) which can override the light foreground on what is calculated as a dark background
+- `Add recommended favorites` is now a command
+- Recommended favorites are now being saved when a new version is installed. Avoid using the same names.
+  - Recommended favorites are a list of constants found in `favorites.ts`. These are alphabetized.
+  - Recommended favorites are a starting point for favorites. They will be installed whenever a new version is installed. They will extend your existing favorites, so feel free to continue to add to your local favorites! However be careful not to change the color of the recommended favorites as they will be overridden when a new version is installed.
+  - This list may change from version to version depending on the Peacock authoring team.
+- Built-in colors for Angular, React and Vue have been removed in favor of "favorites"
+- One Built-in color exists: Peacock Green. This gives a user an easy color choice :)
+
 ## 1.3.1
 
 Bug fixes
 
-fix issue where surprise me message shows up anytime a surprise me command is run.
+- fix issue where surprise me message shows up anytime a surprise me command is run.
 
 ## 1.3.0
 

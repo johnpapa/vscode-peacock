@@ -5,8 +5,8 @@ import {
   IPeacockAffectedElementSettings,
   Commands,
   ColorSettings,
-  BuiltInColors,
-  ReadabilityRatios
+  ReadabilityRatios,
+  peacockGreen
 } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
 import {
@@ -15,12 +15,12 @@ import {
   getKeepBadgeColor,
   updateKeepBadgeColor,
   getElementStyle,
-  getPeacockWorkspaceConfig
+  getPeacockWorkspaceConfig,
+  updateAffectedElements
 } from '../configuration';
 import assert = require('assert');
 import { getColorBrightness, getReadabilityRatio } from '../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
-import { updateAffectedElements } from './lib/helpers';
 
 suite('Affected elements', () => {
   let originalValues = <IPeacockSettings>{};
@@ -117,7 +117,7 @@ suite('Affected elements', () => {
     });
 
     test('does not set any color customizations when no elements affected', async () => {
-      await executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToPeacockGreen);
       let config = getPeacockWorkspaceConfig();
 
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
@@ -145,7 +145,7 @@ suite('Affected elements', () => {
       });
 
       const value = await getColorSettingAfterEnterColor(
-        BuiltInColors.Angular,
+        peacockGreen,
         ColorSettings.statusBarItem_hoverBackground
       );
       assert.ok(!value);
@@ -184,7 +184,7 @@ suite('Affected elements', () => {
 
   suite('Activity bar badge', () => {
     test('activity bar badge styles are set when activity bar is affected', async () => {
-      await executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToPeacockGreen);
       let config = getPeacockWorkspaceConfig();
       assert.ok(config[ColorSettings.activityBar_badgeBackground]);
       assert.ok(config[ColorSettings.activityBar_badgeForeground]);
@@ -197,7 +197,7 @@ suite('Affected elements', () => {
         titleBar: true
       });
 
-      await executeCommand(Commands.changeColorToAngularRed);
+      await executeCommand(Commands.changeColorToPeacockGreen);
       let config = getPeacockWorkspaceConfig();
       assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
       assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
@@ -231,22 +231,8 @@ suite('Affected elements', () => {
       await testActivityBarBadgeColoringMeetsReadabilityThreshold('black');
     });
 
-    test('activity bar badge is readable over Angular activity bar', async () => {
-      await testActivityBarBadgeColoringMeetsReadabilityThreshold(
-        BuiltInColors.Angular
-      );
-    });
-
-    test('activity bar badge is readable over React activity bar', async () => {
-      await testActivityBarBadgeColoringMeetsReadabilityThreshold(
-        BuiltInColors.React
-      );
-    });
-
-    test('activity bar badge is readable over Vue activity bar', async () => {
-      await testActivityBarBadgeColoringMeetsReadabilityThreshold(
-        BuiltInColors.Vue
-      );
+    test('activity bar badge is readable over peacock green activity bar', async () => {
+      await testActivityBarBadgeColoringMeetsReadabilityThreshold(peacockGreen);
     });
 
     async function testActivityBarBadgeColoringMeetsReadabilityThreshold(
@@ -275,10 +261,10 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
     activityBar: false,
     statusBar: false
   });
-  await executeCommand(Commands.changeColorToAngularRed);
+  await executeCommand(Commands.changeColorToPeacockGreen);
   const config = getPeacockWorkspaceConfig();
   const keepForegroundColor = getKeepForegroundColor();
-  const style = getElementStyle(BuiltInColors.Angular);
+  const style = getElementStyle(peacockGreen);
 
   assert.equal(
     style.backgroundHex,
@@ -318,12 +304,12 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
 }
 
 async function testsSetsColorCustomizationsForAffectedElements() {
-  await executeCommand(Commands.changeColorToAngularRed);
+  await executeCommand(Commands.changeColorToPeacockGreen);
   const config = getPeacockWorkspaceConfig();
   const keepForegroundColor = getKeepForegroundColor();
   const keepBadgeColor = getKeepBadgeColor();
 
-  const titleBarStyle = getElementStyle(BuiltInColors.Angular, 'titleBar');
+  const titleBarStyle = getElementStyle(peacockGreen, 'titleBar');
   assert.equal(
     titleBarStyle.backgroundHex,
     config[ColorSettings.titleBar_activeBackground]
@@ -350,11 +336,7 @@ async function testsSetsColorCustomizationsForAffectedElements() {
     )
   );
 
-  const activityBarStyle = getElementStyle(
-    BuiltInColors.Angular,
-    'activityBar',
-    true
-  );
+  const activityBarStyle = getElementStyle(peacockGreen, 'activityBar', true);
   assert.equal(
     activityBarStyle.backgroundHex,
     config[ColorSettings.activityBar_background]
@@ -392,7 +374,7 @@ async function testsSetsColorCustomizationsForAffectedElements() {
     )
   );
 
-  const statusBarStyle = getElementStyle(BuiltInColors.Angular, 'statusBar');
+  const statusBarStyle = getElementStyle(peacockGreen, 'statusBar');
   assert.equal(
     statusBarStyle.backgroundHex,
     config[ColorSettings.statusBar_background]

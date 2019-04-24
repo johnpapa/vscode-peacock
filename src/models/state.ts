@@ -3,8 +3,6 @@ import { Logger } from '../logging';
 export class State {
   private static _recentColor = '';
 
-  constructor() {}
-
   public static get recentColor(): string {
     return this._recentColor;
   }

@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "1.3.1",
+  "version": "2.1.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -28,14 +28,7 @@
   ],
   "preview": false,
   "activationEvents": [
-    "*",
-    "onCommand:peacock.resetColors",
-    "onCommand:peacock.enterColor",
-    "onCommand:peacock.changeColorToVueGreen",
-    "onCommand:peacock.changeColorToRandom",
-    "onCommand:peacock.changeColorToAngularRed",
-    "onCommand:peacock.changeColorToReactBlue",
-    "onCommand:peacock.changeColorToFavorite"
+    "*"
   ],
   "main": "./dist/extension",
   "contributes": {
@@ -56,23 +49,18 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.changeColorToVueGreen",
-        "title": "Color to Vue Green",
+        "command": "peacock.changeColorToPeacockGreen",
+        "title": "Color to Peacock Green",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.addRecommendedFavorites",
+        "title": "Add the Recommended Favorites",
         "category": "Peacock"
       },
       {
         "command": "peacock.changeColorToRandom",
-        "title": "Surprise me with a Random Color",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorToAngularRed",
-        "title": "Color to Angular Red",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorToReactBlue",
-        "title": "Color to React Blue",
+        "title": "Surprise Me with a Random Color",
         "category": "Peacock"
       },
       {
@@ -154,6 +142,16 @@
           "type": "boolean",
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session"
+        },
+        "peacock.darkForegroundColor": {
+          "type": "string",
+          "default": "#15202b",
+          "description": "Specifies the override value for the dark foreground color"
+        },
+        "peacock.lightForegroundColor": {
+          "type": "string",
+          "default": "#e7e7e7",
+          "description": "Specifies the override value for the light foreground color"
         }
       }
     }
@@ -166,14 +164,14 @@
     "watch": "webpack --mode none --watch",
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
-    "test-compile": "tsc -p ./ && npm run && webpack",
+    "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && node node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
-    "@types/node": "11.11.3",
+    "@types/node": "11.13.6",
     "@types/sinon": "^7.0.7",
-    "sinon": "^7.2.5",
+    "sinon": "7.3.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",

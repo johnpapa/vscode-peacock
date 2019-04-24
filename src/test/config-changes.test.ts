@@ -13,9 +13,9 @@ import { executeCommand } from './lib/constants';
 import {
   updateGlobalConfiguration,
   getOriginalColorsForAllElements,
-  getUserConfig
+  getUserConfig,
+  updateAffectedElements
 } from '../configuration';
-import { timeout, updateAffectedElements } from './lib/helpers';
 
 const delayInMs = 500;
 
@@ -63,8 +63,8 @@ suite('changes to configuration', () => {
 
   suite('when starting with a color in the workspace config', () => {
     setup(async () => {
-      // Use Vue Green as the color the instance began with
-      await vscode.commands.executeCommand(Commands.changeColorToVueGreen);
+      // Use Peacock Green as the color the instance began with
+      await vscode.commands.executeCommand(Commands.changeColorToPeacockGreen);
     });
 
     test('will change color when unselecting activitybar', async () => {
@@ -141,3 +141,7 @@ suite('changes to configuration', () => {
     });
   });
 });
+
+function timeout(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

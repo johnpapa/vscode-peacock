@@ -23,7 +23,6 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Change the color of [Affected Elements](#Affected-Elements) (see `peacock.affect*` in the [Settings](#Settings) section) to
   - [user defined color](#Input-Formats)
   - a random color
-  - the primary color for angular, vue, or react
 - Select a user-defined color from your [Favorite Colors](#Favorite-Colors)
 - Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
@@ -40,6 +39,8 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.favoriteColors      | array of objects for color names and hex values                                                       |
 | peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
 | peacock.surpriseMeOnStartup | Specifies whether Peacock apply a random color on startup                                             |
+| peacock.darkForeground      | override for the dark foreground                                                                      |
+| peacock.lightForeground     | override for the light foreground                                                                     |
 
 ### Favorite Colors
 
@@ -100,7 +101,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
   }
 ```
 
-When using peacock with the Angular Red color, this results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
+This results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
 ![Animated GIF](./resources/element-adjustments.png)
 
@@ -122,12 +123,11 @@ When set to true Peacock will automatically apply a random color when opening a 
 | ---------------------------------------- | ------------------------------------------------------------------------ |
 | Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
 | Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Vue Green              | Sets the color to Vue.js's main color, #42b883                           |
-| Peacock: Color to Angular Red            | Sets the color to Angular's main color, #b52e31                          |
-| Peacock: Color to React Blue             | Sets the color to React.js's main color, #00b3e6                         |
+| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                            |
 | Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
+| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)     |
 
 ## Input Formats
 
@@ -216,6 +216,46 @@ On macOS there are additional settings that can impact the Title Bar style and f
 A successful and recommended settings configuration to colorize the Title Bar is:
 
 ![Title Bar Settings](./resources/title-bar-coloring-settings.png)
+
+### How Foreground Colors are Calculated
+
+Peacock is using tinycolor which provides some basic color theory mechanisms to determine whether or not to show a light or dark foreground color based on the perceived brightness of the background. More or less, if it thinks the background is darker than 50% then Peacock uses the light foreground. If it thinks the background is greater than 50% then Peacock uses the dark foreground.
+
+Brightness is measured on a scale of 0-255 where a value of 127.5 is perfectly 50%.
+
+Example:
+
+```javascript
+const lightForeground = '#e7e7e7';
+const darkForegound = '#15202b';
+const background = '#498aff';
+
+const perceivedBrightness = tinycolor(background).getBrightness(); // 131.903, so 51.7%
+const isDark = tinycolor(background).isDark(); // false, since brightness is above 50%
+const textColor = isDark ? lightForeground : darkForeground; // We end up using dark text
+```
+
+This particular color (`#498aff`) is very near 50% on the perceived brightness, but the determination is binary so the color is either light or dark based on which side of 50% it is (exactly 50% is considered as light by the library). For the particular color `#498aff`, all of the theory aspects that tinycolor provides show that using the dark foreground is the right approach.
+
+```javascript
+const readability = tinycolor.readability(darkForeground, background); // 4.996713
+const isReadable = tinycolor.isReadable(darkForeground, background); // true
+```
+
+The readability calculations and metrics are based on Web Content Accessibility Guidelines (Version 2.0) and, in general, a ratio close to 5 is considered good based on that information. If we run the lightForeground through the same algorithm you can see that readability actually suffers with a reduced contrast ratio:
+
+```javascript
+const readability = tinycolor.readability(lightForeground, background); // 2.669008
+const isReadable = tinycolor.isReadable(lightForeground, background); // false
+```
+
+### Recommended Favorites
+
+Recommended favorites are a list of constants found in `favorites.ts`. These are alphabetized.
+
+Recommended favorites are a starting point for favorites. They will be installed whenever a new version is installed. They will extend your existing favorites, so feel free to continue to add to your local favorites! However be careful not to change the color of the recommended favorites as they will be overridden when a new version is installed.
+
+This list may change from version to version depending on the Peacock authoring team.
 
 ## Credits
 

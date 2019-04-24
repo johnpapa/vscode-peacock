@@ -1,8 +1,10 @@
-import * as vscode from 'vscode';
 import {
   IPeacockSettings,
   IPeacockAffectedElementSettings,
-  Commands
+  Commands,
+  ForegroundColors,
+  starterSetOfFavorites,
+  getExtension
 } from '../../models';
 import {
   getAffectedElements,
@@ -11,10 +13,14 @@ import {
   updateElementAdjustments,
   updateKeepForegroundColor,
   getKeepForegroundColor,
-  updateSurpriseMeOnStartup
+  updateSurpriseMeOnStartup,
+  getDarkForegroundColor,
+  getLightForegroundColor,
+  updateDarkForegroundColor,
+  updateLightForegroundColor,
+  updateAffectedElements
 } from '../../configuration';
 
-import { getExtension, updateAffectedElements } from './helpers';
 import { noopElementAdjustments, executeCommand } from './constants';
 
 export function allSetupAndTeardown(originalValues: IPeacockSettings) {
@@ -37,20 +43,20 @@ export async function setupTestSuite(
   originalValues.keepForegroundColor = getKeepForegroundColor();
   const { values: favoriteColors } = getFavoriteColors();
   originalValues.favoriteColors = favoriteColors;
+  originalValues.darkForegroundColor = getDarkForegroundColor();
+  originalValues.lightForegroundColor = getLightForegroundColor();
   // Set the test values
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     statusBar: true,
     activityBar: true,
     titleBar: true
   });
-  await updateFavoriteColors([
-    { name: 'Gatsby Purple', value: '#639' },
-    { name: 'Auth0 Orange', value: '#eb5424' },
-    { name: 'Azure Blue', value: '#007fff' }
-  ]);
+  await updateFavoriteColors(starterSetOfFavorites);
   await updateKeepForegroundColor(false);
   await updateSurpriseMeOnStartup(false);
   await updateElementAdjustments(noopElementAdjustments);
+  await updateDarkForegroundColor(ForegroundColors.DarkForeground);
+  await updateLightForegroundColor(ForegroundColors.LightForeground);
   return extension;
 }
 
@@ -62,4 +68,6 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateFavoriteColors(originalValues.favoriteColors);
   await updateKeepForegroundColor(originalValues.keepForegroundColor);
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
+  await updateDarkForegroundColor(originalValues.darkForegroundColor);
+  await updateLightForegroundColor(originalValues.lightForegroundColor);
 }

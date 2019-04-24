@@ -1,21 +1,27 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands, State, StandardSettings } from './models';
+import {
+  Commands,
+  State,
+  StandardSettings,
+  extensionShortName,
+  getExtension
+} from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
   changeColorToRandomHandler,
-  changeColorToVueGreenHandler,
-  changeColorToAngularRedHandler,
-  changeColorToReactBlueHandler,
+  changeColorToPeacockGreenHandler,
   changeColorToFavoriteHandler,
-  saveColorToFavoritesHandler
+  saveColorToFavoritesHandler,
+  addRecommendedFavoritesHandler
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
   getCurrentColorBeforeAdjustments,
-  getSurpriseMeOnStartup
+  getSurpriseMeOnStartup,
+  writeRecommendedFavoriteColors
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
@@ -27,6 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   addSubscriptions(context);
+  await initializeTheStarterSetOfFavorites(context);
   await applyInitialConfiguration();
 }
 
@@ -63,16 +70,12 @@ function registerCommands() {
     changeColorToRandomHandler
   );
   commands.registerCommand(
-    Commands.changeColorToVueGreen,
-  changeColorToVueGreenHandler
+    Commands.addRecommendedFavorites,
+    addRecommendedFavoritesHandler
   );
   commands.registerCommand(
-    Commands.changeColorToAngularRed,
-    changeColorToAngularRedHandler
-  );
-  commands.registerCommand(
-    Commands.changeColorToReactBlue,
-    changeColorToReactBlueHandler
+    Commands.changeColorToPeacockGreen,
+    changeColorToPeacockGreenHandler
   );
   commands.registerCommand(
     Commands.changeColorToFavorite,
@@ -94,4 +97,21 @@ export async function applyInitialConfiguration() {
 
 export function deactivate() {
   console.log('Extension "vscode-peacock" is now deactive');
+}
+
+async function initializeTheStarterSetOfFavorites(
+  context: vscode.ExtensionContext
+) {
+  let extension = getExtension();
+  let version = extension ? extension.packageJSON.version : '';
+  const key = `${extensionShortName}.starterSetOfFavoritesVersion`;
+  let starterSetOfFavoritesVersion = context.globalState.get(key, undefined);
+
+  if (starterSetOfFavoritesVersion !== version) {
+    context.globalState.update(key, version);
+    await writeRecommendedFavoriteColors();
+  } else {
+    let msg = `${extensionShortName}: already wrote the favorite colors once`;
+    Logger.info(msg);
+  }
 }

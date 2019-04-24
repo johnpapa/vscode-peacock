@@ -1,11 +1,6 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
-import {
-  IPeacockSettings,
-  Commands,
-  ForegroundColors,
-  ColorSettings
-} from '../models';
+import { IPeacockSettings, Commands, ColorSettings } from '../models';
 import {
   setupTestSuite,
   teardownTestSuite
@@ -13,7 +8,11 @@ import {
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
-import { getPeacockWorkspaceConfig } from '../configuration';
+import {
+  getPeacockWorkspaceConfig,
+  getLightForegroundColorOrOverride,
+  getDarkForegroundColorOrOverride
+} from '../configuration';
 
 suite('Foreground color', () => {
   let originalValues = <IPeacockSettings>{};
@@ -30,32 +29,35 @@ suite('Foreground color', () => {
 
   test(
     'is set to light foreground on black backgrounds',
-    createForegroundTest('hsl (0, 0, 0)', ForegroundColors.LightForeground)
+    createForegroundTest('hsl (0, 0, 0)', getLightForegroundColorOrOverride())
   );
 
   test(
     'is set to light foreground on dark backgrounds',
-    createForegroundTest('hsl (0, 0, 25%)', ForegroundColors.LightForeground)
+    createForegroundTest('hsl (0, 0, 25%)', getLightForegroundColorOrOverride())
   );
 
   test(
     'is set to light foreground on less than 50% bright backgrounds',
-    createForegroundTest('hsl (0, 0, 49%)', ForegroundColors.LightForeground)
+    createForegroundTest('hsl (0, 0, 49%)', getLightForegroundColorOrOverride())
   );
 
   test(
     'is set to dark foreground on greater than or equal to 50% bright backgrounds',
-    createForegroundTest('hsl (0, 0, 50%)', ForegroundColors.DarkForeground)
+    createForegroundTest('hsl (0, 0, 50%)', getDarkForegroundColorOrOverride())
   );
 
   test(
     'is set to dark foreground on light backgrounds',
-    createForegroundTest('hsl (0, 0, 75%)', ForegroundColors.DarkForeground)
+    createForegroundTest('hsl (0, 0, 75%)', getDarkForegroundColorOrOverride())
   );
 
   test(
     'is set to dark foreground on white backgrounds',
-    createForegroundTest('hsl (0, 100%, 100%)', ForegroundColors.DarkForeground)
+    createForegroundTest(
+      'hsl (0, 100%, 100%)',
+      getDarkForegroundColorOrOverride()
+    )
   );
 });
 

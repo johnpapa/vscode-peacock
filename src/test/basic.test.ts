@@ -6,11 +6,11 @@ import {
   Commands,
   IConfiguration,
   StandardSettings,
-  extSuffix,
-  AffectedSettings
+  extensionShortName,
+  AffectedSettings,
+  getExtension
 } from '../models';
 import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
-import { getExtension } from './lib/helpers';
 
 suite('Basic Extension Tests', () => {
   let extension = <vscode.Extension<any>>getExtension();
@@ -28,7 +28,7 @@ suite('Basic Extension Tests', () => {
     }, 200);
   });
 
-  test('constants.Commands exist in package.json', () => {
+  test('Commands exist in package.json', () => {
     const commandCollection: ICommand[] =
       extension.packageJSON.contributes.commands;
     for (let command in Commands) {
@@ -39,25 +39,27 @@ suite('Basic Extension Tests', () => {
     }
   });
 
-  test('constants.Settings exist in package.json', () => {
+  test('Settings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
     for (let setting in StandardSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${StandardSettings[setting]}`
+        property =>
+          property === `${extensionShortName}.${StandardSettings[setting]}`
       );
       assert.ok(result);
     }
   });
 
-  test('constants.AffectedSettings exist in package.json', () => {
+  test('AffectedSettings exist in package.json', () => {
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
     for (let setting in AffectedSettings) {
       const result = properties.some(
-        property => property === `${extSuffix}.${AffectedSettings[setting]}`
+        property =>
+          property === `${extensionShortName}.${AffectedSettings[setting]}`
       );
       assert.ok(result);
     }
@@ -69,7 +71,9 @@ suite('Basic Extension Tests', () => {
     );
 
     vscode.commands.getCommands(true).then((allCommands: string[]) => {
-      const commands = allCommands.filter(c => c.startsWith(`${extSuffix}.`));
+      const commands = allCommands.filter(c =>
+        c.startsWith(`${extensionShortName}.`)
+      );
       commands.forEach(command => {
         const result = commandStrings.some(c => c === command);
         assert.ok(result);
