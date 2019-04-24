@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.1.1
+
+Features
+
+- Added _C# Purple_ `#68217A` to favorites for .NET Core
+
 ## 2.1.0
 
 Enhancements
