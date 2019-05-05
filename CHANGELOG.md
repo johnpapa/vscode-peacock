@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.1.2
+
+Features
+
+- Added _Java Blue-Gray_ `#557c9b` to favourites for Java
+
 ## 2.1.1
 
 Features
