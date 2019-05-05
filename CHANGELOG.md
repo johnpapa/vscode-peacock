@@ -6,7 +6,8 @@ All notable changes to the code will be documented in this file.
 
 Features
 
-- Added _Java Blue-Gray_ `#557c9b` to favourites for Java
+- Added _Java Blue-Gray_ `#557c9b` to favorites for Java
+- Added "extensionKind": "ui"` to support remote development features in VS Code (see [#141](https://github.com/johnpapa/vscode-peacock/pull/142/))
 
 ## 2.1.1
 
