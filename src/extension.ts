@@ -25,11 +25,14 @@ import {
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
+import { addVSLSIntegration } from './vsls/integration';
 
 const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('Extension "vscode-peacock" is now active!');
+
+  addVSLSIntegration(context);
 
   registerCommands();
   addSubscriptions(context);

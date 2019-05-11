@@ -68,8 +68,30 @@
         "command": "peacock.changeColorToFavorite",
         "title": "Change to a Favorite Color",
         "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareHost",
+        "title": "Change color for Live Share Host",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareGuest",
+        "title": "Change color for Live Share Guest",
+        "category": "Peacock"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "peacock.changeColorOfLiveShareHost",
+          "when": "peacock:liveshare == true"
+        },
+        {
+          "command": "peacock.changeColorOfLiveShareGuest",
+          "when": "peacock:liveshare == true"
+        }
+      ]
+    },
     "configuration": {
       "properties": {
         "peacock.affectActivityBar": {
@@ -153,6 +175,11 @@
           "type": "string",
           "default": "#e7e7e7",
           "description": "Specifies the override value for the light foreground color"
+        },
+        "peacock.changeDuringLiveShareSession": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies that Peacock should change color when live share session starts."
         }
       }
     }
@@ -182,6 +209,7 @@
   },
   "dependencies": {
     "@types/tinycolor2": "^1.4.1",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "vsls": "^0.3.1291"
   }
 }
