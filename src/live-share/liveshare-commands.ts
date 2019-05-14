@@ -1,20 +1,19 @@
-import { commands, workspace, ConfigurationTarget } from 'vscode';
+import { commands } from 'vscode';
 
-import { promptForFavoriteColor } from "../inputs";
-import { isValidColorInput, changeColor } from "../color-library";
-import { VSLS_SHARE_COLOR_MEMENTO_NAME, VSLS_JOIN_COLOR_MEMENTO_NAME } from "./constants";
-import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from "./integration";
+import { promptForFavoriteColor } from '../inputs';
+import { isValidColorInput, changeColor } from '../color-library';
+import { VSLS_SHARE_COLOR_MEMENTO_NAME, VSLS_JOIN_COLOR_MEMENTO_NAME } from './constants';
+import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
 import { extensionContext } from './extensionContext';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
-import { start } from 'repl';
 
 enum LiveShareCommands {
   changeColorOfLiveShareHost = 'peacock.changeColorOfLiveShareHost',
   changeColorOfLiveShareGuest = 'peacock.changeColorOfLiveShareGuest'
-};
+}
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
-  return async () => {
+  return async function changeColorOfLiveShareSession () {
     const startingColor = getCurrentColorBeforeAdjustments();
     const input = await promptForFavoriteColor();
 
@@ -26,12 +25,18 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
       await extensionContext.globalState.update(settingName, input);
     }
 
+    const isRefreshed = await refreshLiveShareSessionColor();
+    // we are in the session and have updated the color, so return
+    if (isRefreshed) {
+      return;
+    }
+    // if there is was no color prior to the color picker,
+    // revert all the color settings
     if (!startingColor) {
       return await revertLiveShareWorkspaceColors();
-    }
-    
-    const isRefreshed = await refreshLiveShareSessionColor();
-    if (!isRefreshed) {
+    // if there was a color set prior to color picker,
+    // set that color back
+    } else {
       await changeColor(startingColor);
     }
   };
@@ -40,7 +45,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
 export const changeColorOfLiveShareHostHandler = changeColorOfLiveShareSessionFactory(true);
 export const changeColorOfLiveShareGuestHandler = changeColorOfLiveShareSessionFactory(false);
 
-export const registerLiveShareIntegrationCommands = () => {
+export function registerLiveShareIntegrationCommands() {
   commands.registerCommand(
     LiveShareCommands.changeColorOfLiveShareHost,
     changeColorOfLiveShareHostHandler
@@ -49,8 +54,6 @@ export const registerLiveShareIntegrationCommands = () => {
     LiveShareCommands.changeColorOfLiveShareGuest,
     changeColorOfLiveShareGuestHandler
   );
-
-  // commands.registerCommand(Commands.resetColors, resetLiveSharePreviousColors);
 }
 
 export async function resetLiveSharePreviousColors() {
