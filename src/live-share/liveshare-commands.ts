@@ -2,15 +2,10 @@ import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
-import { VSLS_SHARE_COLOR_MEMENTO_NAME, VSLS_JOIN_COLOR_MEMENTO_NAME } from './constants';
+import { VSLS_SHARE_COLOR_MEMENTO_NAME, VSLS_JOIN_COLOR_MEMENTO_NAME, LiveShareCommands } from './constants';
 import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
 import { extensionContext } from './extensionContext';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
-
-enum LiveShareCommands {
-  changeColorOfLiveShareHost = 'peacock.changeColorOfLiveShareHost',
-  changeColorOfLiveShareGuest = 'peacock.changeColorOfLiveShareGuest'
-}
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   return async function changeColorOfLiveShareSession () {
@@ -28,17 +23,20 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
     const isRefreshed = await refreshLiveShareSessionColor();
     // we are in the session and have updated the color, so return
     if (isRefreshed) {
-      return;
+      return extensionContext;
     }
     // if there is was no color prior to the color picker,
     // revert all the color settings
     if (!startingColor) {
-      return await revertLiveShareWorkspaceColors();
+      await revertLiveShareWorkspaceColors();
+      return extensionContext;
     // if there was a color set prior to color picker,
     // set that color back
     } else {
       await changeColor(startingColor);
     }
+    
+    return extensionContext;
   };
 }
 
