@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.2.0
+
+Features
+
+- Added [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) integration.
+
 ## 2.1.2
 
 Features

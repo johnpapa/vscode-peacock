@@ -27,6 +27,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
+- Integrated with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare).
 
 ## Settings
 
@@ -121,13 +122,24 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 | Command                                  | Description                                                              |
 | ---------------------------------------- | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
+| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/settings.json` file |
 | Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
 | Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                            |
 | Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
 | Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)     |
+
+### Live Share Integration
+
+When the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) extension is installed, [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) now detects that, and automatically adds two commands allow user to change color of their Live Share sessions as a Host or a Guest.
+
+| Command                                       | Description                                                                    |
+| --------------------------------------------- | ------------------------------------------------------------------------------ |
+| Peacock: Change Color for Live Share Host     | Prompts user to select a color for Live Share Host session from the Favorites  |
+| Peacock: Change Color for Live Share Guest    | Prompts user to select a color for Live Share Guest session from the Favorites |
+
+Hence when a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) session is started, the workspace color will automatically change to the selected one and will be reverted back to the previous set color when the session is finished.
 
 ## Input Formats
 
@@ -154,7 +166,7 @@ All formats offer flexible data validation:
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
 ## Roadmap
-
+ 
 There are many features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
 
 ## Changes
