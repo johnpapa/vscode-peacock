@@ -2,18 +2,25 @@ import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
-import { VSLS_SHARE_COLOR_MEMENTO_NAME, VSLS_JOIN_COLOR_MEMENTO_NAME, LiveShareCommands } from './constants';
-import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
+import {
+  VSLS_SHARE_COLOR_MEMENTO_NAME,
+  VSLS_JOIN_COLOR_MEMENTO_NAME,
+  LiveShareCommands
+} from './constants';
+import {
+  refreshLiveShareSessionColor,
+  revertLiveShareWorkspaceColors
+} from './integration';
 import { extensionContext } from './extensionContext';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
-  return async function changeColorOfLiveShareSession () {
+  return async function changeColorOfLiveShareSession() {
     const startingColor = getCurrentColorBeforeAdjustments();
     const input = await promptForFavoriteColor();
 
     if (isValidColorInput(input)) {
-      const settingName = (isHost)
+      const settingName = isHost
         ? VSLS_SHARE_COLOR_MEMENTO_NAME
         : VSLS_JOIN_COLOR_MEMENTO_NAME;
 
@@ -30,18 +37,22 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
     if (!startingColor) {
       await revertLiveShareWorkspaceColors();
       return extensionContext;
-    // if there was a color set prior to color picker,
-    // set that color back
+      // if there was a color set prior to color picker,
+      // set that color back
     } else {
       await changeColor(startingColor);
     }
-    
+
     return extensionContext;
   };
-}
+};
 
-export const changeColorOfLiveShareHostHandler = changeColorOfLiveShareSessionFactory(true);
-export const changeColorOfLiveShareGuestHandler = changeColorOfLiveShareSessionFactory(false);
+export const changeColorOfLiveShareHostHandler = changeColorOfLiveShareSessionFactory(
+  true
+);
+export const changeColorOfLiveShareGuestHandler = changeColorOfLiveShareSessionFactory(
+  false
+);
 
 export function registerLiveShareIntegrationCommands() {
   commands.registerCommand(
@@ -55,6 +66,9 @@ export function registerLiveShareIntegrationCommands() {
 }
 
 export async function resetLiveSharePreviousColors() {
-  await extensionContext.globalState.update(VSLS_SHARE_COLOR_MEMENTO_NAME, null);
+  await extensionContext.globalState.update(
+    VSLS_SHARE_COLOR_MEMENTO_NAME,
+    null
+  );
   await extensionContext.globalState.update(VSLS_JOIN_COLOR_MEMENTO_NAME, null);
 }
