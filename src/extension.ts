@@ -25,7 +25,7 @@ import {
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
-import { addLiveShareIntegration } from './live-share/integration';
+import { addLiveShareIntegration } from './live-share';
 
 const { commands, workspace } = vscode;
 

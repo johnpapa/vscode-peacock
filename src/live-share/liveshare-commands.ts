@@ -11,7 +11,7 @@ import {
   refreshLiveShareSessionColor,
   revertLiveShareWorkspaceColors
 } from './integration';
-import { extensionContext } from './extensionContext';
+import { extensionContext } from './extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {

@@ -18,7 +18,7 @@ import {
   promptForFavoriteColorName
 } from './inputs';
 
-import { resetLiveSharePreviousColors } from './live-share/liveshare-commands';
+import { resetLiveSharePreviousColors } from './live-share';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
