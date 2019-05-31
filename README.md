@@ -132,6 +132,8 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 ### Live Share Integration
 
+![Animated GIF](./resources/peacock-live-share-demo.gif)
+
 When the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) extension is installed, [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) detects that and automatically adds two commands allow user to change color of their Live Share sessions depending on role as a Host or a Guest.
 
 | Command                                       | Description                                                                    |
@@ -139,7 +141,7 @@ When the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsl
 | Peacock: Change Color for Live Share Host     | Prompts user to select a color for Live Share Host session from the Favorites  |
 | Peacock: Change Color for Live Share Guest    | Prompts user to select a color for Live Share Guest session from the Favorites |
 
-When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) session is started, the workspace color will be changed to the picked one. When the session is finished, the workspace color is reverted back to the previous one.
+When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
 
 ## Input Formats
 
