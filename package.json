@@ -187,9 +187,10 @@
     "watch": "webpack --mode none --watch",
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
+    "just-live-share-test": "node src/live-share/test/live-share-tests-launcher.js",
     "test-compile": "tsc -p ./ && npm run webpack",
-    "test": "npm run test-compile && node node_modules/vscode/bin/test",
-    "test-live-share": "npm run test-compile && node src/live-share/test/live-share-test"
+    "test": "npm run test-compile && node node_modules/vscode/bin/test && npm run just-live-share-test",
+    "test-live-share": "npm run test-compile && npm run just-live-share-test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",

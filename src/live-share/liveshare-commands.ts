@@ -27,7 +27,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
       await extensionContext.globalState.update(settingName, input);
     }
 
-    const isRefreshed = await refreshLiveShareSessionColor();
+    const isRefreshed = await refreshLiveShareSessionColor(isHost);
     // we are in the session and have updated the color, so return
     if (isRefreshed) {
       return extensionContext;

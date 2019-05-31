@@ -38,14 +38,21 @@ async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
   await changeColor(liveShareColorSetting);
 }
 
-export async function refreshLiveShareSessionColor(): Promise<boolean> {
+export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise<boolean> {
   const vslsApi = await vsls.getApi();
-
+  
+  // not in Live Share session, no need to update
   if (!vslsApi || !vslsApi.session.id) {
+    const verb = (isHostRole)
+      ? 'share'
+      : 'join';
+
+    vscode.window.showInformationMessage(`The selected color will be applied every time you ${verb} a Live Share session.`);
+
     return false;
   }
 
-  const isHost = vslsApi.session.role === vsls.Role.Host;
+  const isHost = (vslsApi.session.role === vsls.Role.Host);
   await setLiveShareSessionWorkspaceColors(isHost);
   return true;
 }
@@ -81,7 +88,7 @@ export async function addLiveShareIntegration(
       .getConfiguration()
       .get(VSCODE_WORKSPACE_COLORS_SETTING_NAME);
 
-    const isHost = e.session.role === vsls.Role.Host;
+    const isHost = (e.session.role === vsls.Role.Host);
     return await setLiveShareSessionWorkspaceColors(isHost);
   });
 }
