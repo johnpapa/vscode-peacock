@@ -120,26 +120,26 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 ## Commands
 
-| Command                                  | Description                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------ |
+| Command                                  | Description                                                             |
+| ---------------------------------------- | ----------------------------------------------------------------------- |
 | Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/settings.json` file |
-| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                            |
-| Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
-| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
-| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
-| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)     |
+| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))      |
+| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                           |
+| Peacock: Surprise me with a Random Color | Sets the color to a random color                                        |
+| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
+| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
+| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
 
 ### Live Share Integration
 
 ![Animated GIF](./resources/peacock-live-share-demo.gif)
 
-When the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) extension is installed, [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) detects that and automatically adds two commands allow user to change color of their Live Share sessions depending on role as a Host or a Guest.
+Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
 
-| Command                                       | Description                                                                    |
-| --------------------------------------------- | ------------------------------------------------------------------------------ |
-| Peacock: Change Color for Live Share Host     | Prompts user to select a color for Live Share Host session from the Favorites  |
-| Peacock: Change Color for Live Share Guest    | Prompts user to select a color for Live Share Guest session from the Favorites |
+| Command                                    | Description                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------ |
+| Peacock: Change Color for Live Share Host  | Prompts user to select a color for Live Share Host session from the Favorites  |
+| Peacock: Change Color for Live Share Guest | Prompts user to select a color for Live Share Guest session from the Favorites |
 
 When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
 
@@ -168,7 +168,7 @@ All formats offer flexible data validation:
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
 ## Roadmap
- 
+
 There are many features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
 
 ## Changes
