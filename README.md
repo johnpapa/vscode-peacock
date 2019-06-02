@@ -297,7 +297,7 @@ Key Contributors of PRs:
 - [@josephrexme](https://twitter.com/josephrexme) for the name
 - [@musicfuel](https://twitter.com/musicfuel) for the icon
 - Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
-- [@legomushroom](https://twitter.com/legomushroom) for implementing the Live Share integration
+- [@legomushroom](https://twitter.com/legomushroom) and [@lostintangent](https://twitter.com/lostintangent) for implementing the Live Share integration
 
 Key Contributors of issues, reviews, and/or ideas:
 
