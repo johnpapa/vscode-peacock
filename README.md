@@ -138,8 +138,8 @@ Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items
 
 | Command                                    | Description                                                                    |
 | ------------------------------------------ | ------------------------------------------------------------------------------ |
-| Peacock: Change Color for Live Share Host  | Prompts user to select a color for Live Share Host session from the Favorites  |
-| Peacock: Change Color for Live Share Guest | Prompts user to select a color for Live Share Guest session from the Favorites |
+| Peacock: Change Color for when you are a Live Share Host  | Prompts user to select a color for Live Share Host session from the Favorites  |
+| Peacock: Change Color for when you are a Live Share Guest | Prompts user to select a color for Live Share Guest session from the Favorites |
 
 When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
 
