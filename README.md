@@ -27,7 +27,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
-- Integrated with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare).
+- Integrates with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa).
 
 ## Settings
 
@@ -134,7 +134,7 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 ![Animated GIF](./resources/peacock-live-share-demo.gif)
 
-Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
+Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
 
 | Command                                    | Description                                                                    |
 | ------------------------------------------ | ------------------------------------------------------------------------------ |
