@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -68,8 +68,30 @@
         "command": "peacock.changeColorToFavorite",
         "title": "Change to a Favorite Color",
         "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareHost",
+        "title": "Change Color for Live Share Host",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareGuest",
+        "title": "Change Color for Live Share Guest",
+        "category": "Peacock"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "peacock.changeColorOfLiveShareHost",
+          "when": "peacock:liveshare == true"
+        },
+        {
+          "command": "peacock.changeColorOfLiveShareGuest",
+          "when": "peacock:liveshare == true"
+        }
+      ]
+    },
     "configuration": {
       "properties": {
         "peacock.affectActivityBar": {
@@ -165,8 +187,10 @@
     "watch": "webpack --mode none --watch",
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
+    "just-live-share-test": "node src/live-share/test/live-share-tests-launcher.js",
     "test-compile": "tsc -p ./ && npm run webpack",
-    "test": "npm run test-compile && node node_modules/vscode/bin/test"
+    "test": "npm run test-compile && node node_modules/vscode/bin/test",
+    "test-live-share": "npm run test-compile && npm run just-live-share-test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
@@ -182,6 +206,7 @@
   },
   "dependencies": {
     "@types/tinycolor2": "^1.4.1",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "vsls": "^0.3.1291"
   }
 }

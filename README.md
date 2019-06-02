@@ -27,6 +27,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
+- Integrates with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa).
 
 ## Settings
 
@@ -119,15 +120,28 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 ## Commands
 
-| Command                                  | Description                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                            |
-| Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
-| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
-| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
-| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)     |
+| Command                                  | Description                                                             |
+| ---------------------------------------- | ----------------------------------------------------------------------- |
+| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/settings.json` file |
+| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))      |
+| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                           |
+| Peacock: Surprise me with a Random Color | Sets the color to a random color                                        |
+| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
+| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
+| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
+
+### Live Share Integration
+
+![Animated GIF](./resources/peacock-live-share-demo.gif)
+
+Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
+
+| Command                                    | Description                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------ |
+| Peacock: Change Color for Live Share Host  | Prompts user to select a color for Live Share Host session from the Favorites  |
+| Peacock: Change Color for Live Share Guest | Prompts user to select a color for Live Share Guest session from the Favorites |
+
+When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
 
 ## Input Formats
 
