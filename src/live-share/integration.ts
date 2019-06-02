@@ -45,7 +45,7 @@ export async function refreshLiveShareSessionColor(
 
   // not in Live Share session, no need to update
   if (!vslsApi || !vslsApi.session.id) {
-    const verb = isHostRole ? 'share' : 'join';
+    const verb = isHostRole ? 'host and share' : 'join';
 
     vscode.window.showInformationMessage(
       `The selected color will be applied every time you ${verb} a Live Share session.`
