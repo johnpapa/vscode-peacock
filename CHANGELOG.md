@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## 2.2.1
+## 2.2.2
 
 Features
 
