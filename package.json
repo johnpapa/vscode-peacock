@@ -71,12 +71,12 @@
       },
       {
         "command": "peacock.changeColorOfLiveShareHost",
-        "title": "Change Color for When You Are a Live Share Host",
+        "title": "Change Live Share Color (Host)",
         "category": "Peacock"
       },
       {
         "command": "peacock.changeColorOfLiveShareGuest",
-        "title": "Change Color for When You Are a Live Share Guest",
+        "title": "Change Live Share Color (Guest)",
         "category": "Peacock"
       }
     ],
