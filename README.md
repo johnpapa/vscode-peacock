@@ -1,7 +1,7 @@
 # Peacock for Visual Studio Code
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
-[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT) [![Live Share Badge](https://aka.ms/vsls-badge)](https://aka.ms/vsls-peacock)
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT) [![Live Share Badge](https://aka.ms/vsls-badge)](https://aka.ms/vsls-peacock)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/johnpapa/vscode-peacock.svg)](https://greenkeeper.io/) [![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master)
 
@@ -27,6 +27,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 - Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
+- Integrates with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa).
 
 ## Settings
 
@@ -119,15 +120,41 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 ## Commands
 
-| Command                                  | Description                                                              |
-| ---------------------------------------- | ------------------------------------------------------------------------ |
-| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/setttings.json` file |
-| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))       |
-| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                            |
-| Peacock: Surprise me with a Random Color | Sets the color to a random color                                         |
-| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                              |
-| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                    |
-| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)     |
+| Command                                  | Description                                                             |
+| ---------------------------------------- | ----------------------------------------------------------------------- |
+| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/settings.json` file |
+| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))      |
+| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                           |
+| Peacock: Surprise me with a Random Color | Sets the color to a random color                                        |
+| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
+| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
+| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
+
+## Integrations
+
+### VS Live Share Integration
+
+![Animated GIF](./resources/peacock-live-share-demo.gif)
+
+Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
+
+| Command                                                   | Description                                                                    |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Peacock: Change Live Share Color (Host)  | Prompts user to select a color for Live Share Host session from the Favorites  |
+| Peacock: Change Live Share Color (Guest) | Prompts user to select a color for Live Share Guest session from the Favorites |
+
+When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
+
+### Remote Development Integration
+
+Peacock now has support for the Remote Development feature of VS Code.
+
+- Learn more about [VS Code Remote Development](https://code.visualstudio.com/blogs/2019/05/02/remote-development?wt.mc_id=vscodepeacock-github-jopapa)
+- Get the [VS Code Remote Development Extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack&wt.mc_id=vscodepeacock-github-jopapa)
+
+VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Pecock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
+
+In version 2.1.2 Peacock enabled integration with the Remote Development by adding `"extensionKind": "ui"` in the extension's `package.json`.
 
 ## Input Formats
 
@@ -270,6 +297,7 @@ Key Contributors of PRs:
 - [@josephrexme](https://twitter.com/josephrexme) for the name
 - [@musicfuel](https://twitter.com/musicfuel) for the icon
 - Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
+- [@legomushroom](https://twitter.com/legomushroom) and [@lostintangent](https://twitter.com/lostintangent) for implementing the Live Share integration
 
 Key Contributors of issues, reviews, and/or ideas:
 

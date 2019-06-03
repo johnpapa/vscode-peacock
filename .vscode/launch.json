@@ -27,6 +27,19 @@
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
       "preLaunchTask": "npm: test-compile"
+    },
+    {
+      "name": "Extension Tests - Live Share Integration",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "${workspaceFolder}/testworkspace",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/live-share/test"
+      ],
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+      "preLaunchTask": "npm: test-compile"
     }
   ]
 }

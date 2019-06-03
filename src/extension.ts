@@ -25,6 +25,7 @@ import {
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
+import { addLiveShareIntegration } from './live-share';
 
 const { commands, workspace } = vscode;
 
@@ -35,6 +36,8 @@ export async function activate(context: vscode.ExtensionContext) {
   addSubscriptions(context);
   await initializeTheStarterSetOfFavorites(context);
   await applyInitialConfiguration();
+
+  addLiveShareIntegration(context);
 }
 
 function addSubscriptions(context: vscode.ExtensionContext) {

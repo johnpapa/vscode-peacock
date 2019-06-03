@@ -18,12 +18,17 @@ import {
   promptForFavoriteColorName
 } from './inputs';
 
+import { resetLiveSharePreviousColors } from './live-share';
+
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
   State.recentColor = '';
   const newColorCustomizations = isObjectEmpty(colorCustomizations)
     ? undefined
     : colorCustomizations;
+
+  resetLiveSharePreviousColors();
+
   return await updateWorkspaceConfiguration(newColorCustomizations);
 }
 
