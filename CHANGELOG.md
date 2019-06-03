@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.2.3
+
+Bug fixes
+
+- fixes the issue when after canceling the ">Peacock: Change to a Favorite Color" command, the color of the workspace is set to black and adds the appropriate test.
+
 ## 2.2.2
 
 Features
