@@ -114,7 +114,7 @@ export async function updateWorkspaceConfiguration(
   return await workspace
     .getConfiguration()
     .update(
-      'workbench.colorCustomizations',
+      Sections.workspacePeacockSection,
       colorCustomizations,
       vscode.ConfigurationTarget.Workspace
     );

@@ -3,10 +3,10 @@ import { commands } from 'vscode';
 import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
 import {
-  VSLS_SHARE_COLOR_MEMENTO_NAME,
-  VSLS_JOIN_COLOR_MEMENTO_NAME,
-  LiveShareCommands
+  vslsShareColorMementoName,
+  vslsJoinColorMementoName
 } from './constants';
+import { LiveShareCommands } from './enums';
 import {
   refreshLiveShareSessionColor,
   revertLiveShareWorkspaceColors
@@ -21,8 +21,8 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
 
     if (isValidColorInput(input)) {
       const settingName = isHost
-        ? VSLS_SHARE_COLOR_MEMENTO_NAME
-        : VSLS_JOIN_COLOR_MEMENTO_NAME;
+        ? vslsShareColorMementoName
+        : vslsJoinColorMementoName;
 
       await extensionContext.globalState.update(settingName, input);
     }
@@ -67,8 +67,8 @@ export function registerLiveShareIntegrationCommands() {
 
 export async function resetLiveSharePreviousColors() {
   await extensionContext.globalState.update(
-    VSLS_SHARE_COLOR_MEMENTO_NAME,
+    vslsShareColorMementoName,
     null
   );
-  await extensionContext.globalState.update(VSLS_JOIN_COLOR_MEMENTO_NAME, null);
+  await extensionContext.globalState.update(vslsJoinColorMementoName, null);
 }

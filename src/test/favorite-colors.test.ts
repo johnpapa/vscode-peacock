@@ -49,4 +49,21 @@ suite('Favorite colors', () => {
 
     assert.ok(valueBefore === valueAfter);
   });
+
+  test('set to favorite color with no preferences is a noop, when color was not previously set', async () => {
+    // Stub the async quick pick to return a response
+    const fakeResponse = '';
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
+
+      let config = getPeacockWorkspaceConfig();
+    const valueBefore = config[ColorSettings.titleBar_activeBackground];
+    await executeCommand(Commands.changeColorToFavorite);
+    const value = config[ColorSettings.titleBar_activeBackground];
+    stub.restore();
+
+    assert.ok(!isValidColorInput(value));
+    assert.ok(value === valueBefore);
+  });
 });

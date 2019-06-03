@@ -1,10 +1,20 @@
 import * as vscode from 'vscode';
-import { favoriteColorSeparator, peacockGreen } from './models';
+import { favoriteColorSeparator, peacockGreen, Sections } from './models';
 import {
   getFavoriteColors,
   getCurrentColorBeforeAdjustments
 } from './configuration';
 import { changeColor } from './color-library';
+
+export async function setPeacockColorCustomizations(colorCustomizations: any) {
+  await vscode.workspace
+    .getConfiguration()
+    .update(
+      Sections.workspacePeacockSection,
+      colorCustomizations,
+      vscode.ConfigurationTarget.Workspace
+    );
+}
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -43,14 +53,20 @@ export async function promptForFavoriteColor() {
   if (favoriteColors && favoriteColors.length) {
     selection = (await vscode.window.showQuickPick(menu, options)) || '';
   }
-  if (!selection) {
-    // when there is no selection, revert to starting color
-    await changeColor(startingColor);
-    return '';
+  if (selection) {
+    let selectedColor = parseFavoriteColorValue(selection);
+    return selectedColor || '';
   }
 
-  let selectedColor = parseFavoriteColorValue(selection);
-  return selectedColor || '';
+  if (startingColor) {
+    // when there is no selection and startingColor, revert to starting color
+    await changeColor(startingColor);
+  } else {
+    // if no color was previously set, reset the current color to `null`
+    await setPeacockColorCustomizations(null);
+  }
+  
+  return '';
 }
 
 export function parseFavoriteColorValue(text: string) {

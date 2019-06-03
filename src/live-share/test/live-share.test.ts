@@ -9,10 +9,10 @@ import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
 import { getPeacockWorkspaceConfig } from '../../configuration';
 import {
-  LiveShareCommands,
-  VSLS_SHARE_COLOR_MEMENTO_NAME,
-  VSLS_JOIN_COLOR_MEMENTO_NAME
+  vslsShareColorMementoName,
+  vslsJoinColorMementoName
 } from '../constants';
+import { LiveShareCommands } from '../enums';
 
 const sleepAsync = (delay: number) => {
   return new Promise(resolve => {
@@ -38,10 +38,10 @@ suite('Live Share Integration', () => {
 
     const settingValue =
       (await extensionContext!.globalState.get<string>(
-        VSLS_SHARE_COLOR_MEMENTO_NAME
+        vslsShareColorMementoName
       )) || '';
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
 
@@ -65,10 +65,10 @@ suite('Live Share Integration', () => {
 
     const settingValue =
       (await extensionContext!.globalState.get<string>(
-        VSLS_JOIN_COLOR_MEMENTO_NAME
+        vslsJoinColorMementoName
       )) || '';
     await extensionContext!.globalState.update(
-      VSLS_JOIN_COLOR_MEMENTO_NAME,
+      vslsJoinColorMementoName,
       null
     );
 
@@ -104,7 +104,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.end();
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
 
@@ -139,7 +139,7 @@ suite('Live Share Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
 
@@ -172,7 +172,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.end();
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
 
@@ -223,7 +223,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.end();
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
   });
@@ -289,7 +289,7 @@ suite('Live Share Integration', () => {
     assert(value == null);
 
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
   });
@@ -364,7 +364,7 @@ suite('Live Share Integration', () => {
     assert(value === startColor);
 
     await extensionContext!.globalState.update(
-      VSLS_SHARE_COLOR_MEMENTO_NAME,
+      vslsShareColorMementoName,
       null
     );
   });
