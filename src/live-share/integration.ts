@@ -3,22 +3,18 @@ import * as vscode from 'vscode';
 
 import {
   VSLS_SHARE_COLOR_MEMENTO_NAME,
-  VSLS_JOIN_COLOR_MEMENTO_NAME,
-  VSCODE_WORKSPACE_COLORS_SETTING_NAME
+  VSLS_JOIN_COLOR_MEMENTO_NAME
 } from './constants';
 import { changeColor } from '../color-library';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
 import { extensionContext, setExtensionContext } from './extension-context';
+import { setPeacockColorCustomizations } from '../inputs';
+import { Sections } from '../models';
 
 let peacockColorCustomizations: any;
+
 export async function revertLiveShareWorkspaceColors() {
-  await vscode.workspace
-    .getConfiguration()
-    .update(
-      VSCODE_WORKSPACE_COLORS_SETTING_NAME,
-      peacockColorCustomizations,
-      vscode.ConfigurationTarget.Workspace
-    );
+  await setPeacockColorCustomizations(peacockColorCustomizations);
 
   peacockColorCustomizations = null;
 }
@@ -88,7 +84,7 @@ export async function addLiveShareIntegration(
     // to prevent the case of multiple color changes during live share session
     peacockColorCustomizations = await vscode.workspace
       .getConfiguration()
-      .get(VSCODE_WORKSPACE_COLORS_SETTING_NAME);
+      .get(Sections.workspacePeacockSection);
 
     const isHost = e.session.role === vsls.Role.Host;
     return await setLiveShareSessionWorkspaceColors(isHost);
