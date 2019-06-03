@@ -138,12 +138,18 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
 
-| Command                                                   | Description                                                                    |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Command                                  | Description                                                                    |
+| ---------------------------------------- | ------------------------------------------------------------------------------ |
 | Peacock: Change Live Share Color (Host)  | Prompts user to select a color for Live Share Host session from the Favorites  |
 | Peacock: Change Live Share Color (Guest) | Prompts user to select a color for Live Share Guest session from the Favorites |
 
 When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
+
+
+- Learn more about [Live Share](https://code.visualstudio.com/blogs/2017/11/15/live-share?wt.mc_id=vscodepeacock-github-jopapa)
+- Get the [Live Share extension](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa)
+- Get the [Live Share extension pack](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack&wt.mc_id=vscodepeacock-github-jopapa), which now includes Peacock
+
 
 ### Remote Development Integration
 
