@@ -2,8 +2,8 @@ import * as vsls from 'vsls';
 import * as vscode from 'vscode';
 
 import {
-  VSLS_SHARE_COLOR_MEMENTO_NAME,
-  VSLS_JOIN_COLOR_MEMENTO_NAME
+  vslsShareColorMementoName,
+  vslsJoinColorMementoName
 } from './constants';
 import { changeColor } from '../color-library';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
@@ -21,8 +21,8 @@ export async function revertLiveShareWorkspaceColors() {
 
 async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
   const colorSettingName = isHost
-    ? VSLS_SHARE_COLOR_MEMENTO_NAME
-    : VSLS_JOIN_COLOR_MEMENTO_NAME;
+    ? vslsShareColorMementoName
+    : vslsJoinColorMementoName;
 
   const liveShareColorSetting = await extensionContext.globalState.get<string>(
     colorSettingName
