@@ -2,11 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
-## 2.2.3
+## 2.3.0
 
 Features
 
 - Added _Go Cyan_ `#5dc9e2` to favorites for Go
+- Changed to v 2.3.0 as a minor or major will add new favorites
 
 Bug fixes
 
