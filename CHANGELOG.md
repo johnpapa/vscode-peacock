@@ -6,7 +6,7 @@ All notable changes to the code will be documented in this file.
 
 Features
 
-- Added _Go Cyan_ `#76e1fe` to favorites for Go
+- Added _Go Cyan_ `#5dc9e2` to favorites for Go
 
 Bug fixes
 
