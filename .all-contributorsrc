@@ -86,6 +86,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "souzara",
+      "name": "Ricardo Souza",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11986361?v=4",
+      "profile": "https://github.com/souzara",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
