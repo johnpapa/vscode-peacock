@@ -122,6 +122,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "mjbvz",
+      "name": "Matt Bierner",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/12821956?v=4",
+      "profile": "http://mattbierner.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
