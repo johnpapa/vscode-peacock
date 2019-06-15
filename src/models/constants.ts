@@ -6,7 +6,7 @@ export const favoriteColorSeparator = '->';
 // represented in 0-1 range for tinycolor.setAlpha()
 export const inactiveElementAlpha = 0x99 / 0xff;
 
-export const defaultAmountToLighten = 10;
+export const defaultAmountToDarkenLighten = 10;
 
 export const defaultSaturation = 0.5;
 

@@ -12,7 +12,8 @@ import {
   updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
   addNewFavoriteColor,
-  writeRecommendedFavoriteColors
+  writeRecommendedFavoriteColors,
+  getDarkenLightenPercentage
 } from './configuration';
 import {
   promptForColor,
@@ -74,12 +75,14 @@ export async function changeColorToFavoriteHandler() {
 }
 export async function darkenHandler() {
   const color = getCurrentColorBeforeAdjustments();
-  const darkenedColor = getDarkenedColorHex(color, 10);
+  const darkenLightenPercentage = getDarkenLightenPercentage();
+  const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
   await changeColor(darkenedColor);
 }
 export async function lightenHandler() {
   const color = getCurrentColorBeforeAdjustments();
-  const lightenedColor = getLightenedColorHex(color, 10);
+  const darkenLightenPercentage = getDarkenLightenPercentage();
+  const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
   await changeColor(lightenedColor);
 }
 

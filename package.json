@@ -185,6 +185,18 @@
           "type": "string",
           "default": "#e7e7e7",
           "description": "Specifies the override value for the light foreground color"
+        },
+        "peacock.darkenLightenPercentage": {
+          "type": "number",
+          "default": 10,
+          "enum": [
+            5,
+            10,
+            15,
+            20,
+            25
+          ],
+          "description": "Specifies the amount to darken or lighten the color, in percentage"
         }
       }
     }

@@ -16,7 +16,8 @@ import {
   ColorAdjustmentOptions,
   IElementColors,
   ForegroundColors,
-  starterSetOfFavorites
+  starterSetOfFavorites,
+  defaultAmountToDarkenLighten
 } from './models';
 import {
   getAdjustedColorHex,
@@ -30,6 +31,13 @@ import * as vscode from 'vscode';
 import { Logger } from './logging';
 
 const { workspace } = vscode;
+
+export function getDarkenLightenPercentage() {
+  return readConfiguration<number>(
+    StandardSettings.DarkenLightenPercentage,
+    defaultAmountToDarkenLighten
+  );
+}
 
 export function getPeacockWorkspaceConfig() {
   return workspace.getConfiguration(Sections.workspacePeacockSection);
@@ -223,6 +231,13 @@ export async function updateDarkForegroundColor(value: string) {
 export async function updateLightForegroundColor(value: string) {
   return await updateGlobalConfiguration(
     StandardSettings.LightForegroundColor,
+    value
+  );
+}
+
+export async function updateDarkenLightenPrecentage(value: number) {
+  return await updateGlobalConfiguration(
+    StandardSettings.DarkenLightenPercentage,
     value
   );
 }
