@@ -106,12 +106,12 @@
       "properties": {
         "peacock.affectActivityBar": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Specifies whether Peacock should affect the activity bar."
         },
         "peacock.affectStatusBar": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Specifies whether Peacock should affect the status bar."
         },
         "peacock.affectTitleBar": {
