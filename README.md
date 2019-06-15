@@ -291,26 +291,6 @@ Recommended favorites are a starting point for favorites. They will be installed
 
 This list may change from version to version depending on the Peacock authoring team.
 
-## Credits
-
-Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
-
-- The VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=vscodepeacock-github-jopapa)
-
-- Here are some great [examples for extensions](https://github.com/Microsoft/vscode-extension-samples) from the VS Code team
-
-Key Contributors of PRs:
-
-- [@josephrexme](https://twitter.com/josephrexme) for the name
-- [@musicfuel](https://twitter.com/musicfuel) for the icon
-- Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
-- [@legomushroom](https://twitter.com/legomushroom) and [@lostintangent](https://twitter.com/lostintangent) for implementing the Live Share integration
-
-Key Contributors of issues, reviews, and/or ideas:
-
-- [@codebeast](https://twitter.com/codebeast), [@\_clarkio](https://twitter.com/_clarkio), [@burkeholland](https://twitter.com/burkeholland), [JulianG](https://github.com/JulianG),[@samjulien](https://twitter.com/samjulien),
-  [@kushalpanda](https://twitter.com/kushalpanda)
-
 ![Sketchnote](./resources/peacock-sketchnote.png)
 
 ## Try the Code
@@ -326,13 +306,21 @@ Then you can run the debugger for the launch configuration `Run Extension`. Set 
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?wt.mc_id=peacock-github-jopapa)
 - [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
 
+## Credits
+
+Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
+
+- The VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=vscodepeacock-github-jopapa)
+
+- Here are some great [examples for extensions](https://github.com/Microsoft/vscode-extension-samples) from the VS Code team
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table><tr><td align="center"><a href="https://github.com/musicfuel"><img src="https://avatars1.githubusercontent.com/u/1085791?v=4" width="100px;" alt="James Newell"/><br /><sub><b>James Newell</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=musicfuel" title="Tests">⚠️</a></td><td align="center"><a href="https://juliangaramendy.dev"><img src="https://avatars1.githubusercontent.com/u/237818?v=4" width="100px;" alt="Julian"/><br /><sub><b>Julian</b></sub></a><br /><a href="#ideas-JulianG" title="Ideas, Planning, & Feedback">🤔</a></td></tr></table>
+<table><tr><td align="center"><a href="https://github.com/musicfuel"><img src="https://avatars1.githubusercontent.com/u/1085791?v=4" width="100px;" alt="James Newell"/><br /><sub><b>James Newell</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=musicfuel" title="Tests">⚠️</a></td><td align="center"><a href="https://twitter.com/legomushroom"><img src="https://avatars2.githubusercontent.com/u/1478800?v=4" width="100px;" alt="Oleg Solomka"/><br /><sub><b>Oleg Solomka</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=legomushroom" title="Code">💻</a> <a href="https://github.com/johnpapa/vscode-peacock/commits?author=legomushroom" title="Tests">⚠️</a></td><td align="center"><a href="https://josephrex.me"><img src="https://avatars3.githubusercontent.com/u/5395567?v=4" width="100px;" alt="Joseph Rex"/><br /><sub><b>Joseph Rex</b></sub></a><br /><a href="#design-josephrexme" title="Design">🎨</a></td><td align="center"><a href="https://juliangaramendy.dev"><img src="https://avatars1.githubusercontent.com/u/237818?v=4" width="100px;" alt="Julian"/><br /><sub><b>Julian</b></sub></a><br /><a href="#ideas-JulianG" title="Ideas, Planning, & Feedback">🤔</a></td></tr></table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
