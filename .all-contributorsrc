@@ -13,6 +13,15 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "lostintangent",
+      "name": "Jonathan Carter",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/116461?v=4",
+      "profile": "http://www.lostintangent.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
