@@ -36,7 +36,7 @@ suite('can set color to built-in color', () => {
     const extraSetting = { 'activityBar.border': extraSettingValue };
 
     test('leaves pre-existing colorCustomizations', async () => {
-      removeExtraSetting(extraSettingName);
+      await removeExtraSetting(extraSettingName);
       // Add one non Peacock setting
       await updateWorkspaceConfiguration(extraSetting);
 
@@ -47,7 +47,7 @@ suite('can set color to built-in color', () => {
       assert.ok(!config[ColorSettings.statusBar_background]);
       assert.ok(!config[ColorSettings.activityBar_background]);
 
-      removeExtraSetting(extraSettingName);
+      await removeExtraSetting(extraSettingName);
     });
 
     test('removes colorCustomizations if the object is empty', async () => {
