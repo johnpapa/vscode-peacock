@@ -73,12 +73,14 @@ export async function changeColorToFavoriteHandler() {
     await changeColor(input);
   }
 }
+
 export async function darkenHandler() {
   const color = getCurrentColorBeforeAdjustments();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
   await changeColor(darkenedColor);
 }
+
 export async function lightenHandler() {
   const color = getCurrentColorBeforeAdjustments();
   const darkenLightenPercentage = getDarkenLightenPercentage();
