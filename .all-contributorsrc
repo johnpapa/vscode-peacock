@@ -13,6 +13,16 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "legomushroom",
+      "name": "Oleg Solomka",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1478800?v=4",
+      "profile": "https://twitter.com/legomushroom",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
