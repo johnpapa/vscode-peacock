@@ -104,6 +104,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "egamma",
+      "name": "Erich Gamma",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/172399?v=4",
+      "profile": "https://github.com/egamma",
+      "contributions": [
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
