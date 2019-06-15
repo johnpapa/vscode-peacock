@@ -90,6 +90,16 @@
         "category": "Peacock"
       }
     ],
+    "keybindings": [
+      {
+        "key": "alt+cmd+-",
+        "command": "peacock.darken"
+      },
+      {
+        "key": "alt+cmd+=",
+        "command": "peacock.lighten"
+      }
+    ],
     "menus": {
       "commandPalette": [
         {

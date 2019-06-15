@@ -9,6 +9,7 @@ Features
 - added `Peacock: Darken` to the commands. Currently darkens the current color by the `darkenLightenPercentage` setting
 - added `Peacock: Ligthen` to the commands. Currently lightens the current color by the `darkenLightenPercentage` setting
 - added `peacock.darkenLightenPercentage` to settings. Indicates the percentage to darken or lighten the color (defaults to 10%)
+- added key bindings for ligthen `alt+cmd+=` and for darken `alt+cmd+-`
 
 Breaking Changes
 
