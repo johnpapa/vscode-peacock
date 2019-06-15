@@ -1,0 +1,23 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "musicfuel",
+      "name": "James Newell",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1085791?v=4",
+      "profile": "https://github.com/musicfuel",
+      "contributions": [
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "vscode-peacock",
+  "projectOwner": "johnpapa",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
