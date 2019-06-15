@@ -199,13 +199,8 @@
         "peacock.darkenLightenPercentage": {
           "type": "number",
           "default": 10,
-          "enum": [
-            5,
-            10,
-            15,
-            20,
-            25
-          ],
+          "minimum": 5,
+          "maximum": 20,
           "description": "Specifies the amount to darken or lighten the color, in percentage"
         }
       }
