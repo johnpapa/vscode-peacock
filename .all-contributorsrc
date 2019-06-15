@@ -31,15 +31,24 @@
       "contributions": [
         "code",
         "test"
-        ]
-     },
-     {
+      ]
+    },
+    {
       "login": "josephrexme",
       "name": "Joseph Rex",
       "avatar_url": "https://avatars3.githubusercontent.com/u/5395567?v=4",
       "profile": "https://josephrex.me",
       "contributions": [
         "design"
+      ]
+    },
+    {
+      "login": "samjulien",
+      "name": "Sam Julien",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7738189?v=4",
+      "profile": "http://www.samjulien.com",
+      "contributions": [
+        "ideas"
       ]
     }
   ],
