@@ -13,6 +13,10 @@ Breaking Changes
 
 - default values for new installations are to colorize all three affected areas: titleBar, activityBar, and statusBar. new users were sometimes confused why Peacock was only coloring the titlebar. While the settings are explained in the README, this should help people see the possibilities better.
 
+Bug Fixes
+
+- fixed broken test that added and removed an extra setting
+
 ## 2.3.0
 
 Features
