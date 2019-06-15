@@ -291,26 +291,6 @@ Recommended favorites are a starting point for favorites. They will be installed
 
 This list may change from version to version depending on the Peacock authoring team.
 
-## Credits
-
-Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
-
-- The VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=vscodepeacock-github-jopapa)
-
-- Here are some great [examples for extensions](https://github.com/Microsoft/vscode-extension-samples) from the VS Code team
-
-Key Contributors of PRs:
-
-- [@josephrexme](https://twitter.com/josephrexme) for the name
-- [@musicfuel](https://twitter.com/musicfuel) for the icon
-- Implemented reset for each settings that isn't selected (by <https://github.com/souzara>)
-- [@legomushroom](https://twitter.com/legomushroom) and [@lostintangent](https://twitter.com/lostintangent) for implementing the Live Share integration
-
-Key Contributors of issues, reviews, and/or ideas:
-
-- [@codebeast](https://twitter.com/codebeast), [@\_clarkio](https://twitter.com/_clarkio), [@burkeholland](https://twitter.com/burkeholland), [JulianG](https://github.com/JulianG),[@samjulien](https://twitter.com/samjulien),
-  [@kushalpanda](https://twitter.com/kushalpanda)
-
 ![Sketchnote](./resources/peacock-sketchnote.png)
 
 ## Try the Code
@@ -325,6 +305,14 @@ Then you can run the debugger for the launch configuration `Run Extension`. Set 
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=peacock-github-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?wt.mc_id=peacock-github-jopapa)
 - [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
+
+## Credits
+
+Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
+
+- The VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=vscodepeacock-github-jopapa)
+
+- Here are some great [examples for extensions](https://github.com/Microsoft/vscode-extension-samples) from the VS Code team
 
 ## Contributors
 
