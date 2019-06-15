@@ -15,7 +15,9 @@ import {
   changeColorToPeacockGreenHandler,
   changeColorToFavoriteHandler,
   saveColorToFavoritesHandler,
-  addRecommendedFavoritesHandler
+  addRecommendedFavoritesHandler,
+  darkenHandler,
+  lightenHandler
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -84,6 +86,8 @@ function registerCommands() {
     Commands.changeColorToFavorite,
     changeColorToFavoriteHandler
   );
+  commands.registerCommand(Commands.darken, darkenHandler);
+  commands.registerCommand(Commands.lighten, lightenHandler);
 }
 
 export async function applyInitialConfiguration() {

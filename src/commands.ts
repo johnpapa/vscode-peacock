@@ -2,7 +2,9 @@ import {
   isValidColorInput,
   getRandomColorHex,
   changeColor,
-  deletePeacocksColorCustomizations
+  deletePeacocksColorCustomizations,
+  getDarkenedColorHex,
+  getLightenedColorHex
 } from './color-library';
 
 import { State, peacockGreen } from './models';
@@ -69,6 +71,16 @@ export async function changeColorToFavoriteHandler() {
   if (isValidColorInput(input)) {
     await changeColor(input);
   }
+}
+export async function darkenHandler() {
+  const color = getCurrentColorBeforeAdjustments();
+  const darkenedColor = getDarkenedColorHex(color, 10);
+  await changeColor(darkenedColor);
+}
+export async function lightenHandler() {
+  const color = getCurrentColorBeforeAdjustments();
+  const lightenedColor = getLightenedColorHex(color, 10);
+  await changeColor(lightenedColor);
 }
 
 function isObjectEmpty(o: {}) {
