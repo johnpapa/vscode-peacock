@@ -15,6 +15,16 @@
       ]
     },
     {
+      "login": "legomushroom",
+      "name": "Oleg Solomka",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1478800?v=4",
+      "profile": "https://twitter.com/legomushroom",
+      "contributions": [
+        "code",
+        "test"
+        ]
+     },
+     {
       "login": "josephrexme",
       "name": "Joseph Rex",
       "avatar_url": "https://avatars3.githubusercontent.com/u/5395567?v=4",
