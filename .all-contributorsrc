@@ -50,6 +50,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "spboyer",
+      "name": "Shayne Boyer",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7681382?v=4",
+      "profile": "http://www.tattoocoder.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
