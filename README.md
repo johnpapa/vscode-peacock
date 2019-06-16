@@ -44,7 +44,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.surpriseMeOnStartup     | Specifies whether Peacock apply a random color on startup                                             |
 | peacock.darkForeground          | override for the dark foreground                                                                      |
 | peacock.lightForeground         | override for the light foreground                                                                     |
-| peacock.darkenLightenPercentage | the percentage to darken or lighten the color (defaults to 10%)                                       |
+| peacock.darkenLightenPercentage | the percentage to darken or lighten the color                                                         |
 
 ### Favorite Colors
 
