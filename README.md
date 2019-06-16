@@ -138,8 +138,8 @@ There are key bindings for the ligthen command `alt+cmd+=` and for darken comman
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
 | Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
-| Peacock: Darken                          | Darkens the current color by 10%                                        |
-| Peacock: Lighten                         | Lightens the current color by 10%                                       |
+| Peacock: Darken                          | Darkens the current color by `lightenDarkenPercentage`                  |
+| Peacock: Lighten                         | Lightens the current color by `lightenDarkenPercentage`                 |
 
 ## Integrations
 
