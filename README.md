@@ -123,7 +123,7 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 ### Lighten and Darken
 
-You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#Commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `lightenDarkenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
+You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#Commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `darkenLightenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
 
 There are key bindings for the ligthen command `alt+cmd+=` and for darken command `alt+cmd+-`, to make it easier to adjust the colors.
 
@@ -138,8 +138,8 @@ There are key bindings for the ligthen command `alt+cmd+=` and for darken comman
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
 | Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
-| Peacock: Darken                          | Darkens the current color by `lightenDarkenPercentage`                  |
-| Peacock: Lighten                         | Lightens the current color by `lightenDarkenPercentage`                 |
+| Peacock: Darken                          | Darkens the current color by `darkenLightenPercentage`                  |
+| Peacock: Lighten                         | Lightens the current color by `darkenLightenPercentage`                 |
 
 ## Integrations
 
