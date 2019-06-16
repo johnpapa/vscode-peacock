@@ -121,6 +121,12 @@ Recommended to remain `false` (the default value).
 
 When set to true Peacock will automatically apply a random color when opening a workspace that does not define color customizations. This can be useful if you frequently open many instances of VS Code and you are interested in quickly and easily telling them apart, but are not overly committed to the specific color applied.
 
+### Lighten and Darken
+
+You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#Commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `lightenDarkenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
+
+There are key bindings for the ligthen command `alt+cmd+=` and for darken command `alt+cmd+-`, to make it easier to adjust the colors.
+
 ## Commands
 
 | Command                                  | Description                                                             |
