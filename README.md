@@ -109,13 +109,13 @@ This results in the Activity Bar being slightly lighter than the Status Bar and 
 
 ![Animated GIF](./resources/element-adjustments.png)
 
-## Keep Foreground Color
+### Keep Foreground Color
 
 Recommended to remain `false` (the default value).
 
 When set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background. Some users may desire this if their theme's foreground is their preference over Peacock. In this case, when set to true, the foreground will not be affected.
 
-## Surprise Me On Startup
+### Surprise Me On Startup
 
 Recommended to remain `false` (the default value).
 
