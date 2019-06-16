@@ -2,6 +2,23 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.4.0
+
+Features
+
+- added `Peacock: Darken` to the commands. Currently darkens the current color by the `darkenLightenPercentage` setting
+- added `Peacock: Ligthen` to the commands. Currently lightens the current color by the `darkenLightenPercentage` setting
+- added `peacock.darkenLightenPercentage` to settings. Indicates the percentage to darken or lighten the color (defaults to 10%)
+- added key bindings for ligthen `alt+cmd+=` and for darken `alt+cmd+-`
+
+Breaking Changes
+
+- default values for new installations are to colorize all three affected areas: titleBar, activityBar, and statusBar. new users were sometimes confused why Peacock was only coloring the titlebar. While the settings are explained in the README, this should help people see the possibilities better.
+
+Bug Fixes
+
+- fixed broken test that added and removed an extra setting
+
 ## 2.3.0
 
 Features
@@ -19,6 +36,8 @@ Features
 
 - Added [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare) integration.
 - Updated README for Live Share and Remote Development integrations
+- added `Peacock: Change Live Share Color (Host)` to the commands
+- added `Peacock: Change Live Share Color (Guest)` to the commands
 
 ## 2.1.2
 

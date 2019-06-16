@@ -1,4 +1,5 @@
 # Peacock for Visual Studio Code
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors)
 
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
@@ -32,17 +33,18 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Settings
 
-| Property                    | Description                                                                                           |
-| --------------------------- | ----------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar   | Specifies whether Peacock should affect the activity bar                                              |
-| peacock.affectStatusBar     | Specifies whether Peacock should affect the status bar                                                |
-| peacock.affectTitleBar      | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
-| peacock.elementAdjustments  | fine tune coloring of affected elements                                                               |
-| peacock.favoriteColors      | array of objects for color names and hex values                                                       |
-| peacock.keepForegroundColor | Specifies whether Peacock should change affect colors                                                 |
-| peacock.surpriseMeOnStartup | Specifies whether Peacock apply a random color on startup                                             |
-| peacock.darkForeground      | override for the dark foreground                                                                      |
-| peacock.lightForeground     | override for the light foreground                                                                     |
+| Property                        | Description                                                                                           |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar       | Specifies whether Peacock should affect the activity bar                                              |
+| peacock.affectStatusBar         | Specifies whether Peacock should affect the status bar                                                |
+| peacock.affectTitleBar          | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
+| peacock.elementAdjustments      | fine tune coloring of affected elements                                                               |
+| peacock.favoriteColors          | array of objects for color names and hex values                                                       |
+| peacock.keepForegroundColor     | Specifies whether Peacock should change affect colors                                                 |
+| peacock.surpriseMeOnStartup     | Specifies whether Peacock apply a random color on startup                                             |
+| peacock.darkForeground          | override for the dark foreground                                                                      |
+| peacock.lightForeground         | override for the light foreground                                                                     |
+| peacock.darkenLightenPercentage | the percentage to darken or lighten the color (defaults to 10%)                                       |
 
 ### Favorite Colors
 
@@ -109,13 +111,13 @@ This results in the Activity Bar being slightly lighter than the Status Bar and 
 
 ## Keep Foreground Color
 
-Recommended to remain false (the default value).
+Recommended to remain `false` (the default value).
 
 When set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background. Some users may desire this if their theme's foreground is their preference over Peacock. In this case, when set to true, the foreground will not be affected.
 
 ## Surprise Me On Startup
 
-Recommended to remain false (the default value).
+Recommended to remain `false` (the default value).
 
 When set to true Peacock will automatically apply a random color when opening a workspace that does not define color customizations. This can be useful if you frequently open many instances of VS Code and you are interested in quickly and easily telling them apart, but are not overly committed to the specific color applied.
 
@@ -130,6 +132,8 @@ When set to true Peacock will automatically apply a random color when opening a 
 | Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
 | Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
 | Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
+| Peacock: Darken                          | Darkens the current color by 10%                                        |
+| Peacock: Lighten                         | Lightens the current color by 10%                                       |
 
 ## Integrations
 
@@ -146,11 +150,9 @@ Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items
 
 When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) session is started, the selected workspace color will be applied. When the session is finished, the workspace color is reverted back to the previous one (if set).
 
-
 - Learn more about [Live Share](https://code.visualstudio.com/blogs/2017/11/15/live-share?wt.mc_id=vscodepeacock-github-jopapa)
 - Get the [Live Share extension](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa)
 - Get the [Live Share extension pack](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack&wt.mc_id=vscodepeacock-github-jopapa), which now includes Peacock
-
 
 ### Remote Development Integration
 

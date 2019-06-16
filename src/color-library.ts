@@ -6,7 +6,7 @@ import {
   ColorSettings,
   State,
   ColorAdjustmentOptions,
-  defaultAmountToLighten,
+  defaultAmountToDarkenLighten,
   defaultSaturation
 } from './models';
 import {
@@ -130,14 +130,14 @@ export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
 }
 export function getLightenedColorHex(
   color = '',
-  amount = defaultAmountToLighten
+  amount = defaultAmountToDarkenLighten
 ) {
   return formatHex(tinycolor(color).lighten(amount));
 }
 
 export function getDarkenedColorHex(
   color: string,
-  amount = defaultAmountToLighten
+  amount = defaultAmountToDarkenLighten
 ) {
   return formatHex(tinycolor(color).darken(amount));
 }

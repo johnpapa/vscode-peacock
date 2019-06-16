@@ -5,7 +5,8 @@ export enum StandardSettings {
   KeepForegroundColor = 'keepForegroundColor',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
   DarkForegroundColor = 'darkForegroundColor',
-  LightForegroundColor = 'lightForegroundColor'
+  LightForegroundColor = 'lightForegroundColor',
+  DarkenLightenPercentage = 'darkenLightenPercentage'
 }
 
 export enum AffectedSettings {
@@ -23,7 +24,9 @@ export enum Commands {
   changeColorToRandom = 'peacock.changeColorToRandom',
   changeColorToPeacockGreen = 'peacock.changeColorToPeacockGreen',
   changeColorToFavorite = 'peacock.changeColorToFavorite',
-  addRecommendedFavorites = 'peacock.addRecommendedFavorites'
+  addRecommendedFavorites = 'peacock.addRecommendedFavorites',
+  darken = 'peacock.darken',
+  lighten = 'peacock.lighten'
 }
 
 export enum ElementNames {

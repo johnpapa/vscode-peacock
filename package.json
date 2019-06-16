@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -75,9 +75,29 @@
         "category": "Peacock"
       },
       {
+        "command": "peacock.darken",
+        "title": "Darken",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.lighten",
+        "title": "Lighten",
+        "category": "Peacock"
+      },
+      {
         "command": "peacock.changeColorOfLiveShareGuest",
         "title": "Change Live Share Color (Guest)",
         "category": "Peacock"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "alt+cmd+-",
+        "command": "peacock.darken"
+      },
+      {
+        "key": "alt+cmd+=",
+        "command": "peacock.lighten"
       }
     ],
     "menus": {
@@ -96,12 +116,12 @@
       "properties": {
         "peacock.affectActivityBar": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Specifies whether Peacock should affect the activity bar."
         },
         "peacock.affectStatusBar": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Specifies whether Peacock should affect the status bar."
         },
         "peacock.affectTitleBar": {
@@ -175,6 +195,13 @@
           "type": "string",
           "default": "#e7e7e7",
           "description": "Specifies the override value for the light foreground color"
+        },
+        "peacock.darkenLightenPercentage": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Specifies the amount to darken or lighten the color, in percentage"
         }
       }
     }
@@ -196,6 +223,7 @@
     "@types/mocha": "^5.2.6",
     "@types/node": "12.0.8",
     "@types/sinon": "^7.0.7",
+    "eslint": "^5.16.0",
     "sinon": "7.3.2",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",

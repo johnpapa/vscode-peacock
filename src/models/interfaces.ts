@@ -49,6 +49,7 @@ export interface IPeacockSettings {
   surpriseMeOnStartup: boolean;
   darkForegroundColor: string;
   lightForegroundColor: string;
+  darkenLightenPercentage: number;
 }
 
 export interface IElementColors {
