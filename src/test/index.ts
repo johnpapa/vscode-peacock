@@ -17,7 +17,7 @@ import * as testRunner from 'vscode/lib/testrunner';
 // for more info
 testRunner.configure({
   ui: 'tdd', // the TDD UI is being used in extension.test.ts (suite, test, etc.)
-  timeout: 5000, // longer timeout, in case
+  timeout: 7500, // longer timeout, in case
   useColors: true // colored output from test results
 });
 
