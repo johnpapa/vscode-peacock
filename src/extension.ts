@@ -28,6 +28,7 @@ import {
 import { changeColor } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
+import { addRemoteIntegration } from './remote';
 
 const { commands, workspace } = vscode;
 
@@ -40,6 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await applyInitialConfiguration();
 
   addLiveShareIntegration(context);
+  addRemoteIntegration(context);
 }
 
 function addSubscriptions(context: vscode.ExtensionContext) {

@@ -16,7 +16,7 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.31.0"
+    "vscode": "^1.36.0"
   },
   "categories": [
     "Other"
@@ -88,6 +88,21 @@
         "command": "peacock.changeColorOfLiveShareGuest",
         "title": "Change Live Share Color (Guest)",
         "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfRemoteContainers",
+        "title": "Change Remote Color (Containers)",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfRemoteSsh",
+        "title": "Change Remote Color (SSH)",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfRemoteWsl",
+        "title": "Change Remote Color (WSL)",
+        "category": "Peacock"
       }
     ],
     "keybindings": [
@@ -109,6 +124,18 @@
         {
           "command": "peacock.changeColorOfLiveShareGuest",
           "when": "peacock:liveshare == true"
+        },
+        {
+          "command": "peacock.changeColorOfRemoteContainers",
+          "when": "peacock:remote == true"
+        },
+        {
+          "command": "peacock.changeColorOfRemoteSsh",
+          "when": "peacock:remote == true"
+        },
+        {
+          "command": "peacock.changeColorOfRemoteWsl",
+          "when": "isWindows && peacock:remote == true"
         }
       ]
     },
@@ -215,6 +242,7 @@
     "postinstall": "node node_modules/vscode/bin/install",
     "just-test": "node node_modules/vscode/bin/test",
     "just-live-share-test": "node src/live-share/test/live-share-tests-launcher.js",
+    "just-remote-test": "node src/remote/test/remote-tests-launcher.js",
     "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && node node_modules/vscode/bin/test",
     "test-live-share": "npm run test-compile && npm run just-live-share-test"
