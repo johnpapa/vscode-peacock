@@ -16,6 +16,7 @@ import {
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride
 } from './configuration';
+import { Logger } from './logging';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -187,10 +188,9 @@ export async function changeColor(input = '') {
   };
 
   await updateWorkspaceConfiguration(colorCustomizations);
-  // For testing
-  // vscode.window.showInformationMessage(
-  //   `Peacock is now using ${state.recentColor}`
-  // );
+
+  Logger.info(`Peacock is now using ${State.recentColor}`);
+
   return backgroundHex;
 }
 
