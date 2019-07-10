@@ -38,8 +38,8 @@ import { setExtensionContext, extensionContext } from './extension-context';
 const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
-  console.log('Extension "vscode-peacock" is now active!');
-
+  Logger.info('Extension "vscode-peacock" is now active!');
+  
   setExtensionContext(context);
 
   registerCommands();
