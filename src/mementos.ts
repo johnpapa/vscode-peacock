@@ -14,11 +14,18 @@ export async function savePeacockColorMemento(color: string) {
   }
 }
 
+export function getPeacockColorMemento() {
+  return extensionContext.globalState.get(
+    peacockMementos.peacockColor,
+    undefined
+  );
+}
+
 export async function saveFavoritesVersionMemento(version: string) {
   saveMemento(peacockMementos.favoritesVersion, version);
 }
 
-export async function getFavoritesVersionMemento() {
+export function getFavoritesVersionMemento() {
   return extensionContext.globalState.get(
     peacockMementos.favoritesVersion,
     undefined
