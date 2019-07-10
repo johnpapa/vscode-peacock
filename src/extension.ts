@@ -39,7 +39,7 @@ const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
   Logger.info('Extension "vscode-peacock" is now active!');
-  
+
   setExtensionContext(context);
 
   registerCommands();
@@ -112,7 +112,7 @@ export async function applyInitialConfiguration() {
 }
 
 export function deactivate() {
-  console.log('Extension "vscode-peacock" is now deactive');
+  Logger.info('Extension "vscode-peacock" is now deactive');
 }
 
 async function initializeTheStarterSetOfFavorites() {
