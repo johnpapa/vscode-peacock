@@ -19,14 +19,27 @@ import { executeCommand } from '../../test/lib/constants';
 import { getPeacockWorkspaceConfig } from '../../configuration';
 import { peacockRemoteMementos } from '../constants';
 import { RemoteCommands, RemoteNames } from '../enums';
+import {
+  getPeacockColorMemento,
+  savePeacockColorMemento
+} from '../../mementos';
+
+let colorMemento: string;
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
+  suiteSetup(async () => {
+    // capture memento
+    colorMemento = getPeacockColorMemento();
+  });
   setup(async () => {
     // Start with green
     await executeCommand(Commands.changeColorToPeacockGreen);
+  });
+  suiteTeardown(() => {
+    savePeacockColorMemento(colorMemento);
   });
 
   test('can set color setting for Remote WSL', async () => {
