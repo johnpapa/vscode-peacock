@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { peacockVslsMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
-import { extensionContext, setExtensionContext } from '../extension-context';
+import { extensionContext } from '../extension-context';
 import { setPeacockColorCustomizations } from '../inputs';
 import { Sections } from '../models';
 
