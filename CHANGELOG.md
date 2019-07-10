@@ -2,24 +2,14 @@
 
 All notable changes to the code will be documented in this file.
 
-## 2.5.0
-
-Features
-
-- Peacock now detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color depending on the remote context (container, ssh, wsl).
-  - added `Change Remote Color (SSH)` to commands. Prompts user to select a color for the SSH remote context from the Favorites
-  - added `Change Remote Color (Containers)` to commands. Prompts user to select a color for the Containers remote context from the Favorites
-  - added `Change Remote Color (WSL)` to commands. Prompts user to select a color for the WSL remote context from the Favorites
-- added tests for remote features
-
 ## 2.4.0
 
 Features
 
 - added `Peacock: Darken` to the commands. Currently darkens the current color by the `darkenLightenPercentage` setting
-- added `Peacock: Lighten` to the commands. Currently lightens the current color by the `darkenLightenPercentage` setting
+- added `Peacock: Ligthen` to the commands. Currently lightens the current color by the `darkenLightenPercentage` setting
 - added `peacock.darkenLightenPercentage` to settings. Indicates the percentage to darken or lighten the color (defaults to 10%)
-- added key bindings for lighten `alt+cmd+=` and for darken `alt+cmd+-`
+- added key bindings for ligthen `alt+cmd+=` and for darken `alt+cmd+-`
 
 Breaking Changes
 

@@ -22,7 +22,6 @@ import {
 } from './inputs';
 
 import { resetLiveSharePreviousColors } from './live-share';
-import { resetRemotePreviousColors } from './remote';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -32,7 +31,6 @@ export async function resetColorsHandler() {
     : colorCustomizations;
 
   resetLiveSharePreviousColors();
-  resetRemotePreviousColors();
 
   return await updateWorkspaceConfiguration(newColorCustomizations);
 }

@@ -40,19 +40,6 @@
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
       "preLaunchTask": "npm: test-compile"
-    },
-    {
-      "name": "Extension Tests - Remote Integration",
-      "type": "extensionHost",
-      "request": "launch",
-      "runtimeExecutable": "${execPath}",
-      "args": [
-        "${workspaceFolder}/testworkspace",
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/remote/test"
-      ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "npm: test-compile"
     }
   ]
 }
