@@ -1,6 +1,18 @@
 import { Logger } from '../logging';
 
 export class State {
+  /**
+   * Recent Color is the most recently used color.
+   * If you want the original Peacock color,
+   * then use getPeacockColorMemento() in mementos.ts
+   *
+   * e.g.
+   * Peacock may be using #fff and Peacock Remote is using #000.
+   * When using remote, recent color may represent
+   * the remote color #000 while the memento will always be the original #fff
+   *
+   *  */
+
   private static _recentColor = '';
 
   public static get recentColor(): string {

@@ -82,7 +82,7 @@ export async function refreshRemoteColor(remote: string): Promise<boolean> {
 }
 
 export async function revertRemoteWorkspaceColors() {
-  // TODO - reset the color
+  // reset the color from the memento. Because the recent color may be the remote color
   const peacockColor = getPeacockColorMemento();
   await changeColor(peacockColor);
 }
