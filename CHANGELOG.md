@@ -20,6 +20,13 @@ Refactoring
   - core peacock tests (currently 83)
   - peacock vsls tests (currently 8)
   - peacock remote tests (currently 7)
+- Recent Color State vs Peacock Color Memento
+  - Recent Color is the most recently used color.
+  - If you want the original Peacock color, then use getPeacockColorMemento() in mementos.ts
+  - Example:
+    - Peacock may be using #fff and Peacock Remote is using #000.
+    - When using remote, recent color may represent
+    - the remote color #000 while the memento will always be the original #fff
 
 ## 2.4.0
 
