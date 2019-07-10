@@ -194,9 +194,9 @@ export async function changeColor(input = '', primaryEnvironment = true) {
   Logger.info(`Peacock is now using ${State.recentColor}`);
 
   if (primaryEnvironment) {
-    // TODO: Save the recent color to the mento
-    // TODO: only if we're changing Peacock color,
-    // TODO: but not remote or other secondary colors
+    // Save the recent color to the memento
+    // only if we're changing Peacock color,
+    // but not remote or other secondary colors
     savePeacockColorMemento(State.recentColor);
   }
 
