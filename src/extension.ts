@@ -29,6 +29,10 @@ import { changeColor } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
+import {
+  saveFavoritesVersionMemento,
+  getFavoritesVersionMemento
+} from './mementos';
 
 const { commands, workspace } = vscode;
 
@@ -37,7 +41,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   addSubscriptions(context);
-  await initializeTheStarterSetOfFavorites(context);
+  await initializeTheStarterSetOfFavorites();
   await applyInitialConfiguration();
 
   addLiveShareIntegration(context);
@@ -108,16 +112,13 @@ export function deactivate() {
   console.log('Extension "vscode-peacock" is now deactive');
 }
 
-async function initializeTheStarterSetOfFavorites(
-  context: vscode.ExtensionContext
-) {
+async function initializeTheStarterSetOfFavorites() {
   let extension = getExtension();
   let version = extension ? extension.packageJSON.version : '';
-  const key = `${extensionShortName}.starterSetOfFavoritesVersion`;
-  let starterSetOfFavoritesVersion = context.globalState.get(key, undefined);
+  let starterSetOfFavoritesVersion = getFavoritesVersionMemento();
 
   if (starterSetOfFavoritesVersion !== version) {
-    context.globalState.update(key, version);
+    saveFavoritesVersionMemento(version);
     await writeRecommendedFavoriteColors();
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;

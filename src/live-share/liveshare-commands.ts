@@ -2,16 +2,13 @@ import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
-import {
-  vslsShareColorMementoName,
-  vslsJoinColorMementoName
-} from './constants';
+import { peacockVslsMementos } from './constants';
 import { LiveShareCommands } from './enums';
 import {
   refreshLiveShareSessionColor,
   revertLiveShareWorkspaceColors
 } from './integration';
-import { extensionContext } from './extension-context';
+import { extensionContext } from '../extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
@@ -21,8 +18,8 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
 
     if (isValidColorInput(input)) {
       const settingName = isHost
-        ? vslsShareColorMementoName
-        : vslsJoinColorMementoName;
+        ? peacockVslsMementos.vslsShareColor
+        : peacockVslsMementos.vslsJoinColor;
 
       await extensionContext.globalState.update(settingName, input);
     }
@@ -67,8 +64,11 @@ export function registerLiveShareIntegrationCommands() {
 
 export async function resetLiveSharePreviousColors() {
   await extensionContext.globalState.update(
-    vslsShareColorMementoName,
+    peacockVslsMementos.vslsShareColor,
     null
   );
-  await extensionContext.globalState.update(vslsJoinColorMementoName, null);
+  await extensionContext.globalState.update(
+    peacockVslsMementos.vslsJoinColor,
+    null
+  );
 }

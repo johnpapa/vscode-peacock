@@ -8,11 +8,7 @@ import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
 
 import { getPeacockWorkspaceConfig } from '../../configuration';
-import {
-  remoteContainersColorMementoName,
-  remoteSshColorMementoName,
-  remoteWslColorMementoName
-} from '../constants';
+import { peacockRemoteMementos } from '../constants';
 import { RemoteCommands, RemoteNames } from '../enums';
 
 suite('Remote Integration', () => {
@@ -33,9 +29,12 @@ suite('Remote Integration', () => {
 
     const settingValue =
       (await extensionContext!.globalState.get<string>(
-        remoteWslColorMementoName
+        peacockRemoteMementos.remoteWslColor
       )) || '';
-    await extensionContext!.globalState.update(remoteWslColorMementoName, null);
+    await extensionContext!.globalState.update(
+      peacockRemoteMementos.remoteWslColor,
+      null
+    );
 
     stub.restore();
 
@@ -57,9 +56,12 @@ suite('Remote Integration', () => {
 
     const settingValue =
       (await extensionContext!.globalState.get<string>(
-        remoteSshColorMementoName
+        peacockRemoteMementos.remoteSshColor
       )) || '';
-    await extensionContext!.globalState.update(remoteSshColorMementoName, null);
+    await extensionContext!.globalState.update(
+      peacockRemoteMementos.remoteSshColor,
+      null
+    );
 
     stub.restore();
 
@@ -81,10 +83,10 @@ suite('Remote Integration', () => {
 
     const settingValue =
       (await extensionContext!.globalState.get<string>(
-        remoteContainersColorMementoName
+        peacockRemoteMementos.remoteContainersColor
       )) || '';
     await extensionContext!.globalState.update(
-      remoteContainersColorMementoName,
+      peacockRemoteMementos.remoteContainersColor,
       null
     );
 
@@ -115,7 +117,7 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await extensionContext!.globalState.update(
-      remoteContainersColorMementoName,
+      peacockRemoteMementos.remoteContainersColor,
       null
     );
 
@@ -142,7 +144,7 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await extensionContext!.globalState.update(
-      remoteContainersColorMementoName,
+      peacockRemoteMementos.remoteContainersColor,
       null
     );
 
@@ -169,7 +171,7 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await extensionContext!.globalState.update(
-      remoteContainersColorMementoName,
+      peacockRemoteMementos.remoteContainersColor,
       null
     );
 
@@ -198,7 +200,7 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await extensionContext!.globalState.update(
-      remoteContainersColorMementoName,
+      peacockRemoteMementos.remoteContainersColor,
       null
     );
 

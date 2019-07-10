@@ -11,3 +11,8 @@ export const defaultAmountToDarkenLighten = 10;
 export const defaultSaturation = 0.5;
 
 export const peacockGreen = '#42b883';
+
+export const peacockMementos = {
+  favoritesVersion: `${extensionShortName}.favoritesVersion`,
+  peacockColor: `${extensionShortName}.peacockColor`
+};

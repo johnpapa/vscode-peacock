@@ -1,13 +1,9 @@
 import * as vscode from 'vscode';
 
-import {
-  remoteContainersColorMementoName,
-  remoteSshColorMementoName,
-  remoteWslColorMementoName
-} from './constants';
+import { peacockRemoteMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerRemoteIntegrationCommands } from './remote-commands';
-import { extensionContext, setExtensionContext } from './extension-context';
+import { extensionContext, setExtensionContext } from '../extension-context';
 import { setPeacockColorCustomizations } from '../inputs';
 import { RemoteNames } from './enums';
 
@@ -17,13 +13,13 @@ export function remoteMementoName(): string | undefined {
   let mementoName = undefined;
   switch (vscode.env.remoteName) {
     case RemoteNames.wsl:
-      mementoName = remoteWslColorMementoName;
+      mementoName = peacockRemoteMementos.remoteWslColor;
       break;
     case RemoteNames.sshRemote:
-      mementoName = remoteSshColorMementoName;
+      mementoName = peacockRemoteMementos.remoteSshColor;
       break;
     case RemoteNames.devContainer:
-      mementoName = remoteContainersColorMementoName;
+      mementoName = peacockRemoteMementos.remoteContainersColor;
       break;
   }
   return mementoName;
@@ -100,7 +96,7 @@ export async function refreshRemoteColor(remote: string): Promise<boolean> {
 export async function revertRemoteWorkspaceColors() {
   // TODO
   // await changeColor(peacockColor);
-  
+
   await setPeacockColorCustomizations(peacockColorCustomizations);
 
   peacockColorCustomizations = null;
