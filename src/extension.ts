@@ -33,25 +33,28 @@ import {
   saveFavoritesVersionMemento,
   getFavoritesVersionMemento
 } from './mementos';
+import { setExtensionContext, extensionContext } from './extension-context';
 
 const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('Extension "vscode-peacock" is now active!');
 
+  setExtensionContext(context);
+
   registerCommands();
-  addSubscriptions(context);
+  addSubscriptions();
   await initializeTheStarterSetOfFavorites();
   await applyInitialConfiguration();
 
-  addLiveShareIntegration(context);
-  addRemoteIntegration(context);
+  addLiveShareIntegration();
+  addRemoteIntegration();
 }
 
-function addSubscriptions(context: vscode.ExtensionContext) {
-  context.subscriptions.push(Logger.getChannel());
+function addSubscriptions() {
+  extensionContext.subscriptions.push(Logger.getChannel());
 
-  context.subscriptions.push(
+  extensionContext.subscriptions.push(
     workspace.onDidChangeConfiguration(applyPeacock())
   );
 }

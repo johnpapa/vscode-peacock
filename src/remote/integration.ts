@@ -3,11 +3,9 @@ import * as vscode from 'vscode';
 import { peacockRemoteMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerRemoteIntegrationCommands } from './remote-commands';
-import { extensionContext, setExtensionContext } from '../extension-context';
-import { setPeacockColorCustomizations } from '../inputs';
+import { extensionContext } from '../extension-context';
 import { RemoteNames } from './enums';
-
-let peacockColorCustomizations: any;
+import { getPeacockColorMemento } from '../mementos';
 
 export function remoteMementoName(): string | undefined {
   let mementoName = undefined;
@@ -31,11 +29,7 @@ async function setRemoteWorkspaceColors() {
     return;
   }
 
-  // TODO
-  // Before we change to the remote color, grab the peacock color
-  // peacockColor = await getCurrentColorBeforeAdjustments();
-
-  await changeColor(remoteColorSetting);
+  await changeColor(remoteColorSetting, false);
 }
 
 async function getRemoteColor() {
@@ -58,13 +52,7 @@ function remoteExtensionsInstalled(): boolean {
   );
 }
 
-export async function addRemoteIntegration(context: vscode.ExtensionContext) {
-  // TODO
-  // Before we start the remote or non-remote logic, grab the peacock color
-  // peacockColor = await getCurrentColorBeforeAdjustments();
-
-  setExtensionContext(context);
-
+export async function addRemoteIntegration() {
   registerRemoteIntegrationCommands();
 
   const remoteExtensions = remoteExtensionsInstalled();
@@ -94,10 +82,7 @@ export async function refreshRemoteColor(remote: string): Promise<boolean> {
 }
 
 export async function revertRemoteWorkspaceColors() {
-  // TODO
-  // await changeColor(peacockColor);
-
-  await setPeacockColorCustomizations(peacockColorCustomizations);
-
-  peacockColorCustomizations = null;
+  // TODO - reset the color
+  const peacockColor = getPeacockColorMemento();
+  await changeColor(peacockColor);
 }

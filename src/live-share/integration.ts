@@ -53,10 +53,7 @@ export async function refreshLiveShareSessionColor(
 }
 
 export async function addLiveShareIntegration(
-  context: vscode.ExtensionContext
 ) {
-  setExtensionContext(context);
-
   registerLiveShareIntegrationCommands();
 
   const vslsApi = await vsls.getApi();

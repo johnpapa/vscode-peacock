@@ -1,4 +1,5 @@
 import * as tinycolor from 'tinycolor2';
+
 import {
   ColorAdjustment,
   ReadabilityRatios,
@@ -17,6 +18,7 @@ import {
   getLightForegroundColorOrOverride
 } from './configuration';
 import { Logger } from './logging';
+import { savePeacockColorMemento } from './mementos';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -169,7 +171,7 @@ function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
 
-export async function changeColor(input = '') {
+export async function changeColor(input = '', primaryEnvironment = true) {
   const backgroundHex = getBackgroundColorHex(input);
   State.recentColor = backgroundHex;
 
@@ -190,6 +192,13 @@ export async function changeColor(input = '') {
   await updateWorkspaceConfiguration(colorCustomizations);
 
   Logger.info(`Peacock is now using ${State.recentColor}`);
+
+  if (primaryEnvironment) {
+    // TODO: Save the recent color to the mento
+    // TODO: only if we're changing Peacock color,
+    // TODO: but not remote or other secondary colors
+    savePeacockColorMemento(State.recentColor);
+  }
 
   return backgroundHex;
 }
