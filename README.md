@@ -30,7 +30,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 - [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
 - Integrates with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa).
-- Integrates with [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
+- Integrates with [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack&wt.mc_id=vscodepeacock-github-jopapa).
 
 ## Settings
 
@@ -126,7 +126,7 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#Commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `darkenLightenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
 
-There are key bindings for the ligthen command `alt+cmd+=` and for darken command `alt+cmd+-`, to make it easier to adjust the colors.
+There are key bindings for the lighten command `alt+cmd+=` and for darken command `alt+cmd+-`, to make it easier to adjust the colors.
 
 ## Commands
 
@@ -170,13 +170,13 @@ Peacock now has support for the Remote Development feature of VS Code.
 
 Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color depending on the remote context (container, ssh, wsl).
 
-| Command                                  | Description                                                                    |
-| ---------------------------------------- | ------------------------------------------------------------------------------ |
-| Peacock: Change Remote Color (SSH) | Prompts user to select a color for the SSH remote context from the Favorites |
+| Command                                   | Description                                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------------------- |
+| Peacock: Change Remote Color (SSH)        | Prompts user to select a color for the SSH remote context from the Favorites        |
 | Peacock: Change Remote Color (Containers) | Prompts user to select a color for the Containers remote context from the Favorites |
-| Peacock: Change Remote Color (WSL)  | Prompts user to select a color for the WSL remote context from the Favorites  |
+| Peacock: Change Remote Color (WSL)        | Prompts user to select a color for the WSL remote context from the Favorites        |
 
-When a workspace is opened in a remote context, the selected workspace color will be applied. 
+When a workspace is opened in a remote context, the selected workspace color will be applied.
 
 VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Pecock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
 
