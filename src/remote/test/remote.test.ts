@@ -30,16 +30,9 @@ suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
-  suiteSetup(async () => {
-    // capture memento
-    colorMemento = getPeacockColorMemento();
-  });
   setup(async () => {
     // Start with green
     await executeCommand(Commands.changeColorToPeacockGreen);
-  });
-  suiteTeardown(() => {
-    savePeacockColorMemento(colorMemento);
   });
 
   test('can set color setting for Remote WSL', async () => {
