@@ -13,7 +13,7 @@ import {
   remoteSshColorMementoName,
   remoteWslColorMementoName
 } from '../constants';
-import { RemoteCommands } from '../enums';
+import { RemoteCommands, RemoteNames } from '../enums';
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
@@ -97,7 +97,7 @@ suite('Remote Integration', () => {
   test('Workspace color is updated when in Remote Containers context.', async () => {
     const getRemoteNameStub = sinon
       .stub(vscode.env, 'remoteName')
-      .value('dev-container');
+      .value(RemoteNames.devContainer);
 
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;

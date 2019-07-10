@@ -7,7 +7,7 @@ import {
   remoteSshColorMementoName,
   remoteWslColorMementoName
 } from './constants';
-import { RemoteCommands } from './enums';
+import { RemoteCommands, RemoteNames } from './enums';
 import { revertRemoteWorkspaceColors, refreshRemoteColor } from './integration';
 import { extensionContext } from './extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
@@ -34,7 +34,7 @@ async function changeColorForMemento(
     return extensionContext;
   }
   // if there was a color set prior to color picker,
-  //set that color back
+  // set that color back
   await changeColor(startingColor);
   return extensionContext;
 }
@@ -42,16 +42,19 @@ async function changeColorForMemento(
 async function changeRemoteContainersColor(): Promise<ExtensionContext> {
   return changeColorForMemento(
     remoteContainersColorMementoName,
-    'dev-container'
+    RemoteNames.devContainer
   );
 }
 
 async function changeRemoteWslColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(remoteWslColorMementoName, 'wsl');
+  return changeColorForMemento(remoteWslColorMementoName, RemoteNames.wsl);
 }
 
 async function changeRemoteSshColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(remoteSshColorMementoName, 'ssh-remote');
+  return changeColorForMemento(
+    remoteSshColorMementoName,
+    RemoteNames.sshRemote
+  );
 }
 
 export function registerRemoteIntegrationCommands() {
