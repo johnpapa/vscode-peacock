@@ -2,8 +2,17 @@ import vscode = require('vscode');
 import sinon = require('sinon');
 import assert = require('assert');
 
-import { IPeacockSettings, ColorSettings } from '../../models';
-import { allSetupAndTeardown } from '../../test/lib/setup-teardown-test-suite';
+import {
+  IPeacockSettings,
+  ColorSettings,
+  Commands,
+  peacockGreen,
+  azureBlue
+} from '../../models';
+import {
+  allSetupAndTeardown,
+  setupTestSuite
+} from '../../test/lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
 
@@ -15,10 +24,15 @@ suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   allSetupAndTeardown(originalValues);
 
+  setup(async () => {
+    // Start with green
+    await executeCommand(Commands.changeColorToPeacockGreen);
+  });
+
   test('can set color setting for Remote WSL', async () => {
     // Stub the async quick pick to return a response
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
+    // change to blue
+    const fakeResponse = `Azure Blue -> ${azureBlue}`;
     const stub = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
@@ -39,13 +53,13 @@ suite('Remote Integration', () => {
     stub.restore();
 
     assert(isValidColorInput(settingValue));
-    assert(settingValue === color);
+    assert(settingValue === azureBlue);
   });
 
   test('can set color setting for Remote SSH', async () => {
     // Stub the async quick pick to return a response
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
+    // change to blue
+    const fakeResponse = `Azure Blue -> ${azureBlue}`;
     const stub = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
@@ -66,13 +80,13 @@ suite('Remote Integration', () => {
     stub.restore();
 
     assert(isValidColorInput(settingValue));
-    assert(settingValue === color);
+    assert(settingValue === azureBlue);
   });
 
   test('can set color setting for Remote Containers', async () => {
     // Stub the async quick pick to return a response
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
+    // change to blue
+    const fakeResponse = `Azure Blue -> ${azureBlue}`;
     const stub = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
@@ -93,7 +107,7 @@ suite('Remote Integration', () => {
     stub.restore();
 
     assert(isValidColorInput(settingValue));
-    assert(settingValue === color);
+    assert(settingValue === azureBlue);
   });
 
   test('Workspace color is updated when in Remote Containers context.', async () => {
@@ -101,8 +115,8 @@ suite('Remote Integration', () => {
       .stub(vscode.env, 'remoteName')
       .value(RemoteNames.devContainer);
 
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
+    // change to blue
+    const fakeResponse = `Azure Blue -> ${azureBlue}`;
     const stub = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
@@ -122,7 +136,7 @@ suite('Remote Integration', () => {
     );
 
     assert(isValidColorInput(value));
-    assert(value === color);
+    assert(value === azureBlue);
   });
 
   test('Workspace color is updated when in Remote WSL context.', async () => {
@@ -184,8 +198,8 @@ suite('Remote Integration', () => {
       .stub(vscode.env, 'remoteName')
       .value(undefined);
 
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
+    // change to blue
+    const fakeResponse = `Azure Blue -> ${azureBlue}`;
     const stub = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
@@ -204,7 +218,9 @@ suite('Remote Integration', () => {
       null
     );
 
-    assert(!isValidColorInput(value));
-    assert(value == null);
+    // we should be back to green
+    assert(isValidColorInput(value));
+    assert(value !== azureBlue);
+    assert(value === peacockGreen);
   });
 });
