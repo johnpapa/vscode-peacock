@@ -163,7 +163,7 @@ When a [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliv
 
 ### Remote Development Integration
 
-Peacock now has support for the Remote Development feature of VS Code.
+Peacock integrates with the Remote Development features of VS Code.
 
 - Learn more about [VS Code Remote Development](https://code.visualstudio.com/blogs/2019/05/02/remote-development?wt.mc_id=vscodepeacock-github-jopapa)
 - Get the [VS Code Remote Development Extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack&wt.mc_id=vscodepeacock-github-jopapa)
