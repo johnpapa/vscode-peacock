@@ -7,8 +7,7 @@ import {
   ColorSettings,
   Commands,
   peacockGreen,
-  azureBlue,
-  peacockMementos
+  azureBlue
 } from '../../models';
 import {
   setupTestSuite,
@@ -18,15 +17,14 @@ import {
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
 
-import {
-  getPeacockWorkspaceConfig,
-  getCurrentColorBeforeAdjustments
-} from '../../configuration';
+import { getPeacockWorkspaceConfig } from '../../configuration';
 import { peacockRemoteMementos } from '../constants';
 import { RemoteCommands, RemoteNames } from '../enums';
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
+  let stubQuickPick: any;
+  let extensionContext: vscode.ExtensionContext | undefined;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -34,171 +32,117 @@ suite('Remote Integration', () => {
 
   setup(async () => {
     // Start with green
-    await executeCommand(Commands.changeColorToPeacockGreen);
-  });
+    extensionContext = await executeCommand<vscode.ExtensionContext>(
+      Commands.changeColorToPeacockGreen
+    );
 
-  test('can set color setting for Remote WSL', async () => {
     // Stub the async quick pick to return a response
     // change to blue
     const fakeResponse = `Azure Blue -> ${azureBlue}`;
-    const stub = await sinon
+    stubQuickPick = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
+  });
+  teardown(async () => {
+    stubQuickPick!.restore();
+  });
 
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+  test('can set color setting for Remote WSL', async () => {
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteWsl
     );
 
-    const settingValue =
-      (await extensionContext!.globalState.get<string>(
-        peacockRemoteMementos.remoteWslColor
-      )) || '';
-    await extensionContext!.globalState.update(
+    const settingValue = extensionContext!.globalState.get<string>(
       peacockRemoteMementos.remoteWslColor,
-      null
+      ''
     );
 
-    stub.restore();
-
-    assert(isValidColorInput(settingValue));
+    // assert(isValidColorInput(settingValue));
+    console.log('settingValue');
+    console.log(settingValue);
     assert(settingValue === azureBlue);
   });
 
   test('can set color setting for Remote SSH', async () => {
-    // Stub the async quick pick to return a response
-    // change to blue
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
-
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteSsh
     );
 
-    const settingValue =
-      (await extensionContext!.globalState.get<string>(
-        peacockRemoteMementos.remoteSshColor
-      )) || '';
-    await extensionContext!.globalState.update(
+    const settingValue = extensionContext!.globalState.get<string>(
       peacockRemoteMementos.remoteSshColor,
-      null
+      ''
     );
-
-    stub.restore();
 
     assert(isValidColorInput(settingValue));
     assert(settingValue === azureBlue);
   });
 
   test('can set color setting for Remote Containers', async () => {
-    // Stub the async quick pick to return a response
-    // change to blue
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
-
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteContainers
     );
 
-    const settingValue =
-      (await extensionContext!.globalState.get<string>(
-        peacockRemoteMementos.remoteContainersColor
-      )) || '';
-    await extensionContext!.globalState.update(
+    const settingValue = extensionContext!.globalState.get<string>(
       peacockRemoteMementos.remoteContainersColor,
-      null
+      ''
     );
-
-    stub.restore();
 
     assert(isValidColorInput(settingValue));
     assert(settingValue === azureBlue);
   });
 
   test('Workspace color is updated when in Remote Containers context.', async () => {
-    const getRemoteNameStub = sinon
+    const remoteNameStub = sinon
       .stub(vscode.env, 'remoteName')
       .value(RemoteNames.devContainer);
 
-    // change to blue
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
-
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteContainers
     );
-    stub.restore();
-    getRemoteNameStub.restore();
+
+    remoteNameStub.restore();
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
-
-    await extensionContext!.globalState.update(
-      peacockRemoteMementos.remoteContainersColor,
-      null
-    );
 
     assert(isValidColorInput(value));
     assert(value === azureBlue);
   });
 
   test('Workspace color is updated when in Remote WSL context.', async () => {
-    const getRemoteNameStub = sinon.stub(vscode.env, 'remoteName').value('wsl');
+    const remoteNameStub = sinon
+      .stub(vscode.env, 'remoteName')
+      .value(RemoteNames.wsl);
 
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
-
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteWsl
     );
-    stub.restore();
-    getRemoteNameStub.restore();
+
+    remoteNameStub.restore();
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    await extensionContext!.globalState.update(
-      peacockRemoteMementos.remoteContainersColor,
-      null
-    );
-
     assert(isValidColorInput(value));
-    assert(value === color);
+    assert(value === azureBlue);
   });
 
   test('Workspace color is updated when in Remote SSH context.', async () => {
-    const remoteName = sinon.stub(vscode.env, 'remoteName').value('ssh-remote');
+    const remoteNameStub = sinon
+      .stub(vscode.env, 'remoteName')
+      .value(RemoteNames.sshRemote);
 
-    const color = '#007fff';
-    const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
-
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteSsh
     );
-    stub.restore();
-    remoteName.restore();
+
+    remoteNameStub.restore();
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    await extensionContext!.globalState.update(
-      peacockRemoteMementos.remoteContainersColor,
-      null
-    );
-
     assert(isValidColorInput(value));
-    assert(value === color);
+    assert(value === azureBlue);
   });
 
   test('Workspace color is reverted when not in a remote context.', async () => {
@@ -206,38 +150,18 @@ suite('Remote Integration', () => {
       .stub(vscode.env, 'remoteName')
       .value(undefined);
 
-    // change to blue
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
-    const stub = await sinon
-      .stub(vscode.window, 'showQuickPick')
-      .returns(Promise.resolve<any>(fakeResponse));
-
-    const extensionContext = await executeCommand<vscode.ExtensionContext>(
+    await executeCommand<vscode.ExtensionContext>(
       RemoteCommands.changeColorOfRemoteContainers
     );
-    stub.restore();
+
     remoteNameStub.restore();
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    await extensionContext!.globalState.update(
-      peacockRemoteMementos.remoteContainersColor,
-      null
-    );
-
     // we should be back to green
     assert(isValidColorInput(value));
     assert(value !== azureBlue);
     assert(value === peacockGreen);
-  });
-
-  test('saved memento is retrieved', async () => {
-    const color = getCurrentColorBeforeAdjustments();
-    const ec = await executeCommand<vscode.ExtensionContext>(
-      RemoteCommands.changeColorOfRemoteContainers
-    );
-    let memento = ec!.globalState.get(peacockMementos.peacockColor);
-    assert.equal(memento, color);
   });
 });
