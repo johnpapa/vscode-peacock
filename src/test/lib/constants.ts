@@ -4,7 +4,7 @@ import {
   IPeacockElementAdjustments
 } from '../../models';
 
-export const executeCommand = vscode.commands.executeCommand<vscode.ExtensionContext>;
+export const executeCommand = vscode.commands.executeCommand;
 
 export const timeout = async (ms = 200) =>
   new Promise(resolve => setTimeout(resolve, ms));
