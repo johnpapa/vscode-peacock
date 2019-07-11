@@ -1,4 +1,5 @@
 import * as tinycolor from 'tinycolor2';
+
 import {
   ColorAdjustment,
   ReadabilityRatios,
@@ -7,7 +8,8 @@ import {
   State,
   ColorAdjustmentOptions,
   defaultAmountToDarkenLighten,
-  defaultSaturation
+  defaultSaturation,
+  extensionShortName
 } from './models';
 import {
   prepareColors,
@@ -16,6 +18,8 @@ import {
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride
 } from './configuration';
+import { Logger } from './logging';
+import { savePeacockColorMemento } from './mementos';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -168,7 +172,12 @@ function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
 
-export async function changeColor(input = '') {
+export async function changeColor(input: string, primaryEnvironment = true) {
+  // if the color input is blank, get out
+  if (!isValidColorInput(input)) {
+    return;
+  }
+
   const backgroundHex = getBackgroundColorHex(input);
   State.recentColor = backgroundHex;
 
@@ -187,10 +196,19 @@ export async function changeColor(input = '') {
   };
 
   await updateWorkspaceConfiguration(colorCustomizations);
-  // For testing
-  // vscode.window.showInformationMessage(
-  //   `Peacock is now using ${state.recentColor}`
-  // );
+
+  Logger.info(
+    `${extensionShortName}: Peacock is now using ${State.recentColor}`
+  );
+
+  if (primaryEnvironment) {
+    //} && !vscode.env.remoteName) {
+    // Save the recent color to the memento
+    // only if we're changing Peacock color,
+    // but not remote or other secondary colors
+    savePeacockColorMemento(State.recentColor);
+  }
+
   return backgroundHex;
 }
 

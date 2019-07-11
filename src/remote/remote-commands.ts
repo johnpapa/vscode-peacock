@@ -2,15 +2,12 @@ import { commands, ExtensionContext } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
-import {
-  remoteContainersColorMementoName,
-  remoteSshColorMementoName,
-  remoteWslColorMementoName
-} from './constants';
-import { RemoteCommands } from './enums';
+import { peacockRemoteMementos } from './constants';
+import { RemoteCommands, RemoteNames } from './enums';
 import { revertRemoteWorkspaceColors, refreshRemoteColor } from './integration';
-import { extensionContext } from './extension-context';
+import { extensionContext } from '../extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
+import { saveGlobalMemento } from '../mementos';
 
 // Returning the extension context is used by the tests, so that they have a way to access it
 async function changeColorForMemento(
@@ -22,7 +19,7 @@ async function changeColorForMemento(
 
   if (isValidColorInput(input)) {
     if (mementoName) {
-      await extensionContext.globalState.update(mementoName, input);
+      await saveGlobalMemento(mementoName, input);
     }
   }
   const isRefreshed = await refreshRemoteColor(remoteName);
@@ -34,24 +31,30 @@ async function changeColorForMemento(
     return extensionContext;
   }
   // if there was a color set prior to color picker,
-  //set that color back
+  // set that color back
   await changeColor(startingColor);
   return extensionContext;
 }
 
 async function changeRemoteContainersColor(): Promise<ExtensionContext> {
   return changeColorForMemento(
-    remoteContainersColorMementoName,
-    'dev-container'
+    peacockRemoteMementos.remoteContainersColor,
+    RemoteNames.devContainer
   );
 }
 
 async function changeRemoteWslColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(remoteWslColorMementoName, 'wsl');
+  return changeColorForMemento(
+    peacockRemoteMementos.remoteWslColor,
+    RemoteNames.wsl
+  );
 }
 
 async function changeRemoteSshColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(remoteSshColorMementoName, 'ssh-remote');
+  return changeColorForMemento(
+    peacockRemoteMementos.remoteSshColor,
+    RemoteNames.sshRemote
+  );
 }
 
 export function registerRemoteIntegrationCommands() {
@@ -70,10 +73,7 @@ export function registerRemoteIntegrationCommands() {
 }
 
 export async function resetRemotePreviousColors() {
-  await extensionContext.globalState.update(
-    remoteContainersColorMementoName,
-    null
-  );
-  await extensionContext.globalState.update(remoteSshColorMementoName, null);
-  await extensionContext.globalState.update(remoteWslColorMementoName, null);
+  await saveGlobalMemento(peacockRemoteMementos.remoteContainersColor, null);
+  await saveGlobalMemento(peacockRemoteMementos.remoteSshColor, null);
+  await saveGlobalMemento(peacockRemoteMementos.remoteWslColor, null);
 }

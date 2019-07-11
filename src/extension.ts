@@ -29,25 +29,34 @@ import { changeColor } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
+import {
+  saveFavoritesVersionMemento,
+  getFavoritesVersionMemento
+} from './mementos';
+import { setExtensionContext, extensionContext } from './extension-context';
 
 const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
-  console.log('Extension "vscode-peacock" is now active!');
+  Logger.info(
+    `${extensionShortName}: Extension "vscode-peacock" is now active!`
+  );
+
+  setExtensionContext(context);
 
   registerCommands();
-  addSubscriptions(context);
-  await initializeTheStarterSetOfFavorites(context);
+  addSubscriptions();
+  await initializeTheStarterSetOfFavorites();
   await applyInitialConfiguration();
 
-  addLiveShareIntegration(context);
-  addRemoteIntegration(context);
+  addLiveShareIntegration();
+  addRemoteIntegration();
 }
 
-function addSubscriptions(context: vscode.ExtensionContext) {
-  context.subscriptions.push(Logger.getChannel());
+function addSubscriptions() {
+  extensionContext.subscriptions.push(Logger.getChannel());
 
-  context.subscriptions.push(
+  extensionContext.subscriptions.push(
     workspace.onDidChangeConfiguration(applyPeacock())
   );
 }
@@ -56,7 +65,7 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
       Logger.info(
-        `Configuration changed. Changing the color to most recently selected color: ${
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${
           State.recentColor
         }`
       );
@@ -105,19 +114,18 @@ export async function applyInitialConfiguration() {
 }
 
 export function deactivate() {
-  console.log('Extension "vscode-peacock" is now deactive');
+  Logger.info(
+    `${extensionShortName}: Extension "vscode-peacock" is now deactive`
+  );
 }
 
-async function initializeTheStarterSetOfFavorites(
-  context: vscode.ExtensionContext
-) {
+async function initializeTheStarterSetOfFavorites() {
   let extension = getExtension();
   let version = extension ? extension.packageJSON.version : '';
-  const key = `${extensionShortName}.starterSetOfFavoritesVersion`;
-  let starterSetOfFavoritesVersion = context.globalState.get(key, undefined);
+  let starterSetOfFavoritesVersion = getFavoritesVersionMemento();
 
   if (starterSetOfFavoritesVersion !== version) {
-    context.globalState.update(key, version);
+    saveFavoritesVersionMemento(version);
     await writeRecommendedFavoriteColors();
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;

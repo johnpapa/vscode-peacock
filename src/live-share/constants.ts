@@ -1,2 +1,6 @@
-export const vslsShareColorMementoName = 'peacock.vsls.share.color';
-export const vslsJoinColorMementoName = 'peacock.vsls.join.color';
+import { extensionShortName } from '../models';
+
+export const peacockVslsMementos = {
+  vslsShareColor: `${extensionShortName}.vsls.share.color`,
+  vslsJoinColor: `${extensionShortName}.vsls.join.color`
+};

@@ -12,6 +12,22 @@ Features
   - added `Change Remote Color (WSL)` to commands. Prompts user to select a color for the WSL remote context from the Favorites
 - added tests for remote features
 
+Refactoring
+
+- Created a `mementos.ts` file with mento functions for getting and saving mementos. This consolidates some of the code Peacock has
+- Created constants for the peacock core mementos, the vsls mementos, and the remote mementos. Each are in their respective folders and modules
+- Created a npm script for `test-all` which compiles and tests all 3 main test groups. Note that that CI only runs the npm script for `test` which covers the core tests only due to remote and vsls not working under test in CI currently
+  - core peacock tests (currently 83)
+  - peacock vsls tests (currently 8)
+  - peacock remote tests (currently 7)
+- Recent Color State vs Peacock Color Memento
+  - Recent Color is the most recently used color.
+  - If you want the original Peacock color, then use getPeacockColorMemento() in mementos.ts
+  - Example:
+    - Peacock may be using #fff and Peacock Remote is using #000.
+    - When using remote, recent color may represent
+    - the remote color #000 while the memento will always be the original #fff
+
 ## 2.4.0
 
 Features
