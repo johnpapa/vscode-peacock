@@ -23,6 +23,7 @@ import {
 
 import { resetLiveSharePreviousColors } from './live-share';
 import { resetRemotePreviousColors } from './remote';
+import { resetMementos } from './mementos';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -31,10 +32,12 @@ export async function resetColorsHandler() {
     ? undefined
     : colorCustomizations;
 
-  resetLiveSharePreviousColors();
-  resetRemotePreviousColors();
+  await resetLiveSharePreviousColors();
+  await resetRemotePreviousColors();
+  await resetMementos();
 
-  return await updateWorkspaceConfiguration(newColorCustomizations);
+  await updateWorkspaceConfiguration(newColorCustomizations);
+  return State.extensionContext;
 }
 
 export async function saveColorToFavoritesHandler() {
@@ -43,7 +46,8 @@ export async function saveColorToFavoritesHandler() {
   if (!name) {
     return;
   }
-  return await addNewFavoriteColor(name, color);
+  await addNewFavoriteColor(name, color);
+  return State.extensionContext;
 }
 
 export async function enterColorHandler(color?: string) {
@@ -54,19 +58,23 @@ export async function enterColorHandler(color?: string) {
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
-  return await changeColor(input);
+  await changeColor(input);
+  return State.extensionContext;
 }
 
 export async function changeColorToRandomHandler() {
-  return await changeColor(getRandomColorHex());
+  await changeColor(getRandomColorHex());
+  return State.extensionContext;
 }
 
 export async function addRecommendedFavoritesHandler() {
   await writeRecommendedFavoriteColors();
+  return State.extensionContext;
 }
 
 export async function changeColorToPeacockGreenHandler() {
-  return await changeColor(peacockGreen);
+  await changeColor(peacockGreen);
+  return State.extensionContext;
 }
 
 export async function changeColorToFavoriteHandler() {
@@ -74,6 +82,7 @@ export async function changeColorToFavoriteHandler() {
   if (isValidColorInput(input)) {
     await changeColor(input);
   }
+  return State.extensionContext;
 }
 
 export async function darkenHandler() {
@@ -81,6 +90,7 @@ export async function darkenHandler() {
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
   await changeColor(darkenedColor);
+  return State.extensionContext;
 }
 
 export async function lightenHandler() {
@@ -88,6 +98,7 @@ export async function lightenHandler() {
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
   await changeColor(lightenedColor);
+  return State.extensionContext;
 }
 
 function isObjectEmpty(o: {}) {
