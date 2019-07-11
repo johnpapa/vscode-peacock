@@ -49,8 +49,8 @@ export async function activate(context: vscode.ExtensionContext) {
   await initializeTheStarterSetOfFavorites();
   await applyInitialConfiguration();
 
-  addLiveShareIntegration();
-  addRemoteIntegration();
+  await addLiveShareIntegration();
+  await addRemoteIntegration();
 }
 
 function addSubscriptions() {
