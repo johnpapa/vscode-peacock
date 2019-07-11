@@ -14,7 +14,7 @@ Features
 
 Refactoring
 
-- Created a `mementos.ts` file with mento functions for getting and saving mementos. This consolidates some of the code Peacock has
+- Created a `mementos.ts` file with mento functions for getting and saving mementos. This consolidates some of the code Peacock has for mementos
 - Created constants for the peacock core mementos, the vsls mementos, and the remote mementos. Each are in their respective folders and modules
 - Created a npm script for `test-all` which compiles and tests all 3 main test groups. Note that that CI only runs the npm script for `test` which covers the core tests only due to remote and vsls not working under test in CI currently
   - core peacock tests (currently 83)
@@ -27,6 +27,11 @@ Refactoring
     - Peacock may be using #fff and Peacock Remote is using #000.
     - When using remote, recent color may represent
     - the remote color #000 while the memento will always be the original #fff
+- Split the setup and teardown calls out to make them easier to read.
+- Fix places where async/await calls were being used incorrectly
+- Created a timeout function constant for use in tests
+- Moved the extension context state to the State static class
+- All commands now return extension context for use in tests
 
 ## 2.4.0
 
