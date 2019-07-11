@@ -3,9 +3,9 @@ import * as vscode from 'vscode';
 import { peacockRemoteMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerRemoteIntegrationCommands } from './remote-commands';
-import { extensionContext } from '../extension-context';
 import { RemoteNames } from './enums';
 import { getPeacockColorMemento } from '../mementos';
+import { State } from '../models';
 
 export function remoteMementoName(): string | undefined {
   let mementoName = undefined;
@@ -38,7 +38,7 @@ async function getRemoteColor() {
   if (!mementoName) {
     return;
   }
-  return await extensionContext.globalState.get<string>(mementoName);
+  return await State.extensionContext.globalState.get<string>(mementoName);
 }
 
 function remoteExtensionsInstalled(): boolean {
@@ -52,7 +52,9 @@ function remoteExtensionsInstalled(): boolean {
   );
 }
 
-export async function addRemoteIntegration() {
+export async function addRemoteIntegration(context: vscode.ExtensionContext) {
+  State.extensionContext = context;
+
   registerRemoteIntegrationCommands();
 
   const remoteExtensions = remoteExtensionsInstalled();

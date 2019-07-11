@@ -5,9 +5,9 @@ import { isValidColorInput, changeColor } from '../color-library';
 import { peacockRemoteMementos } from './constants';
 import { RemoteCommands, RemoteNames } from './enums';
 import { revertRemoteWorkspaceColors, refreshRemoteColor } from './integration';
-import { extensionContext } from '../extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
 import { saveGlobalMemento } from '../mementos';
+import { State } from '../models';
 
 // Returning the extension context is used by the tests, so that they have a way to access it
 async function changeColorForMemento(
@@ -24,16 +24,16 @@ async function changeColorForMemento(
   }
   const isRefreshed = await refreshRemoteColor(remoteName);
   if (isRefreshed) {
-    return extensionContext;
+    return State.extensionContext;
   }
   if (!startingColor) {
     await revertRemoteWorkspaceColors();
-    return extensionContext;
+    return State.extensionContext;
   }
   // if there was a color set prior to color picker,
   // set that color back
   await changeColor(startingColor);
-  return extensionContext;
+  return State.extensionContext;
 }
 
 async function changeRemoteContainersColor(): Promise<ExtensionContext> {

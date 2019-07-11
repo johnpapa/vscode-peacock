@@ -7,7 +7,8 @@ import {
   ColorSettings,
   Commands,
   peacockGreen,
-  azureBlue
+  azureBlue,
+  peacockMementos
 } from '../../models';
 import {
   setupTestSuite,
@@ -17,7 +18,10 @@ import {
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
 
-import { getPeacockWorkspaceConfig } from '../../configuration';
+import {
+  getPeacockWorkspaceConfig,
+  getCurrentColorBeforeAdjustments
+} from '../../configuration';
 import { peacockRemoteMementos } from '../constants';
 import { RemoteCommands, RemoteNames } from '../enums';
 
@@ -226,5 +230,14 @@ suite('Remote Integration', () => {
     assert(isValidColorInput(value));
     assert(value !== azureBlue);
     assert(value === peacockGreen);
+  });
+
+  test('saved memento is retrieved', async () => {
+    const color = getCurrentColorBeforeAdjustments();
+    const ec = await executeCommand<vscode.ExtensionContext>(
+      RemoteCommands.changeColorOfRemoteContainers
+    );
+    let memento = ec!.globalState.get(peacockMementos.peacockColor);
+    assert.equal(memento, color);
   });
 });

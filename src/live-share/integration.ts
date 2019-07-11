@@ -4,9 +4,8 @@ import * as vscode from 'vscode';
 import { peacockVslsMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
-import { extensionContext } from '../extension-context';
 import { setPeacockColorCustomizations } from '../inputs';
-import { Sections } from '../models';
+import { Sections, State } from '../models';
 
 let peacockColorCustomizations: any;
 
@@ -21,9 +20,9 @@ async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
     ? peacockVslsMementos.vslsShareColor
     : peacockVslsMementos.vslsJoinColor;
 
-  const liveShareColorSetting = await extensionContext.globalState.get<string>(
-    colorSettingName
-  );
+  const liveShareColorSetting = await State.extensionContext.globalState.get<
+    string
+  >(colorSettingName);
   if (!liveShareColorSetting) {
     return;
   }
@@ -53,7 +52,10 @@ export async function refreshLiveShareSessionColor(
 }
 
 export async function addLiveShareIntegration(
+  context: vscode.ExtensionContext
 ) {
+  State.extensionContext = context;
+
   registerLiveShareIntegrationCommands();
 
   const vslsApi = await vsls.getApi();
