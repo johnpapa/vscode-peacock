@@ -3,18 +3,27 @@ import { isValidColorInput } from './color-library';
 import { peacockMementos, extensionShortName } from './models';
 import { Logger } from './logging';
 
-export async function saveMemento(mementoName: string, value: any) {
+export async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
     Logger.info(
-      `${extensionShortName}: Saving the ${mementoName} memento with value ${value}`
+      `${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`
     );
     await extensionContext.globalState.update(mementoName, value);
   }
 }
 
+export async function saveWorkspaceMemento(mementoName: string, value: any) {
+  if (mementoName) {
+    Logger.info(
+      `${extensionShortName}: Saving the workspaceState ${mementoName} memento with value ${value}`
+    );
+    await extensionContext.workspaceState.update(mementoName, value);
+  }
+}
+
 export async function savePeacockColorMemento(color: string) {
   if (isValidColorInput(color)) {
-    await saveMemento(peacockMementos.peacockColor, color);
+    await saveWorkspaceMemento(peacockMementos.peacockColor, color);
   }
 }
 
@@ -26,7 +35,7 @@ export function getPeacockColorMemento() {
 }
 
 export async function saveFavoritesVersionMemento(version: string) {
-  saveMemento(peacockMementos.favoritesVersion, version);
+  saveGlobalMemento(peacockMementos.favoritesVersion, version);
 }
 
 export function getFavoritesVersionMemento() {

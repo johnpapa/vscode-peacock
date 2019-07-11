@@ -10,6 +10,7 @@ import {
 } from './integration';
 import { extensionContext } from '../extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
+import { saveGlobalMemento } from '../mementos';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   return async function changeColorOfLiveShareSession() {
@@ -21,7 +22,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
         ? peacockVslsMementos.vslsShareColor
         : peacockVslsMementos.vslsJoinColor;
 
-      await extensionContext.globalState.update(settingName, input);
+      await saveGlobalMemento(settingName, input);
     }
 
     const isRefreshed = await refreshLiveShareSessionColor(isHost);
@@ -63,12 +64,6 @@ export function registerLiveShareIntegrationCommands() {
 }
 
 export async function resetLiveSharePreviousColors() {
-  await extensionContext.globalState.update(
-    peacockVslsMementos.vslsShareColor,
-    null
-  );
-  await extensionContext.globalState.update(
-    peacockVslsMementos.vslsJoinColor,
-    null
-  );
+  await saveGlobalMemento(peacockVslsMementos.vslsShareColor, null);
+  await saveGlobalMemento(peacockVslsMementos.vslsJoinColor, null);
 }

@@ -7,7 +7,7 @@ import { RemoteCommands, RemoteNames } from './enums';
 import { revertRemoteWorkspaceColors, refreshRemoteColor } from './integration';
 import { extensionContext } from '../extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
-import { saveMemento } from '../mementos';
+import { saveGlobalMemento } from '../mementos';
 
 // Returning the extension context is used by the tests, so that they have a way to access it
 async function changeColorForMemento(
@@ -19,7 +19,7 @@ async function changeColorForMemento(
 
   if (isValidColorInput(input)) {
     if (mementoName) {
-      await saveMemento(mementoName, input);
+      await saveGlobalMemento(mementoName, input);
     }
   }
   const isRefreshed = await refreshRemoteColor(remoteName);
@@ -73,10 +73,10 @@ export function registerRemoteIntegrationCommands() {
 }
 
 export async function resetRemotePreviousColors() {
-  await saveMemento(
+  await saveGlobalMemento(
     peacockRemoteMementos.remoteContainersColor,
     null
   );
-  await saveMemento(peacockRemoteMementos.remoteSshColor, null);
-  await saveMemento(peacockRemoteMementos.remoteWslColor, null);
+  await saveGlobalMemento(peacockRemoteMementos.remoteSshColor, null);
+  await saveGlobalMemento(peacockRemoteMementos.remoteWslColor, null);
 }
