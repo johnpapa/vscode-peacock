@@ -8,9 +8,9 @@ import {
   refreshLiveShareSessionColor,
   revertLiveShareWorkspaceColors
 } from './integration';
-import { extensionContext } from '../extension-context';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
 import { saveGlobalMemento } from '../mementos';
+import { State } from '../models';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   return async function changeColorOfLiveShareSession() {
@@ -28,20 +28,20 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
     const isRefreshed = await refreshLiveShareSessionColor(isHost);
     // we are in the session and have updated the color, so return
     if (isRefreshed) {
-      return extensionContext;
+      return State.extensionContext;
     }
     // if there is was no color prior to the color picker,
     // revert all the color settings
     if (!startingColor) {
       await revertLiveShareWorkspaceColors();
-      return extensionContext;
+      return State.extensionContext;
       // if there was a color set prior to color picker,
       // set that color back
     } else {
       await changeColor(startingColor);
     }
 
-    return extensionContext;
+    return State.extensionContext;
   };
 };
 

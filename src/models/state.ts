@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { Logger } from '../logging';
 import { extensionShortName } from './constants';
 
@@ -26,5 +27,15 @@ export class State {
       this._recentColor
     } to state`;
     Logger.info(msg);
+  }
+
+  private static _extContext: vscode.ExtensionContext;
+
+  public static get extensionContext(): vscode.ExtensionContext {
+    return this._extContext;
+  }
+
+  public static set extensionContext(ec: vscode.ExtensionContext) {
+    this._extContext = ec;
   }
 }

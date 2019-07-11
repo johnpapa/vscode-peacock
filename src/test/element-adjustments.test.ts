@@ -6,7 +6,11 @@ import {
   IPeacockAffectedElementSettings,
   peacockGreen
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import {
   updateElementAdjustments,
   getPeacockWorkspaceConfig,
@@ -22,7 +26,10 @@ import {
 
 suite('Element adjustments', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   const elementAdjustments: IPeacockElementAdjustments = {
     activityBar: 'lighten',

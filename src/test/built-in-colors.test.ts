@@ -6,7 +6,11 @@ import {
   IPeacockSettings,
   peacockGreen
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { isValidColorInput } from '../color-library';
 import {
@@ -17,7 +21,10 @@ import {
 
 suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   test('can set color to Peacock Green', testChangingColorToPeacockGreen());
 
@@ -30,7 +37,10 @@ suite('can set color to built-in color', () => {
   });
 
   suite('when resetting colors', () => {
-    allSetupAndTeardown(originalValues);
+    suiteSetup(async () => await setupTestSuite(originalValues));
+    suiteTeardown(async () => await teardownTestSuite(originalValues));
+    setup(async () => await setupTest());
+
     const extraSettingName = 'activityBar.border';
     const extraSettingValue = '#ff0';
     const extraSetting = { 'activityBar.border': extraSettingValue };

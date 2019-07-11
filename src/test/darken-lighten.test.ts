@@ -4,7 +4,11 @@ import {
   ColorSettings,
   peacockGreen
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import {
   getPeacockWorkspaceConfig,
   getDarkenLightenPercentage
@@ -15,7 +19,11 @@ import { getLightenedColorHex, getDarkenedColorHex } from '../color-library';
 
 suite('Darken/Lighten commands', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
+
   test('can lighten a color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     await executeCommand(Commands.lighten);

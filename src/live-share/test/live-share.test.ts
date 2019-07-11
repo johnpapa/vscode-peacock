@@ -4,7 +4,11 @@ import assert = require('assert');
 import * as vsls from 'vsls';
 
 import { IPeacockSettings, Commands, ColorSettings } from '../../models';
-import { allSetupAndTeardown } from '../../test/lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from '../../test/lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
 import { getPeacockWorkspaceConfig } from '../../configuration';
@@ -19,7 +23,10 @@ const sleepAsync = (delay: number) => {
 
 suite('Live Share Integration', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   test('can set color setting for Live Share host', async () => {
     // Stub the async quick pick to return a response

@@ -1,7 +1,11 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
 import { IPeacockSettings, Commands, ColorSettings } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import { parseFavoriteColorValue } from '../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
@@ -10,7 +14,10 @@ import { getPeacockWorkspaceConfig } from '../configuration';
 
 suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   test('can set color to favorite color', async () => {
     // Stub the async quick pick to return a response
@@ -57,7 +64,7 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-      let config = getPeacockWorkspaceConfig();
+    let config = getPeacockWorkspaceConfig();
     const valueBefore = config[ColorSettings.titleBar_activeBackground];
     await executeCommand(Commands.changeColorToFavorite);
     const value = config[ColorSettings.titleBar_activeBackground];

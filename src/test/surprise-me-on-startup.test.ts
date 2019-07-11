@@ -7,7 +7,11 @@ import {
   IElementColors,
   ElementNames
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
   getOriginalColorsForAllElements,
@@ -18,7 +22,10 @@ import { applyInitialConfiguration } from '../extension';
 
 suite('Surprise me on startup', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   setup(async () => {
     await executeCommand(Commands.resetColors);

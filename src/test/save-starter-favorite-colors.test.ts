@@ -1,6 +1,10 @@
 import * as assert from 'assert';
 import { IPeacockSettings } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import {
   getFavoriteColors,
   writeRecommendedFavoriteColors
@@ -8,7 +12,10 @@ import {
 
 suite('Save starter favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   test('with valid name', async () => {
     // started with:

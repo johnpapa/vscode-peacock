@@ -10,25 +10,36 @@ import {
   AffectedSettings,
   getExtension
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
+import { timeout } from './lib/constants';
 
 suite('Basic Extension Tests', () => {
-  let extension = <vscode.Extension<any>>getExtension();
   let originalValues = <IPeacockSettings>{};
+  let extension: vscode.Extension<any>;
 
-  allSetupAndTeardown(originalValues);
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
-  test('Extension loads in VSCode and is active', done => {
-    // Hopefully a 200ms timeout will allow the extension to activate within Windows
+  suiteSetup(() => {
+    extension = <vscode.Extension<any>>getExtension();
+  });
+
+  test('Extension loads in VSCode and is active', async () => {
+    // Hopefully a timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
+    // let extension = <vscode.Extension<any>>getExtension();
 
-    setTimeout(() => {
-      assert.equal(extension.isActive, true);
-      done();
-    }, 200);
+    await timeout(2000);
+    assert.equal(extension.isActive, true);
   });
 
   test('Commands exist in package.json', () => {
+    // let extension = <vscode.Extension<any>>getExtension();
     const commandCollection: ICommand[] =
       extension.packageJSON.contributes.commands;
     for (let command in Commands) {
@@ -40,6 +51,8 @@ suite('Basic Extension Tests', () => {
   });
 
   test('Settings exist in package.json', () => {
+    // let extension = <vscode.Extension<any>>getExtension();
+
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
@@ -53,6 +66,7 @@ suite('Basic Extension Tests', () => {
   });
 
   test('AffectedSettings exist in package.json', () => {
+    // let extension = <vscode.Extension<any>>getExtension();
     const config: IConfiguration =
       extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
@@ -66,6 +80,8 @@ suite('Basic Extension Tests', () => {
   });
 
   test('package.json commands registered in extension', done => {
+    // let extension = <vscode.Extension<any>>getExtension();
+
     const commandStrings: string[] = extension.packageJSON.contributes.commands.map(
       (c: ICommand) => c.command
     );

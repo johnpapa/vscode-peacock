@@ -8,7 +8,11 @@ import {
   ElementNames,
   IPeacockAffectedElementSettings
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
   updateGlobalConfiguration,
@@ -21,7 +25,10 @@ const delayInMs = 500;
 
 suite('changes to configuration', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   setup(async () => {
     // This suite's tests flips these switches a lot,
