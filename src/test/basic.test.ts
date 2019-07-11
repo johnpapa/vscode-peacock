@@ -10,13 +10,19 @@ import {
   AffectedSettings,
   getExtension
 } from '../models';
-import { allSetupAndTeardown } from './lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest
+} from './lib/setup-teardown-test-suite';
 
 suite('Basic Extension Tests', () => {
   let extension = <vscode.Extension<any>>getExtension();
   let originalValues = <IPeacockSettings>{};
 
-  allSetupAndTeardown(originalValues);
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   test('Extension loads in VSCode and is active', done => {
     // Hopefully a 200ms timeout will allow the extension to activate within Windows

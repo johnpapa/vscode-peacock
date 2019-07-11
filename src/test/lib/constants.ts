@@ -12,6 +12,12 @@ export const noopElementAdjustments = <IPeacockElementAdjustments>{
   titleBar: 'none'
 };
 
+export const lightenActivityBarElementAdjustments = <IPeacockElementAdjustments>{
+  activityBar: 'lighten',
+  statusBar: 'none',
+  titleBar: 'none'
+};
+
 export const allAffectedElements = <IPeacockAffectedElementSettings>{
   statusBar: true,
   activityBar: true,

@@ -10,8 +10,9 @@ import {
   azureBlue
 } from '../../models';
 import {
-  allSetupAndTeardown,
-  setupTestSuite
+  setupTestSuite,
+  setupTest,
+  teardownTestSuite
 } from '../../test/lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from '../../test/lib/constants';
@@ -19,16 +20,13 @@ import { executeCommand } from '../../test/lib/constants';
 import { getPeacockWorkspaceConfig } from '../../configuration';
 import { peacockRemoteMementos } from '../constants';
 import { RemoteCommands, RemoteNames } from '../enums';
-import {
-  getPeacockColorMemento,
-  savePeacockColorMemento
-} from '../../mementos';
-
-let colorMemento: string;
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
-  allSetupAndTeardown(originalValues);
+
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => await setupTest());
 
   setup(async () => {
     // Start with green

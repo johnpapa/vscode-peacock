@@ -24,13 +24,17 @@ import {
 import { noopElementAdjustments, executeCommand } from './constants';
 
 export function allSetupAndTeardown(originalValues: IPeacockSettings) {
-  suiteSetup(async () => {
-    await setupTestSuite(originalValues);
-  });
-  suiteTeardown(() => teardownTestSuite(originalValues));
-  setup(async () => {
-    await executeCommand(Commands.resetColors);
-  });
+  // suiteSetup(async () => {
+  //   await setupTestSuite(originalValues);
+  // });
+  // suiteTeardown(() => teardownTestSuite(originalValues));
+  // setup(async () => {
+  //   await executeCommand(Commands.resetColors);
+  // });
+}
+
+export async function setupTest() {
+  await executeCommand(Commands.resetColors);
 }
 
 export async function setupTestSuite(
