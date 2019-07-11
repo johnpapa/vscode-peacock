@@ -24,7 +24,7 @@ export function remoteMementoName(): string | undefined {
 }
 
 async function setRemoteWorkspaceColors() {
-  const remoteColorSetting = await getRemoteColor();
+  const remoteColorSetting = getRemoteColor();
   if (!remoteColorSetting) {
     return;
   }
@@ -32,13 +32,13 @@ async function setRemoteWorkspaceColors() {
   await changeColor(remoteColorSetting, false);
 }
 
-async function getRemoteColor() {
+export function getRemoteColor() {
   let mementoName = remoteMementoName();
 
   if (!mementoName) {
     return;
   }
-  return await State.extensionContext.globalState.get<string>(mementoName);
+  return State.extensionContext.globalState.get<string>(mementoName);
 }
 
 function remoteExtensionsInstalled(): boolean {
