@@ -15,6 +15,7 @@ import {
   teardownTestSuite,
   setupTest
 } from './lib/setup-teardown-test-suite';
+import { timeout } from './lib/constants';
 
 suite('Basic Extension Tests', () => {
   let extension = <vscode.Extension<any>>getExtension();
@@ -24,14 +25,12 @@ suite('Basic Extension Tests', () => {
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
 
-  test('Extension loads in VSCode and is active', done => {
+  test('Extension loads in VSCode and is active', async () => {
     // Hopefully a timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
 
-    setTimeout(() => {
-      assert.equal(extension.isActive, true);
-      done();
-    }, 200);
+    await timeout(1000);
+    assert.equal(extension.isActive, true);
   });
 
   test('Commands exist in package.json', () => {

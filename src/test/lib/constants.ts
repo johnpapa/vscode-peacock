@@ -4,7 +4,10 @@ import {
   IPeacockElementAdjustments
 } from '../../models';
 
-export const executeCommand = vscode.commands.executeCommand;
+export const executeCommand = vscode.commands.executeCommand<vscode.ExtensionContext>;
+
+export const timeout = async (ms = 200) =>
+  new Promise(resolve => setTimeout(resolve, ms));
 
 export const noopElementAdjustments = <IPeacockElementAdjustments>{
   activityBar: 'none',
@@ -12,7 +15,9 @@ export const noopElementAdjustments = <IPeacockElementAdjustments>{
   titleBar: 'none'
 };
 
-export const lightenActivityBarElementAdjustments = <IPeacockElementAdjustments>{
+export const lightenActivityBarElementAdjustments = <
+  IPeacockElementAdjustments
+>{
   activityBar: 'lighten',
   statusBar: 'none',
   titleBar: 'none'
