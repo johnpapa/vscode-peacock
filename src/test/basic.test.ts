@@ -25,7 +25,7 @@ suite('Basic Extension Tests', () => {
   setup(async () => await setupTest());
 
   test('Extension loads in VSCode and is active', done => {
-    // Hopefully a 200ms timeout will allow the extension to activate within Windows
+    // Hopefully a timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
 
     setTimeout(() => {
