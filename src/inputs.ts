@@ -4,7 +4,7 @@ import {
   getFavoriteColors,
   getCurrentColorBeforeAdjustments
 } from './configuration';
-import { changeColor } from './color-library';
+import { changeColor, isValidColorInput } from './color-library';
 
 export async function setPeacockColorCustomizations(colorCustomizations: any) {
   await vscode.workspace
@@ -58,14 +58,14 @@ export async function promptForFavoriteColor() {
     return selectedColor || '';
   }
 
-  if (startingColor) {
+  if (isValidColorInput(startingColor)) {
     // when there is no selection and startingColor, revert to starting color
     await changeColor(startingColor);
   } else {
     // if no color was previously set, reset the current color to `null`
     await setPeacockColorCustomizations(null);
   }
-  
+
   return '';
 }
 
