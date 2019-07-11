@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { IPeacockSettings, Commands, peacockMementos } from '../models';
+import { IPeacockSettings, Commands, peacockMementos, State } from '../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -16,6 +16,87 @@ suite('Mementos', () => {
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
+
+  let mementos: any;
+
+  suiteSetup(() => {
+    // Save the mementos
+
+    const ec = State.extensionContext;
+
+    // Global
+    mementos[peacockMementos.favoritesVersion] = ec!.globalState.get(
+      peacockMementos.favoritesVersion
+    );
+
+    mementos[peacockVslsMementos.vslsJoinColor] = ec!.globalState.get(
+      peacockVslsMementos.vslsJoinColor
+    );
+
+    mementos[peacockVslsMementos.vslsShareColor] = ec!.globalState.get(
+      peacockVslsMementos.vslsShareColor
+    );
+
+    mementos[peacockRemoteMementos.remoteContainersColor] = ec!.globalState.get(
+      peacockRemoteMementos.remoteContainersColor
+    );
+
+    mementos[peacockRemoteMementos.remoteSshColor] = ec!.globalState.get(
+      peacockRemoteMementos.remoteSshColor
+    );
+
+    mementos[peacockRemoteMementos.remoteWslColor] = ec!.globalState.get(
+      peacockRemoteMementos.remoteWslColor
+    );
+
+    // Workspace
+    mementos[peacockMementos.peacockColor] = ec!.globalState.get(
+      peacockMementos.peacockColor
+    );
+  });
+
+  suiteTeardown(async () => {
+    // Put back the mementos
+
+    const ec = State.extensionContext;
+
+    // Global
+    await ec!.globalState.update(
+      peacockMementos.favoritesVersion,
+      mementos[peacockMementos.favoritesVersion]
+    );
+
+    await ec!.globalState.update(
+      peacockVslsMementos.vslsJoinColor,
+      mementos[peacockVslsMementos.vslsJoinColor]
+    );
+
+    await ec!.globalState.update(
+      peacockVslsMementos.vslsShareColor,
+      mementos[peacockVslsMementos.vslsShareColor]
+    );
+
+    await ec!.globalState.update(
+      peacockRemoteMementos.remoteContainersColor,
+      mementos[peacockRemoteMementos.remoteContainersColor]
+    );
+
+    await ec!.globalState.update(
+      peacockRemoteMementos.remoteSshColor,
+      mementos[peacockRemoteMementos.remoteSshColor]
+    );
+
+    await ec!.globalState.update(
+      peacockRemoteMementos.remoteWslColor,
+      mementos[peacockRemoteMementos.remoteWslColor]
+    );
+
+    // Workspace
+    await ec!.globalState.update(
+      peacockMementos.peacockColor,
+      mementos[peacockMementos.peacockColor]
+    );
+  });
 
   test('resetting mementos makes them undefined', async () => {
     const ec = await executeCommand<ExtensionContext>(Commands.resetColors);
