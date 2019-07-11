@@ -38,7 +38,9 @@ import { setExtensionContext, extensionContext } from './extension-context';
 const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
-  Logger.info('Extension "vscode-peacock" is now active!');
+  Logger.info(
+    `${extensionShortName}: Extension "vscode-peacock" is now active!`
+  );
 
   setExtensionContext(context);
 
@@ -63,7 +65,7 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
       Logger.info(
-        `Configuration changed. Changing the color to most recently selected color: ${
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${
           State.recentColor
         }`
       );
@@ -112,7 +114,9 @@ export async function applyInitialConfiguration() {
 }
 
 export function deactivate() {
-  Logger.info('Extension "vscode-peacock" is now deactive');
+  Logger.info(
+    `${extensionShortName}: Extension "vscode-peacock" is now deactive`
+  );
 }
 
 async function initializeTheStarterSetOfFavorites() {

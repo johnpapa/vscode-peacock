@@ -1,12 +1,13 @@
 import { extensionContext } from './extension-context';
 import { isValidColorInput } from './color-library';
-import { peacockMementos } from './models';
+import { peacockMementos, extensionShortName } from './models';
 import { Logger } from './logging';
 
 export async function saveMemento(mementoName: string, value: any) {
   if (mementoName) {
-    const message = `Saving the ${mementoName} memento with value ${value}`;
-    Logger.info(message);
+    Logger.info(
+      `${extensionShortName}: Saving the ${mementoName} memento with value ${value}`
+    );
     await extensionContext.globalState.update(mementoName, value);
   }
 }

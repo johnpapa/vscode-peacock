@@ -75,8 +75,10 @@ export async function updateGlobalConfiguration<T>(
 ) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${setting}`;
-  Logger.info('Updating the user settings with the following changes:');
-  Logger.info(`${section} = ${value}`, true);
+  Logger.info(
+    `${extensionShortName}: Updating the user settings with the following changes:`
+  );
+  Logger.info(`${extensionShortName}: ${section} = ${value}`, true);
   return await config.update(section, value, vscode.ConfigurationTarget.Global);
 }
 
@@ -117,7 +119,9 @@ export function prepareColors(backgroundHex: string) {
 export async function updateWorkspaceConfiguration(
   colorCustomizations: {} | undefined
 ) {
-  Logger.info('Updating the workspace with the following color customizations');
+  Logger.info(
+    `${extensionShortName}: Updating the workspace with the following color customizations`
+  );
   Logger.info(colorCustomizations, true);
   return await workspace
     .getConfiguration()

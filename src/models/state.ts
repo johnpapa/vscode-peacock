@@ -1,4 +1,5 @@
 import { Logger } from '../logging';
+import { extensionShortName } from './constants';
 
 export class State {
   /**
@@ -21,9 +22,9 @@ export class State {
 
   public static set recentColor(v: string) {
     this._recentColor = v;
-    const message = `Saving the most recently used color ${
+    const msg = `${extensionShortName}: Saving the most recently used color ${
       this._recentColor
     } to state`;
-    Logger.info(message);
+    Logger.info(msg);
   }
 }
