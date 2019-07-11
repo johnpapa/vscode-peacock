@@ -12,6 +12,10 @@ Features
   - added `Change Remote Color (WSL)` to commands. Prompts user to select a color for the WSL remote context from the Favorites
 - added tests for remote features
 
+Security
+
+- Bumped lodash version https://github.com/johnpapa/vscode-peacock/pull/195
+
 Refactoring
 
 - Created a `mementos.ts` file with mento functions for getting and saving mementos. This consolidates some of the code Peacock has for mementos
