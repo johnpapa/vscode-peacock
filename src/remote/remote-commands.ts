@@ -73,10 +73,7 @@ export function registerRemoteIntegrationCommands() {
 }
 
 export async function resetRemotePreviousColors() {
-  await saveGlobalMemento(
-    peacockRemoteMementos.remoteContainersColor,
-    null
-  );
+  await saveGlobalMemento(peacockRemoteMementos.remoteContainersColor, null);
   await saveGlobalMemento(peacockRemoteMementos.remoteSshColor, null);
   await saveGlobalMemento(peacockRemoteMementos.remoteWslColor, null);
 }
