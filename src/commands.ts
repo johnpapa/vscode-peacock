@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import {
   isValidColorInput,
   getRandomColorHex,
@@ -66,9 +67,18 @@ export async function enterColorHandler(color?: string) {
 
 export async function changeColorToRandomHandler() {
   let surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
-  let color = surpriseMeFromFavoritesOnly
-    ? getRandomFavoriteColor().value
-    : getRandomColorHex();
+  let color = '';
+
+  if (surpriseMeFromFavoritesOnly) {
+    const o = getRandomFavoriteColor();
+    if (!o) {
+      const msg = `No favorites exist. Add some favorites if you want to use the surprise me from favorites feature`;
+      vscode.window.showInformationMessage(msg);
+      return State.extensionContext;
+    }
+  }
+
+  color = getRandomColorHex();
   await changeColor(color);
   return State.extensionContext;
 }

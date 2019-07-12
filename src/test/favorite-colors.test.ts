@@ -1,6 +1,6 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
-import { IPeacockSettings, Commands, ColorSettings } from '../models';
+import { IPeacockSettings, Commands } from '../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -10,9 +10,13 @@ import { parseFavoriteColorValue } from '../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../color-library';
 import { executeCommand } from './lib/constants';
-import { getPeacockWorkspaceConfig } from '../configuration';
+import {
+  getFavoriteColors,
+  updateFavoriteColors,
+  getCurrentColorBeforeAdjustments
+} from '../configuration';
 
-suite('Favorite colors', () => {
+suite.only('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -27,14 +31,13 @@ suite('Favorite colors', () => {
       .returns(Promise.resolve<any>(fakeResponse));
 
     await executeCommand(Commands.changeColorToFavorite);
-    let config = getPeacockWorkspaceConfig();
-    const value = config[ColorSettings.titleBar_activeBackground];
+    const color = getCurrentColorBeforeAdjustments();
     stub.restore();
 
     const parsedResponse = parseFavoriteColorValue(fakeResponse);
 
-    assert.ok(isValidColorInput(value));
-    assert.ok(value === parsedResponse);
+    assert.ok(isValidColorInput(color));
+    assert.ok(color === parsedResponse);
   });
 
   test('set to favorite color with no preferences is a noop', async () => {
@@ -47,11 +50,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    let config = getPeacockWorkspaceConfig();
-    const valueBefore = config[ColorSettings.titleBar_activeBackground];
-
+    const valueBefore = getCurrentColorBeforeAdjustments();
     await executeCommand(Commands.changeColorToFavorite);
-    const valueAfter = config[ColorSettings.titleBar_activeBackground];
+    const valueAfter = getCurrentColorBeforeAdjustments();
     stub.restore();
 
     assert.ok(valueBefore === valueAfter);
@@ -64,13 +65,44 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    let config = getPeacockWorkspaceConfig();
-    const valueBefore = config[ColorSettings.titleBar_activeBackground];
+    const colorBefore = getCurrentColorBeforeAdjustments();
     await executeCommand(Commands.changeColorToFavorite);
-    const value = config[ColorSettings.titleBar_activeBackground];
+    const colorAfter = getCurrentColorBeforeAdjustments();
     stub.restore();
 
-    assert.ok(!isValidColorInput(value));
-    assert.ok(value === valueBefore);
+    assert.ok(!isValidColorInput(colorAfter));
+    assert.ok(colorAfter === colorBefore);
+  });
+
+  test('set to favorite color is noop when there are no favorites ', async () => {
+    // set the color to peacock green to start
+    await executeCommand(Commands.changeColorToPeacockGreen);
+
+    // Stub the async quick pick to return a response
+    const fakeResponse = '';
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
+
+    // Save favorites
+    const { values: favoriteColors } = getFavoriteColors();
+    originalValues.favoriteColors = favoriteColors;
+    // Remove favorites
+    await updateFavoriteColors([]);
+
+    const colorBefore = getCurrentColorBeforeAdjustments();
+    await executeCommand(Commands.changeColorToFavorite);
+    const colorAfter = getCurrentColorBeforeAdjustments();
+    stub.restore();
+
+    // Put back original favorites
+    await updateFavoriteColors(originalValues.favoriteColors);
+
+    assert.ok(colorBefore && colorAfter);
+    assert.ok(
+      isValidColorInput(colorAfter),
+      `${colorAfter} is not a valid color`
+    );
+    assert.ok(colorBefore === colorAfter);
   });
 });

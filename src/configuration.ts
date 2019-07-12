@@ -86,11 +86,9 @@ export async function updateGlobalConfiguration<T>(
   Logger.info(
     `${extensionShortName}: Updating the user settings with the following changes:`
   );
-  if (value && value.length) {
+  if (value && Array.isArray(value) && value.length > 0) {
     Logger.info(`${extensionShortName}:  ${section}`, true);
-    value.map((item: any) => {
-      Logger.info(item, true);
-    });
+    value.forEach((item: any) => Logger.info(item, true));
   } else {
     Logger.info(`${extensionShortName}: ${section} = ${value}`, true);
   }

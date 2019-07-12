@@ -39,7 +39,7 @@ const { commands, workspace } = vscode;
 function logMementos() {
   const mementos = getMementos();
   Logger.info(`${extensionShortName}: Mementos`);
-  mementos.map(m => Logger.info(m, true));
+  mementos.forEach(m => Logger.info(m, true));
 }
 
 export async function activate(context: vscode.ExtensionContext) {
