@@ -189,8 +189,12 @@ export function getFavoriteColors() {
 
 export function getRandomFavoriteColor() {
   const { values: favoriteColors } = getFavoriteColors();
-  let randomFavorite =
-    favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
+  const currentColor = getCurrentColorBeforeAdjustments();
+  let randomFavorite: IFavoriteColors;
+  do {
+    randomFavorite =
+      favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
+  } while (favoriteColors.length > 1 && randomFavorite.value === currentColor);
   return randomFavorite;
 }
 

@@ -14,6 +14,7 @@ Features
 - Created a new setting for `surpriseMeFromFavoritesOnly`. Defaults to false for backwards compatibility.
   - When false, a color is chosen purely randomly.
   - When true, a favorite color is selected randomly
+- Added more logging to the output of mementos and favorites
 
 Security
 
@@ -39,6 +40,7 @@ Refactoring
 - Created a timeout function constant for use in tests
 - Moved the extension context state to the State static class
 - All commands now return extension context for use in tests
+- Made getRandomFavoriteColor not return same color as the current color
 
 ## 2.4.0
 
