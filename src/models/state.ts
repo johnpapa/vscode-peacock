@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Logger } from '../logging';
 import { extensionShortName } from './constants';
+import { getExtension } from '.';
 
 export class State {
   /**
@@ -37,5 +38,11 @@ export class State {
 
   public static set extensionContext(ec: vscode.ExtensionContext) {
     this._extContext = ec;
+  }
+
+  public static get extensionVersion(): string {
+    let extension = getExtension();
+    let version = extension ? extension.packageJSON.version : '';
+    return version;
   }
 }

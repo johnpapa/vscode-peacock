@@ -17,7 +17,8 @@ import {
   IElementColors,
   ForegroundColors,
   starterSetOfFavorites,
-  defaultAmountToDarkenLighten
+  defaultAmountToDarkenLighten,
+  State
 } from './models';
 import {
   getAdjustedColorHex,
@@ -276,7 +277,9 @@ export async function addNewFavoriteColor(name: string, value: string) {
 export async function writeRecommendedFavoriteColors(
   overrideFavorites?: IFavoriteColors[]
 ) {
-  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings`;
+  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${
+    State.extensionVersion
+  }`;
   Logger.info(msg);
   vscode.window.showInformationMessage(msg);
 

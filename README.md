@@ -1,13 +1,13 @@
 # Peacock for Visual Studio Code
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-blue.svg?style=flat-square)](#contributors)
 
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT) [![Live Share Badge](https://aka.ms/vsls-badge)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=vscodepeacock-github-jopapa)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/johnpapa/vscode-peacock.svg)](https://greenkeeper.io/) [![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master)
 
-![Peacock Icon](./resources/peacock-icon-small.png 'Peacock') A Visual Studio Code extension that subtly changes the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.
+![Peacock Icon](./resources/peacock-icon-small.png 'Peacock') A Visual Studio Code extension that subtly changes the workspace color of your workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify which is which.
 
 ## Install
 
@@ -310,6 +310,20 @@ Recommended favorites are a list of constants found in `favorites.ts`. These are
 Recommended favorites are a starting point for favorites. They will be installed whenever a new version is installed. They will extend your existing favorites, so feel free to continue to add to your local favorites! However be careful not to change the color of the recommended favorites as they will be overridden when a new version is installed.
 
 This list may change from version to version depending on the Peacock authoring team.
+
+### Mementos
+
+Peacock takes advantage of a series of mementos (values stored between sessions and not in settings). Some are global that affect all VS Code instances on the computer. Some are local to the workspace on the computer.
+
+| Name                                        | Type      | Description                                                                                                             |
+| ------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| peacockMementos.peacockColor                | Workspace | The most recently used Peacock color, but not remote or other secondary colors. Ideal when moving in and out of remote. |
+| peacockMementos.favoritesVersion            | Global    | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings              |
+| peacockVslsMementos.vslsJoinColor           | Global    | VS Live Share's Peacock color when joining a session.                                                                   |
+| peacockVslsMementos.vslsShareColor          | Global    | VS Live Share's Peacock color when sharing a session.                                                                   |
+| peacockRemoteMementos.remoteContainersColor | Global    | Peacock color when in a remote with a container.                                                                        |
+| peacockRemoteMementos.remoteSshColor        | Global    | Peacock color when using remote with ssh.                                                                               |
+| peacockRemoteMementos.remoteWslColor        | Global    | Peacock color when using remote with WSL                                                                                |
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 

@@ -22,24 +22,24 @@ async function saveWorkspaceMemento(mementoName: string, value: any) {
   }
 }
 
-export async function savePeacockColorMemento(color: string) {
+export async function savePeacockColorWorkspaceMemento(color: string) {
   if (isValidColorInput(color)) {
     await saveWorkspaceMemento(peacockMementos.peacockColor, color);
   }
 }
 
-export function getPeacockColorMemento() {
+export function getPeacockColorWorkspaceMemento() {
   return State.extensionContext.workspaceState.get<string>(
     peacockMementos.peacockColor,
     ''
   );
 }
 
-export async function saveFavoritesVersionMemento(version: string) {
+export async function saveFavoritesVersionGlobalMemento(version: string) {
   saveGlobalMemento(peacockMementos.favoritesVersion, version);
 }
 
-export function getFavoritesVersionMemento() {
+export function getFavoritesVersionGlobalMemento() {
   return State.extensionContext.globalState.get<string>(
     peacockMementos.favoritesVersion,
     ''
