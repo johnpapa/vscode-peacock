@@ -156,6 +156,11 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
+        "peacock.surpriseMeFromFavoritesOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should choose a random color from the favorites list or a purely random color."
+        },
         "peacock.keepForegroundColor": {
           "type": "boolean",
           "default": false,

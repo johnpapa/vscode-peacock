@@ -32,6 +32,13 @@ import { Logger } from './logging';
 
 const { workspace } = vscode;
 
+export function getSurpriseMeFromFavoritesOnly() {
+  return readConfiguration<boolean>(
+    StandardSettings.SurpriseMeFromFavoritesOnly,
+    false
+  );
+}
+
 export function getDarkenLightenPercentage() {
   return readConfiguration<number>(
     StandardSettings.DarkenLightenPercentage,
@@ -172,6 +179,13 @@ export function getFavoriteColors() {
   };
 }
 
+export function getRandomFavoriteColor() {
+  const { values: favoriteColors } = getFavoriteColors();
+  let randomFavorite =
+    favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
+  return randomFavorite;
+}
+
 export function getSurpriseMeOnStartup() {
   return readConfiguration<boolean>(
     StandardSettings.SurpriseMeOnStartup,
@@ -242,6 +256,13 @@ export async function updateLightForegroundColor(value: string) {
 export async function updateDarkenLightenPrecentage(value: number) {
   return await updateGlobalConfiguration(
     StandardSettings.DarkenLightenPercentage,
+    value
+  );
+}
+
+export async function updateSurpriseMeFromFavoritesOnly(value: boolean) {
+  return await updateGlobalConfiguration(
+    StandardSettings.SurpriseMeFromFavoritesOnly,
     value
   );
 }
