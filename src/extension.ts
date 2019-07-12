@@ -5,8 +5,7 @@ import {
   Commands,
   State,
   StandardSettings,
-  extensionShortName,
-  getExtension
+  extensionShortName
 } from './models';
 import {
   resetColorsHandler,
@@ -119,12 +118,10 @@ export function deactivate() {
 }
 
 async function initializeTheStarterSetOfFavorites() {
-  let extension = getExtension();
-  let version = extension ? extension.packageJSON.version : '';
   let starterSetOfFavoritesVersion = getFavoritesVersionGlobalMemento();
 
-  if (starterSetOfFavoritesVersion !== version) {
-    saveFavoritesVersionGlobalMemento(version);
+  if (starterSetOfFavoritesVersion !== State.extensionVersion) {
+    saveFavoritesVersionGlobalMemento(State.extensionVersion);
     await writeRecommendedFavoriteColors();
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;
