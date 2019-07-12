@@ -11,6 +11,9 @@ Features
   - added `Change Remote Color (Containers)` to commands. Prompts user to select a color for the Containers remote context from the Favorites
   - added `Change Remote Color (WSL)` to commands. Prompts user to select a color for the WSL remote context from the Favorites
 - added tests for remote features
+- Created a new setting for `surpriseMeFromFavoritesOnly`. Defaults to false for backwards compatibility.
+  - When false, a color is chosen purely randomly.
+  - When true, a favorite color is selected randomly
 
 Security
 

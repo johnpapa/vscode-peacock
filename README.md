@@ -34,18 +34,19 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Settings
 
-| Property                        | Description                                                                                           |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar       | Specifies whether Peacock should affect the activity bar                                              |
-| peacock.affectStatusBar         | Specifies whether Peacock should affect the status bar                                                |
-| peacock.affectTitleBar          | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring)) |
-| peacock.elementAdjustments      | fine tune coloring of affected elements                                                               |
-| peacock.favoriteColors          | array of objects for color names and hex values                                                       |
-| peacock.keepForegroundColor     | Specifies whether Peacock should change affect colors                                                 |
-| peacock.surpriseMeOnStartup     | Specifies whether Peacock apply a random color on startup                                             |
-| peacock.darkForeground          | override for the dark foreground                                                                      |
-| peacock.lightForeground         | override for the light foreground                                                                     |
-| peacock.darkenLightenPercentage | the percentage to darken or lighten the color                                                         |
+| Property                            | Description                                                                                             |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                |
+| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
+| peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
+| peacock.elementAdjustments          | fine tune coloring of affected elements                                                                 |
+| peacock.favoriteColors              | array of objects for color names and hex values                                                         |
+| peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                   |
+| peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                               |
+| peacock.darkForeground              | override for the dark foreground                                                                        |
+| peacock.lightForeground             | override for the light foreground                                                                       |
+| peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                           |
+| peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color |
 
 ### Favorite Colors
 
