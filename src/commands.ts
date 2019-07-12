@@ -76,9 +76,11 @@ export async function changeColorToRandomHandler() {
       vscode.window.showInformationMessage(msg);
       return State.extensionContext;
     }
+    color = o.value;
+  } else {
+    color = getRandomColorHex();
   }
 
-  color = getRandomColorHex();
   await changeColor(color);
   return State.extensionContext;
 }
