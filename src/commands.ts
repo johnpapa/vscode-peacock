@@ -13,7 +13,9 @@ import {
   getCurrentColorBeforeAdjustments,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
-  getDarkenLightenPercentage
+  getDarkenLightenPercentage,
+  getRandomFavoriteColor,
+  getSurpriseMeFromFavoritesOnly
 } from './configuration';
 import {
   promptForColor,
@@ -63,7 +65,11 @@ export async function enterColorHandler(color?: string) {
 }
 
 export async function changeColorToRandomHandler() {
-  await changeColor(getRandomColorHex());
+  let surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
+  let color = surpriseMeFromFavoritesOnly
+    ? getRandomFavoriteColor().value
+    : getRandomColorHex();
+  await changeColor(color);
   return State.extensionContext;
 }
 
