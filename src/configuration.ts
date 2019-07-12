@@ -32,6 +32,13 @@ import { Logger } from './logging';
 
 const { workspace } = vscode;
 
+export function getSurpriseMeFromFavoritesOnly() {
+  return readConfiguration<boolean>(
+    StandardSettings.SurpriseMeFromFavoritesOnly,
+    false
+  );
+}
+
 export function getDarkenLightenPercentage() {
   return readConfiguration<number>(
     StandardSettings.DarkenLightenPercentage,
