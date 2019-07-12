@@ -40,7 +40,7 @@ suite('can set color to built-in color', () => {
       );
     });
 
-    test("when 'surprise me from favorites only' is true, color matches a favorite and is not chosen at random", async () => {
+    test('when surpriseMeFromFavoritesOnly is true, color matches a favorite and is not chosen at random', async () => {
       await updateSurpriseMeFromFavoritesOnly(true);
       await executeCommand(Commands.changeColorToRandom);
       const color = getCurrentColorBeforeAdjustments();
