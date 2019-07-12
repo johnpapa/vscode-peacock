@@ -109,13 +109,7 @@ function registerCommands() {
 export async function applyInitialConfiguration() {
   State.recentColor = getCurrentColorBeforeAdjustments();
 
-  if (!State.recentColor && getSurpriseMeOnStartup()) {
-    const color = await changeColorToRandomHandler();
-    const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
-      StandardSettings.SurpriseMeOnStartup
-    }`;
-    vscode.window.showInformationMessage(message);
-  }
+  await checkSurpriseMeOnStartupLogic();
 }
 
 export function deactivate() {
@@ -133,5 +127,31 @@ async function initializeTheStarterSetOfFavorites() {
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;
     Logger.info(msg);
+  }
+}
+
+async function checkSurpriseMeOnStartupLogic() {
+  /**
+   * If the "surprise me on startup" setting is true
+   * and there is no peacock color set, then choose a new random color.
+   * We do not choose a random color if there is already a color set
+   * as this would prevent users from choosing a specific color for
+   * some workspaces and surprise in others.
+   */
+  if (getSurpriseMeOnStartup()) {
+    if (State.recentColor) {
+      const message = `Peacock did not change the color using "surprise me on startup" because the color ${
+        State.recentColor
+      } was already set. If you wish to choose a new color on startup, please reset your current colors.`;
+      vscode.window.showInformationMessage(message);
+      return;
+    }
+
+    await changeColorToRandomHandler();
+    const color = getCurrentColorBeforeAdjustments();
+    const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
+      StandardSettings.SurpriseMeOnStartup
+    }`;
+    vscode.window.showInformationMessage(message);
   }
 }
