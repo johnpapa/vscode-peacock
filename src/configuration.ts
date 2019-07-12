@@ -260,6 +260,13 @@ export async function updateDarkenLightenPrecentage(value: number) {
   );
 }
 
+export async function updateSurpriseMeFromFavoritesOnly(value: boolean) {
+  return await updateGlobalConfiguration(
+    StandardSettings.SurpriseMeFromFavoritesOnly,
+    value
+  );
+}
+
 export async function addNewFavoriteColor(name: string, value: string) {
   const { values: favoriteColors } = getFavoriteColors();
   const newFavoriteColors = [...favoriteColors, { name, value }];

@@ -16,7 +16,10 @@ import { isValidColorInput } from '../color-library';
 import {
   getPeacockWorkspaceConfig,
   updateWorkspaceConfiguration,
-  getExistingColorCustomizations
+  getExistingColorCustomizations,
+  getCurrentColorBeforeAdjustments,
+  getFavoriteColors,
+  updateSurpriseMeFromFavoritesOnly
 } from '../configuration';
 
 suite('can set color to built-in color', () => {
@@ -28,12 +31,23 @@ suite('can set color to built-in color', () => {
 
   test('can set color to Peacock Green', testChangingColorToPeacockGreen());
 
-  test('can set color to Random color', async () => {
-    await executeCommand(Commands.changeColorToRandom);
-    let config = getPeacockWorkspaceConfig();
-    assert.ok(
-      isValidColorInput(config[ColorSettings.titleBar_activeBackground])
-    );
+  suite('can set color to Random color', () => {
+    test('color is valid', async () => {
+      await executeCommand(Commands.changeColorToRandom);
+      let config = getPeacockWorkspaceConfig();
+      assert.ok(
+        isValidColorInput(config[ColorSettings.titleBar_activeBackground])
+      );
+    });
+
+    test("when 'surprise me from favorites only' is true, color matches a favorite and is not chosen at random", async () => {
+      await updateSurpriseMeFromFavoritesOnly(true);
+      await executeCommand(Commands.changeColorToRandom);
+      const color = getCurrentColorBeforeAdjustments();
+      let { values } = getFavoriteColors();
+      const match = values.find(item => item.value === color);
+      assert.ok(match);
+    });
   });
 
   suite('when resetting colors', () => {
