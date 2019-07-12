@@ -311,6 +311,20 @@ Recommended favorites are a starting point for favorites. They will be installed
 
 This list may change from version to version depending on the Peacock authoring team.
 
+### Mementos
+
+Peacock takes advantage of a series of mementos (values stored between sessions and not in settings). Some are global that affect all VS Code instances on the computer. Some are local to the workspace on the computer.
+
+| Name                                        | Type      | Description                                                                                                             |
+| ------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| peacockMementos.peacockColor                | Workspace | The most recently used Peacock color, but not remote or other secondary colors. Ideal when moving in and out of remote. |
+| peacockMementos.favoritesVersion            | Global    | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings              |
+| peacockVslsMementos.vslsJoinColor           | Global    | VS Live Share's Peacock color when joining a session.                                                                   |
+| peacockVslsMementos.vslsShareColor          | Global    | VS Live Share's Peacock color when sharing a session.                                                                   |
+| peacockRemoteMementos.remoteContainersColor | Global    | Peacock color when in a remote with a container.                                                                        |
+| peacockRemoteMementos.remoteSshColor        | Global    | Peacock color when using remote with ssh.                                                                               |
+| peacockRemoteMementos.remoteWslColor        | Global    | Peacock color when using remote with WSL                                                                                |
+
 ![Sketchnote](./resources/peacock-sketchnote.png)
 
 ## Try the Code
