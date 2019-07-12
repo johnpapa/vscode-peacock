@@ -79,14 +79,21 @@ export function readConfiguration<T>(
 
 export async function updateGlobalConfiguration<T>(
   setting: AllSettings,
-  value?: T | undefined
+  value?: any
 ) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${setting}`;
   Logger.info(
     `${extensionShortName}: Updating the user settings with the following changes:`
   );
-  Logger.info(`${extensionShortName}: ${section} = ${value}`, true);
+  if (value && value.length) {
+    Logger.info(`${extensionShortName}:  ${section}`, true);
+    value.map((item: any) => {
+      Logger.info(item, true);
+    });
+  } else {
+    Logger.info(`${extensionShortName}: ${section} = ${value}`, true);
+  }
   return await config.update(section, value, vscode.ConfigurationTarget.Global);
 }
 
