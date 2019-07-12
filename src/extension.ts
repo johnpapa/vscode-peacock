@@ -36,18 +36,12 @@ import {
 
 const { commands, workspace } = vscode;
 
-function logMementos() {
-  const mementos = getMementos();
-  Logger.info(`${extensionShortName}: Mementos`);
-  mementos.forEach(m => Logger.info(m, true));
-}
-
 export async function activate(context: vscode.ExtensionContext) {
   State.extensionContext = context;
   Logger.info(
     `${extensionShortName}: Extension "vscode-peacock" is now active!`
   );
-  logMementos();
+  Logger.info(getMementos(), true, 'Mementos');
 
   registerCommands();
   addSubscriptions();
@@ -125,7 +119,7 @@ async function initializeTheStarterSetOfFavorites() {
     saveFavoritesVersionGlobalMemento(State.extensionVersion);
     await writeRecommendedFavoriteColors();
   } else {
-    let msg = `${extensionShortName}: already wrote the favorite colors once`;
+    let msg = `${extensionShortName}: Already wrote the favorite colors once`;
     Logger.info(msg);
   }
 }
