@@ -16,7 +16,7 @@ import {
   getCurrentColorBeforeAdjustments
 } from '../configuration';
 
-suite.only('Favorite colors', () => {
+suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));
