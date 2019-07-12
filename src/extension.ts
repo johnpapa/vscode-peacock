@@ -30,8 +30,8 @@ import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
 import {
-  saveFavoritesVersionMemento,
-  getFavoritesVersionMemento
+  saveFavoritesVersionGlobalMemento,
+  getFavoritesVersionGlobalMemento
 } from './mementos';
 
 const { commands, workspace } = vscode;
@@ -121,10 +121,10 @@ export function deactivate() {
 async function initializeTheStarterSetOfFavorites() {
   let extension = getExtension();
   let version = extension ? extension.packageJSON.version : '';
-  let starterSetOfFavoritesVersion = getFavoritesVersionMemento();
+  let starterSetOfFavoritesVersion = getFavoritesVersionGlobalMemento();
 
   if (starterSetOfFavoritesVersion !== version) {
-    saveFavoritesVersionMemento(version);
+    saveFavoritesVersionGlobalMemento(version);
     await writeRecommendedFavoriteColors();
   } else {
     let msg = `${extensionShortName}: already wrote the favorite colors once`;

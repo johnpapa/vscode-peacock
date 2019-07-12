@@ -4,7 +4,7 @@ import { peacockRemoteMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerRemoteIntegrationCommands } from './remote-commands';
 import { RemoteNames } from './enums';
-import { getPeacockColorMemento } from '../mementos';
+import { getPeacockColorWorkspaceMemento } from '../mementos';
 import { State } from '../models';
 
 export function remoteMementoName(): string | undefined {
@@ -85,6 +85,6 @@ export async function refreshRemoteColor(remote: string): Promise<boolean> {
 
 export async function revertRemoteWorkspaceColors() {
   // reset the color from the memento. Because the recent color may be the remote color
-  const peacockColor = getPeacockColorMemento();
+  const peacockColor = getPeacockColorWorkspaceMemento();
   await changeColor(peacockColor);
 }

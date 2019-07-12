@@ -19,7 +19,7 @@ import {
   getLightForegroundColorOrOverride
 } from './configuration';
 import { Logger } from './logging';
-import { savePeacockColorMemento } from './mementos';
+import { savePeacockColorWorkspaceMemento } from './mementos';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -206,7 +206,7 @@ export async function changeColor(input: string, primaryEnvironment = true) {
     // Save the recent color to the memento
     // only if we're changing Peacock color,
     // but not remote or other secondary colors
-    savePeacockColorMemento(State.recentColor);
+    savePeacockColorWorkspaceMemento(State.recentColor);
   }
 
   return backgroundHex;
