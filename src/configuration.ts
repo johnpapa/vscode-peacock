@@ -172,6 +172,13 @@ export function getFavoriteColors() {
   };
 }
 
+export function getRandomFavoriteColor() {
+  const { values: favoriteColors } = getFavoriteColors();
+  let randomFavorite =
+    favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
+  return randomFavorite;
+}
+
 export function getSurpriseMeOnStartup() {
   return readConfiguration<boolean>(
     StandardSettings.SurpriseMeOnStartup,
