@@ -208,6 +208,7 @@
         },
         "peacock.favoriteColors": {
           "type": "array",
+          "default": [],
           "items": {
             "type": "object"
           },
