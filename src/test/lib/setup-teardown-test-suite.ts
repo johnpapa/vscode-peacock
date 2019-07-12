@@ -18,20 +18,12 @@ import {
   getLightForegroundColor,
   updateDarkForegroundColor,
   updateLightForegroundColor,
-  updateAffectedElements
+  updateAffectedElements,
+  updateSurpriseMeFromFavoritesOnly,
+  getSurpriseMeFromFavoritesOnly
 } from '../../configuration';
 
 import { noopElementAdjustments, executeCommand } from './constants';
-
-export function allSetupAndTeardown(originalValues: IPeacockSettings) {
-  // suiteSetup(async () => {
-  //   await setupTestSuite(originalValues);
-  // });
-  // suiteTeardown(() => teardownTestSuite(originalValues));
-  // setup(async () => {
-  //   await executeCommand(Commands.resetColors);
-  // });
-}
 
 export async function setupTest() {
   await executeCommand(Commands.resetColors);
@@ -42,6 +34,7 @@ export async function setupTestSuite(
   originalValues: IPeacockSettings
 ) {
   let extension = getExtension();
+
   // Save the original values
   originalValues.affectedElements = getAffectedElements();
   originalValues.keepForegroundColor = getKeepForegroundColor();
@@ -49,6 +42,8 @@ export async function setupTestSuite(
   originalValues.favoriteColors = favoriteColors;
   originalValues.darkForegroundColor = getDarkForegroundColor();
   originalValues.lightForegroundColor = getLightForegroundColor();
+  originalValues.surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
+
   // Set the test values
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     statusBar: true,
@@ -61,11 +56,13 @@ export async function setupTestSuite(
   await updateElementAdjustments(noopElementAdjustments);
   await updateDarkForegroundColor(ForegroundColors.DarkForeground);
   await updateLightForegroundColor(ForegroundColors.LightForeground);
+  await updateSurpriseMeFromFavoritesOnly(false);
   return extension;
 }
 
 export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await executeCommand(Commands.resetColors);
+
   // put back the original peacock user settings
   await updateAffectedElements(originalValues.affectedElements);
   await updateElementAdjustments(originalValues.elementAdjustments);
@@ -74,4 +71,7 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
   await updateDarkForegroundColor(originalValues.darkForegroundColor);
   await updateLightForegroundColor(originalValues.lightForegroundColor);
+  await updateSurpriseMeFromFavoritesOnly(
+    originalValues.surpriseMeFromFavoritesOnly
+  );
 }
