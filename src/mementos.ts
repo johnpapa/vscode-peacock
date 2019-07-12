@@ -4,6 +4,12 @@ import { Logger } from './logging';
 import { peacockVslsMementos } from './live-share/constants';
 import { peacockRemoteMementos } from './remote/constants';
 
+export interface IMementoLog {
+  name: string;
+  type: 'workspaceState' | 'globalState';
+  value: any;
+}
+
 export async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
     Logger.info(
@@ -57,10 +63,59 @@ export async function resetMementos() {
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
   await ec.globalState.update(peacockVslsMementos.vslsJoinColor, undefined);
   await ec.globalState.update(peacockVslsMementos.vslsShareColor, undefined);
-  await ec.globalState.update(peacockRemoteMementos.remoteContainersColor, undefined);
+  await ec.globalState.update(
+    peacockRemoteMementos.remoteContainersColor,
+    undefined
+  );
   await ec.globalState.update(peacockRemoteMementos.remoteSshColor, undefined);
   await ec.globalState.update(peacockRemoteMementos.remoteWslColor, undefined);
 
   // Workspace
   await ec.workspaceState.update(peacockMementos.peacockColor, undefined);
+}
+
+export function getMementos() {
+  const ec = State.extensionContext;
+  let mementos: IMementoLog[] = [];
+
+  // Globals
+  mementos.push({
+    name: peacockMementos.favoritesVersion,
+    type: 'globalState',
+    value: ec.globalState.get(peacockMementos.favoritesVersion)
+  });
+  mementos.push({
+    name: peacockVslsMementos.vslsJoinColor,
+    type: 'globalState',
+    value: ec.globalState.get(peacockVslsMementos.vslsJoinColor)
+  });
+  mementos.push({
+    name: peacockVslsMementos.vslsShareColor,
+    type: 'globalState',
+    value: ec.globalState.get(peacockVslsMementos.vslsShareColor)
+  });
+  mementos.push({
+    name: peacockRemoteMementos.remoteContainersColor,
+    type: 'globalState',
+    value: ec.globalState.get(peacockRemoteMementos.remoteContainersColor)
+  });
+  mementos.push({
+    name: peacockRemoteMementos.remoteSshColor,
+    type: 'globalState',
+    value: ec.globalState.get(peacockRemoteMementos.remoteSshColor)
+  });
+  mementos.push({
+    name: peacockRemoteMementos.remoteWslColor,
+    type: 'globalState',
+    value: ec.globalState.get(peacockRemoteMementos.remoteWslColor)
+  });
+
+  // Workspace
+  mementos.push({
+    name: peacockMementos.peacockColor,
+    type: 'workspaceState',
+    value: ec.workspaceState.get(peacockMementos.peacockColor)
+  });
+
+  return mementos;
 }
