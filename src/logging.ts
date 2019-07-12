@@ -15,7 +15,7 @@ export class Logger {
     return this._outputChannel;
   }
 
-  static info(value: string | object | undefined, indent?: boolean) {
+  static info(value: string | object | undefined, indent = false) {
     const prefix = '  ';
     let message = '';
     if (typeof value === 'object') {

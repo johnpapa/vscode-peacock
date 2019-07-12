@@ -30,17 +30,24 @@ import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
 import {
   saveFavoritesVersionGlobalMemento,
-  getFavoritesVersionGlobalMemento
+  getFavoritesVersionGlobalMemento,
+  getMementos
 } from './mementos';
 
 const { commands, workspace } = vscode;
 
+function logMementos() {
+  const mementos = getMementos();
+  Logger.info(`${extensionShortName}: Mementos`);
+  mementos.map(m => Logger.info(m, true));
+}
+
 export async function activate(context: vscode.ExtensionContext) {
+  State.extensionContext = context;
   Logger.info(
     `${extensionShortName}: Extension "vscode-peacock" is now active!`
   );
-
-  State.extensionContext = context;
+  logMementos();
 
   registerCommands();
   addSubscriptions();
