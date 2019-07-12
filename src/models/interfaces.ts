@@ -50,6 +50,7 @@ export interface IPeacockSettings {
   darkForegroundColor: string;
   lightForegroundColor: string;
   darkenLightenPercentage: number;
+  surpriseMeFromFavoritesOnly: boolean;
 }
 
 export interface IElementColors {

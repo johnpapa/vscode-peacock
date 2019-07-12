@@ -6,7 +6,8 @@ export enum StandardSettings {
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
   DarkForegroundColor = 'darkForegroundColor',
   LightForegroundColor = 'lightForegroundColor',
-  DarkenLightenPercentage = 'darkenLightenPercentage'
+  DarkenLightenPercentage = 'darkenLightenPercentage',
+  SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly'
 }
 
 export enum AffectedSettings {
