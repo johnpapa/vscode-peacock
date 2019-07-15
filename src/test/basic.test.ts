@@ -34,7 +34,7 @@ suite('Basic Extension Tests', () => {
     // otherwise we get a false result.
     // let extension = <vscode.Extension<any>>getExtension();
 
-    await timeout(2000);
+    await timeout(3000);
     assert.equal(extension.isActive, true);
   });
 
