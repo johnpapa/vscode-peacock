@@ -12,7 +12,11 @@ import {
   setupTest
 } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import { isValidColorInput } from '../color-library';
+import {
+  isValidColorInput,
+  getRandomColorHex,
+  changeColor
+} from '../color-library';
 import {
   getPeacockWorkspaceConfig,
   updateWorkspaceConfiguration,
@@ -21,6 +25,7 @@ import {
   getFavoriteColors,
   updateSurpriseMeFromFavoritesOnly
 } from '../configuration';
+import { start } from 'repl';
 
 suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};
@@ -41,12 +46,19 @@ suite('can set color to built-in color', () => {
     });
 
     test('when surpriseMeFromFavoritesOnly is true, color matches a favorite and is not chosen at random', async () => {
+      let { values: favorites } = getFavoriteColors();
       await updateSurpriseMeFromFavoritesOnly(true);
       await executeCommand(Commands.changeColorToRandom);
       const color = getCurrentColorBeforeAdjustments();
-      let { values } = getFavoriteColors();
-      const match = values.find(item => item.value === color);
-      assert.ok(match);
+      const match = favorites.find(
+        item => item.value.toLowerCase === color.toLowerCase
+      );
+      assert.ok(
+        match,
+        `chosen color ${color} is not found in the favorites ${JSON.stringify(
+          favorites
+        )}`
+      );
     });
   });
 

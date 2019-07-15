@@ -187,12 +187,15 @@ export function getFavoriteColors() {
 export function getRandomFavoriteColor() {
   const { values: favoriteColors } = getFavoriteColors();
   const currentColor = getCurrentColorBeforeAdjustments();
-  let randomFavorite: IFavoriteColors;
+  let newColorFromFavorites: IFavoriteColors;
   do {
-    randomFavorite =
+    newColorFromFavorites =
       favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
-  } while (favoriteColors.length > 1 && randomFavorite.value === currentColor);
-  return randomFavorite;
+  } while (
+    favoriteColors.length > 1 &&
+    newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase()
+  );
+  return newColorFromFavorites;
 }
 
 export function getSurpriseMeOnStartup() {
