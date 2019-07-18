@@ -255,7 +255,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
-    "@types/node": "12.6.4",
+    "@types/node": "12.6.7",
     "@types/sinon": "^7.0.7",
     "eslint": "^6.0.0",
     "sinon": "7.3.2",
