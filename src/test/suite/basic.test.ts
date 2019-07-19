@@ -33,7 +33,7 @@ suite('Basic Extension Tests', () => {
     assert.equal(-1, [1, 2, 3].indexOf(5));
   });
 
-  test.skip('Extension loads in VSCode and is active', async () => {
+  test('Extension loads in VSCode and is active', async () => {
     // Hopefully a timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
     // let extension = <vscode.Extension<any>>getExtension();
