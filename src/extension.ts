@@ -137,7 +137,7 @@ async function checkSurpriseMeOnStartupLogic() {
     if (State.recentColor) {
       const message = `Peacock did not change the color using "surprise me on startup" because the color ${
         State.recentColor
-      } was already set. If you wish to choose a new color on startup, please reset your current colors.`;
+      } was already set.`;
       Logger.info(message);
       return;
     }
