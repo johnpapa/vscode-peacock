@@ -7,7 +7,7 @@ import {
   ColorSettings,
   ReadabilityRatios,
   peacockGreen
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -21,9 +21,9 @@ import {
   getElementStyle,
   getPeacockWorkspaceConfig,
   updateAffectedElements
-} from '../configuration';
+} from '../../configuration';
 import assert = require('assert');
-import { getColorBrightness, getReadabilityRatio } from '../color-library';
+import { getColorBrightness, getReadabilityRatio } from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
 suite('Affected elements', () => {

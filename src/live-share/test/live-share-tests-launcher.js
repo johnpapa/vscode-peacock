@@ -1,14 +1,14 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
-const path = require('path');
-const { fork } = require('child_process');
+// const path = require('path');
+// const { fork } = require('child_process');
 
-const testsPath = path.join(process.cwd(), 'out', 'live-share', 'test');
+// const testsPath = path.join(process.cwd(), 'out', 'live-share', 'test');
 
-const child = fork('node_modules/vscode/bin/test', [], {
-  env: {
-    ...process.env,
-    CODE_TESTS_PATH: testsPath
-  },
-  cwd: process.cwd()
-});
+// const child = fork('node_modules/vscode/bin/test', [], {
+//   env: {
+//     ...process.env,
+//     CODE_TESTS_PATH: testsPath
+//   },
+//   cwd: process.cwd()
+// });

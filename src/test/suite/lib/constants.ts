@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import {
   IPeacockAffectedElementSettings,
   IPeacockElementAdjustments
-} from '../../models';
+} from '../../../models';
 
 export const executeCommand = vscode.commands.executeCommand;
 

@@ -7,7 +7,7 @@ import {
   IElementColors,
   ElementNames,
   IPeacockAffectedElementSettings
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -19,7 +19,7 @@ import {
   getOriginalColorsForAllElements,
   getUserConfig,
   updateAffectedElements
-} from '../configuration';
+} from '../../configuration';
 
 const delayInMs = 500;
 

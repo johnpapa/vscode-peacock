@@ -6,7 +6,7 @@ import {
   IPeacockAffectedElementSettings,
   IElementColors,
   ElementNames
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -17,8 +17,8 @@ import {
   getOriginalColorsForAllElements,
   updateSurpriseMeOnStartup,
   updateAffectedElements
-} from '../configuration';
-import { applyInitialConfiguration } from '../extension';
+} from '../../configuration';
+import { applyInitialConfiguration } from '../../extension';
 
 suite('Surprise me on startup', () => {
   let originalValues = <IPeacockSettings>{};

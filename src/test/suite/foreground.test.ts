@@ -1,18 +1,18 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
-import { IPeacockSettings, Commands, ColorSettings } from '../models';
+import { IPeacockSettings, Commands, ColorSettings } from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite
 } from './lib/setup-teardown-test-suite';
 import assert = require('assert');
-import { isValidColorInput } from '../color-library';
+import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 import {
   getPeacockWorkspaceConfig,
   getLightForegroundColorOrOverride,
   getDarkForegroundColorOrOverride
-} from '../configuration';
+} from '../../configuration';
 
 suite('Foreground color', () => {
   let originalValues = <IPeacockSettings>{};

@@ -5,7 +5,7 @@ import {
   ColorSettings,
   IPeacockAffectedElementSettings,
   peacockGreen
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -15,14 +15,14 @@ import {
   updateElementAdjustments,
   getPeacockWorkspaceConfig,
   updateAffectedElements
-} from '../configuration';
+} from '../../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
 import assert = require('assert');
 import {
   getLightenedColorHex,
   getDarkenedColorHex,
   getColorBrightness
-} from '../color-library';
+} from '../../color-library';
 
 suite('Element adjustments', () => {
   let originalValues = <IPeacockSettings>{};

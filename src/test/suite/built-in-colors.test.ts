@@ -5,18 +5,14 @@ import {
   ColorSettings,
   IPeacockSettings,
   peacockGreen
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
   setupTest
 } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import {
-  isValidColorInput,
-  getRandomColorHex,
-  changeColor
-} from '../color-library';
+import { isValidColorInput } from '../../color-library';
 import {
   getPeacockWorkspaceConfig,
   updateWorkspaceConfiguration,
@@ -24,8 +20,7 @@ import {
   getCurrentColorBeforeAdjustments,
   getFavoriteColors,
   updateSurpriseMeFromFavoritesOnly
-} from '../configuration';
-import { start } from 'repl';
+} from '../../configuration';
 
 suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};

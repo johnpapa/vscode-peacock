@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import { ColorSettings, Commands, IPeacockSettings } from '../models';
-import { isValidColorInput } from '../color-library';
+import { ColorSettings, Commands, IPeacockSettings } from '../../models';
+import { isValidColorInput } from '../../color-library';
 import {
   setupTestSuite,
   teardownTestSuite,
   setupTest
 } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import { getPeacockWorkspaceConfig } from '../configuration';
+import { getPeacockWorkspaceConfig } from '../../configuration';
 
 suite('Enter color', () => {
   let originalValues = <IPeacockSettings>{};
