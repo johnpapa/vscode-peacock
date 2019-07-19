@@ -55,14 +55,3 @@ jobs:
   - template: .azure-pipelines/lint.yml
   - template: .azure-pipelines/test.yml
 
-- job: Linux
-  pool:
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    name: Hosted Ubuntu 1604
-    demands: npm
-  strategy:
-    matrix:
-      node_10_x:
-        node_version: 10.x
-      node_12_x:
-        node_version: 12.x
