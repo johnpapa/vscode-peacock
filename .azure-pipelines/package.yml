@@ -2,6 +2,7 @@ steps:
   - script: |
       npx vsce package -o release.vsix
     displayName: 'create vsix'
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
 
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Pipeline Artifact'
