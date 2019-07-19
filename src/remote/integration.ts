@@ -6,6 +6,7 @@ import { registerRemoteIntegrationCommands } from './remote-commands';
 import { RemoteNames } from './enums';
 import { getPeacockColorWorkspaceMemento } from '../mementos';
 import { State } from '../models';
+import { notify } from '../notification';
 
 export function remoteMementoName(): string | undefined {
   let mementoName = undefined;
@@ -73,8 +74,9 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
 
 export async function refreshRemoteColor(remote: string): Promise<boolean> {
   if (vscode.env.remoteName !== remote) {
-    vscode.window.showInformationMessage(
-      `The selected color will be applied every time you you are in the '${remote}' context.`
+    notify(
+      `The selected color will be applied every time you you are in the '${remote}' context.`,
+      true
     );
     return false;
   }

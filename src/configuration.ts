@@ -30,6 +30,7 @@ import {
 } from './color-library';
 import * as vscode from 'vscode';
 import { Logger } from './logging';
+import { notify } from './notification';
 
 const { workspace } = vscode;
 
@@ -291,8 +292,7 @@ export async function writeRecommendedFavoriteColors(
   let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${
     State.extensionVersion
   }`;
-  Logger.info(msg);
-  vscode.window.showInformationMessage(msg);
+  notify(msg, true);
 
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
   return await updateFavoriteColors(newFavoriteColors);

@@ -27,6 +27,7 @@ import {
 import { resetLiveSharePreviousColors } from './live-share';
 import { resetRemotePreviousColors } from './remote';
 import { resetMementos } from './mementos';
+import { notify } from './notification';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -72,8 +73,9 @@ export async function changeColorToRandomHandler() {
   if (surpriseMeFromFavoritesOnly) {
     const o = getRandomFavoriteColor();
     if (!o) {
-      const msg = `No favorites exist. Add some favorites if you want to use the surprise me from favorites feature`;
-      vscode.window.showInformationMessage(msg);
+      notify(
+        'No favorites exist. Add some favorites if you want to use the surprise me from favorites feature'
+      );
       return State.extensionContext;
     }
     color = o.value;

@@ -33,6 +33,7 @@ import {
   getFavoritesVersionGlobalMemento,
   getMementos
 } from './mementos';
+import { notify } from './notification';
 
 const { commands, workspace } = vscode;
 
@@ -137,7 +138,7 @@ async function checkSurpriseMeOnStartupLogic() {
       const message = `Peacock did not change the color using "surprise me on startup" because the color ${
         State.recentColor
       } was already set. If you wish to choose a new color on startup, please reset your current colors.`;
-      vscode.window.showInformationMessage(message);
+      Logger.info(message);
       return;
     }
 
@@ -146,6 +147,6 @@ async function checkSurpriseMeOnStartupLogic() {
     const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
       StandardSettings.SurpriseMeOnStartup
     }`;
-    vscode.window.showInformationMessage(message);
+    Logger.info(message);
   }
 }

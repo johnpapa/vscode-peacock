@@ -6,6 +6,7 @@ import { changeColor } from '../color-library';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
 import { setPeacockColorCustomizations } from '../inputs';
 import { Sections, State } from '../models';
+import { notify } from '../notification';
 
 let peacockColorCustomizations: any;
 
@@ -39,8 +40,9 @@ export async function refreshLiveShareSessionColor(
   if (!vslsApi || !vslsApi.session.id) {
     const verb = isHostRole ? 'host and share' : 'join';
 
-    vscode.window.showInformationMessage(
-      `The selected color will be applied every time you ${verb} a Live Share session.`
+    notify(
+      `The selected color will be applied every time you ${verb} a Live Share session.`,
+      true
     );
 
     return false;
