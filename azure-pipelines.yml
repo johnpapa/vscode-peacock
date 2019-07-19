@@ -21,6 +21,7 @@ jobs:
 
   steps:
   - template: .azure-pipelines/build.yml
+  - template: .azure-pipelines/lint.yml
   - template: .azure-pipelines/test.yml
   - template: .azure-pipelines/package.yml
 
@@ -36,6 +37,7 @@ jobs:
         node_version: 12.x
   steps:
   - template: .azure-pipelines/build.yml
+  - template: .azure-pipelines/lint.yml
   - template: .azure-pipelines/test.yml
 
 - job: macOS
@@ -50,5 +52,6 @@ jobs:
         node_version: 12.x
   steps:
   - template: .azure-pipelines/build.yml
+  - template: .azure-pipelines/lint.yml
   - template: .azure-pipelines/test.yml
 
