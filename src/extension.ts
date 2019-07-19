@@ -33,7 +33,6 @@ import {
   getFavoritesVersionGlobalMemento,
   getMementos
 } from './mementos';
-import { notify } from './notification';
 
 const { commands, workspace } = vscode;
 

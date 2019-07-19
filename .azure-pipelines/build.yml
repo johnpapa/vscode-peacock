@@ -1,0 +1,18 @@
+steps:
+  - task: NodeTool@0
+    displayName: 'Use $(node_version)'
+    inputs:
+      versionSpec: $(node_version)
+
+  - task: Npm@1
+    displayName: 'Install dependencies'
+    inputs:
+      verbose: false
+      command: install
+
+  - task: Npm@1
+    displayName: 'Compile Extension'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run compile'
