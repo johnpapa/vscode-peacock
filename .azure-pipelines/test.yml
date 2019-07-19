@@ -1,0 +1,17 @@
+steps:
+  # starts a process that allows the vscode test environment to run
+  - script: |
+      set -e
+      /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+      disown -ar
+    displayName: 'Start xvfb'
+    condition: eq(variables['Agent.OS'], 'Linux')
+
+  - task: Npm@1
+    displayName: 'Run Tests'
+    env:
+      DISPLAY: :10
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run just-test'

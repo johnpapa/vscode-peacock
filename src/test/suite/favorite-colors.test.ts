@@ -1,20 +1,20 @@
 import vscode = require('vscode');
 import sinon = require('sinon');
-import { IPeacockSettings, Commands } from '../models';
+import { IPeacockSettings, Commands } from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
   setupTest
 } from './lib/setup-teardown-test-suite';
-import { parseFavoriteColorValue } from '../inputs';
+import { parseFavoriteColorValue } from '../../inputs';
 import assert = require('assert');
-import { isValidColorInput } from '../color-library';
+import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 import {
   getFavoriteColors,
   updateFavoriteColors,
   getCurrentColorBeforeAdjustments
-} from '../configuration';
+} from '../../configuration';
 
 suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};

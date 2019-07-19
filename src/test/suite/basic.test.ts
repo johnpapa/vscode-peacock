@@ -9,7 +9,7 @@ import {
   extensionShortName,
   AffectedSettings,
   getExtension
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -27,6 +27,10 @@ suite('Basic Extension Tests', () => {
 
   suiteSetup(() => {
     extension = <vscode.Extension<any>>getExtension();
+  });
+
+  test('Sample Test', async () => {
+    assert.equal(-1, [1, 2, 3].indexOf(5));
   });
 
   test('Extension loads in VSCode and is active', async () => {

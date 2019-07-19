@@ -13,13 +13,13 @@ import {
   setupTestSuite,
   setupTest,
   teardownTestSuite
-} from '../../test/lib/setup-teardown-test-suite';
+} from './lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
-import { executeCommand } from '../../test/lib/constants';
+import { executeCommand } from './lib/constants';
 
 import { getPeacockWorkspaceConfig } from '../../configuration';
-import { peacockRemoteMementos } from '../constants';
-import { RemoteCommands, RemoteNames } from '../enums';
+import { peacockRemoteMementos } from '../../remote/constants';
+import { RemoteCommands, RemoteNames } from '../../remote/enums';
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
@@ -57,7 +57,6 @@ suite('Remote Integration', () => {
       ''
     );
 
-    // assert(isValidColorInput(settingValue));
     console.log('settingValue');
     console.log(settingValue);
     assert(settingValue === azureBlue);

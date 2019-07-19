@@ -3,7 +3,7 @@ import {
   Commands,
   ColorSettings,
   peacockGreen
-} from '../models';
+} from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -12,10 +12,10 @@ import {
 import {
   getPeacockWorkspaceConfig,
   getDarkenLightenPercentage
-} from '../configuration';
+} from '../../configuration';
 import { executeCommand } from './lib/constants';
 import assert = require('assert');
-import { getLightenedColorHex, getDarkenedColorHex } from '../color-library';
+import { getLightenedColorHex, getDarkenedColorHex } from '../../color-library';
 
 suite('Darken/Lighten commands', () => {
   let originalValues = <IPeacockSettings>{};

@@ -1,5 +1,4 @@
 import { OutputChannel, window } from 'vscode';
-import { TextDecoder } from 'util';
 
 export class Logger {
   private static _outputChannel: OutputChannel;
@@ -42,12 +41,5 @@ function prepareMessage(value: string | object | undefined, indent: boolean) {
   return text;
 }
 
-function prepareObjectMessage(o: string, prefix: string) {
-  let text = '';
-  Object.entries(o).map(item => {
-    text += `${prefix}${item[0]} = ${item[1]}\n`;
-  });
-  return text;
-}
 
 Logger.initialize();

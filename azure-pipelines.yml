@@ -14,164 +14,44 @@ jobs:
     demands: npm
   strategy:
     matrix:
-      node_8_x:
-        node_version: 8.x
+      node_10_x:
+        node_version: 10.x
+      node_12_x:
+        node_version: 12.x
+
+  steps:
+  - template: .azure-pipelines/build.yml
+  - template: .azure-pipelines/lint.yml
+  - template: .azure-pipelines/test.yml
+  - template: .azure-pipelines/package.yml
+
+- job: Windows
+  pool:
+    name: Hosted VS2017
+    demands: npm
+  strategy:
+    matrix:
       node_10_x:
         node_version: 10.x
       node_12_x:
         node_version: 12.x
   steps:
-  - task: NodeTool@0
-    displayName: 'Use $(node_version)'
-    inputs:
-      versionSpec: $(node_version)
-
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-      verbose: false
-      command: install
-
-  - task: Npm@1
-    displayName: 'Compile TypeScript'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run test-compile'
-    enabled: true
-
-  # starts a process that allows the vscode test environment to run
-  - script: |
-      set -e
-      /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
-      disown -ar
-    displayName: 'Start xvfb'
-
-  - script: 'node node_modules/vscode/bin/test'
-    displayName: 'Run tests via npm script'
-    env:
-      DISPLAY: :10
-    enabled: true
-
-- job: Windows
-  pool:
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    name: Hosted VS2017
-    demands: npm
-  steps:
-  - task: NodeTool@0
-    displayName: 'Use Node 10.x'
-    inputs:
-      versionSpec: 10.x
-
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-      verbose: false
-      command: install
-
-  - task: Npm@1
-    displayName: 'Compile TypeScript'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run test-compile'
-    enabled: true
-
-  - task: Npm@1
-    displayName: 'Run tests via npm script'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run just-test'
-    env:
-      DISPLAY: :10
-    enabled: true
-
-  - script: 'node node_modules/vscode/bin/test'
-    displayName: 'Run tests'
-    enabled: false
-    env:
-      DISPLAY: :10
+  - template: .azure-pipelines/build.yml
+  - template: .azure-pipelines/lint.yml
+  - template: .azure-pipelines/test.yml
 
 - job: macOS
   pool:
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
     name: Hosted macOS
     demands: npm
+  strategy:
+    matrix:
+      node_10_x:
+        node_version: 10.x
+      node_12_x:
+        node_version: 12.x
   steps:
-  - task: NodeTool@0
-    displayName: 'Use Node 10.x'
-    inputs:
-      versionSpec: 10.x
+  - template: .azure-pipelines/build.yml
+  - template: .azure-pipelines/lint.yml
+  - template: .azure-pipelines/test.yml
 
-  - task: Npm@1
-    displayName: 'Install dependencies'
-    inputs:
-      verbose: false
-      command: install
-
-  - task: Npm@1
-    displayName: 'Compile TypeScript'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run test-compile'
-    enabled: true
-
-  - task: Npm@1
-    displayName: 'Run tests via npm script'
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: 'run just-test'
-    enabled: true
-
-  - script: |
-      npx vsce package -o release.vsix
-    displayName: 'create vsix'
-
-  - task: PublishPipelineArtifact@0
-    displayName: 'Publish Pipeline Artifact'
-    inputs:
-      targetPath: release.vsix
-
-# Instead of running this task and npm install and build again,
-# let's just create the vsix in a previous task to save time.
-# If one of them fails, the entire build fails anyway
-# - job: Finalize
-#   dependsOn:
-#   - macOS
-#   - Linux
-#   - Windows
-#   condition: and(succeeded('macOS'), succeeded('Linux'), succeeded('Windows'))
-#   pool:
-#     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-#     name: Hosted macOS
-#     demands: npm
-#   steps:
-#   - task: NodeTool@0
-#     displayName: 'Use Node 8.x'
-#     inputs:
-#       versionSpec: 8.x
-
-#   - task: Npm@1
-#     displayName: 'Install dependencies'
-#     inputs:
-#       verbose: false
-#       command: install
-#   - task: Npm@1
-#     displayName: 'Compile TypeScript'
-#     inputs:
-#       command: custom
-#       verbose: false
-#       customCommand: 'run compile'
-#     enabled: true
-#   - script: |
-#       npx vsce package -o release.vsix
-#     displayName: 'create vsix'
-
-#   - task: PublishPipelineArtifact@0
-#     displayName: 'Publish Pipeline Artifact'
-#     inputs:
-#       targetPath: release.vsix

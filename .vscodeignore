@@ -22,3 +22,5 @@ out/
 src/
 tsconfig.json
 webpack.config.json
+
+.azure-pipelines/**

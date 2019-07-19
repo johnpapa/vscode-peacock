@@ -1,0 +1,54 @@
+steps:
+  - script: |
+      npx vsce package -o release.vsix
+    displayName: 'create vsix'
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      targetPath: release.vsix
+    # Only create the release for Linux on Node 12
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
+    #
+    #
+    #
+# Instead of running this task and npm install and build again,
+# let's just create the vsix in a previous task to save time.
+# If one of them fails, the entire build fails anyway
+# - job: Finalize
+#   dependsOn:
+#   - macOS
+#   - Linux
+#   - Windows
+#   condition: and(succeeded('macOS'), succeeded('Linux'), succeeded('Windows'))
+#   pool:
+#     # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+#     name: Hosted macOS
+#     demands: npm
+#   steps:
+#   - task: NodeTool@0
+#     displayName: 'Use Node 8.x'
+#     inputs:
+#       versionSpec: 8.x
+
+#   - task: Npm@1
+#     displayName: 'Install dependencies'
+#     inputs:
+#       verbose: false
+#       command: install
+#   - task: Npm@1
+#     displayName: 'Compile TypeScript'
+#     inputs:
+#       command: custom
+#       verbose: false
+#       customCommand: 'run compile'
+#     enabled: true
+#   - script: |
+#       npx vsce package -o release.vsix
+#     displayName: 'create vsix'
+
+#   - task: PublishPipelineArtifact@0
+#     displayName: 'Publish Pipeline Artifact'
+#     inputs:
+#       targetPath: release.vsix

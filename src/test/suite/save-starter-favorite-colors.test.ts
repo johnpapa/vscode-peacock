@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { IPeacockSettings } from '../models';
+import { IPeacockSettings } from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -8,7 +8,7 @@ import {
 import {
   getFavoriteColors,
   writeRecommendedFavoriteColors
-} from '../configuration';
+} from '../../configuration';
 
 suite('Save starter favorite colors', () => {
   let originalValues = <IPeacockSettings>{};

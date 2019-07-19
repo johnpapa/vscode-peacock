@@ -3,17 +3,17 @@ import sinon = require('sinon');
 import assert = require('assert');
 import * as vsls from 'vsls';
 
-import { IPeacockSettings, Commands, ColorSettings } from '../../models';
+import { IPeacockSettings, Commands, ColorSettings } from '../../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
   setupTest
-} from '../../test/lib/setup-teardown-test-suite';
-import { isValidColorInput } from '../../color-library';
-import { executeCommand } from '../../test/lib/constants';
-import { getPeacockWorkspaceConfig } from '../../configuration';
-import { peacockVslsMementos } from '../constants';
-import { LiveShareCommands } from '../enums';
+} from '../../../test/suite/lib/setup-teardown-test-suite';
+import { isValidColorInput } from '../../../color-library';
+import { executeCommand } from '../../../test/suite/lib/constants';
+import { LiveShareCommands } from '../../enums';
+import { peacockVslsMementos } from '../../constants';
+import { getPeacockWorkspaceConfig } from '../../../configuration';
 
 const sleepAsync = (delay: number) => {
   return new Promise(resolve => {

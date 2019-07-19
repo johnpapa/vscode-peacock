@@ -5,7 +5,7 @@ import {
   ForegroundColors,
   starterSetOfFavorites,
   getExtension
-} from '../../models';
+} from '../../../models';
 import {
   getAffectedElements,
   getFavoriteColors,
@@ -21,7 +21,7 @@ import {
   updateAffectedElements,
   updateSurpriseMeFromFavoritesOnly,
   getSurpriseMeFromFavoritesOnly
-} from '../../configuration';
+} from '../../../configuration';
 
 import { noopElementAdjustments, executeCommand } from './constants';
 

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import { Commands, IPeacockSettings } from '../models';
+import { Commands, IPeacockSettings } from '../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -15,7 +15,7 @@ import {
   getFavoriteColors,
   updateElementAdjustments,
   getCurrentColorBeforeAdjustments
-} from '../configuration';
+} from '../../configuration';
 
 const faveName = 'TEST FAVE NAME';
 
