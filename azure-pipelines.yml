@@ -47,11 +47,19 @@ jobs:
       disown -ar
     displayName: 'Start xvfb'
 
-  - script: 'node node_modules/vscode/bin/test'
-    displayName: 'Run tests via npm script'
-    env:
-      DISPLAY: :10
+  - task: Npm@1
+    displayName: 'Run Tests'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run test'
     enabled: true
+
+  # - script: 'node node_modules/vscode/bin/test'
+  #   displayName: 'Run tests via npm script'
+  #   env:
+  #     DISPLAY: :10
+  #   enabled: true
 
 - job: Windows
   pool:
@@ -88,11 +96,19 @@ jobs:
       DISPLAY: :10
     enabled: true
 
-  - script: 'node node_modules/vscode/bin/test'
-    displayName: 'Run tests'
-    enabled: false
-    env:
-      DISPLAY: :10
+  - task: Npm@1
+    displayName: 'Run Tests'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run test'
+    enabled: true
+
+  # - script: 'node node_modules/vscode/bin/test'
+  #   displayName: 'Run tests'
+  #   enabled: false
+  #   env:
+  #     DISPLAY: :10
 
 - job: macOS
   pool:
