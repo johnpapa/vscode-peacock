@@ -6,7 +6,7 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 | Badges                                                                                                                                                                                                                                                                                                                                    |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![All Contributors](https://img.shields.io/badge/all_contributors-14-blue.svg?style=flat-square)](#contributors)                                                                                                                                                                                                                         |
+| [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)                                                                                                                                                                                                                         |
 | [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) |
 | [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)                                                                                             |
 | [![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)                                                                                                       |
@@ -380,6 +380,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/christiannwamba"><img src="https://avatars2.githubusercontent.com/u/8108337?v=4" width="100px;" alt="Christian Nwamba"/><br /><sub><b>Christian Nwamba</b></sub></a><br /><a href="#ideas-christiannwamba" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="http://mattbierner.com"><img src="https://avatars2.githubusercontent.com/u/12821956?v=4" width="100px;" alt="Matt Bierner"/><br /><sub><b>Matt Bierner</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=mjbvz" title="Code">💻</a></td>
     <td align="center"><a href="https://www.raymondcamden.com"><img src="https://avatars3.githubusercontent.com/u/393660?v=4" width="100px;" alt="Raymond Camden"/><br /><sub><b>Raymond Camden</b></sub></a><br /><a href="#ideas-cfjedimaster" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://www.aaron-powell.com"><img src="https://avatars0.githubusercontent.com/u/434140?v=4" width="100px;" alt="Aaron Powell"/><br /><sub><b>Aaron Powell</b></sub></a><br /><a href="#ideas-aaronpowell" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
