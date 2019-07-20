@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
