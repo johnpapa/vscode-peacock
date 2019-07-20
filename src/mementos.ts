@@ -12,18 +12,14 @@ export interface IMementoLog {
 
 export async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
-    Logger.info(
-      `${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`
-    );
+    Logger.info(`${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`);
     await State.extensionContext.globalState.update(mementoName, value);
   }
 }
 
 async function saveWorkspaceMemento(mementoName: string, value: any) {
   if (mementoName) {
-    Logger.info(
-      `${extensionShortName}: Saving the workspaceState ${mementoName} memento with value ${value}`
-    );
+    Logger.info(`${extensionShortName}: Saving the workspaceState ${mementoName} memento with value ${value}`);
     await State.extensionContext.workspaceState.update(mementoName, value);
   }
 }
@@ -35,10 +31,7 @@ export async function savePeacockColorWorkspaceMemento(color: string) {
 }
 
 export function getPeacockColorWorkspaceMemento() {
-  return State.extensionContext.workspaceState.get<string>(
-    peacockMementos.peacockColor,
-    ''
-  );
+  return State.extensionContext.workspaceState.get<string>(peacockMementos.peacockColor, '');
 }
 
 export async function saveFavoritesVersionGlobalMemento(version: string) {
@@ -46,27 +39,19 @@ export async function saveFavoritesVersionGlobalMemento(version: string) {
 }
 
 export function getFavoritesVersionGlobalMemento() {
-  return State.extensionContext.globalState.get<string>(
-    peacockMementos.favoritesVersion,
-    ''
-  );
+  return State.extensionContext.globalState.get<string>(peacockMementos.favoritesVersion, '');
 }
 
 export async function resetMementos() {
   const ec = State.extensionContext;
 
-  Logger.info(
-    `${extensionShortName}: Setting all workspaceState and globalState mementos to undefined`
-  );
+  Logger.info(`${extensionShortName}: Setting all workspaceState and globalState mementos to undefined`);
 
   // Global
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
   await ec.globalState.update(peacockVslsMementos.vslsJoinColor, undefined);
   await ec.globalState.update(peacockVslsMementos.vslsShareColor, undefined);
-  await ec.globalState.update(
-    peacockRemoteMementos.remoteContainersColor,
-    undefined
-  );
+  await ec.globalState.update(peacockRemoteMementos.remoteContainersColor, undefined);
   await ec.globalState.update(peacockRemoteMementos.remoteSshColor, undefined);
   await ec.globalState.update(peacockRemoteMementos.remoteWslColor, undefined);
 
@@ -82,39 +67,39 @@ export function getMementos() {
   mementos.push({
     name: peacockMementos.favoritesVersion,
     type: 'globalState',
-    value: ec.globalState.get(peacockMementos.favoritesVersion)
+    value: ec.globalState.get(peacockMementos.favoritesVersion),
   });
   mementos.push({
     name: peacockVslsMementos.vslsJoinColor,
     type: 'globalState',
-    value: ec.globalState.get(peacockVslsMementos.vslsJoinColor)
+    value: ec.globalState.get(peacockVslsMementos.vslsJoinColor),
   });
   mementos.push({
     name: peacockVslsMementos.vslsShareColor,
     type: 'globalState',
-    value: ec.globalState.get(peacockVslsMementos.vslsShareColor)
+    value: ec.globalState.get(peacockVslsMementos.vslsShareColor),
   });
   mementos.push({
     name: peacockRemoteMementos.remoteContainersColor,
     type: 'globalState',
-    value: ec.globalState.get(peacockRemoteMementos.remoteContainersColor)
+    value: ec.globalState.get(peacockRemoteMementos.remoteContainersColor),
   });
   mementos.push({
     name: peacockRemoteMementos.remoteSshColor,
     type: 'globalState',
-    value: ec.globalState.get(peacockRemoteMementos.remoteSshColor)
+    value: ec.globalState.get(peacockRemoteMementos.remoteSshColor),
   });
   mementos.push({
     name: peacockRemoteMementos.remoteWslColor,
     type: 'globalState',
-    value: ec.globalState.get(peacockRemoteMementos.remoteWslColor)
+    value: ec.globalState.get(peacockRemoteMementos.remoteWslColor),
   });
 
   // Workspace
   mementos.push({
     name: peacockMementos.peacockColor,
     type: 'workspaceState',
-    value: ec.workspaceState.get(peacockMementos.peacockColor)
+    value: ec.workspaceState.get(peacockMementos.peacockColor),
   });
 
   return mementos;

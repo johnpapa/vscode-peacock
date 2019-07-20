@@ -18,7 +18,7 @@ import {
   ForegroundColors,
   starterSetOfFavorites,
   defaultAmountToDarkenLighten,
-  State
+  State,
 } from './models';
 import {
   getAdjustedColorHex,
@@ -26,7 +26,7 @@ import {
   getBackgroundHoverColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
-  getInactiveForegroundColorHex
+  getInactiveForegroundColorHex,
 } from './color-library';
 import * as vscode from 'vscode';
 import { Logger } from './logging';
@@ -35,17 +35,11 @@ import { notify } from './notification';
 const { workspace } = vscode;
 
 export function getSurpriseMeFromFavoritesOnly() {
-  return readConfiguration<boolean>(
-    StandardSettings.SurpriseMeFromFavoritesOnly,
-    false
-  );
+  return readConfiguration<boolean>(StandardSettings.SurpriseMeFromFavoritesOnly, false);
 }
 
 export function getDarkenLightenPercentage() {
-  return readConfiguration<number>(
-    StandardSettings.DarkenLightenPercentage,
-    defaultAmountToDarkenLighten
-  );
+  return readConfiguration<number>(StandardSettings.DarkenLightenPercentage, defaultAmountToDarkenLighten);
 }
 
 export function getPeacockWorkspaceConfig() {
@@ -68,25 +62,17 @@ export function getCurrentColorBeforeAdjustments() {
   return originalColor;
 }
 
-export function readConfiguration<T>(
-  setting: AllSettings,
-  defaultValue?: T | undefined
-) {
+export function readConfiguration<T>(setting: AllSettings, defaultValue?: T | undefined) {
   const value: T | undefined = workspace
     .getConfiguration(Sections.userPeacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
 }
 
-export async function updateGlobalConfiguration<T>(
-  setting: AllSettings,
-  value?: any
-) {
+export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${setting}`;
-  Logger.info(
-    `${extensionShortName}: Updating the user settings with the following changes:`
-  );
+  Logger.info(`${extensionShortName}: Updating the user settings with the following changes:`);
   if (value && Array.isArray(value) && value.length > 0) {
     Logger.info(value, true, `${extensionShortName}:  ${section}`);
   } else {
@@ -103,46 +89,28 @@ export function prepareColors(backgroundHex: string) {
   const keepForegroundColor = getKeepForegroundColor();
   const keepBadgeColor = getKeepBadgeColor();
 
-  let titleBarSettings = collectTitleBarSettings(
-    backgroundHex,
-    keepForegroundColor
-  );
+  let titleBarSettings = collectTitleBarSettings(backgroundHex, keepForegroundColor);
 
-  let activityBarSettings = collectActivityBarSettings(
-    backgroundHex,
-    keepForegroundColor,
-    keepBadgeColor
-  );
+  let activityBarSettings = collectActivityBarSettings(backgroundHex, keepForegroundColor, keepBadgeColor);
 
-  let statusBarSettings = collectStatusBarSettings(
-    backgroundHex,
-    keepForegroundColor
-  );
+  let statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
   // Merge all color settings
   const newColorCustomizations: any = {
     ...activityBarSettings,
     ...titleBarSettings,
-    ...statusBarSettings
+    ...statusBarSettings,
   };
 
   return newColorCustomizations;
 }
 
-export async function updateWorkspaceConfiguration(
-  colorCustomizations: {} | undefined
-) {
-  Logger.info(
-    `${extensionShortName}: Updating the workspace with the following color customizations`
-  );
+export async function updateWorkspaceConfiguration(colorCustomizations: {} | undefined) {
+  Logger.info(`${extensionShortName}: Updating the workspace with the following color customizations`);
   Logger.info(colorCustomizations, true);
   return await workspace
     .getConfiguration()
-    .update(
-      Sections.workspacePeacockSection,
-      colorCustomizations,
-      vscode.ConfigurationTarget.Workspace
-    );
+    .update(Sections.workspacePeacockSection, colorCustomizations, vscode.ConfigurationTarget.Workspace);
 }
 
 export function getDarkForegroundColor() {
@@ -162,10 +130,7 @@ export function getLightForegroundColorOrOverride() {
 }
 
 export function getKeepForegroundColor() {
-  return readConfiguration<boolean>(
-    StandardSettings.KeepForegroundColor,
-    false
-  );
+  return readConfiguration<boolean>(StandardSettings.KeepForegroundColor, false);
 }
 
 export function getKeepBadgeColor() {
@@ -174,14 +139,12 @@ export function getKeepBadgeColor() {
 
 export function getFavoriteColors() {
   const sep = favoriteColorSeparator;
-  let values = readConfiguration<IFavoriteColors[]>(
-    StandardSettings.FavoriteColors
-  );
+  let values = readConfiguration<IFavoriteColors[]>(StandardSettings.FavoriteColors);
   const menu = values.map(fav => `${fav.name} ${sep} ${fav.value}`);
   values = values || [];
   return {
     menu,
-    values
+    values,
   };
 }
 
@@ -190,94 +153,58 @@ export function getRandomFavoriteColor() {
   const currentColor = getCurrentColorBeforeAdjustments();
   let newColorFromFavorites: IFavoriteColors;
   do {
-    newColorFromFavorites =
-      favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
-  } while (
-    favoriteColors.length > 1 &&
-    newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase()
-  );
+    newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
+  } while (favoriteColors.length > 1 && newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase());
   return newColorFromFavorites;
 }
 
 export function getSurpriseMeOnStartup() {
-  return readConfiguration<boolean>(
-    StandardSettings.SurpriseMeOnStartup,
-    false
-  );
+  return readConfiguration<boolean>(StandardSettings.SurpriseMeOnStartup, false);
 }
 
 export function getAffectedElements() {
   return <IPeacockAffectedElementSettings>{
-    activityBar:
-      readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
+    activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
-    titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false
+    titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
   };
 }
 
 export function getElementAdjustments() {
-  const adjustments = readConfiguration<IPeacockElementAdjustments>(
-    StandardSettings.ElementAdjustments
-  );
+  const adjustments = readConfiguration<IPeacockElementAdjustments>(StandardSettings.ElementAdjustments);
   return adjustments || {};
 }
 
-export async function updateElementAdjustments(
-  adjustments: IPeacockElementAdjustments
-) {
-  return await updateGlobalConfiguration(
-    StandardSettings.ElementAdjustments,
-    adjustments
-  );
+export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
+  return await updateGlobalConfiguration(StandardSettings.ElementAdjustments, adjustments);
 }
 
 export async function updateKeepForegroundColor(value: boolean) {
-  return await updateGlobalConfiguration(
-    StandardSettings.KeepForegroundColor,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.KeepForegroundColor, value);
 }
 
 export async function updateKeepBadgeColor(value: boolean) {
-  return await updateGlobalConfiguration(
-    StandardSettings.KeepBadgeColor,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.KeepBadgeColor, value);
 }
 
 export async function updateSurpriseMeOnStartup(value: boolean) {
-  return await updateGlobalConfiguration(
-    StandardSettings.SurpriseMeOnStartup,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.SurpriseMeOnStartup, value);
 }
 
 export async function updateDarkForegroundColor(value: string) {
-  return await updateGlobalConfiguration(
-    StandardSettings.DarkForegroundColor,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.DarkForegroundColor, value);
 }
 
 export async function updateLightForegroundColor(value: string) {
-  return await updateGlobalConfiguration(
-    StandardSettings.LightForegroundColor,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.LightForegroundColor, value);
 }
 
 export async function updateDarkenLightenPrecentage(value: number) {
-  return await updateGlobalConfiguration(
-    StandardSettings.DarkenLightenPercentage,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.DarkenLightenPercentage, value);
 }
 
 export async function updateSurpriseMeFromFavoritesOnly(value: boolean) {
-  return await updateGlobalConfiguration(
-    StandardSettings.SurpriseMeFromFavoritesOnly,
-    value
-  );
+  return await updateGlobalConfiguration(StandardSettings.SurpriseMeFromFavoritesOnly, value);
 }
 
 export async function addNewFavoriteColor(name: string, value: string) {
@@ -286,12 +213,8 @@ export async function addNewFavoriteColor(name: string, value: string) {
   return await updateFavoriteColors(newFavoriteColors);
 }
 
-export async function writeRecommendedFavoriteColors(
-  overrideFavorites?: IFavoriteColors[]
-) {
-  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${
-    State.extensionVersion
-  }`;
+export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
+  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${State.extensionVersion}`;
   notify(msg, true);
 
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
@@ -299,10 +222,7 @@ export async function writeRecommendedFavoriteColors(
 }
 
 export async function updateFavoriteColors(values: IFavoriteColors[]) {
-  return await updateGlobalConfiguration(
-    StandardSettings.FavoriteColors,
-    values
-  );
+  return await updateGlobalConfiguration(StandardSettings.FavoriteColors, values);
 }
 
 export function getElementAdjustment(elementName: string): ColorAdjustment {
@@ -313,7 +233,7 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
 export function getElementStyle(
   backgroundHex: string,
   elementName?: string,
-  includeBadgeStyles = false
+  includeBadgeStyles = false,
 ): IElementStyle {
   let styleHex = backgroundHex;
 
@@ -329,7 +249,7 @@ export function getElementStyle(
     backgroundHoverHex: getBackgroundHoverColorHex(styleHex),
     foregroundHex: getForegroundColorHex(styleHex),
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
-    inactiveForegroundHex: getInactiveForegroundColorHex(styleHex)
+    inactiveForegroundHex: getInactiveForegroundColorHex(styleHex),
   };
 
   if (includeBadgeStyles) {
@@ -342,108 +262,71 @@ export function getElementStyle(
 
 export function getAllSettingNames() {
   let settings = [];
-  const affectedSettings = Object.values(AffectedSettings).map(
-    value => `${extensionShortName}.${value}`
-  );
-  const standardSettings = Object.values(StandardSettings).map(
-    value => `${extensionShortName}.${value}`
-  );
+  const affectedSettings = Object.values(AffectedSettings).map(value => `${extensionShortName}.${value}`);
+  const standardSettings = Object.values(StandardSettings).map(value => `${extensionShortName}.${value}`);
   settings.push(...affectedSettings);
   settings.push(...standardSettings);
   return settings;
 }
 
-export function checkIfPeacockSettingsChanged(
-  e: vscode.ConfigurationChangeEvent
-) {
+export function checkIfPeacockSettingsChanged(e: vscode.ConfigurationChangeEvent) {
   return getAllSettingNames().some(setting => e.affectsConfiguration(setting));
 }
 
-function collectTitleBarSettings(
-  backgroundHex: string,
-  keepForegroundColor: boolean
-) {
+function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boolean) {
   const titleBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     const titleBarStyle = getElementStyle(backgroundHex, ElementNames.titleBar);
-    titleBarSettings[ColorSettings.titleBar_activeBackground] =
-      titleBarStyle.backgroundHex;
-    titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
-      titleBarStyle.inactiveBackgroundHex;
+    titleBarSettings[ColorSettings.titleBar_activeBackground] = titleBarStyle.backgroundHex;
+    titleBarSettings[ColorSettings.titleBar_inactiveBackground] = titleBarStyle.inactiveBackgroundHex;
 
     if (!keepForegroundColor) {
-      titleBarSettings[ColorSettings.titleBar_activeForeground] =
-        titleBarStyle.foregroundHex;
-      titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
-        titleBarStyle.inactiveForegroundHex;
+      titleBarSettings[ColorSettings.titleBar_activeForeground] = titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.titleBar_inactiveForeground] = titleBarStyle.inactiveForegroundHex;
     }
   }
   return titleBarSettings;
 }
 
-function collectActivityBarSettings(
-  backgroundHex: string,
-  keepForegroundColor: boolean,
-  keepBadgeColor: boolean
-) {
+function collectActivityBarSettings(backgroundHex: string, keepForegroundColor: boolean, keepBadgeColor: boolean) {
   const activityBarSettings = <ISettingsIndexer>{};
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(
-      backgroundHex,
-      ElementNames.activityBar,
-      true
-    );
-    activityBarSettings[ColorSettings.activityBar_background] =
-      activityBarStyle.backgroundHex;
+    const activityBarStyle = getElementStyle(backgroundHex, ElementNames.activityBar, true);
+    activityBarSettings[ColorSettings.activityBar_background] = activityBarStyle.backgroundHex;
 
     if (!keepForegroundColor) {
-      activityBarSettings[ColorSettings.activityBar_foreground] =
-        activityBarStyle.foregroundHex;
-      activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
-        activityBarStyle.inactiveForegroundHex;
+      activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;
+      activityBarSettings[ColorSettings.activityBar_inactiveForeground] = activityBarStyle.inactiveForegroundHex;
     }
 
     if (!keepBadgeColor) {
-      activityBarSettings[ColorSettings.activityBar_badgeBackground] =
-        activityBarStyle.badgeBackgroundHex;
-      activityBarSettings[ColorSettings.activityBar_badgeForeground] =
-        activityBarStyle.badgeForegroundHex;
+      activityBarSettings[ColorSettings.activityBar_badgeBackground] = activityBarStyle.badgeBackgroundHex;
+      activityBarSettings[ColorSettings.activityBar_badgeForeground] = activityBarStyle.badgeForegroundHex;
     }
   }
   return activityBarSettings;
 }
 
-function collectStatusBarSettings(
-  backgroundHex: string,
-  keepForegroundColor: boolean
-) {
+function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: boolean) {
   const statusBarSettings = <ISettingsIndexer>{};
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
-    const statusBarStyle = getElementStyle(
-      backgroundHex,
-      ElementNames.statusBar
-    );
-    statusBarSettings[ColorSettings.statusBar_background] =
-      statusBarStyle.backgroundHex;
-    statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
-      statusBarStyle.backgroundHoverHex;
+    const statusBarStyle = getElementStyle(backgroundHex, ElementNames.statusBar);
+    statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
+    statusBarSettings[ColorSettings.statusBarItem_hoverBackground] = statusBarStyle.backgroundHoverHex;
 
     if (!keepForegroundColor) {
-      statusBarSettings[ColorSettings.statusBar_foreground] =
-        statusBarStyle.foregroundHex;
+      statusBarSettings[ColorSettings.statusBar_foreground] = statusBarStyle.foregroundHex;
     }
   }
   return statusBarSettings;
 }
 
-function getElementColors(
-  config: vscode.WorkspaceConfiguration
-): IElementColors {
+function getElementColors(config: vscode.WorkspaceConfiguration): IElementColors {
   return {
     [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
     [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
-    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground]
+    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground],
   };
 }
 
@@ -474,16 +357,16 @@ export function getOriginalColorsForAllElements() {
   let originalElementColors: IElementColors = {
     [ElementNames.activityBar]: getOriginalColor(
       elementColors[ElementNames.activityBar],
-      elementAdjustments[ElementNames.activityBar]
+      elementAdjustments[ElementNames.activityBar],
     ),
     [ElementNames.statusBar]: getOriginalColor(
       elementColors[ElementNames.statusBar],
-      elementAdjustments[ElementNames.statusBar]
+      elementAdjustments[ElementNames.statusBar],
     ),
     [ElementNames.titleBar]: getOriginalColor(
       elementColors[ElementNames.titleBar],
-      elementAdjustments[ElementNames.titleBar]
-    )
+      elementAdjustments[ElementNames.titleBar],
+    ),
   };
   return originalElementColors;
 }
@@ -497,13 +380,8 @@ export function hasFavorites() {
   return s.favoriteColors.values.length;
 }
 
-export async function updateAffectedElements(
-  values: IPeacockAffectedElementSettings
-) {
-  await updateGlobalConfiguration(
-    AffectedSettings.ActivityBar,
-    values.activityBar
-  );
+export async function updateAffectedElements(values: IPeacockAffectedElementSettings) {
+  await updateGlobalConfiguration(AffectedSettings.ActivityBar, values.activityBar);
   await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
   await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
 
@@ -521,7 +399,7 @@ function getAllUserSettings() {
   const {
     activityBar: affectActivityBar,
     statusBar: affectStatusBar,
-    titleBar: affectTitleBar
+    titleBar: affectTitleBar,
   } = getAffectedElements();
   return {
     favoriteColors,
@@ -533,7 +411,7 @@ function getAllUserSettings() {
     lightForegroundColor,
     affectActivityBar,
     affectStatusBar,
-    affectTitleBar
+    affectTitleBar,
   };
 }
 

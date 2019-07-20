@@ -1,28 +1,20 @@
 import * as vscode from 'vscode';
 import { favoriteColorSeparator, peacockGreen, Sections } from './models';
-import {
-  getFavoriteColors,
-  getCurrentColorBeforeAdjustments
-} from './configuration';
+import { getFavoriteColors, getCurrentColorBeforeAdjustments } from './configuration';
 import { changeColor, isValidColorInput } from './color-library';
 
 export async function setPeacockColorCustomizations(colorCustomizations: any) {
   await vscode.workspace
     .getConfiguration()
-    .update(
-      Sections.workspacePeacockSection,
-      colorCustomizations,
-      vscode.ConfigurationTarget.Workspace
-    );
+    .update(Sections.workspacePeacockSection, colorCustomizations, vscode.ConfigurationTarget.Workspace);
 }
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: peacockGreen,
-    prompt:
-      'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
-    value: peacockGreen
+    prompt: 'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
+    value: peacockGreen,
   };
   const inputColor = await vscode.window.showInputBox(options);
   return inputColor || '';
@@ -36,7 +28,7 @@ export async function promptForFavoriteColorName(color: string) {
     ignoreFocusOut: true,
     placeHolder: 'Mandalorian Blue',
     prompt: `Enter a name for the color ${color}`,
-    value: ''
+    value: '',
   };
   const inputName = await vscode.window.showInputBox(options);
   return inputName || '';
@@ -48,7 +40,7 @@ export async function promptForFavoriteColor() {
   const startingColor = getCurrentColorBeforeAdjustments();
   const options = {
     placeHolder: 'Pick a favorite color',
-    onDidSelectItem: tryColorWithPeacock()
+    onDidSelectItem: tryColorWithPeacock(),
   };
   if (favoriteColors && favoriteColors.length) {
     selection = (await vscode.window.showQuickPick(menu, options)) || '';

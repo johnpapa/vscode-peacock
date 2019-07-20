@@ -16,36 +16,36 @@ export function instrument() {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
-      if (/\.js\.map$/.test(file)) {
-        // console.log(`ignoring ${file}`);
-        continue;
-      }
+    if (/\.js\.map$/.test(file)) {
+      // console.log(`ignoring ${file}`);
+      continue;
+    }
 
-      const inputPath = path.resolve(REPO_ROOT, 'out', files[i]);
-      const outputPath = path.resolve(REPO_ROOT, 'out-cov', files[i]);
+    const inputPath = path.resolve(REPO_ROOT, 'out', files[i]);
+    const outputPath = path.resolve(REPO_ROOT, 'out-cov', files[i]);
 
-      if (!/\.js$/.test(file) || /(^|[\\/])test[\\/]/.test(file)) {
-        // console.log(`copying ${inputPath}`);
-        copyFile(inputPath, outputPath);
-        continue;
-      }
+    if (!/\.js$/.test(file) || /(^|[\\/])test[\\/]/.test(file)) {
+      // console.log(`copying ${inputPath}`);
+      copyFile(inputPath, outputPath);
+      continue;
+    }
 
-      // Try to find a .map file
-      let map = null;
-      try {
-        map = JSON.parse(fs.readFileSync(`${inputPath}.map`).toString());
-      } catch (err) {
-        // missing source map...
-      }
+    // Try to find a .map file
+    let map = null;
+    try {
+      map = JSON.parse(fs.readFileSync(`${inputPath}.map`).toString());
+    } catch (err) {
+      // missing source map...
+    }
 
-      // console.log(`instrumenting ${inputPath}...`);
-      const instrumentedCode = instrumenter.instrumentSync(fs.readFileSync(inputPath).toString(), inputPath, map);
-      safeWriteFile(outputPath, instrumentedCode);
+    // console.log(`instrumenting ${inputPath}...`);
+    const instrumentedCode = instrumenter.instrumentSync(fs.readFileSync(inputPath).toString(), inputPath, map);
+    safeWriteFile(outputPath, instrumentedCode);
   }
 }
 
 export function createReport(): void {
-  const global = new Function("return this")();
+  const global = new Function('return this')();
 
   const mapStore = iLibSourceMaps.createSourceMapStore();
   const coverageMap = iLibCoverage.createCoverageMap(global.__coverage__);
@@ -55,20 +55,16 @@ export function createReport(): void {
     statements: [50, 80],
     functions: [50, 80],
     branches: [50, 80],
-    lines: [50, 80]
+    lines: [50, 80],
   };
 
   const tree = iLibReport.summarizers.flat(transformed.map);
   const context = iLibReport.createContext({
     dir: path.resolve(REPO_ROOT, `coverage`),
-    watermarks
+    watermarks,
   });
 
-  const reports = [
-    iReports.create('json'),
-    iReports.create('lcov'),
-    iReports.create('html')
-  ];
+  const reports = [iReports.create('json'), iReports.create('lcov'), iReports.create('html')];
   reports.forEach(report => tree.visit(report, context));
 }
 

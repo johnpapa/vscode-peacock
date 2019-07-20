@@ -10,7 +10,7 @@ export function run(): Promise<void> {
     //----------------------------------------
     // Stuff from old test setup
     timeout: 7500, // longer timeout, in case
-    useColors: true // colored output from test results
+    useColors: true, // colored output from test results
     //----------------------------------------
   });
   mocha.useColors(true);
@@ -36,13 +36,13 @@ export function run(): Promise<void> {
           }
         });
       } catch (err) {
-				e(err);
-			}
-		});
-	}).then(() => {
-		// Tests have finished executing, check if we should generate a coverage report
-		if (process.env['GENERATE_COVERAGE']) {
-			createReport();
-		}
-	});
+        e(err);
+      }
+    });
+  }).then(() => {
+    // Tests have finished executing, check if we should generate a coverage report
+    if (process.env['GENERATE_COVERAGE']) {
+      createReport();
+    }
+  });
 }

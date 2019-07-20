@@ -46,11 +46,9 @@ function remoteExtensionsInstalled(): boolean {
   let remoteExtensions = [
     'ms-vscode-remote.remote-containers',
     'ms-vscode-remote.remote-ssh',
-    'ms-vscode-remote.remote-wsl'
+    'ms-vscode-remote.remote-wsl',
   ];
-  return !!remoteExtensions.find(
-    each => !!vscode.extensions.getExtension(each)
-  );
+  return !!remoteExtensions.find(each => !!vscode.extensions.getExtension(each));
 }
 
 export async function addRemoteIntegration(context: vscode.ExtensionContext) {
@@ -59,11 +57,7 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   registerRemoteIntegrationCommands();
 
   const remoteExtensions = remoteExtensionsInstalled();
-  await vscode.commands.executeCommand(
-    'setContext',
-    'peacock:remote',
-    remoteExtensions
-  );
+  await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);
 
   if (!vscode.env.remoteName) {
     revertRemoteWorkspaceColors();
@@ -74,10 +68,7 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
 
 export async function refreshRemoteColor(remote: string): Promise<boolean> {
   if (vscode.env.remoteName !== remote) {
-    notify(
-      `The selected color will be applied every time you you are in the '${remote}' context.`,
-      true
-    );
+    notify(`The selected color will be applied every time you you are in the '${remote}' context.`, true);
     return false;
   }
 

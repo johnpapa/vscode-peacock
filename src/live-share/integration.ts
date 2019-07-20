@@ -18,13 +18,9 @@ export async function revertLiveShareWorkspaceColors() {
 }
 
 async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
-  const colorSettingName = isHost
-    ? peacockVslsMementos.vslsShareColor
-    : peacockVslsMementos.vslsJoinColor;
+  const colorSettingName = isHost ? peacockVslsMementos.vslsShareColor : peacockVslsMementos.vslsJoinColor;
 
-  const liveShareColorSetting = await State.extensionContext.globalState.get<
-    string
-  >(colorSettingName);
+  const liveShareColorSetting = await State.extensionContext.globalState.get<string>(colorSettingName);
   if (!liveShareColorSetting) {
     return;
   }
@@ -32,19 +28,14 @@ async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
   await changeColor(liveShareColorSetting);
 }
 
-export async function refreshLiveShareSessionColor(
-  isHostRole: boolean
-): Promise<boolean> {
+export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise<boolean> {
   const vslsApi = await vsls.getApi();
 
   // not in Live Share session, no need to update
   if (!vslsApi || !vslsApi.session.id) {
     const verb = isHostRole ? 'host and share' : 'join';
 
-    notify(
-      `The selected color will be applied every time you ${verb} a Live Share session.`,
-      true
-    );
+    notify(`The selected color will be applied every time you ${verb} a Live Share session.`, true);
 
     return false;
   }
@@ -54,19 +45,13 @@ export async function refreshLiveShareSessionColor(
   return true;
 }
 
-export async function addLiveShareIntegration(
-  context: vscode.ExtensionContext
-) {
+export async function addLiveShareIntegration(context: vscode.ExtensionContext) {
   State.extensionContext = context;
 
   registerLiveShareIntegrationCommands();
 
   const vslsApi = await vsls.getApi();
-  await vscode.commands.executeCommand(
-    'setContext',
-    'peacock:liveshare',
-    !!vslsApi
-  );
+  await vscode.commands.executeCommand('setContext', 'peacock:liveshare', !!vslsApi);
 
   if (!vslsApi) {
     return;
@@ -81,9 +66,7 @@ export async function addLiveShareIntegration(
 
     // we need to update `peacockColorCustomizations` only when it is `undefined`
     // to prevent the case of multiple color changes during live share session
-    peacockColorCustomizations = await vscode.workspace
-      .getConfiguration()
-      .get(Sections.workspacePeacockSection);
+    peacockColorCustomizations = await vscode.workspace.getConfiguration().get(Sections.workspacePeacockSection);
 
     const isHost = e.session.role === vsls.Role.Host;
     return await setLiveShareSessionWorkspaceColors(isHost);

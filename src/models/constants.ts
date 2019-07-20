@@ -15,5 +15,5 @@ export const peacockGreen = '#42b883';
 
 export const peacockMementos = {
   favoritesVersion: `${extensionShortName}.favoritesVersion`,
-  peacockColor: `${extensionShortName}.peacockColor`
+  peacockColor: `${extensionShortName}.peacockColor`,
 };

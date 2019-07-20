@@ -17,10 +17,10 @@ async function main() {
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [
-        './testworkspace'
+        './testworkspace',
         // '--disable-extensions'
         // '${workspaceFolder}/testworkspace'
-      ]
+      ],
     });
   } catch (err) {
     console.error('Failed to run tests');

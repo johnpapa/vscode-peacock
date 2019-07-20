@@ -7,13 +7,13 @@ export enum StandardSettings {
   DarkForegroundColor = 'darkForegroundColor',
   LightForegroundColor = 'lightForegroundColor',
   DarkenLightenPercentage = 'darkenLightenPercentage',
-  SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly'
+  SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
 }
 
 export enum AffectedSettings {
   ActivityBar = 'affectActivityBar',
   StatusBar = 'affectStatusBar',
-  TitleBar = 'affectTitleBar'
+  TitleBar = 'affectTitleBar',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings;
@@ -27,13 +27,13 @@ export enum Commands {
   changeColorToFavorite = 'peacock.changeColorToFavorite',
   addRecommendedFavorites = 'peacock.addRecommendedFavorites',
   darken = 'peacock.darken',
-  lighten = 'peacock.lighten'
+  lighten = 'peacock.lighten',
 }
 
 export enum ElementNames {
   activityBar = 'activityBar',
   statusBar = 'statusBar',
-  titleBar = 'titleBar'
+  titleBar = 'titleBar',
 }
 
 export enum ColorSettings {
@@ -48,7 +48,7 @@ export enum ColorSettings {
   activityBar_badgeForeground = 'activityBarBadge.foreground',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',
-  statusBarItem_hoverBackground = 'statusBarItem.hoverBackground'
+  statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
@@ -56,22 +56,22 @@ export type ColorAdjustment = 'lighten' | 'darken' | 'none';
 export enum ColorAdjustmentOptions {
   lighten = 'lighten',
   darken = 'darken',
-  none = 'none'
+  none = 'none',
 }
 
 export enum Sections {
   workspacePeacockSection = 'workbench.colorCustomizations',
-  userPeacockSection = 'peacock'
+  userPeacockSection = 'peacock',
 }
 
 export enum ForegroundColors {
   DarkForeground = '#15202b',
-  LightForeground = '#e7e7e7'
+  LightForeground = '#e7e7e7',
 }
 
 // See WebAIM contrast guidelines: https://webaim.org/articles/contrast/
 export enum ReadabilityRatios {
   UserInterfaceLow = 2,
   UserInterface = 3,
-  Text = 4.5
+  Text = 4.5,
 }

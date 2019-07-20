@@ -1,18 +1,6 @@
-import {
-  IPeacockSettings,
-  Commands,
-  ColorSettings,
-  peacockGreen
-} from '../../models';
-import {
-  setupTestSuite,
-  teardownTestSuite,
-  setupTest
-} from './lib/setup-teardown-test-suite';
-import {
-  getPeacockWorkspaceConfig,
-  getDarkenLightenPercentage
-} from '../../configuration';
+import { IPeacockSettings, Commands, ColorSettings, peacockGreen } from '../../models';
+import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import { getPeacockWorkspaceConfig, getDarkenLightenPercentage } from '../../configuration';
 import { executeCommand } from './lib/constants';
 import assert = require('assert');
 import { getLightenedColorHex, getDarkenedColorHex } from '../../color-library';
@@ -30,10 +18,7 @@ suite('Darken/Lighten commands', () => {
     let config = getPeacockWorkspaceConfig();
     const pct = getDarkenLightenPercentage();
 
-    assert.equal(
-      getLightenedColorHex(peacockGreen, pct),
-      config[ColorSettings.activityBar_background]
-    );
+    assert.equal(getLightenedColorHex(peacockGreen, pct), config[ColorSettings.activityBar_background]);
   });
 
   test('can darken a color', async () => {
@@ -42,9 +27,6 @@ suite('Darken/Lighten commands', () => {
     let config = getPeacockWorkspaceConfig();
     const pct = getDarkenLightenPercentage();
 
-    assert.equal(
-      getDarkenedColorHex(peacockGreen, pct),
-      config[ColorSettings.activityBar_background]
-    );
+    assert.equal(getDarkenedColorHex(peacockGreen, pct), config[ColorSettings.activityBar_background]);
   });
 });
