@@ -146,7 +146,10 @@ suite('Affected elements', () => {
         titleBar: true,
       });
 
-      const value = await getColorSettingAfterEnterColor(peacockGreen, ColorSettings.statusBarItem_hoverBackground);
+      const value = await getColorSettingAfterEnterColor(
+        peacockGreen,
+        ColorSettings.statusBarItem_hoverBackground,
+      );
       assert.ok(!value);
 
       await updateAffectedElements(allAffectedElements);
@@ -218,7 +221,9 @@ suite('Affected elements', () => {
 
     async function testActivityBarBadgeColoringMeetsReadabilityThreshold(backgroundHex: string) {
       // Stub the async input box to return a response
-      const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(backgroundHex));
+      const stub = await sinon
+        .stub(vscode.window, 'showInputBox')
+        .returns(Promise.resolve(backgroundHex));
       // fire the command
       await executeCommand(Commands.enterColor);
       let config = getPeacockWorkspaceConfig();
@@ -242,12 +247,22 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
 
   assert.equal(style.backgroundHex, config[ColorSettings.titleBar_activeBackground]);
 
-  assert.ok(shouldKeepColorTest(style.foregroundHex, ColorSettings.titleBar_activeForeground, keepForegroundColor));
+  assert.ok(
+    shouldKeepColorTest(
+      style.foregroundHex,
+      ColorSettings.titleBar_activeForeground,
+      keepForegroundColor,
+    ),
+  );
 
   assert.equal(style.inactiveBackgroundHex, config[ColorSettings.titleBar_inactiveBackground]);
 
   assert.ok(
-    shouldKeepColorTest(style.inactiveForegroundHex, ColorSettings.titleBar_inactiveForeground, keepForegroundColor),
+    shouldKeepColorTest(
+      style.inactiveForegroundHex,
+      ColorSettings.titleBar_inactiveForeground,
+      keepForegroundColor,
+    ),
   );
 
   // All others should not exist
@@ -271,10 +286,17 @@ async function testsSetsColorCustomizationsForAffectedElements() {
   assert.equal(titleBarStyle.backgroundHex, config[ColorSettings.titleBar_activeBackground]);
 
   assert.ok(
-    shouldKeepColorTest(titleBarStyle.foregroundHex, ColorSettings.titleBar_activeForeground, keepForegroundColor),
+    shouldKeepColorTest(
+      titleBarStyle.foregroundHex,
+      ColorSettings.titleBar_activeForeground,
+      keepForegroundColor,
+    ),
   );
 
-  assert.equal(titleBarStyle.inactiveBackgroundHex, config[ColorSettings.titleBar_inactiveBackground]);
+  assert.equal(
+    titleBarStyle.inactiveBackgroundHex,
+    config[ColorSettings.titleBar_inactiveBackground],
+  );
 
   assert.ok(
     shouldKeepColorTest(
@@ -288,7 +310,11 @@ async function testsSetsColorCustomizationsForAffectedElements() {
   assert.equal(activityBarStyle.backgroundHex, config[ColorSettings.activityBar_background]);
 
   assert.ok(
-    shouldKeepColorTest(activityBarStyle.foregroundHex, ColorSettings.activityBar_foreground, keepForegroundColor),
+    shouldKeepColorTest(
+      activityBarStyle.foregroundHex,
+      ColorSettings.activityBar_foreground,
+      keepForegroundColor,
+    ),
   );
 
   assert.ok(
@@ -300,17 +326,31 @@ async function testsSetsColorCustomizationsForAffectedElements() {
   );
 
   assert.ok(
-    shouldKeepColorTest(activityBarStyle.badgeBackgroundHex, ColorSettings.activityBar_badgeBackground, keepBadgeColor),
+    shouldKeepColorTest(
+      activityBarStyle.badgeBackgroundHex,
+      ColorSettings.activityBar_badgeBackground,
+      keepBadgeColor,
+    ),
   );
 
   assert.ok(
-    shouldKeepColorTest(activityBarStyle.badgeForegroundHex, ColorSettings.activityBar_badgeForeground, keepBadgeColor),
+    shouldKeepColorTest(
+      activityBarStyle.badgeForegroundHex,
+      ColorSettings.activityBar_badgeForeground,
+      keepBadgeColor,
+    ),
   );
 
   const statusBarStyle = getElementStyle(peacockGreen, 'statusBar');
   assert.equal(statusBarStyle.backgroundHex, config[ColorSettings.statusBar_background]);
 
-  assert.ok(shouldKeepColorTest(statusBarStyle.foregroundHex, ColorSettings.statusBar_foreground, keepForegroundColor));
+  assert.ok(
+    shouldKeepColorTest(
+      statusBarStyle.foregroundHex,
+      ColorSettings.statusBar_foreground,
+      keepForegroundColor,
+    ),
+  );
 }
 
 async function getColorSettingAfterEnterColor(colorInput: string, setting: ColorSettings) {
@@ -323,7 +363,11 @@ async function getColorSettingAfterEnterColor(colorInput: string, setting: Color
   return config[setting];
 }
 
-function shouldKeepColorTest(elementStyle: string | undefined, colorSetting: ColorSettings, keepColor: boolean) {
+function shouldKeepColorTest(
+  elementStyle: string | undefined,
+  colorSetting: ColorSettings,
+  keepColor: boolean,
+) {
   const config = getPeacockWorkspaceConfig();
   let match = elementStyle === config[colorSetting];
   let passesTest = keepColor ? !match : match;
