@@ -252,11 +252,12 @@
     "lint-fix": "eslint ./src --ext .js,.ts --fix",
     "webpack": "webpack --mode none",
     "watch": "webpack --mode none --watch",
-    "just-test": "node ./out/test/runTest.js --coverage",
+    "just-test": "node ./out/test/runTest.js",
     "just-live-share-test": "node out/live-share/test/runTest.js",
     "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && npm run just-test",
-    "test-all": "npm run test && npm run just-live-share-test "
+    "test-all": "npm run test && npm run just-live-share-test",
+    "test:coverage": "npm run test-compile && npm run just-test -- --coverage"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
