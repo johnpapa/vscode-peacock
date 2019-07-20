@@ -23,4 +23,8 @@ src/
 tsconfig.json
 webpack.config.json
 
-.azure-pipelines/**
+.all-contributorsrc
+.github/
+.azure-pipelines/
+coverage/
+out-cov/
