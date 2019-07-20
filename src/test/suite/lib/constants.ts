@@ -3,8 +3,6 @@ import { IPeacockAffectedElementSettings, IPeacockElementAdjustments } from '../
 
 export const executeCommand = vscode.commands.executeCommand;
 
-export const timeout = async (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
-
 export const noopElementAdjustments = <IPeacockElementAdjustments>{
   activityBar: 'none',
   statusBar: 'none',

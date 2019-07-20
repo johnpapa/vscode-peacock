@@ -53,6 +53,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.lightForeground             | override for the light foreground                                                                       |
 | peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                           |
 | peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color |
+| peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                |
 
 ### Favorite Colors
 

@@ -3,19 +3,13 @@ import sinon = require('sinon');
 import assert = require('assert');
 import * as vsls from 'vsls';
 
-import { IPeacockSettings, Commands, ColorSettings } from '../../../models';
+import { IPeacockSettings, Commands, ColorSettings, timeout } from '../../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from '../../../test/suite/lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../../color-library';
 import { executeCommand } from '../../../test/suite/lib/constants';
 import { LiveShareCommands } from '../../enums';
 import { peacockVslsMementos } from '../../constants';
 import { getPeacockWorkspaceConfig } from '../../../configuration';
-
-const sleepAsync = (delay: number) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, delay);
-  });
-};
 
 suite('Live Share Integration', () => {
   let originalValues = <IPeacockSettings>{};
@@ -79,7 +73,7 @@ suite('Live Share Integration', () => {
     stub.restore();
 
     await vslsApi.share();
-    await sleepAsync(1000);
+    await timeout(1000);
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
@@ -108,9 +102,9 @@ suite('Live Share Integration', () => {
     stub.restore();
 
     await vslsApi.share();
-    await sleepAsync(1000);
+    await timeout(1000);
     await vslsApi.end();
-    await sleepAsync(1000);
+    await timeout(1000);
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
@@ -167,7 +161,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.share();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color2 = '#68217a';
     const fakeResponse2 = `C# Purple -> ${color2}`;
@@ -176,7 +170,7 @@ suite('Live Share Integration', () => {
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub2.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
@@ -197,7 +191,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.share();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color2 = '#68217a';
     const fakeResponse2 = `C# Purple -> ${color2}`;
@@ -208,7 +202,7 @@ suite('Live Share Integration', () => {
     );
     stub2.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color3 = '#b52e31';
     const fakeResponse3 = `Abgular Red -> ${color3}`;
@@ -217,7 +211,7 @@ suite('Live Share Integration', () => {
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub3.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color4 = '#639';
     const fakeResponse4 = `Gatsby Purple -> ${color4}`;
@@ -226,11 +220,11 @@ suite('Live Share Integration', () => {
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub4.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     await vslsApi.end();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
@@ -257,7 +251,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.share();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color2 = '#68217a';
     const fakeResponse2 = `C# Purple -> ${color2}`;
@@ -268,7 +262,7 @@ suite('Live Share Integration', () => {
     );
     stub2.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color3 = '#b52e31';
     const fakeResponse3 = `Abgular Red -> ${color3}`;
@@ -277,7 +271,7 @@ suite('Live Share Integration', () => {
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub3.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     const color4 = '#639';
     const fakeResponse4 = `Gatsby Purple -> ${color4}`;
@@ -286,11 +280,11 @@ suite('Live Share Integration', () => {
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub4.restore();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     await vslsApi.end();
 
-    await sleepAsync(1000);
+    await timeout(1000);
 
     let config = getPeacockWorkspaceConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;

@@ -13,13 +13,14 @@ import {
 } from './models';
 import {
   prepareColors,
-  updateWorkspaceConfiguration,
   getExistingColorCustomizations,
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
+  updateWorkspaceConfiguration,
 } from './configuration';
 import { Logger } from './logging';
 import { savePeacockColorWorkspaceMemento } from './mementos';
+import { updateStatusBar } from './statusbar';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -158,6 +159,7 @@ export async function changeColor(input: string, primaryEnvironment = true) {
 
   const backgroundHex = getBackgroundColorHex(input);
   State.recentColor = backgroundHex;
+  updateStatusBar(backgroundHex);
 
   // Delete all Peacock color customizations from the workspace
   // and return pre-existing color customizations (not Peacock ones)
