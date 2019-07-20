@@ -23,6 +23,7 @@ import { resetLiveSharePreviousColors } from './live-share';
 import { resetRemotePreviousColors } from './remote';
 import { resetMementos } from './mementos';
 import { notify } from './notification';
+import { updateStatusBar } from './statusbar';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -32,6 +33,7 @@ export async function resetColorsHandler() {
   await resetLiveSharePreviousColors();
   await resetRemotePreviousColors();
   await resetMementos();
+  updateStatusBar('');
 
   await updateWorkspaceConfiguration(newColorCustomizations);
   return State.extensionContext;

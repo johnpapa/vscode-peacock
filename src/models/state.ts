@@ -26,7 +26,6 @@ export class State {
   public static set recentColor(v: string) {
     this._recentColor = v;
     const msg = `${extensionShortName}: Saving the most recently used color ${this._recentColor} to state`;
-    updateStatusBar(this._recentColor); // async, but we dont care
     Logger.info(msg);
   }
 
