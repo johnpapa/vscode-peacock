@@ -29,19 +29,25 @@ suite('can set color to built-in color', () => {
       assert.ok(isValidColorInput(config[ColorSettings.titleBar_activeBackground]));
     });
 
-    suite('when surpriseMeFromFavoritesOnly is true, color matches a favorite and is not chosen at random', () => {
-      const limit = 10;
-      for (let index = 0; index < limit; index++) {
-        test(`test run ${index} of ${limit}`, async () => {
-          let { values: favorites } = getFavoriteColors();
-          await updateSurpriseMeFromFavoritesOnly(true);
-          await executeCommand(Commands.changeColorToRandom);
-          const color = getCurrentColorBeforeAdjustments();
-          const match = favorites.find(item => item.value.toLowerCase === color.toLowerCase);
-          assert.ok(match, `chosen color ${color} is not found in the favorites ${JSON.stringify(favorites)}`);
-        });
-      }
-    });
+    suite(
+      'when surpriseMeFromFavoritesOnly is true, color matches a favorite and is not chosen at random',
+      () => {
+        const limit = 10;
+        for (let index = 0; index < limit; index++) {
+          test(`test run ${index} of ${limit}`, async () => {
+            let { values: favorites } = getFavoriteColors();
+            await updateSurpriseMeFromFavoritesOnly(true);
+            await executeCommand(Commands.changeColorToRandom);
+            const color = getCurrentColorBeforeAdjustments();
+            const match = favorites.find(item => item.value.toLowerCase === color.toLowerCase);
+            assert.ok(
+              match,
+              `chosen color ${color} is not found in the favorites ${JSON.stringify(favorites)}`,
+            );
+          });
+        }
+      },
+    );
   });
 
   suite('when resetting colors', () => {
@@ -78,7 +84,9 @@ suite('can set color to built-in color', () => {
   });
 });
 
-function testChangingColorToPeacockGreen(): ((this: Mocha.ITestCallbackContext, done: MochaDone) => any) | undefined {
+function testChangingColorToPeacockGreen():
+  | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
+  | undefined {
   return testBuiltInColor(Commands.changeColorToPeacockGreen, peacockGreen);
 }
 

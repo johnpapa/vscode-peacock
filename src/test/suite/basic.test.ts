@@ -58,7 +58,9 @@ suite('Basic Extension Tests', () => {
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
     for (let setting in StandardSettings) {
-      const result = properties.some(property => property === `${extensionShortName}.${StandardSettings[setting]}`);
+      const result = properties.some(
+        property => property === `${extensionShortName}.${StandardSettings[setting]}`,
+      );
       assert.ok(result);
     }
   });
@@ -68,7 +70,9 @@ suite('Basic Extension Tests', () => {
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
     for (let setting in AffectedSettings) {
-      const result = properties.some(property => property === `${extensionShortName}.${AffectedSettings[setting]}`);
+      const result = properties.some(
+        property => property === `${extensionShortName}.${AffectedSettings[setting]}`,
+      );
       assert.ok(result);
     }
   });
@@ -76,7 +80,9 @@ suite('Basic Extension Tests', () => {
   test('package.json commands registered in extension', done => {
     // let extension = <vscode.Extension<any>>getExtension();
 
-    const commandStrings: string[] = extension.packageJSON.contributes.commands.map((c: ICommand) => c.command);
+    const commandStrings: string[] = extension.packageJSON.contributes.commands.map(
+      (c: ICommand) => c.command,
+    );
 
     vscode.commands.getCommands(true).then((allCommands: string[]) => {
       const commands = allCommands.filter(c => c.startsWith(`${extensionShortName}.`));

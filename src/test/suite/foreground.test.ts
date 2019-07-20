@@ -58,7 +58,9 @@ suite('Foreground color', () => {
 function createForegroundTest(fakeResponse: string, expectedValue: string) {
   return async () => {
     // Stub the async input box to return a response
-    const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showInputBox')
+      .returns(Promise.resolve(fakeResponse));
 
     // fire the command
     await executeCommand(Commands.enterColor);

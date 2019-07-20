@@ -43,17 +43,22 @@ suite('changes to configuration', () => {
     test('have no effect', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
       let config1 = getUserConfig();
-      await updateGlobalConfiguration(AffectedSettings.ActivityBar, !config1[AffectedSettings.ActivityBar]);
+      await updateGlobalConfiguration(
+        AffectedSettings.ActivityBar,
+        !config1[AffectedSettings.ActivityBar],
+      );
 
       await timeout(delayInMs);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(colors1[ElementNames.activityBar] === colors2[ElementNames.activityBar]);
       assert.ok(
-        !!config1[AffectedSettings.StatusBar] && colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
+        !!config1[AffectedSettings.StatusBar] &&
+          colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
       );
       assert.ok(
-        !!config1[AffectedSettings.TitleBar] && colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
+        !!config1[AffectedSettings.TitleBar] &&
+          colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
       );
     });
   });
@@ -67,24 +72,32 @@ suite('changes to configuration', () => {
     test('will change color when unselecting activitybar', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
       let config1 = getUserConfig();
-      await updateGlobalConfiguration(AffectedSettings.ActivityBar, !config1[AffectedSettings.ActivityBar]);
+      await updateGlobalConfiguration(
+        AffectedSettings.ActivityBar,
+        !config1[AffectedSettings.ActivityBar],
+      );
 
       await timeout(delayInMs);
 
       const colors2: IElementColors = getOriginalColorsForAllElements();
       assert.ok(colors1[ElementNames.activityBar] !== colors2[ElementNames.activityBar]);
       assert.ok(
-        !!config1[AffectedSettings.StatusBar] && colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
+        !!config1[AffectedSettings.StatusBar] &&
+          colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
       );
       assert.ok(
-        !!config1[AffectedSettings.TitleBar] && colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
+        !!config1[AffectedSettings.TitleBar] &&
+          colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
       );
     });
 
     test('will change color when unselecting statusbar', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
       let config1 = getUserConfig();
-      await updateGlobalConfiguration(AffectedSettings.StatusBar, !config1[AffectedSettings.StatusBar]);
+      await updateGlobalConfiguration(
+        AffectedSettings.StatusBar,
+        !config1[AffectedSettings.StatusBar],
+      );
 
       await timeout(delayInMs);
 
@@ -95,14 +108,18 @@ suite('changes to configuration', () => {
           colors1[ElementNames.activityBar] === colors2[ElementNames.activityBar],
       );
       assert.ok(
-        !!config1[AffectedSettings.TitleBar] && colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
+        !!config1[AffectedSettings.TitleBar] &&
+          colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
       );
     });
 
     test('will change color when unselecting titlebar', async () => {
       let config1 = getUserConfig();
       const colors1: IElementColors = getOriginalColorsForAllElements();
-      await updateGlobalConfiguration(AffectedSettings.TitleBar, !config1[AffectedSettings.TitleBar]);
+      await updateGlobalConfiguration(
+        AffectedSettings.TitleBar,
+        !config1[AffectedSettings.TitleBar],
+      );
 
       await timeout(delayInMs);
       const colors2: IElementColors = getOriginalColorsForAllElements();
@@ -112,7 +129,8 @@ suite('changes to configuration', () => {
           colors1[ElementNames.activityBar] === colors2[ElementNames.activityBar],
       );
       assert.ok(
-        !!config1[AffectedSettings.StatusBar] && colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
+        !!config1[AffectedSettings.StatusBar] &&
+          colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
       );
     });
   });

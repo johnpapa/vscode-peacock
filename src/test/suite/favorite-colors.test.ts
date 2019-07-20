@@ -6,7 +6,11 @@ import { parseFavoriteColorValue } from '../../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
-import { getFavoriteColors, updateFavoriteColors, getCurrentColorBeforeAdjustments } from '../../configuration';
+import {
+  getFavoriteColors,
+  updateFavoriteColors,
+  getCurrentColorBeforeAdjustments,
+} from '../../configuration';
 
 suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
@@ -18,7 +22,9 @@ suite('Favorite colors', () => {
   test('can set color to favorite color', async () => {
     // Stub the async quick pick to return a response
     const fakeResponse = 'Azure Blue -> #007fff';
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     await executeCommand(Commands.changeColorToFavorite);
     const color = getCurrentColorBeforeAdjustments();
@@ -36,7 +42,9 @@ suite('Favorite colors', () => {
 
     // Stub the async quick pick to return a response
     const fakeResponse = '';
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const valueBefore = getCurrentColorBeforeAdjustments();
     await executeCommand(Commands.changeColorToFavorite);
@@ -49,7 +57,9 @@ suite('Favorite colors', () => {
   test('set to favorite color with no preferences is a noop, when color was not previously set', async () => {
     // Stub the async quick pick to return a response
     const fakeResponse = '';
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const colorBefore = getCurrentColorBeforeAdjustments();
     await executeCommand(Commands.changeColorToFavorite);
@@ -66,7 +76,9 @@ suite('Favorite colors', () => {
 
     // Stub the async quick pick to return a response
     const fakeResponse = '';
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     // Save favorites
     const { values: favoriteColors } = getFavoriteColors();

@@ -68,7 +68,10 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
 
 export async function refreshRemoteColor(remote: string): Promise<boolean> {
   if (vscode.env.remoteName !== remote) {
-    notify(`The selected color will be applied every time you you are in the '${remote}' context.`, true);
+    notify(
+      `The selected color will be applied every time you you are in the '${remote}' context.`,
+      true,
+    );
     return false;
   }
 

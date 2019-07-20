@@ -22,12 +22,16 @@ suite('Remote Integration', () => {
 
   setup(async () => {
     // Start with green
-    extensionContext = await executeCommand<vscode.ExtensionContext>(Commands.changeColorToPeacockGreen);
+    extensionContext = await executeCommand<vscode.ExtensionContext>(
+      Commands.changeColorToPeacockGreen,
+    );
 
     // Stub the async quick pick to return a response
     // change to blue
     const fakeResponse = `Azure Blue -> ${azureBlue}`;
-    stubQuickPick = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    stubQuickPick = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
   });
   teardown(async () => {
     stubQuickPick!.restore();
@@ -36,7 +40,10 @@ suite('Remote Integration', () => {
   test('can set color setting for Remote WSL', async () => {
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteWsl);
 
-    const settingValue = extensionContext!.globalState.get<string>(peacockRemoteMementos.remoteWslColor, '');
+    const settingValue = extensionContext!.globalState.get<string>(
+      peacockRemoteMementos.remoteWslColor,
+      '',
+    );
 
     console.log('settingValue');
     console.log(settingValue);
@@ -46,7 +53,10 @@ suite('Remote Integration', () => {
   test('can set color setting for Remote SSH', async () => {
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteSsh);
 
-    const settingValue = extensionContext!.globalState.get<string>(peacockRemoteMementos.remoteSshColor, '');
+    const settingValue = extensionContext!.globalState.get<string>(
+      peacockRemoteMementos.remoteSshColor,
+      '',
+    );
 
     assert(isValidColorInput(settingValue));
     assert(settingValue === azureBlue);
@@ -55,7 +65,10 @@ suite('Remote Integration', () => {
   test('can set color setting for Remote Containers', async () => {
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteContainers);
 
-    const settingValue = extensionContext!.globalState.get<string>(peacockRemoteMementos.remoteContainersColor, '');
+    const settingValue = extensionContext!.globalState.get<string>(
+      peacockRemoteMementos.remoteContainersColor,
+      '',
+    );
 
     assert(isValidColorInput(settingValue));
     assert(settingValue === azureBlue);

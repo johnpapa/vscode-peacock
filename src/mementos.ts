@@ -12,14 +12,18 @@ export interface IMementoLog {
 
 export async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
-    Logger.info(`${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`);
+    Logger.info(
+      `${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`,
+    );
     await State.extensionContext.globalState.update(mementoName, value);
   }
 }
 
 async function saveWorkspaceMemento(mementoName: string, value: any) {
   if (mementoName) {
-    Logger.info(`${extensionShortName}: Saving the workspaceState ${mementoName} memento with value ${value}`);
+    Logger.info(
+      `${extensionShortName}: Saving the workspaceState ${mementoName} memento with value ${value}`,
+    );
     await State.extensionContext.workspaceState.update(mementoName, value);
   }
 }
@@ -45,7 +49,9 @@ export function getFavoritesVersionGlobalMemento() {
 export async function resetMementos() {
   const ec = State.extensionContext;
 
-  Logger.info(`${extensionShortName}: Setting all workspaceState and globalState mementos to undefined`);
+  Logger.info(
+    `${extensionShortName}: Setting all workspaceState and globalState mementos to undefined`,
+  );
 
   // Global
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);

@@ -7,7 +7,11 @@ import {
   peacockGreen,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
-import { updateElementAdjustments, getPeacockWorkspaceConfig, updateAffectedElements } from '../../configuration';
+import {
+  updateElementAdjustments,
+  getPeacockWorkspaceConfig,
+  updateAffectedElements,
+} from '../../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
 import assert = require('assert');
 import { getLightenedColorHex, getDarkenedColorHex, getColorBrightness } from '../../color-library';

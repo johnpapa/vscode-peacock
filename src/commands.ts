@@ -28,7 +28,9 @@ import { updateStatusBar } from './statusbar';
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
   State.recentColor = '';
-  const newColorCustomizations = isObjectEmpty(colorCustomizations) ? undefined : colorCustomizations;
+  const newColorCustomizations = isObjectEmpty(colorCustomizations)
+    ? undefined
+    : colorCustomizations;
 
   await resetLiveSharePreviousColors();
   await resetRemotePreviousColors();
@@ -68,7 +70,9 @@ export async function changeColorToRandomHandler() {
   if (surpriseMeFromFavoritesOnly) {
     const o = getRandomFavoriteColor();
     if (!o) {
-      notify('No favorites exist. Add some favorites if you want to use the surprise me from favorites feature');
+      notify(
+        'No favorites exist. Add some favorites if you want to use the surprise me from favorites feature',
+      );
       return State.extensionContext;
     }
     color = o.value;

@@ -28,11 +28,17 @@ export async function updateGlobalConfiguration<T>(setting: AllSettings, value?:
 }
 
 export async function updateWorkspaceConfiguration(colorCustomizations: {} | undefined) {
-  Logger.info(`${extensionShortName}: Updating the workspace with the following color customizations`);
+  Logger.info(
+    `${extensionShortName}: Updating the workspace with the following color customizations`,
+  );
   Logger.info(colorCustomizations, true);
   return await vscode.workspace
     .getConfiguration()
-    .update(Sections.workspacePeacockSection, colorCustomizations, vscode.ConfigurationTarget.Workspace);
+    .update(
+      Sections.workspacePeacockSection,
+      colorCustomizations,
+      vscode.ConfigurationTarget.Workspace,
+    );
 }
 
 export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {

@@ -51,16 +51,26 @@ suite('Save starter favorite colors', () => {
     // 2 Should have same old value for existing favorite azure
     assert.ok(
       favoriteColors2.some(
-        f => f.name === azureBlue.name && f.value === azureBlue.value && f.value === newRecs.azureBlue.value,
+        f =>
+          f.name === azureBlue.name &&
+          f.value === azureBlue.value &&
+          f.value === newRecs.azureBlue.value,
       ),
     );
     // 2 Should have different value for existing favorite gatsby
     assert.ok(
       favoriteColors2.some(
-        f => f.name === gatsbyPurple.name && f.value !== gatsbyPurple.value && f.value === newRecs.gatsbyPurple.value,
+        f =>
+          f.name === gatsbyPurple.name &&
+          f.value !== gatsbyPurple.value &&
+          f.value === newRecs.gatsbyPurple.value,
       ),
     );
     // 2 Should have new key and value pair (yoda/green)
-    assert.ok(favoriteColors2.some(f => f.name === newRecs.yodaGreen.name && f.value === newRecs.yodaGreen.value));
+    assert.ok(
+      favoriteColors2.some(
+        f => f.name === newRecs.yodaGreen.name && f.value === newRecs.yodaGreen.value,
+      ),
+    );
   });
 });

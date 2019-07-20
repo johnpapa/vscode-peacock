@@ -6,14 +6,19 @@ import { changeColor, isValidColorInput } from './color-library';
 export async function setPeacockColorCustomizations(colorCustomizations: any) {
   await vscode.workspace
     .getConfiguration()
-    .update(Sections.workspacePeacockSection, colorCustomizations, vscode.ConfigurationTarget.Workspace);
+    .update(
+      Sections.workspacePeacockSection,
+      colorCustomizations,
+      vscode.ConfigurationTarget.Workspace,
+    );
 }
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: peacockGreen,
-    prompt: 'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
+    prompt:
+      'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
     value: peacockGreen,
   };
   const inputColor = await vscode.window.showInputBox(options);

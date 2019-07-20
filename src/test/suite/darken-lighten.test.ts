@@ -18,7 +18,10 @@ suite('Darken/Lighten commands', () => {
     let config = getPeacockWorkspaceConfig();
     const pct = getDarkenLightenPercentage();
 
-    assert.equal(getLightenedColorHex(peacockGreen, pct), config[ColorSettings.activityBar_background]);
+    assert.equal(
+      getLightenedColorHex(peacockGreen, pct),
+      config[ColorSettings.activityBar_background],
+    );
   });
 
   test('can darken a color', async () => {
@@ -27,6 +30,9 @@ suite('Darken/Lighten commands', () => {
     let config = getPeacockWorkspaceConfig();
     const pct = getDarkenLightenPercentage();
 
-    assert.equal(getDarkenedColorHex(peacockGreen, pct), config[ColorSettings.activityBar_background]);
+    assert.equal(
+      getDarkenedColorHex(peacockGreen, pct),
+      config[ColorSettings.activityBar_background],
+    );
   });
 });

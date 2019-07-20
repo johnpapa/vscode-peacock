@@ -44,7 +44,9 @@ export function getBackgroundHoverColorHex(backgroundColor = '') {
 
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  const foreground = background.isLight() ? getDarkForegroundColorOrOverride() : getLightForegroundColorOrOverride();
+  const foreground = background.isLight()
+    ? getDarkForegroundColorOrOverride()
+    : getLightForegroundColorOrOverride();
   return formatHex(tinycolor(foreground));
 }
 

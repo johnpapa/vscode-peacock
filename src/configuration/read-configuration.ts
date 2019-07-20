@@ -35,7 +35,10 @@ export function getSurpriseMeFromFavoritesOnly() {
 }
 
 export function getDarkenLightenPercentage() {
-  return readConfiguration<number>(StandardSettings.DarkenLightenPercentage, defaultAmountToDarkenLighten);
+  return readConfiguration<number>(
+    StandardSettings.DarkenLightenPercentage,
+    defaultAmountToDarkenLighten,
+  );
 }
 
 export function getShowColorInStatusBar() {
@@ -79,7 +82,11 @@ export function prepareColors(backgroundHex: string) {
 
   let titleBarSettings = collectTitleBarSettings(backgroundHex, keepForegroundColor);
 
-  let activityBarSettings = collectActivityBarSettings(backgroundHex, keepForegroundColor, keepBadgeColor);
+  let activityBarSettings = collectActivityBarSettings(
+    backgroundHex,
+    keepForegroundColor,
+    keepBadgeColor,
+  );
 
   let statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
@@ -134,7 +141,10 @@ export function getRandomFavoriteColor() {
   let newColorFromFavorites: IFavoriteColors;
   do {
     newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
-  } while (favoriteColors.length > 1 && newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase());
+  } while (
+    favoriteColors.length > 1 &&
+    newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase()
+  );
   return newColorFromFavorites;
 }
 
@@ -151,7 +161,9 @@ export function getAffectedElements() {
 }
 
 export function getElementAdjustments() {
-  const adjustments = readConfiguration<IPeacockElementAdjustments>(StandardSettings.ElementAdjustments);
+  const adjustments = readConfiguration<IPeacockElementAdjustments>(
+    StandardSettings.ElementAdjustments,
+  );
   return adjustments || {};
 }
 
@@ -192,8 +204,12 @@ export function getElementStyle(
 
 export function getAllSettingNames() {
   let settings = [];
-  const affectedSettings = Object.values(AffectedSettings).map(value => `${extensionShortName}.${value}`);
-  const standardSettings = Object.values(StandardSettings).map(value => `${extensionShortName}.${value}`);
+  const affectedSettings = Object.values(AffectedSettings).map(
+    value => `${extensionShortName}.${value}`,
+  );
+  const standardSettings = Object.values(StandardSettings).map(
+    value => `${extensionShortName}.${value}`,
+  );
   settings.push(...affectedSettings);
   settings.push(...standardSettings);
   return settings;
@@ -208,17 +224,23 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     const titleBarStyle = getElementStyle(backgroundHex, ElementNames.titleBar);
     titleBarSettings[ColorSettings.titleBar_activeBackground] = titleBarStyle.backgroundHex;
-    titleBarSettings[ColorSettings.titleBar_inactiveBackground] = titleBarStyle.inactiveBackgroundHex;
+    titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
+      titleBarStyle.inactiveBackgroundHex;
 
     if (!keepForegroundColor) {
       titleBarSettings[ColorSettings.titleBar_activeForeground] = titleBarStyle.foregroundHex;
-      titleBarSettings[ColorSettings.titleBar_inactiveForeground] = titleBarStyle.inactiveForegroundHex;
+      titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
+        titleBarStyle.inactiveForegroundHex;
     }
   }
   return titleBarSettings;
 }
 
-function collectActivityBarSettings(backgroundHex: string, keepForegroundColor: boolean, keepBadgeColor: boolean) {
+function collectActivityBarSettings(
+  backgroundHex: string,
+  keepForegroundColor: boolean,
+  keepBadgeColor: boolean,
+) {
   const activityBarSettings = <ISettingsIndexer>{};
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
@@ -227,12 +249,15 @@ function collectActivityBarSettings(backgroundHex: string, keepForegroundColor: 
 
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;
-      activityBarSettings[ColorSettings.activityBar_inactiveForeground] = activityBarStyle.inactiveForegroundHex;
+      activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
+        activityBarStyle.inactiveForegroundHex;
     }
 
     if (!keepBadgeColor) {
-      activityBarSettings[ColorSettings.activityBar_badgeBackground] = activityBarStyle.badgeBackgroundHex;
-      activityBarSettings[ColorSettings.activityBar_badgeForeground] = activityBarStyle.badgeForegroundHex;
+      activityBarSettings[ColorSettings.activityBar_badgeBackground] =
+        activityBarStyle.badgeBackgroundHex;
+      activityBarSettings[ColorSettings.activityBar_badgeForeground] =
+        activityBarStyle.badgeForegroundHex;
     }
   }
   return activityBarSettings;
@@ -243,7 +268,8 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
     const statusBarStyle = getElementStyle(backgroundHex, ElementNames.statusBar);
     statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
-    statusBarSettings[ColorSettings.statusBarItem_hoverBackground] = statusBarStyle.backgroundHoverHex;
+    statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
+      statusBarStyle.backgroundHoverHex;
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] = statusBarStyle.foregroundHex;

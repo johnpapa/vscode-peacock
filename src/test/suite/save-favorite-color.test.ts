@@ -4,7 +4,11 @@ import * as sinon from 'sinon';
 import { Commands, IPeacockSettings } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand, lightenActivityBarElementAdjustments } from './lib/constants';
-import { getFavoriteColors, updateElementAdjustments, getCurrentColorBeforeAdjustments } from '../../configuration';
+import {
+  getFavoriteColors,
+  updateElementAdjustments,
+  getCurrentColorBeforeAdjustments,
+} from '../../configuration';
 
 const faveName = 'TEST FAVE NAME';
 

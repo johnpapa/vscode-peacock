@@ -16,7 +16,9 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
     const input = await promptForFavoriteColor();
 
     if (isValidColorInput(input)) {
-      const settingName = isHost ? peacockVslsMementos.vslsShareColor : peacockVslsMementos.vslsJoinColor;
+      const settingName = isHost
+        ? peacockVslsMementos.vslsShareColor
+        : peacockVslsMementos.vslsJoinColor;
 
       await saveGlobalMemento(settingName, input);
     }
@@ -45,8 +47,14 @@ export const changeColorOfLiveShareHostHandler = changeColorOfLiveShareSessionFa
 export const changeColorOfLiveShareGuestHandler = changeColorOfLiveShareSessionFactory(false);
 
 export function registerLiveShareIntegrationCommands() {
-  commands.registerCommand(LiveShareCommands.changeColorOfLiveShareHost, changeColorOfLiveShareHostHandler);
-  commands.registerCommand(LiveShareCommands.changeColorOfLiveShareGuest, changeColorOfLiveShareGuestHandler);
+  commands.registerCommand(
+    LiveShareCommands.changeColorOfLiveShareHost,
+    changeColorOfLiveShareHostHandler,
+  );
+  commands.registerCommand(
+    LiveShareCommands.changeColorOfLiveShareGuest,
+    changeColorOfLiveShareGuestHandler,
+  );
 }
 
 export async function resetLiveSharePreviousColors() {

@@ -4,7 +4,11 @@ import assert = require('assert');
 import * as vsls from 'vsls';
 
 import { IPeacockSettings, Commands, ColorSettings, timeout } from '../../../models';
-import { setupTestSuite, teardownTestSuite, setupTest } from '../../../test/suite/lib/setup-teardown-test-suite';
+import {
+  setupTestSuite,
+  teardownTestSuite,
+  setupTest,
+} from '../../../test/suite/lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../../color-library';
 import { executeCommand } from '../../../test/suite/lib/constants';
 import { LiveShareCommands } from '../../enums';
@@ -22,13 +26,16 @@ suite('Live Share Integration', () => {
     // Stub the async quick pick to return a response
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
     );
 
-    const settingValue = (await extensionContext!.globalState.get<string>(peacockVslsMementos.vslsShareColor)) || '';
+    const settingValue =
+      (await extensionContext!.globalState.get<string>(peacockVslsMementos.vslsShareColor)) || '';
     await extensionContext!.globalState.update(peacockVslsMementos.vslsShareColor, null);
 
     stub.restore();
@@ -41,13 +48,16 @@ suite('Live Share Integration', () => {
     // Stub the async quick pick to return a response
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareGuest,
     );
 
-    const settingValue = (await extensionContext!.globalState.get<string>(peacockVslsMementos.vslsJoinColor)) || '';
+    const settingValue =
+      (await extensionContext!.globalState.get<string>(peacockVslsMementos.vslsJoinColor)) || '';
     await extensionContext!.globalState.update(peacockVslsMementos.vslsJoinColor, null);
 
     stub.restore();
@@ -65,7 +75,9 @@ suite('Live Share Integration', () => {
 
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
@@ -94,7 +106,9 @@ suite('Live Share Integration', () => {
 
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
@@ -126,7 +140,9 @@ suite('Live Share Integration', () => {
 
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
@@ -152,7 +168,9 @@ suite('Live Share Integration', () => {
 
     const color = '#007fff';
     const fakeResponse = `Azure Blue -> ${color}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
@@ -165,7 +183,9 @@ suite('Live Share Integration', () => {
 
     const color2 = '#68217a';
     const fakeResponse2 = `C# Purple -> ${color2}`;
-    const stub2 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse2));
+    const stub2 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse2));
 
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub2.restore();
@@ -195,7 +215,9 @@ suite('Live Share Integration', () => {
 
     const color2 = '#68217a';
     const fakeResponse2 = `C# Purple -> ${color2}`;
-    const stub2 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse2));
+    const stub2 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse2));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
@@ -206,7 +228,9 @@ suite('Live Share Integration', () => {
 
     const color3 = '#b52e31';
     const fakeResponse3 = `Abgular Red -> ${color3}`;
-    const stub3 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse3));
+    const stub3 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse3));
 
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub3.restore();
@@ -215,7 +239,9 @@ suite('Live Share Integration', () => {
 
     const color4 = '#639';
     const fakeResponse4 = `Gatsby Purple -> ${color4}`;
-    const stub4 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse4));
+    const stub4 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse4));
 
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub4.restore();
@@ -244,7 +270,9 @@ suite('Live Share Integration', () => {
 
     const startColor = '#007fff';
     const fakeResponse = `Azure Blue -> ${startColor}`;
-    const stub = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+    const stub = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse));
 
     await executeCommand(Commands.changeColorToFavorite);
     stub.restore();
@@ -255,7 +283,9 @@ suite('Live Share Integration', () => {
 
     const color2 = '#68217a';
     const fakeResponse2 = `C# Purple -> ${color2}`;
-    const stub2 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse2));
+    const stub2 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse2));
 
     const extensionContext = await executeCommand<vscode.ExtensionContext>(
       LiveShareCommands.changeColorOfLiveShareHost,
@@ -266,7 +296,9 @@ suite('Live Share Integration', () => {
 
     const color3 = '#b52e31';
     const fakeResponse3 = `Abgular Red -> ${color3}`;
-    const stub3 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse3));
+    const stub3 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse3));
 
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub3.restore();
@@ -275,7 +307,9 @@ suite('Live Share Integration', () => {
 
     const color4 = '#639';
     const fakeResponse4 = `Gatsby Purple -> ${color4}`;
-    const stub4 = await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse4));
+    const stub4 = await sinon
+      .stub(vscode.window, 'showQuickPick')
+      .returns(Promise.resolve<any>(fakeResponse4));
 
     await executeCommand<vscode.ExtensionContext>(LiveShareCommands.changeColorOfLiveShareHost);
     stub4.restore();

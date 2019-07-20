@@ -23,7 +23,11 @@ import { changeColor } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
-import { saveFavoritesVersionGlobalMemento, getFavoritesVersionGlobalMemento, getMementos } from './mementos';
+import {
+  saveFavoritesVersionGlobalMemento,
+  getFavoritesVersionGlobalMemento,
+  getMementos,
+} from './mementos';
 
 const { commands, workspace } = vscode;
 
