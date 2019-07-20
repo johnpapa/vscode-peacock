@@ -16,7 +16,7 @@ import {
   updateSurpriseMeOnStartup,
 } from '../../configuration';
 
-suite.only('Surprise me on startup', () => {
+suite('Surprise me on startup', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));
