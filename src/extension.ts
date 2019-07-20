@@ -1,12 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {
-  Commands,
-  State,
-  StandardSettings,
-  extensionShortName
-} from './models';
+import { Commands, State, StandardSettings, extensionShortName } from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -16,31 +11,25 @@ import {
   saveColorToFavoritesHandler,
   addRecommendedFavoritesHandler,
   darkenHandler,
-  lightenHandler
+  lightenHandler,
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
   getCurrentColorBeforeAdjustments,
   getSurpriseMeOnStartup,
-  writeRecommendedFavoriteColors
+  writeRecommendedFavoriteColors,
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
-import {
-  saveFavoritesVersionGlobalMemento,
-  getFavoritesVersionGlobalMemento,
-  getMementos
-} from './mementos';
+import { saveFavoritesVersionGlobalMemento, getFavoritesVersionGlobalMemento, getMementos } from './mementos';
 
 const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
   State.extensionContext = context;
-  Logger.info(
-    `${extensionShortName}: Extension "vscode-peacock" is now active!`
-  );
+  Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now active!`);
   Logger.info(getMementos(), true, 'Mementos');
 
   registerCommands();
@@ -55,18 +44,14 @@ export async function activate(context: vscode.ExtensionContext) {
 function addSubscriptions() {
   State.extensionContext.subscriptions.push(Logger.getChannel());
 
-  State.extensionContext.subscriptions.push(
-    workspace.onDidChangeConfiguration(applyPeacock())
-  );
+  State.extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(applyPeacock()));
 }
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
       Logger.info(
-        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${
-          State.recentColor
-        }`
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${State.recentColor}`,
       );
       await changeColor(State.recentColor);
     }
@@ -75,27 +60,12 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
 
 function registerCommands() {
   commands.registerCommand(Commands.resetColors, resetColorsHandler);
-  commands.registerCommand(
-    Commands.saveColorToFavorites,
-    saveColorToFavoritesHandler
-  );
+  commands.registerCommand(Commands.saveColorToFavorites, saveColorToFavoritesHandler);
   commands.registerCommand(Commands.enterColor, enterColorHandler);
-  commands.registerCommand(
-    Commands.changeColorToRandom,
-    changeColorToRandomHandler
-  );
-  commands.registerCommand(
-    Commands.addRecommendedFavorites,
-    addRecommendedFavoritesHandler
-  );
-  commands.registerCommand(
-    Commands.changeColorToPeacockGreen,
-    changeColorToPeacockGreenHandler
-  );
-  commands.registerCommand(
-    Commands.changeColorToFavorite,
-    changeColorToFavoriteHandler
-  );
+  commands.registerCommand(Commands.changeColorToRandom, changeColorToRandomHandler);
+  commands.registerCommand(Commands.addRecommendedFavorites, addRecommendedFavoritesHandler);
+  commands.registerCommand(Commands.changeColorToPeacockGreen, changeColorToPeacockGreenHandler);
+  commands.registerCommand(Commands.changeColorToFavorite, changeColorToFavoriteHandler);
   commands.registerCommand(Commands.darken, darkenHandler);
   commands.registerCommand(Commands.lighten, lightenHandler);
 }
@@ -107,9 +77,7 @@ export async function applyInitialConfiguration() {
 }
 
 export function deactivate() {
-  Logger.info(
-    `${extensionShortName}: Extension "vscode-peacock" is now deactive`
-  );
+  Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now deactive`);
 }
 
 async function initializeTheStarterSetOfFavorites() {
@@ -134,18 +102,14 @@ async function checkSurpriseMeOnStartupLogic() {
    */
   if (getSurpriseMeOnStartup()) {
     if (State.recentColor) {
-      const message = `Peacock did not change the color using "surprise me on startup" because the color ${
-        State.recentColor
-      } was already set.`;
+      const message = `Peacock did not change the color using "surprise me on startup" because the color ${State.recentColor} was already set.`;
       Logger.info(message);
       return;
     }
 
     await changeColorToRandomHandler();
     const color = getCurrentColorBeforeAdjustments();
-    const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${
-      StandardSettings.SurpriseMeOnStartup
-    }`;
+    const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }
 }

@@ -41,5 +41,4 @@ function prepareMessage(value: string | object | undefined, indent: boolean) {
   return text;
 }
 
-
 Logger.initialize();

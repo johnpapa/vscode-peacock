@@ -10,10 +10,7 @@ import { saveGlobalMemento } from '../mementos';
 import { State } from '../models';
 
 // Returning the extension context is used by the tests, so that they have a way to access it
-async function changeColorForMemento(
-  mementoName: string,
-  remoteName: string
-): Promise<ExtensionContext> {
+async function changeColorForMemento(mementoName: string, remoteName: string): Promise<ExtensionContext> {
   const startingColor = getCurrentColorBeforeAdjustments();
   const input = await promptForFavoriteColor();
 
@@ -37,39 +34,21 @@ async function changeColorForMemento(
 }
 
 async function changeRemoteContainersColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(
-    peacockRemoteMementos.remoteContainersColor,
-    RemoteNames.devContainer
-  );
+  return changeColorForMemento(peacockRemoteMementos.remoteContainersColor, RemoteNames.devContainer);
 }
 
 async function changeRemoteWslColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(
-    peacockRemoteMementos.remoteWslColor,
-    RemoteNames.wsl
-  );
+  return changeColorForMemento(peacockRemoteMementos.remoteWslColor, RemoteNames.wsl);
 }
 
 async function changeRemoteSshColor(): Promise<ExtensionContext> {
-  return changeColorForMemento(
-    peacockRemoteMementos.remoteSshColor,
-    RemoteNames.sshRemote
-  );
+  return changeColorForMemento(peacockRemoteMementos.remoteSshColor, RemoteNames.sshRemote);
 }
 
 export function registerRemoteIntegrationCommands() {
-  commands.registerCommand(
-    RemoteCommands.changeColorOfRemoteWsl,
-    changeRemoteWslColor
-  );
-  commands.registerCommand(
-    RemoteCommands.changeColorOfRemoteSsh,
-    changeRemoteSshColor
-  );
-  commands.registerCommand(
-    RemoteCommands.changeColorOfRemoteContainers,
-    changeRemoteContainersColor
-  );
+  commands.registerCommand(RemoteCommands.changeColorOfRemoteWsl, changeRemoteWslColor);
+  commands.registerCommand(RemoteCommands.changeColorOfRemoteSsh, changeRemoteSshColor);
+  commands.registerCommand(RemoteCommands.changeColorOfRemoteContainers, changeRemoteContainersColor);
 }
 
 export async function resetRemotePreviousColors() {

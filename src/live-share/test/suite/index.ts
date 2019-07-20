@@ -9,7 +9,7 @@ export function run(): Promise<void> {
     //----------------------------------------
     // Stuff from old test setup
     timeout: 200000, // longer timeout, in case
-    useColors: true // colored output from test results
+    useColors: true, // colored output from test results
     //----------------------------------------
   });
   mocha.useColors(true);

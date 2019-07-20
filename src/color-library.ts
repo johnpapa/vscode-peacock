@@ -9,14 +9,14 @@ import {
   ColorAdjustmentOptions,
   defaultAmountToDarkenLighten,
   defaultSaturation,
-  extensionShortName
+  extensionShortName,
 } from './models';
 import {
   prepareColors,
   updateWorkspaceConfiguration,
   getExistingColorCustomizations,
   getDarkForegroundColorOrOverride,
-  getLightForegroundColorOrOverride
+  getLightForegroundColorOrOverride,
 } from './configuration';
 import { Logger } from './logging';
 import { savePeacockColorWorkspaceMemento } from './mementos';
@@ -37,17 +37,13 @@ export function getInactiveBackgroundColorHex(backgroundColor = '') {
 
 export function getBackgroundHoverColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  const hoverColor = background.isLight()
-    ? background.darken()
-    : background.lighten();
+  const hoverColor = background.isLight() ? background.darken() : background.lighten();
   return formatHex(hoverColor);
 }
 
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  const foreground = background.isLight()
-    ? getDarkForegroundColorOrOverride()
-    : getLightForegroundColorOrOverride();
+  const foreground = background.isLight() ? getDarkForegroundColorOrOverride() : getLightForegroundColorOrOverride();
   return formatHex(tinycolor(foreground));
 }
 
@@ -57,10 +53,7 @@ export function getInactiveForegroundColorHex(backgroundColor = '') {
   return formatHex(foreground);
 }
 
-export function getReadableAccentColorHex(
-  backgroundColor = '',
-  ratio = ReadabilityRatios.Text
-) {
+export function getReadableAccentColorHex(backgroundColor = '', ratio = ReadabilityRatios.Text) {
   const background = tinycolor(backgroundColor);
 
   // Get an initial color for the badge as the first in a triad (120 degrees)
@@ -96,7 +89,7 @@ export function getReadableAccentColorHex(
     const shade = tinycolor({ h, s, l: index * shadeValue });
     return {
       contrast: tinycolor.readability(shade, background),
-      hex: formatHex(shade)
+      hex: formatHex(shade),
     };
   });
 
@@ -114,10 +107,7 @@ export function getReadableAccentColorHex(
 }
 
 export function getBadgeBackgroundColorHex(backgroundColor = '') {
-  return getReadableAccentColorHex(
-    backgroundColor,
-    ReadabilityRatios.UserInterfaceLow
-  );
+  return getReadableAccentColorHex(backgroundColor, ReadabilityRatios.UserInterfaceLow);
 }
 
 export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
@@ -132,17 +122,11 @@ export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
       return color;
   }
 }
-export function getLightenedColorHex(
-  color = '',
-  amount = defaultAmountToDarkenLighten
-) {
+export function getLightenedColorHex(color = '', amount = defaultAmountToDarkenLighten) {
   return formatHex(tinycolor(color).lighten(amount));
 }
 
-export function getDarkenedColorHex(
-  color: string,
-  amount = defaultAmountToDarkenLighten
-) {
+export function getDarkenedColorHex(color: string, amount = defaultAmountToDarkenLighten) {
   return formatHex(tinycolor(color).darken(amount));
 }
 
@@ -154,14 +138,8 @@ export function getColorBrightness(input = '') {
   return tinycolor(input).getBrightness();
 }
 
-export function getReadabilityRatio(
-  backgroundColor = '',
-  foregroundColor = ''
-) {
-  return tinycolor.readability(
-    tinycolor(backgroundColor),
-    tinycolor(foregroundColor)
-  );
+export function getReadabilityRatio(backgroundColor = '', foregroundColor = '') {
+  return tinycolor.readability(tinycolor(backgroundColor), tinycolor(foregroundColor));
 }
 
 export function isValidColorInput(input: string) {
@@ -192,14 +170,12 @@ export async function changeColor(input: string, primaryEnvironment = true) {
   // order is important here, so our new colors overwrite the old ones
   const colorCustomizations: any = {
     ...existingColors,
-    ...newColors
+    ...newColors,
   };
 
   await updateWorkspaceConfiguration(colorCustomizations);
 
-  Logger.info(
-    `${extensionShortName}: Peacock is now using ${State.recentColor}`
-  );
+  Logger.info(`${extensionShortName}: Peacock is now using ${State.recentColor}`);
 
   if (primaryEnvironment) {
     //} && !vscode.env.remoteName) {
@@ -214,7 +190,7 @@ export async function changeColor(input: string, primaryEnvironment = true) {
 
 export function deletePeacocksColorCustomizations() {
   const newColorCustomizations: any = {
-    ...getExistingColorCustomizations()
+    ...getExistingColorCustomizations(),
   };
   Object.values(ColorSettings).forEach(setting => {
     delete newColorCustomizations[setting];

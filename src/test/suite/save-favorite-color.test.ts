@@ -2,20 +2,9 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import { Commands, IPeacockSettings } from '../../models';
-import {
-  setupTestSuite,
-  teardownTestSuite,
-  setupTest
-} from './lib/setup-teardown-test-suite';
-import {
-  executeCommand,
-  lightenActivityBarElementAdjustments
-} from './lib/constants';
-import {
-  getFavoriteColors,
-  updateElementAdjustments,
-  getCurrentColorBeforeAdjustments
-} from '../../configuration';
+import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import { executeCommand, lightenActivityBarElementAdjustments } from './lib/constants';
+import { getFavoriteColors, updateElementAdjustments, getCurrentColorBeforeAdjustments } from '../../configuration';
 
 const faveName = 'TEST FAVE NAME';
 
@@ -44,17 +33,13 @@ suite('Save favorite color', () => {
     const currentColor = getCurrentColorBeforeAdjustments();
 
     // Stub the async input box to return a response
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(faveName));
+    const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(faveName));
 
     await executeCommand(Commands.saveColorToFavorites);
     stub.restore();
 
     const newCurrentColor = getCurrentColorBeforeAdjustments();
-    console.log(
-      `currentColor=${currentColor} and newCurrentColor = ${newCurrentColor}`
-    );
+    console.log(`currentColor=${currentColor} and newCurrentColor = ${newCurrentColor}`);
 
     assert.equal(currentColor, newCurrentColor);
   });
@@ -63,9 +48,7 @@ suite('Save favorite color', () => {
 function createFavoriteNamingColorTest(name: string) {
   return async () => {
     // Stub the async input box to return a response
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(name));
+    const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(name));
 
     await executeCommand(Commands.saveColorToFavorites);
     const { values: favoriteColors } = getFavoriteColors();

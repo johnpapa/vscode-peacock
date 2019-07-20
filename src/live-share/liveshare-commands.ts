@@ -5,10 +5,7 @@ import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
 import { peacockVslsMementos } from './constants';
 import { LiveShareCommands } from './enums';
-import {
-  refreshLiveShareSessionColor,
-  revertLiveShareWorkspaceColors
-} from './integration';
+import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
 import { getCurrentColorBeforeAdjustments } from '../configuration';
 import { saveGlobalMemento } from '../mementos';
 import { State } from '../models';
@@ -19,9 +16,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
     const input = await promptForFavoriteColor();
 
     if (isValidColorInput(input)) {
-      const settingName = isHost
-        ? peacockVslsMementos.vslsShareColor
-        : peacockVslsMementos.vslsJoinColor;
+      const settingName = isHost ? peacockVslsMementos.vslsShareColor : peacockVslsMementos.vslsJoinColor;
 
       await saveGlobalMemento(settingName, input);
     }
@@ -46,22 +41,12 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   };
 };
 
-export const changeColorOfLiveShareHostHandler = changeColorOfLiveShareSessionFactory(
-  true
-);
-export const changeColorOfLiveShareGuestHandler = changeColorOfLiveShareSessionFactory(
-  false
-);
+export const changeColorOfLiveShareHostHandler = changeColorOfLiveShareSessionFactory(true);
+export const changeColorOfLiveShareGuestHandler = changeColorOfLiveShareSessionFactory(false);
 
 export function registerLiveShareIntegrationCommands() {
-  commands.registerCommand(
-    LiveShareCommands.changeColorOfLiveShareHost,
-    changeColorOfLiveShareHostHandler
-  );
-  commands.registerCommand(
-    LiveShareCommands.changeColorOfLiveShareGuest,
-    changeColorOfLiveShareGuestHandler
-  );
+  commands.registerCommand(LiveShareCommands.changeColorOfLiveShareHost, changeColorOfLiveShareHostHandler);
+  commands.registerCommand(LiveShareCommands.changeColorOfLiveShareGuest, changeColorOfLiveShareGuestHandler);
 }
 
 export async function resetLiveSharePreviousColors() {

@@ -5,18 +5,14 @@ import {
   IPeacockSettings,
   IPeacockAffectedElementSettings,
   IElementColors,
-  ElementNames
+  ElementNames,
 } from '../../models';
-import {
-  setupTestSuite,
-  teardownTestSuite,
-  setupTest
-} from './lib/setup-teardown-test-suite';
+import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
   getOriginalColorsForAllElements,
   updateSurpriseMeOnStartup,
-  updateAffectedElements
+  updateAffectedElements,
 } from '../../configuration';
 import { applyInitialConfiguration } from '../../extension';
 
@@ -32,7 +28,7 @@ suite('Surprise me on startup', () => {
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,
       activityBar: true,
-      titleBar: true
+      titleBar: true,
     });
   });
 
@@ -59,24 +55,13 @@ suite('Surprise me on startup', () => {
     });
   });
 
-  async function testColorsBeforeAndAfterInitialConfiguration(
-    assertEquality: EqualityAssertion
-  ) {
+  async function testColorsBeforeAndAfterInitialConfiguration(assertEquality: EqualityAssertion) {
     const colors1: IElementColors = getOriginalColorsForAllElements();
     await applyInitialConfiguration();
     const colors2: IElementColors = getOriginalColorsForAllElements();
-    assertEquality(
-      colors1[ElementNames.activityBar],
-      colors2[ElementNames.activityBar]
-    );
-    assertEquality(
-      colors1[ElementNames.statusBar],
-      colors2[ElementNames.statusBar]
-    );
-    assertEquality(
-      colors1[ElementNames.titleBar],
-      colors2[ElementNames.titleBar]
-    );
+    assertEquality(colors1[ElementNames.activityBar], colors2[ElementNames.activityBar]);
+    assertEquality(colors1[ElementNames.statusBar], colors2[ElementNames.statusBar]);
+    assertEquality(colors1[ElementNames.titleBar], colors2[ElementNames.titleBar]);
   }
 
   interface EqualityAssertion {

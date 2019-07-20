@@ -4,25 +4,13 @@ import {
   Commands,
   ColorSettings,
   IPeacockAffectedElementSettings,
-  peacockGreen
+  peacockGreen,
 } from '../../models';
-import {
-  setupTestSuite,
-  teardownTestSuite,
-  setupTest
-} from './lib/setup-teardown-test-suite';
-import {
-  updateElementAdjustments,
-  getPeacockWorkspaceConfig,
-  updateAffectedElements
-} from '../../configuration';
+import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import { updateElementAdjustments, getPeacockWorkspaceConfig, updateAffectedElements } from '../../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
 import assert = require('assert');
-import {
-  getLightenedColorHex,
-  getDarkenedColorHex,
-  getColorBrightness
-} from '../../color-library';
+import { getLightenedColorHex, getDarkenedColorHex, getColorBrightness } from '../../color-library';
 
 suite('Element adjustments', () => {
   let originalValues = <IPeacockSettings>{};
@@ -34,7 +22,7 @@ suite('Element adjustments', () => {
   const elementAdjustments: IPeacockElementAdjustments = {
     activityBar: 'lighten',
     statusBar: 'darken',
-    titleBar: 'none'
+    titleBar: 'none',
   };
 
   suiteSetup(async () => {
@@ -44,19 +32,13 @@ suite('Element adjustments', () => {
   test('can lighten the color of an affected element', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     let config = getPeacockWorkspaceConfig();
-    assert.equal(
-      getLightenedColorHex(peacockGreen),
-      config[ColorSettings.activityBar_background]
-    );
+    assert.equal(getLightenedColorHex(peacockGreen), config[ColorSettings.activityBar_background]);
   });
 
   test('can darken the color of an affected element', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     let config = getPeacockWorkspaceConfig();
-    assert.equal(
-      getDarkenedColorHex(peacockGreen),
-      config[ColorSettings.statusBar_background]
-    );
+    assert.equal(getDarkenedColorHex(peacockGreen), config[ColorSettings.statusBar_background]);
   });
 
   test('set adjustment to none for an affected element is noop', async () => {
@@ -70,12 +52,10 @@ suite('Element adjustments', () => {
     let config = getPeacockWorkspaceConfig();
 
     const originalBrightness = getColorBrightness(peacockGreen);
-    const adjustedBrightness = getColorBrightness(
-      config[ColorSettings.activityBar_background]
-    );
+    const adjustedBrightness = getColorBrightness(config[ColorSettings.activityBar_background]);
     assert.ok(
       originalBrightness < adjustedBrightness,
-      `Expected original brightness ${originalBrightness} to be less than ${adjustedBrightness}, but was greater`
+      `Expected original brightness ${originalBrightness} to be less than ${adjustedBrightness}, but was greater`,
     );
   });
 
@@ -84,26 +64,18 @@ suite('Element adjustments', () => {
     let config = getPeacockWorkspaceConfig();
 
     const originalBrightness = getColorBrightness(peacockGreen);
-    const adjustedBrightness = getColorBrightness(
-      config[ColorSettings.statusBar_background]
-    );
+    const adjustedBrightness = getColorBrightness(config[ColorSettings.statusBar_background]);
     assert.ok(
       originalBrightness > adjustedBrightness,
-      `Expected original brightness ${originalBrightness} to be greater than ${adjustedBrightness}, but was less`
+      `Expected original brightness ${originalBrightness} to be greater than ${adjustedBrightness}, but was less`,
     );
   });
 
   test('can adjust the color of an affected elements independently', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     let config = getPeacockWorkspaceConfig();
-    assert.equal(
-      getLightenedColorHex(peacockGreen),
-      config[ColorSettings.activityBar_background]
-    );
-    assert.equal(
-      getDarkenedColorHex(peacockGreen),
-      config[ColorSettings.statusBar_background]
-    );
+    assert.equal(getLightenedColorHex(peacockGreen), config[ColorSettings.activityBar_background]);
+    assert.equal(getDarkenedColorHex(peacockGreen), config[ColorSettings.statusBar_background]);
     assert.equal(peacockGreen, config[ColorSettings.titleBar_activeBackground]);
   });
 
@@ -111,16 +83,13 @@ suite('Element adjustments', () => {
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       activityBar: false,
       statusBar: true,
-      titleBar: false
+      titleBar: false,
     });
 
     await executeCommand(Commands.changeColorToPeacockGreen);
     let config = getPeacockWorkspaceConfig();
 
-    assert.equal(
-      getDarkenedColorHex(peacockGreen),
-      config[ColorSettings.statusBar_background]
-    );
+    assert.equal(getDarkenedColorHex(peacockGreen), config[ColorSettings.statusBar_background]);
     assert.ok(!config[ColorSettings.activityBar_background]);
     assert.ok(!config[ColorSettings.titleBar_activeBackground]);
 

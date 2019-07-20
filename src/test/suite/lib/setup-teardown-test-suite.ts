@@ -4,7 +4,7 @@ import {
   Commands,
   ForegroundColors,
   starterSetOfFavorites,
-  getExtension
+  getExtension,
 } from '../../../models';
 import {
   getAffectedElements,
@@ -20,7 +20,7 @@ import {
   updateLightForegroundColor,
   updateAffectedElements,
   updateSurpriseMeFromFavoritesOnly,
-  getSurpriseMeFromFavoritesOnly
+  getSurpriseMeFromFavoritesOnly,
 } from '../../../configuration';
 
 import { noopElementAdjustments, executeCommand } from './constants';
@@ -31,7 +31,7 @@ export async function setupTest() {
 
 export async function setupTestSuite(
   // extension: vscode.Extension<any> | undefined,
-  originalValues: IPeacockSettings
+  originalValues: IPeacockSettings,
 ) {
   let extension = getExtension();
 
@@ -48,7 +48,7 @@ export async function setupTestSuite(
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
     statusBar: true,
     activityBar: true,
-    titleBar: true
+    titleBar: true,
   });
   await updateFavoriteColors(starterSetOfFavorites);
   await updateKeepForegroundColor(false);
@@ -71,7 +71,5 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
   await updateDarkForegroundColor(originalValues.darkForegroundColor);
   await updateLightForegroundColor(originalValues.lightForegroundColor);
-  await updateSurpriseMeFromFavoritesOnly(
-    originalValues.surpriseMeFromFavoritesOnly
-  );
+  await updateSurpriseMeFromFavoritesOnly(originalValues.surpriseMeFromFavoritesOnly);
 }

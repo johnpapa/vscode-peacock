@@ -25,3 +25,5 @@ tsconfig.json
 webpack.config.json
 coverage/
 out-cov/
+.eslintrc
+.prettierrc

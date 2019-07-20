@@ -43,6 +43,11 @@ Refactoring
 - All commands now return extension context for use in tests
 - Made getRandomFavoriteColor not return same color as the current color
 
+Linting and Formatting
+
+- Added prettier
+- Added eslint and removed tslint
+
 Testing
 
 - Refactored tests after the new yo code generated test model.
