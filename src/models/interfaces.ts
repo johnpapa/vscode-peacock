@@ -45,12 +45,14 @@ export interface IPeacockSettings {
   affectedElements: IPeacockAffectedElementSettings;
   elementAdjustments: IPeacockElementAdjustments;
   favoriteColors: IFavoriteColors[];
+  keepBadgeColor: boolean;
   keepForegroundColor: boolean;
-  surpriseMeOnStartup: boolean;
   darkForegroundColor: string;
   lightForegroundColor: string;
   darkenLightenPercentage: number;
+  showColorInStatusBar: boolean;
   surpriseMeFromFavoritesOnly: boolean;
+  surpriseMeOnStartup: boolean;
 }
 
 export interface IElementColors {

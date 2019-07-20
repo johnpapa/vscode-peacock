@@ -1,13 +1,15 @@
 export enum StandardSettings {
-  FavoriteColors = 'favoriteColors',
+  AffectedElements = 'affectedElements',
   ElementAdjustments = 'elementAdjustments',
+  FavoriteColors = 'favoriteColors',
   KeepBadgeColor = 'keepBadgeColor',
   KeepForegroundColor = 'keepForegroundColor',
-  SurpriseMeOnStartup = 'surpriseMeOnStartup',
   DarkForegroundColor = 'darkForegroundColor',
   LightForegroundColor = 'lightForegroundColor',
   DarkenLightenPercentage = 'darkenLightenPercentage',
+  ShowColorInStatusBar = 'showColorInStatusBar',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
+  SurpriseMeOnStartup = 'surpriseMeOnStartup',
 }
 
 export enum AffectedSettings {
