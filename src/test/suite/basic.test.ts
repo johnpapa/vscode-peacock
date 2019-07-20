@@ -33,6 +33,11 @@ suite('Basic Extension Tests', () => {
     assert.equal(-1, [1, 2, 3].indexOf(5));
   });
 
+  test('Activation test', async () => {
+    await extension.activate();
+    assert.equal(extension.isActive, true);
+  });
+
   test('Extension loads in VSCode and is active', async () => {
     // Hopefully a timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
