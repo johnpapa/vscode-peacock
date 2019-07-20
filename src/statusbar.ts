@@ -1,8 +1,5 @@
-import {
-  StatusBarAlignment,
-  window,
-  StatusBarItem
-} from 'vscode';
+import { StatusBarAlignment, window, StatusBarItem } from 'vscode';
+import { getShowColorInStatusBar } from './configuration';
 
 let statusBarItem: StatusBarItem;
 
@@ -14,8 +11,9 @@ export function clearStatusBar() {
 }
 
 export function updateStatusBar(text: string) {
-  createStatusBarItem();
-  if( text) {
+  const show = getShowColorInStatusBar();
+  if (show && text) {
+    createStatusBarItem();
     statusBarItem.text = `$(paintcan) ${text}`;
     statusBarItem.show();
   } else {

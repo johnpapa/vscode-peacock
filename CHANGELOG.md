@@ -16,6 +16,7 @@ Features
   - When true, a favorite color is selected randomly
 - Added more logging to the output of mementos and favorites
 - Added informational message on startup if "surprise me on startup" is set. One if the color is changed. A different message if the color was not changed because one already existed.
+- Added setting for `showColorInStatusBar` setting (defaults to true).
 
 Security
 

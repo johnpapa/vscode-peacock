@@ -42,6 +42,10 @@ export function getDarkenLightenPercentage() {
   return readConfiguration<number>(StandardSettings.DarkenLightenPercentage, defaultAmountToDarkenLighten);
 }
 
+export function getShowColorInStatusBar() {
+  return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
+}
+
 export function getPeacockWorkspaceConfig() {
   return workspace.getConfiguration(Sections.workspacePeacockSection);
 }
@@ -201,6 +205,10 @@ export async function updateLightForegroundColor(value: string) {
 
 export async function updateDarkenLightenPrecentage(value: number) {
   return await updateGlobalConfiguration(StandardSettings.DarkenLightenPercentage, value);
+}
+
+export async function updateShowColorInStatusBar(value: boolean) {
+  return await updateGlobalConfiguration(StandardSettings.ShowColorInStatusBar, value);
 }
 
 export async function updateSurpriseMeFromFavoritesOnly(value: boolean) {

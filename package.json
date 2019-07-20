@@ -156,21 +156,6 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
-        "peacock.surpriseMeFromFavoritesOnly": {
-          "type": "boolean",
-          "default": false,
-          "description": "Specifies whether Peacock should choose a random color from the favorites list or a purely random color."
-        },
-        "peacock.keepForegroundColor": {
-          "type": "boolean",
-          "default": false,
-          "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
-        },
-        "peacock.keepBadgeColor": {
-          "type": "boolean",
-          "default": false,
-          "description": "Recommended to remain false. However, when set to true Peacock will not colorize badges in any of the affected elements in response to background alterations"
-        },
         "peacock.elementAdjustments": {
           "type": "object",
           "properties": {
@@ -214,10 +199,15 @@
           },
           "description": "Your favorite colors"
         },
-        "peacock.surpriseMeOnStartup": {
+        "peacock.keepBadgeColor": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies that Peacock should surprise you at the start of every editing session"
+          "description": "Recommended to remain false. However, when set to true Peacock will not colorize badges in any of the affected elements in response to background alterations"
+        },
+        "peacock.keepForegroundColor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
         },
         "peacock.darkForegroundColor": {
           "type": "string",
@@ -235,6 +225,21 @@
           "minimum": 1,
           "maximum": 10,
           "description": "Specifies the amount to darken or lighten the color, in percentage"
+        },
+        "peacock.showColorInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Peacock color in the status bar"
+        },
+        "peacock.surpriseMeFromFavoritesOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should choose a random color from the favorites list or a purely random color."
+        },
+        "peacock.surpriseMeOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies that Peacock should surprise you at the start of every editing session"
         }
       }
     }
