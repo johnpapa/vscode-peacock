@@ -13,10 +13,10 @@ import {
 } from './models';
 import {
   prepareColors,
-  updateWorkspaceConfiguration,
   getExistingColorCustomizations,
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
+  updateWorkspaceConfiguration,
 } from './configuration';
 import { Logger } from './logging';
 import { savePeacockColorWorkspaceMemento } from './mementos';

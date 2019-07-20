@@ -9,13 +9,13 @@ import {
 
 import { State, peacockGreen } from './models';
 import {
-  updateWorkspaceConfiguration,
   getCurrentColorBeforeAdjustments,
-  addNewFavoriteColor,
-  writeRecommendedFavoriteColors,
   getDarkenLightenPercentage,
   getRandomFavoriteColor,
   getSurpriseMeFromFavoritesOnly,
+  updateWorkspaceConfiguration,
+  addNewFavoriteColor,
+  writeRecommendedFavoriteColors,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 

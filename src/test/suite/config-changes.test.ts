@@ -12,10 +12,10 @@ import {
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
-  updateGlobalConfiguration,
   getOriginalColorsForAllElements,
   getUserConfig,
   updateAffectedElements,
+  updateGlobalConfiguration,
 } from '../../configuration';
 
 const delayInMs = 500;
@@ -117,4 +117,3 @@ suite('changes to configuration', () => {
     });
   });
 });
-
