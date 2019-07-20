@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { extensionShortName } from '../models';
 
 export const peacockVslsMementos = {

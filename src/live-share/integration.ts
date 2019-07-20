@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as vsls from 'vsls';
 import * as vscode from 'vscode';
 
