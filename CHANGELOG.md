@@ -43,6 +43,12 @@ Refactoring
 - All commands now return extension context for use in tests
 - Made getRandomFavoriteColor not return same color as the current color
 
+Testing
+
+- Refactored tests after the new yo code generated test model.
+- Added code coverage
+- Refactored how Azure DevOps runs the pipelines
+
 ## 2.4.0
 
 Features
