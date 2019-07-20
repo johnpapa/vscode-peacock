@@ -9,9 +9,9 @@ import {
   extensionShortName,
   AffectedSettings,
   getExtension,
+  timeout,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
-import { timeout } from './lib/constants';
 
 suite('Basic Extension Tests', () => {
   let originalValues = <IPeacockSettings>{};

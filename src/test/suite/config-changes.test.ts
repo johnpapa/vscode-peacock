@@ -7,6 +7,7 @@ import {
   IElementColors,
   ElementNames,
   IPeacockAffectedElementSettings,
+  timeout,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
@@ -117,6 +118,3 @@ suite('changes to configuration', () => {
   });
 });
 
-function timeout(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
