@@ -1,5 +1,4 @@
 export enum StandardSettings {
-  AffectedElements = 'affectedElements',
   ElementAdjustments = 'elementAdjustments',
   FavoriteColors = 'favoriteColors',
   KeepBadgeColor = 'keepBadgeColor',
