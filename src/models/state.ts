@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { Logger } from '../logging';
 import { extensionShortName } from './constants';
 import { getExtension } from '.';
-import { updateStatusBar } from '../statusbar';
 
 export class State {
   /**
@@ -18,7 +17,6 @@ export class State {
    *  */
 
   private static _recentColor = '';
-
   public static get recentColor(): string {
     return this._recentColor;
   }
