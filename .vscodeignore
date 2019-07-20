@@ -11,20 +11,17 @@ vsc-extension-quickstart.md
 
 # Extra file to ignore
 azure-pipelines.yml
+.azure-pipelines/
 ISSUE_TEMPLATE.md
 PULL_REQUEST_TEMPLATE.md
+.github/
 vsc-extension-quickstart.md
 node_modules/**/test/**
-
-# After webpack, we have more to ignore
+.all-contributorsrc
 node_modules
 out/
 src/
 tsconfig.json
 webpack.config.json
-
-.all-contributorsrc
-.github/
-.azure-pipelines/
 coverage/
 out-cov/
