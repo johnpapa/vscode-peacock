@@ -156,15 +156,10 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
-        "peacock.affectPanelBorder": {
+        "peacock.affectAccentBorders": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies whether Peacock should affect the panel's border."
-        },
-        "peacock.affectSideBarBorder": {
-          "type": "boolean",
-          "default": false,
-          "description": "Specifies whether Peacock should affect the sideBar's border."
+          "description": "Specifies whether Peacock should affect the accent borders (sidebar, editorGroup, panel)."
         },
         "peacock.affectTabActiveBorder": {
           "type": "boolean",

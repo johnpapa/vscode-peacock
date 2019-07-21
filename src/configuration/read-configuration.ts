@@ -160,8 +160,7 @@ export function getAffectedElements() {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
-    panelBorder: readConfiguration<boolean>(AffectedSettings.PanelBorder) || false,
-    sideBarBorder: readConfiguration<boolean>(AffectedSettings.SideBarBorder) || false,
+    accentBorders: readConfiguration<boolean>(AffectedSettings.AccentBorders) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
   };
 }
@@ -290,11 +289,10 @@ function collectAccentBorderSettings(backgroundHex: string) {
   // use same adjustments and activity bar
   const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
 
-  if (isAffectedSettingSelected(AffectedSettings.PanelBorder)) {
-    accentBorderSettings[ColorSettings.panelBorder] = color;
-  }
-  if (isAffectedSettingSelected(AffectedSettings.SideBarBorder)) {
-    accentBorderSettings[ColorSettings.sideBarBorder] = color;
+  if (isAffectedSettingSelected(AffectedSettings.AccentBorders)) {
+    accentBorderSettings[ColorSettings.accentBorders_panelBorder] = color;
+    accentBorderSettings[ColorSettings.accentBorders_sideBarBorder] = color;
+    accentBorderSettings[ColorSettings.accentBorders_editorGroupBorder] = color;
   }
   if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
     accentBorderSettings[ColorSettings.tabActiveBorder] = color;
@@ -372,8 +370,7 @@ function getAllUserSettings() {
     activityBar: affectActivityBar,
     statusBar: affectStatusBar,
     titleBar: affectTitleBar,
-    panelBorder: affectPanelBorder,
-    sideBarBorder: affectSideBarBorder,
+    accentBorders: affectAccentBorders,
     tabActiveBorder: affectTabActiveBorder,
   } = getAffectedElements();
   return {
@@ -387,8 +384,7 @@ function getAllUserSettings() {
     affectActivityBar,
     affectStatusBar,
     affectTitleBar,
-    affectPanelBorder,
-    affectSideBarBorder,
+    affectAccentBorders,
     affectTabActiveBorder,
   };
 }

@@ -99,8 +99,7 @@ export async function updateAffectedElements(values: IPeacockAffectedElementSett
   await updateGlobalConfiguration(AffectedSettings.ActivityBar, values.activityBar);
   await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
   await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
-  await updateGlobalConfiguration(AffectedSettings.PanelBorder, values.panelBorder);
-  await updateGlobalConfiguration(AffectedSettings.SideBarBorder, values.sideBarBorder);
+  await updateGlobalConfiguration(AffectedSettings.AccentBorders, values.accentBorders);
   await updateGlobalConfiguration(AffectedSettings.TabActiveBorder, values.tabActiveBorder);
 
   return true;

@@ -15,8 +15,7 @@ export enum AffectedSettings {
   ActivityBar = 'affectActivityBar',
   StatusBar = 'affectStatusBar',
   TitleBar = 'affectTitleBar',
-  PanelBorder = 'affectPanelBorder',
-  SideBarBorder = 'affectSideBarBorder',
+  AccentBorders = 'affectAccentBorders',
   TabActiveBorder = 'affectTabActiveBorder',
 }
 
@@ -53,8 +52,9 @@ export enum ColorSettings {
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',
   statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
-  panelBorder = 'panel.border',
-  sideBarBorder = 'sideBar.border',
+  accentBorders_panelBorder = 'panel.border',
+  accentBorders_sideBarBorder = 'sideBar.border',
+  accentBorders_editorGroupBorder = 'editorGroup.border',
   tabActiveBorder = 'tab.activeBorder',
 }
 

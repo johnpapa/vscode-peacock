@@ -115,8 +115,7 @@ suite('Affected elements', () => {
         activityBar: false,
         statusBar: false,
         titleBar: false,
-        panelBorder: false,
-        sideBarBorder: false,
+        accentBorders: false,
         tabActiveBorder: false,
       });
     });
@@ -134,8 +133,9 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
       assert.ok(!config[ColorSettings.statusBar_foreground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
-      assert.ok(!config[ColorSettings.panelBorder]);
-      assert.ok(!config[ColorSettings.sideBarBorder]);
+      assert.ok(!config[ColorSettings.accentBorders_panelBorder]);
+      assert.ok(!config[ColorSettings.accentBorders_sideBarBorder]);
+      assert.ok(!config[ColorSettings.accentBorders_editorGroupBorder]);
       assert.ok(!config[ColorSettings.tabActiveBorder]);
     });
 
@@ -151,8 +151,7 @@ suite('Affected elements', () => {
         statusBar: false,
         titleBar: true,
         tabActiveBorder: true,
-        sideBarBorder: true,
-        panelBorder: true,
+        accentBorders: true,
       });
 
       const value = await getColorSettingAfterEnterColor(
