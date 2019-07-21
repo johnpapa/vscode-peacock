@@ -160,9 +160,9 @@ export function getAffectedElements() {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
-    tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
-    sidebarBorder: readConfiguration<boolean>(AffectedSettings.SidebarBorder) || false,
     panelBorder: readConfiguration<boolean>(AffectedSettings.PanelBorder) || false,
+    sidebarBorder: readConfiguration<boolean>(AffectedSettings.SidebarBorder) || false,
+    tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
   };
 }
 
@@ -290,14 +290,14 @@ function collectAccentBorderSettings(backgroundHex: string) {
   // use same adjustments and activity bar
   const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
 
-  if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
-    accentBorderSettings['tab.activeBorder'] = color;
+  if (isAffectedSettingSelected(AffectedSettings.PanelBorder)) {
+    accentBorderSettings[ColorSettings.panelBorder] = color;
   }
   if (isAffectedSettingSelected(AffectedSettings.SidebarBorder)) {
-    accentBorderSettings['sideBar.border'] = color;
+    accentBorderSettings[ColorSettings.sideBarBorder] = color;
   }
-  if (isAffectedSettingSelected(AffectedSettings.PanelBorder)) {
-    accentBorderSettings['panel.border'] = color;
+  if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
+    accentBorderSettings[ColorSettings.tabActiveBorder] = color;
   }
   return accentBorderSettings;
 }
@@ -372,9 +372,9 @@ function getAllUserSettings() {
     activityBar: affectActivityBar,
     statusBar: affectStatusBar,
     titleBar: affectTitleBar,
-    tabActiveBorder: affectTabActiveBorder,
-    sidebarBorder: affectSidebarBorder,
     panelBorder: affectPanelBorder,
+    sidebarBorder: affectSidebarBorder,
+    tabActiveBorder: affectTabActiveBorder,
   } = getAffectedElements();
   return {
     favoriteColors,
@@ -387,9 +387,9 @@ function getAllUserSettings() {
     affectActivityBar,
     affectStatusBar,
     affectTitleBar,
-    affectTabActiveBorder,
-    affectSidebarBorder,
     affectPanelBorder,
+    affectSidebarBorder,
+    affectTabActiveBorder,
   };
 }
 

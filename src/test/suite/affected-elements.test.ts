@@ -115,6 +115,9 @@ suite('Affected elements', () => {
         activityBar: false,
         statusBar: false,
         titleBar: false,
+        panelBorder: false,
+        sidebarBorder: false,
+        tabActiveBorder: false,
       });
     });
 
@@ -131,6 +134,9 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
       assert.ok(!config[ColorSettings.statusBar_foreground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
+      assert.ok(!config[ColorSettings.panelBorder]);
+      assert.ok(!config[ColorSettings.sideBarBorder]);
+      assert.ok(!config[ColorSettings.tabActiveBorder]);
     });
 
     suiteTeardown(async () => {

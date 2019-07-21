@@ -156,20 +156,20 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
-        "peacock.affectTabActiveBorder": {
+        "peacock.affectPanelBorder": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies whether Peacock should affect the active tab's border."
+          "description": "Specifies whether Peacock should affect the panel's border."
         },
         "peacock.affectSidebarBorder": {
           "type": "boolean",
           "default": false,
           "description": "Specifies whether Peacock should affect the sidebar's border."
         },
-        "peacock.affectPanelBorder": {
+        "peacock.affectTabActiveBorder": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies whether Peacock should affect the panel's border."
+          "description": "Specifies whether Peacock should affect the active tab's border."
         },
         "peacock.elementAdjustments": {
           "type": "object",
