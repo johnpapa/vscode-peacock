@@ -144,6 +144,9 @@ suite('Affected elements', () => {
         activityBar: true,
         statusBar: false,
         titleBar: true,
+        tabActiveBorder: true,
+        sidebarBorder: true,
+        panelBorder: true,
       });
 
       const value = await getColorSettingAfterEnterColor(

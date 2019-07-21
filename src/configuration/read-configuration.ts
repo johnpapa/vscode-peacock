@@ -88,23 +88,7 @@ export function prepareColors(backgroundHex: string) {
     keepBadgeColor,
   );
 
-  /**
-   * For this to truly work, I'd want to
-   *  1. add "affected" settings for each of these 3.
-   */
   let accentBorderSettings = collectAccentBorderSettings(backgroundHex);
-  function collectAccentBorderSettings(backgroundHex: string) {
-    const accentBorderSettings = <ISettingsIndexer>{};
-
-    // if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    // use same adjustments and activity bar
-    const accentBorderStyle = getElementStyle(backgroundHex, ElementNames.activityBar);
-    accentBorderSettings['tab.activeBorder'] = accentBorderStyle.backgroundHex;
-    accentBorderSettings['sideBar.border'] = accentBorderStyle.backgroundHex;
-    accentBorderSettings['panel.border'] = accentBorderStyle.backgroundHex;
-    // }
-    return accentBorderSettings;
-  }
 
   let statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
@@ -176,6 +160,9 @@ export function getAffectedElements() {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
+    tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
+    sidebarBorder: readConfiguration<boolean>(AffectedSettings.SidebarBorder) || false,
+    panelBorder: readConfiguration<boolean>(AffectedSettings.PanelBorder) || false,
   };
 }
 
@@ -297,6 +284,24 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
   return statusBarSettings;
 }
 
+function collectAccentBorderSettings(backgroundHex: string) {
+  const accentBorderSettings = <ISettingsIndexer>{};
+
+  // use same adjustments and activity bar
+  const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
+
+  if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
+    accentBorderSettings['tab.activeBorder'] = color;
+  }
+  if (isAffectedSettingSelected(AffectedSettings.SidebarBorder)) {
+    accentBorderSettings['sideBar.border'] = color;
+  }
+  if (isAffectedSettingSelected(AffectedSettings.PanelBorder)) {
+    accentBorderSettings['panel.border'] = color;
+  }
+  return accentBorderSettings;
+}
+
 function getElementColors(config: vscode.WorkspaceConfiguration): IElementColors {
   return {
     [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
@@ -367,6 +372,9 @@ function getAllUserSettings() {
     activityBar: affectActivityBar,
     statusBar: affectStatusBar,
     titleBar: affectTitleBar,
+    tabActiveBorder: affectTabActiveBorder,
+    sidebarBorder: affectSidebarBorder,
+    panelBorder: affectPanelBorder,
   } = getAffectedElements();
   return {
     favoriteColors,
@@ -379,6 +387,9 @@ function getAllUserSettings() {
     affectActivityBar,
     affectStatusBar,
     affectTitleBar,
+    affectTabActiveBorder,
+    affectSidebarBorder,
+    affectPanelBorder,
   };
 }
 

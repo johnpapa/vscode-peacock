@@ -15,6 +15,9 @@ export enum AffectedSettings {
   ActivityBar = 'affectActivityBar',
   StatusBar = 'affectStatusBar',
   TitleBar = 'affectTitleBar',
+  TabActiveBorder = 'affectTabActiveBorder',
+  SidebarBorder = 'affectSidebarBorder',
+  PanelBorder = 'affectPanelBorder',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings;
