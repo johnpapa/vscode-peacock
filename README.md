@@ -46,7 +46,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
 | peacock.affectAccentBorders         | Specifies whether Peacock should affect accent borders (panel, sidebar, editorGroup) Defaults to false. |
-| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border (default false)                         |
+| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                      |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                 |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                         |
 | peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                   |
