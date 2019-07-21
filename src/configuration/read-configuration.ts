@@ -88,6 +88,24 @@ export function prepareColors(backgroundHex: string) {
     keepBadgeColor,
   );
 
+  /**
+   * For this to truly work, I'd want to
+   *  1. add "affected" settings for each of these 3.
+   */
+  let accentBorderSettings = collectAccentBorderSettings(backgroundHex);
+  function collectAccentBorderSettings(backgroundHex: string) {
+    const accentBorderSettings = <ISettingsIndexer>{};
+
+    // if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
+    // use same adjustments and activity bar
+    const accentBorderStyle = getElementStyle(backgroundHex, ElementNames.activityBar);
+    accentBorderSettings['tab.activeBorder'] = accentBorderStyle.backgroundHex;
+    accentBorderSettings['sideBar.border'] = accentBorderStyle.backgroundHex;
+    accentBorderSettings['panel.border'] = accentBorderStyle.backgroundHex;
+    // }
+    return accentBorderSettings;
+  }
+
   let statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
   // Merge all color settings
@@ -95,6 +113,7 @@ export function prepareColors(backgroundHex: string) {
     ...activityBarSettings,
     ...titleBarSettings,
     ...statusBarSettings,
+    ...accentBorderSettings,
   };
 
   return newColorCustomizations;
