@@ -16,7 +16,7 @@ export enum AffectedSettings {
   StatusBar = 'affectStatusBar',
   TitleBar = 'affectTitleBar',
   PanelBorder = 'affectPanelBorder',
-  SidebarBorder = 'affectSidebarBorder',
+  SideBarBorder = 'affectSideBarBorder',
   TabActiveBorder = 'affectTabActiveBorder',
 }
 
@@ -54,7 +54,7 @@ export enum ColorSettings {
   statusBar_foreground = 'statusBar.foreground',
   statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
   panelBorder = 'panel.border',
-  sideBarBorder = 'sidebar.border',
+  sideBarBorder = 'sideBar.border',
   tabActiveBorder = 'tab.activeBorder',
 }
 

@@ -19,7 +19,7 @@ Features
 - Added setting for `showColorInStatusBar` setting (defaults to true).
 - Added three new elements that can be affected by Peacock's coloring. Each is colored with the same lighten/darken adjustments as activityBar
   - `peacock.affectPanelBorder` Specifies whether Peacock should affect the panel's border (default false).
-  - `peacock.affectTabSidebarBorder` Specifies whether Peacock should affect the sidebar's border (default false).
+  - `peacock.affectSideBarBorder` Specifies whether Peacock should affect the sideBar's border (default false).
   - `peacock.affectTabActiveBorder` Specifies whether Peacock should affect the active tab's border (default false)
 
 Security

@@ -161,7 +161,7 @@ export function getAffectedElements() {
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
     panelBorder: readConfiguration<boolean>(AffectedSettings.PanelBorder) || false,
-    sidebarBorder: readConfiguration<boolean>(AffectedSettings.SidebarBorder) || false,
+    sideBarBorder: readConfiguration<boolean>(AffectedSettings.SideBarBorder) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
   };
 }
@@ -293,7 +293,7 @@ function collectAccentBorderSettings(backgroundHex: string) {
   if (isAffectedSettingSelected(AffectedSettings.PanelBorder)) {
     accentBorderSettings[ColorSettings.panelBorder] = color;
   }
-  if (isAffectedSettingSelected(AffectedSettings.SidebarBorder)) {
+  if (isAffectedSettingSelected(AffectedSettings.SideBarBorder)) {
     accentBorderSettings[ColorSettings.sideBarBorder] = color;
   }
   if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
@@ -373,7 +373,7 @@ function getAllUserSettings() {
     statusBar: affectStatusBar,
     titleBar: affectTitleBar,
     panelBorder: affectPanelBorder,
-    sidebarBorder: affectSidebarBorder,
+    sideBarBorder: affectSideBarBorder,
     tabActiveBorder: affectTabActiveBorder,
   } = getAffectedElements();
   return {
@@ -388,7 +388,7 @@ function getAllUserSettings() {
     affectStatusBar,
     affectTitleBar,
     affectPanelBorder,
-    affectSidebarBorder,
+    affectSideBarBorder,
     affectTabActiveBorder,
   };
 }

@@ -36,7 +36,7 @@ export interface IPeacockAffectedElementSettings {
   statusBar: boolean;
   titleBar: boolean;
   panelBorder: boolean;
-  sidebarBorder: boolean;
+  sideBarBorder: boolean;
   tabActiveBorder: boolean;
 }
 

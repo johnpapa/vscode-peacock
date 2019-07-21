@@ -17,7 +17,7 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 ## Install
 
-1. Open **Extensions** sidebar panel in Visual Studio Code. `View → Extensions`
+1. Open **Extensions** sideBar panel in Visual Studio Code. `View → Extensions`
 1. Search for `Peacock`
 1. Click **Install**
 1. Click **Reload**, if required
@@ -46,7 +46,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
 | peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel's border (default false)                              |
-| peacock.affectTabSidebarBorder      | Specifies whether Peacock should affect the sidebar's border (default false)                            |
+| peacock.affectSideBarBorder         | Specifies whether Peacock should affect the sideBar's border (default false)                            |
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border (default false)                         |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                 |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                         |

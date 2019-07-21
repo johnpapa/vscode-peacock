@@ -116,7 +116,7 @@ suite('Affected elements', () => {
         statusBar: false,
         titleBar: false,
         panelBorder: false,
-        sidebarBorder: false,
+        sideBarBorder: false,
         tabActiveBorder: false,
       });
     });
@@ -151,7 +151,7 @@ suite('Affected elements', () => {
         statusBar: false,
         titleBar: true,
         tabActiveBorder: true,
-        sidebarBorder: true,
+        sideBarBorder: true,
         panelBorder: true,
       });
 
