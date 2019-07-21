@@ -17,6 +17,10 @@ Features
 - Added more logging to the output of mementos and favorites
 - Added informational message on startup if "surprise me on startup" is set. One if the color is changed. A different message if the color was not changed because one already existed.
 - Added setting for `showColorInStatusBar` setting (defaults to true).
+- Added three new elements that can be affected by Peacock's coloring. Each is colored with the same lighten/darken adjustments as activityBar
+  - `peacock.affectPanelBorder` Specifies whether Peacock should affect the panel's border (default false).
+  - `peacock.affectTabSidebarBorder` Specifies whether Peacock should affect the sidebar's border (default false).
+  - `peacock.affectTabActiveBorder` Specifies whether Peacock should affect the active tab's border (default false)
 
 Security
 

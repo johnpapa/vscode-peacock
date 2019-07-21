@@ -45,6 +45,9 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                |
 | peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
+| peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel's border (default false)                              |
+| peacock.affectTabSidebarBorder      | Specifies whether Peacock should affect the sidebar's border (default false)                            |
+| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border (default false)                         |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                 |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                         |
 | peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                   |
