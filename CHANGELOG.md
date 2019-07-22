@@ -6,33 +6,36 @@ All notable changes to the code will be documented in this file.
 
 Features
 
-- Peacock now detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color depending on the remote context (container, ssh, wsl).
-  - added `Change Remote Color (SSH)` to commands. Prompts user to select a color for the SSH remote context from the Favorites
-  - added `Change Remote Color (Containers)` to commands. Prompts user to select a color for the Containers remote context from the Favorites
-  - added `Change Remote Color (WSL)` to commands. Prompts user to select a color for the WSL remote context from the Favorites
-- added tests for remote features
-- Created a new setting for `surpriseMeFromFavoritesOnly`. Defaults to false for backwards compatibility.
+- VS Code Remote
+  - Peacock now detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color depending on the remote context (container, ssh, wsl). Credit to [Erich Gamma for this PR](https://github.com/johnpapa/vscode-peacock/pull/187_)
+  - New Commands
+    - `Change Remote Color (SSH)` - prompts user to select a color for the SSH remote context from the Favorites
+    - `Change Remote Color (Containers)` - prompts user to select a color for the Containers remote context from the Favorites
+    - `Change Remote Color (WSL)` - prompts user to select a color for the WSL remote context from the Favorites
+- Surprise Me
+  - Created a new setting for `surpriseMeFromFavoritesOnly`. Defaults to false for backwards compatibility.
   - When false, a color is chosen purely randomly.
   - When true, a favorite color is selected randomly
-- Added more logging to the output of mementos and favorites
-- Added informational message on startup if "surprise me on startup" is set. One if the color is changed. A different message if the color was not changed because one already existed.
-- Added setting for `showColorInStatusBar` setting (defaults to true).
-- Added three new elements that can be affected by Peacock's coloring. Each is colored with the same lighten/darken adjustments as activityBar
-  - `peacock.affectAccentBorders` Specifies whether Peacock should affect the accent borders (panel, sidebar, editorGroup) Defaults to false.
+- Status Bar
+  - Added setting for `showColorInStatusBar` setting (defaults to true).
+- New elements can be colored
+  - Added new elements that can be affected by Peacock's coloring. Each is colored with the same lighten/darken adjustments as activityBar
+  - `peacock.affectAccentBorders` Specifies whether Peacock should affect the accent borders (panel, sideBar, editorGroup) Defaults to false.
   - `peacock.affectTabActiveBorder` Specifies whether Peacock should affect the active tab's border. Defaults to false.
 
 Security
 
-- Bumped lodash version https://github.com/johnpapa/vscode-peacock/pull/195
+- [Bumped lodash version](https://github.com/johnpapa/vscode-peacock/pull/195)
+
+Logging
+
+- Added more logging to the output of mementos and favorites
+- Added logging on startup if "surprise me on startup" is set. One if the color is changed. A different message if the color was not changed because one already existed.
 
 Refactoring
 
 - Created a `mementos.ts` file with mento functions for getting and saving mementos. This consolidates some of the code Peacock has for mementos
 - Created constants for the peacock core mementos, the vsls mementos, and the remote mementos. Each are in their respective folders and modules
-- Created a npm script for `test-all` which compiles and tests all 3 main test groups. Note that that CI only runs the npm script for `test` which covers the core tests only due to remote and vsls not working under test in CI currently
-  - core peacock tests (currently 86)
-  - peacock vsls tests (currently 8)
-  - peacock remote tests (currently 7)
 - Recent Color State vs Peacock Color Memento
   - Recent Color is the most recently used color.
   - If you want the original Peacock color, then use getPeacockColorMemento() in mementos.ts
@@ -50,13 +53,17 @@ Refactoring
 Linting and Formatting
 
 - Added prettier
-- Added eslint and removed tslint
+- Added eslint and removed tslint (using eslint for ts)
 
 Testing
 
 - Refactored tests after the new yo code generated test model.
 - Added code coverage
 - Refactored how Azure DevOps runs the pipelines
+- Added tests for remote features
+- Created a npm script for `test-all` which compiles and tests the 2 test groups. Note that that CI only runs the npm script for `test` which covers the core tests only due to vsls not working under test in CI currently
+  - core peacock & remote tests
+  - peacock vsls tests
 
 ## 2.4.0
 

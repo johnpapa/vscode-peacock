@@ -159,7 +159,7 @@
         "peacock.affectAccentBorders": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies whether Peacock should affect the accent borders (sidebar, editorGroup, panel)."
+          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel)."
         },
         "peacock.affectTabActiveBorder": {
           "type": "boolean",
