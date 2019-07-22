@@ -15,6 +15,8 @@ export enum AffectedSettings {
   ActivityBar = 'affectActivityBar',
   StatusBar = 'affectStatusBar',
   TitleBar = 'affectTitleBar',
+  AccentBorders = 'affectAccentBorders',
+  TabActiveBorder = 'affectTabActiveBorder',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings;
@@ -50,6 +52,10 @@ export enum ColorSettings {
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',
   statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
+  accentBorders_panelBorder = 'panel.border',
+  accentBorders_sideBarBorder = 'sideBar.border',
+  accentBorders_editorGroupBorder = 'editorGroup.border',
+  tabActiveBorder = 'tab.activeBorder',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';

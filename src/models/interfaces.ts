@@ -35,6 +35,8 @@ export interface IPeacockAffectedElementSettings {
   activityBar: boolean;
   statusBar: boolean;
   titleBar: boolean;
+  accentBorders: boolean;
+  tabActiveBorder: boolean;
 }
 
 export interface IPeacockElementAdjustments {
