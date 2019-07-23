@@ -160,10 +160,8 @@ export async function changeColor(input: string, primaryEnvironment = true) {
   }
 
   const backgroundHex = getBackgroundColorHex(input);
-  State.recentColor = backgroundHex;
-  updateStatusBar(backgroundHex);
 
-  // Delete all Peacock color customizations from the workspace
+  // Delete all Peacock color customizations from the object
   // and return pre-existing color customizations (not Peacock ones)
   const existingColors = deletePeacocksColorCustomizations();
 
@@ -178,6 +176,12 @@ export async function changeColor(input: string, primaryEnvironment = true) {
   };
 
   await updateWorkspaceConfiguration(colorCustomizations);
+
+  // Now set the most recent color in State
+  State.recentColor = backgroundHex;
+
+  // Update the statusbar to show the color
+  updateStatusBar();
 
   Logger.info(`${extensionShortName}: Peacock is now using ${State.recentColor}`);
 
