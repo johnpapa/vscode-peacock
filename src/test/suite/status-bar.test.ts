@@ -4,7 +4,7 @@ import { IPeacockSettings, Commands, getExtension, peacockGreen } from '../../mo
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { getStatusBarItem } from '../../statusbar';
 
-suite.only('StatusBar Tests', () => {
+suite.skip('StatusBar Tests', () => {
   let originalValues = <IPeacockSettings>{};
   let extension: vscode.Extension<any>;
 
@@ -16,7 +16,7 @@ suite.only('StatusBar Tests', () => {
     extension = <vscode.Extension<any>>getExtension();
   });
 
-  test.only('status bar', async () => {
+  test('status bar', async () => {
     await extension.activate();
 
     await vscode.commands.executeCommand(Commands.changeColorToPeacockGreen);
