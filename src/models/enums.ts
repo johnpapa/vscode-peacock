@@ -31,6 +31,7 @@ export enum Commands {
   addRecommendedFavorites = 'peacock.addRecommendedFavorites',
   darken = 'peacock.darken',
   lighten = 'peacock.lighten',
+  showAndCopyCurrentColor = 'peacock.showAndCopyCurrentColor',
 }
 
 export enum ElementNames {
