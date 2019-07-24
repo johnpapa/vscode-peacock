@@ -10,6 +10,10 @@ Features
   - `Copy the Current Color to the Clipboard` - Shows the current color and copies it to the clipboard
     - This command can be executed from the command palette or by clicking the statusBar item for peacock's color
 
+DevOps
+
+- [Adding code coverage and test reporting to Azure Pipelines](https://github.com/johnpapa/vscode-peacock/pull/219)
+
 ## 2.5.0
 
 Features
@@ -63,7 +67,7 @@ Linting and Formatting
 - Added prettier
 - Added eslint and removed tslint (using eslint for ts)
 
-Testing
+DevOps
 
 - Refactored tests after the new yo code generated test model.
 - Added code coverage
