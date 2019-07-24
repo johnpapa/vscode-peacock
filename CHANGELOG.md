@@ -2,6 +2,14 @@
 
 All notable changes to the code will be documented in this file.
 
+## 2.6.0
+
+Features
+
+- New Commands
+  - `Copy the Current Color to the Clipboard` - Shows the current color and copies it to the clipboard
+    - This command can be executed from the command palette or by clicking the statusBar item for peacock's color
+
 ## 2.5.0
 
 Features

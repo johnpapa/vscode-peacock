@@ -103,6 +103,11 @@
         "command": "peacock.changeColorOfRemoteWsl",
         "title": "Change Remote Color (WSL)",
         "category": "Peacock"
+      },
+      {
+        "command": "peacock.showAndCopyCurrentColor",
+        "title": "Copy the Current Color to the Clipboard",
+        "category": "Peacock"
       }
     ],
     "keybindings": [
