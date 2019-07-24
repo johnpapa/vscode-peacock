@@ -24,6 +24,8 @@ import { resetRemotePreviousColors } from './remote';
 import { resetMementos } from './mementos';
 import { notify } from './notification';
 import { clearStatusBar } from './statusbar';
+import { workspace } from 'vscode';
+import * as vscode from 'vscode';
 
 export async function resetColorsHandler() {
   const colorCustomizations = deletePeacocksColorCustomizations();
@@ -117,6 +119,16 @@ export async function lightenHandler() {
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
   await changeColor(lightenedColor);
+  return State.extensionContext;
+}
+
+export async function showAndCopyCurrentColorHandler() {
+  const color = State.recentColor;
+  const msg = color
+    ? `The current Peacock color is ${color}`
+    : 'There is no Peacock color set at this time.';
+  vscode.env.clipboard.writeText(color);
+  notify(msg, true);
   return State.extensionContext;
 }
 
