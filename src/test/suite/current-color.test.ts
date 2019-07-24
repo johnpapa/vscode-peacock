@@ -44,11 +44,5 @@ suite.only('Current Color Tests', () => {
       const clipboardColor = await vscode.env.clipboard.readText();
       assert.equal(clipboardColor, peacockGreen);
     });
-    // test('when there is no peacock color, show proper message', async () => {
-    //   //assert.equal(-1, [1, 2, 3].indexOf(5));
-    // });
   });
-  // suite('when clicking the "color" status bar', async () => {
-  //   //assert.equal(-1, [1, 2, 3].indexOf(5));
-  // });
 });
