@@ -68,7 +68,12 @@ export function createReport(): void {
     watermarks,
   });
 
-  const reports = [iReports.create('json'), iReports.create('lcov'), iReports.create('html')];
+  const reports = [
+    iReports.create('json'),
+    iReports.create('lcov'),
+    iReports.create('html'),
+    iReports.create('cobertura'),
+  ];
   reports.forEach(report => tree.visit(report, context));
 }
 
