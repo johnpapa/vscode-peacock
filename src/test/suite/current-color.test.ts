@@ -6,7 +6,7 @@ import { executeCommand } from './lib/constants';
 import { getCurrentColorBeforeAdjustments } from '../../configuration';
 import sinon = require('sinon');
 
-suite.only('Current Color Tests', () => {
+suite('Current Color Tests', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));

@@ -24,7 +24,6 @@ import { resetRemotePreviousColors } from './remote';
 import { resetMementos } from './mementos';
 import { notify } from './notification';
 import { clearStatusBar } from './statusbar';
-import { workspace } from 'vscode';
 import * as vscode from 'vscode';
 
 export async function resetColorsHandler() {

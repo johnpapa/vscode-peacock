@@ -2,7 +2,6 @@ import { isValidColorInput } from './color-library';
 import { peacockMementos, extensionShortName, State } from './models';
 import { Logger } from './logging';
 import { peacockVslsMementos } from './live-share/constants';
-import { peacockRemoteMementos } from './remote/constants';
 
 export interface IMementoLog {
   name: string;
@@ -55,11 +54,9 @@ export async function resetMementos() {
 
   // Global
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
+
   await ec.globalState.update(peacockVslsMementos.vslsJoinColor, undefined);
   await ec.globalState.update(peacockVslsMementos.vslsShareColor, undefined);
-  await ec.globalState.update(peacockRemoteMementos.remoteContainersColor, undefined);
-  await ec.globalState.update(peacockRemoteMementos.remoteSshColor, undefined);
-  await ec.globalState.update(peacockRemoteMementos.remoteWslColor, undefined);
 
   // Workspace
   await ec.workspaceState.update(peacockMementos.peacockColor, undefined);
@@ -84,21 +81,6 @@ export function getMementos() {
     name: peacockVslsMementos.vslsShareColor,
     type: 'globalState',
     value: ec.globalState.get(peacockVslsMementos.vslsShareColor),
-  });
-  mementos.push({
-    name: peacockRemoteMementos.remoteContainersColor,
-    type: 'globalState',
-    value: ec.globalState.get(peacockRemoteMementos.remoteContainersColor),
-  });
-  mementos.push({
-    name: peacockRemoteMementos.remoteSshColor,
-    type: 'globalState',
-    value: ec.globalState.get(peacockRemoteMementos.remoteSshColor),
-  });
-  mementos.push({
-    name: peacockRemoteMementos.remoteWslColor,
-    type: 'globalState',
-    value: ec.globalState.get(peacockRemoteMementos.remoteWslColor),
   });
 
   // Workspace

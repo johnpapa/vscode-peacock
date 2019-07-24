@@ -255,6 +255,21 @@
           "type": "boolean",
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session"
+        },
+        "peacock.remoteContainersColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color when in a remote with a container"
+        },
+        "peacock.remoteSshColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color when using remote with ssh"
+        },
+        "peacock.remoteWslColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color when using remote with WSL"
         }
       }
     }

@@ -7,9 +7,8 @@ import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardo
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
-import { getPeacockWorkspaceConfig } from '../../configuration';
-import { peacockRemoteMementos } from '../../remote/constants';
-import { RemoteCommands, RemoteNames } from '../../remote/enums';
+import { getPeacockWorkspaceConfig, readConfiguration } from '../../configuration';
+import { RemoteCommands, RemoteNames, RemoteSettings } from '../../remote/enums';
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
@@ -40,10 +39,7 @@ suite('Remote Integration', () => {
   test('can set color setting for Remote WSL', async () => {
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteWsl);
 
-    const settingValue = extensionContext!.globalState.get<string>(
-      peacockRemoteMementos.remoteWslColor,
-      '',
-    );
+    const settingValue = readConfiguration<string>(RemoteSettings.RemoteWslColor, '');
 
     console.log('settingValue');
     console.log(settingValue);
@@ -53,10 +49,7 @@ suite('Remote Integration', () => {
   test('can set color setting for Remote SSH', async () => {
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteSsh);
 
-    const settingValue = extensionContext!.globalState.get<string>(
-      peacockRemoteMementos.remoteSshColor,
-      '',
-    );
+    const settingValue = readConfiguration<string>(RemoteSettings.RemoteSshColor, '');
 
     assert(isValidColorInput(settingValue));
     assert(settingValue === azureBlue);
@@ -65,10 +58,7 @@ suite('Remote Integration', () => {
   test('can set color setting for Remote Containers', async () => {
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteContainers);
 
-    const settingValue = extensionContext!.globalState.get<string>(
-      peacockRemoteMementos.remoteContainersColor,
-      '',
-    );
+    const settingValue = readConfiguration<string>(RemoteSettings.RemoteContainersColor, '');
 
     assert(isValidColorInput(settingValue));
     assert(settingValue === azureBlue);

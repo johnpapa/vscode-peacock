@@ -9,3 +9,9 @@ export enum RemoteNames {
   sshRemote = 'ssh-remote',
   devContainer = 'dev-container',
 }
+
+export enum RemoteSettings {
+  RemoteContainersColor = 'remoteContainersColor',
+  RemoteSshColor = 'remoteSshColor',
+  RemoteWslColor = 'remoteWslColor',
+}

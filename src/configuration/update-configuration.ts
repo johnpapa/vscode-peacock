@@ -14,6 +14,7 @@ import {
 import { Logger } from '../logging';
 import { getFavoriteColors } from './read-configuration';
 import { notify } from '../notification';
+import { RemoteSettings } from '../remote/enums';
 
 export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
   let config = vscode.workspace.getConfiguration();
@@ -93,6 +94,10 @@ export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavori
 
 export async function updateFavoriteColors(values: IFavoriteColors[]) {
   return await updateGlobalConfiguration(StandardSettings.FavoriteColors, values);
+}
+
+export async function updateRemoteColor(remoteSetting: RemoteSettings, color: string) {
+  return await updateGlobalConfiguration(remoteSetting, color);
 }
 
 export async function updateAffectedElements(values: IPeacockAffectedElementSettings) {
