@@ -12,6 +12,13 @@ export function run(): Promise<void> {
     timeout: 7500, // longer timeout, in case
     useColors: true, // colored output from test results
     //----------------------------------------
+    reporter: "mocha-multi-reporters",
+    reporterOptions: {
+      reporterEnabled: "spec, xunit",
+      xunitReporterOptions: {
+        output: path.join(__dirname, "..", "..", "test-results.xml")
+      }
+    }
   });
   mocha.useColors(true);
 

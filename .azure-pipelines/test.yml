@@ -14,4 +14,26 @@ steps:
     inputs:
       command: custom
       verbose: false
-      customCommand: 'run just-test'
+      customCommand: 'run test:coverage'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFiles: 'out-cov/*-results.xml'
+      testRunTitle: '$(Agent.OS)-$(node_version)'
+    condition: succeededOrFailed()
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: coverage/cobertura-coverage.xml
+      reportDirectory: coverage/lcov-report
+    condition: succeededOrFailed()
+
+  # Uncomment to push results to CodeCov.io, will need a token in a secret variable
+  # - bash: |
+  #     bash <(curl https://codecov.io/bash) -t $TOKEN -f coverage/cobertura-coverage.xml
+  #   displayName: 'codecov'
+  #   condition: succeededOrFailed()
+  #   env:
+  #     TOKEN: $(CODECOV_TOKEN)

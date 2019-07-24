@@ -272,7 +272,7 @@
     "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && npm run just-test",
     "test-all": "npm run test && npm run just-live-share-test",
-    "test:coverage": "npm run test-compile && npm run just-test -- --coverage"
+    "test:coverage": "npm run just-test -- --coverage"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
@@ -296,6 +296,7 @@
     "istanbul-lib-source-maps": "^3.0.6",
     "istanbul-reports": "^2.2.6",
     "mocha": "^6.1.4",
+    "mocha-multi-reporters": "^1.1.7",
     "prettier": "^1.18.2",
     "sinon": "7.3.2",
     "ts-loader": "^5.3.3",
