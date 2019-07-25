@@ -59,7 +59,10 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
     revertRemoteWorkspaceColors();
     return;
   }
-  setRemoteWorkspaceColors();
+  // don't overwrite an already defined custom color
+  if (!getPeacockColorWorkspaceMemento()) {
+    setRemoteWorkspaceColors();
+  }
 }
 
 export async function refreshRemoteColor(remote: string): Promise<boolean> {
@@ -70,7 +73,13 @@ export async function refreshRemoteColor(remote: string): Promise<boolean> {
     );
     return false;
   }
-
+  if (getPeacockColorWorkspaceMemento()) {
+    notify(
+      `The current workspace already uses a peacock color, the selected color will not be applied for this workspace.`,
+      true,
+    );
+    return false;
+  }
   await setRemoteWorkspaceColors();
   return true;
 }

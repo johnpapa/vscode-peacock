@@ -20,9 +20,8 @@ suite('Remote Integration', () => {
   setup(async () => await setupTest());
 
   setup(async () => {
-    // Start with green
     extensionContext = await executeCommand<vscode.ExtensionContext>(
-      Commands.changeColorToPeacockGreen,
+      Commands.resetColors,
     );
 
     // Stub the async quick pick to return a response
@@ -41,8 +40,6 @@ suite('Remote Integration', () => {
 
     const settingValue = readConfiguration<string>(RemoteSettings.RemoteWslColor, '');
 
-    console.log('settingValue');
-    console.log(settingValue);
     assert(settingValue === azureBlue);
   });
 
@@ -107,9 +104,29 @@ suite('Remote Integration', () => {
   });
 
   test('Workspace color is reverted when not in a remote context.', async () => {
+    extensionContext = await executeCommand<vscode.ExtensionContext>(
+      Commands.changeColorToPeacockGreen,
+    );
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(undefined);
 
     await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteContainers);
+
+    remoteNameStub.restore();
+
+    let config = getPeacockWorkspaceConfig();
+    const value = config[ColorSettings.titleBar_activeBackground];
+
+    // we should be back to green
+    assert(isValidColorInput(value));
+    assert(value !== azureBlue);
+    assert(value === peacockGreen);
+  });
+  test('Remote color is not applied when there already is a custom color.', async () => {
+    const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.sshRemote);
+    extensionContext = await executeCommand<vscode.ExtensionContext>(
+      Commands.changeColorToPeacockGreen,
+    );
+    await executeCommand<vscode.ExtensionContext>(RemoteCommands.changeColorOfRemoteSsh);
 
     remoteNameStub.restore();
 

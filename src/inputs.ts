@@ -39,13 +39,13 @@ export async function promptForFavoriteColorName(color: string) {
   return inputName || '';
 }
 
-export async function promptForFavoriteColor() {
+export async function promptForFavoriteColor(isPrimaryEnvironment: boolean = false) {
   const { menu, values: favoriteColors } = getFavoriteColors();
   let selection = '';
   const startingColor = getCurrentColorBeforeAdjustments();
   const options = {
     placeHolder: 'Pick a favorite color',
-    onDidSelectItem: tryColorWithPeacock(),
+    onDidSelectItem: tryColorWithPeacock(isPrimaryEnvironment),
   };
   if (favoriteColors && favoriteColors.length) {
     selection = (await vscode.window.showQuickPick(menu, options)) || '';
@@ -57,7 +57,7 @@ export async function promptForFavoriteColor() {
 
   if (isValidColorInput(startingColor)) {
     // when there is no selection and startingColor, revert to starting color
-    await changeColor(startingColor);
+    await changeColor(startingColor, isPrimaryEnvironment);
   } else {
     // if no color was previously set, reset the current color to `null`
     await setPeacockColorCustomizations(null);
@@ -71,9 +71,9 @@ export function parseFavoriteColorValue(text: string) {
   return text.substring(text.indexOf(sep) + sep.length + 1);
 }
 
-function tryColorWithPeacock() {
+function tryColorWithPeacock(isPrimaryEnvironement: boolean) {
   return async (item: string) => {
     const color = parseFavoriteColorValue(item as string);
-    return await changeColor(color);
+    return await changeColor(color, isPrimaryEnvironement);
   };
 }
