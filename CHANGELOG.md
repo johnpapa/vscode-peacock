@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## 2.6.0 - Next
+## 3.0.0 - Next
 
 Features
 
@@ -10,16 +10,21 @@ Features
   - `Copy the Current Color to the Clipboard` - Shows the current color and copies it to the clipboard
     - This command can be executed from the command palette or by clicking the statusBar item for peacock's color
 
+Breaking Changes
+
+- Remove commands for remotes as we now just use the other commands to change the color while you are in a remote.
+  - `Change Remote Color (SSH)` - prompts user to select a color for the SSH remote context from the Favorites
+  - `Change Remote Color (Containers)` - prompts user to select a color for the Containers remote context from the Favorites
+  - `Change Remote Color (WSL)` - prompts user to select a color for the WSL remote context from the Favorites
+
 DevOps
 
 - [Adding code coverage and test reporting to Azure Pipelines](https://github.com/johnpapa/vscode-peacock/pull/219)
 
-Refactoring
-
 - Removed remote colors and live share colors from mementos and instead created user settings for these. Mementos are best for values the user cant see, while settings make it easier for the user to see them and modify them directly. This feels right for these colors.
-  - `peacock.remoteContainersColor` - Peacock color when in a remote with a container.
-  - `peacock.remoteSshColor` - Peacock color when using remote with ssh.
-  - `peacock.remoteWslColor` - Peacock color when using remote with WSL
+  - `peacock.defaultRemoteContainersColor` - Peacock default color when in a container (remote)
+  - `peacock.defaultRemoteSshColor` - Peacock default color when in SSH (remote)
+  - `peacock.defaultRemoteWslColor` - Peacock default color when in WSL (remote)
   - `peacock.vslsShareColor` - Peacock color for Live Share Hosting
   - `peacock.vslsJoinColor` - Peacock color for Live Share Joining
 

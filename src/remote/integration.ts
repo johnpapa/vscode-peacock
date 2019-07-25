@@ -11,13 +11,13 @@ function getRemoteSettingName() {
   let setting = undefined;
   switch (vscode.env.remoteName) {
     case RemoteNames.wsl:
-      setting = RemoteSettings.RemoteWslColor;
+      setting = RemoteSettings.DefaultRemoteWslColor;
       break;
     case RemoteNames.sshRemote:
-      setting = RemoteSettings.RemoteSshColor;
+      setting = RemoteSettings.DefaultRemoteSshColor;
       break;
     case RemoteNames.devContainer:
-      setting = RemoteSettings.RemoteContainersColor;
+      setting = RemoteSettings.DefaultRemoteContainersColor;
       break;
   }
   return setting;

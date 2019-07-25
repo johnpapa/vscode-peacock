@@ -27,7 +27,6 @@ suite('Remote Integration', () => {
     await executeCommand(Commands.changeColorToFavorite);
     qpStub.restore();
     remoteNameStub.restore();
-    // const settingValue = readConfiguration<string>(RemoteSettings.RemoteWslColor, '');
     const color = getCurrentColorBeforeAdjustments();
 
     assert.equal(color, azureBlue);
@@ -40,7 +39,6 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    // const settingValue = readConfiguration<string>(RemoteSettings.RemoteSshColor, '');
     const color = getCurrentColorBeforeAdjustments();
 
     assert.ok(isValidColorInput(color));
@@ -54,7 +52,6 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    // const settingValue = readConfiguration<string>(RemoteSettings.RemoteContainersColor, '');
     const color = getCurrentColorBeforeAdjustments();
 
     assert(isValidColorInput(color));

@@ -36,27 +36,27 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ## Settings
 
-| Property                            | Description                                                                                             |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                |
-| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
-| peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
-| peacock.affectAccentBorders         | Specifies whether Peacock should affect accent borders (panel, sideBar, editorGroup) Defaults to false. |
-| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                      |
-| peacock.elementAdjustments          | fine tune coloring of affected elements                                                                 |
-| peacock.favoriteColors              | array of objects for color names and hex values                                                         |
-| peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                   |
-| peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                               |
-| peacock.darkForeground              | override for the dark foreground                                                                        |
-| peacock.lightForeground             | override for the light foreground                                                                       |
-| peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                           |
-| peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color |
-| peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                |
-| peacock.remoteContainersColor       | Peacock color when in a remote with a container.                                                        |
-| peacock.remoteSshColor              | Peacock color when using remote with ssh.                                                               |
-| peacock.remoteWslColor              | Peacock color when using remote with WSL                                                                |
-| peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                               |
-| peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                              |
+| Property                             | Description                                                                                             |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar            | Specifies whether Peacock should affect the activity bar                                                |
+| peacock.affectStatusBar              | Specifies whether Peacock should affect the status bar                                                  |
+| peacock.affectTitleBar               | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
+| peacock.affectAccentBorders          | Specifies whether Peacock should affect accent borders (panel, sideBar, editorGroup) Defaults to false. |
+| peacock.affectTabActiveBorder        | Specifies whether Peacock should affect the active tab's border. Defaults to false                      |
+| peacock.elementAdjustments           | fine tune coloring of affected elements                                                                 |
+| peacock.favoriteColors               | array of objects for color names and hex values                                                         |
+| peacock.keepForegroundColor          | Specifies whether Peacock should change affect colors                                                   |
+| peacock.surpriseMeOnStartup          | Specifies whether Peacock apply a random color on startup                                               |
+| peacock.darkForeground               | override for the dark foreground                                                                        |
+| peacock.lightForeground              | override for the light foreground                                                                       |
+| peacock.darkenLightenPercentage      | the percentage to darken or lighten the color                                                           |
+| peacock.surpriseMeFromFavoritesOnly  | Specifies whether Peacock should choose a random color from the favorites list or a purely random color |
+| peacock.showColorInStatusBar         | Show the Peacock color in the status bar                                                                |
+| peacock.defaultRemoteContainersColor | Peacock default color when in a container (remote)                                                      |
+| peacock.defaultRemoteSshColor        | Peacock default color when in SSH (remote)                                                              |
+| peacock.defaultRemoteWslColor        | Peacock default color when in WSL (remote)                                                              |
+| peacock.vslsShareColor               | Peacock color for Live Share Color when acting as a Guest                                               |
+| peacock.vslsJoinColor                | Peacock color for Live Share color when acting as the Host                                              |
 
 ### Favorite Colors
 
