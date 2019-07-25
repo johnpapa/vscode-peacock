@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import * as tinycolor from 'tinycolor2';
 
 import {
@@ -153,8 +154,7 @@ function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
 
-export async function changeColor(input: string, primaryEnvironment = true) {
-  // if the color input is blank, get out
+export async function changeColor(input: string) {
   if (!isValidColorInput(input)) {
     return;
   }
@@ -185,11 +185,10 @@ export async function changeColor(input: string, primaryEnvironment = true) {
 
   Logger.info(`${extensionShortName}: Peacock is now using ${State.recentColor}`);
 
-  if (primaryEnvironment) {
-    //} && !vscode.env.remoteName) {
+  if (!vscode.env.remoteName) {
     // Save the recent color to the memento
-    // only if we're changing Peacock color,
-    // but not remote color
+    // only if we're changing Peacock color
+    // and we're not in a remote env
     savePeacockColorWorkspaceMemento(State.recentColor);
   }
 

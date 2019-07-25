@@ -34,7 +34,7 @@ async function setRemoteWorkspaceColors() {
     return;
   }
 
-  await changeColor(remoteColor, false);
+  await changeColor(remoteColor);
 }
 
 function remoteExtensionsInstalled(): boolean {
@@ -56,10 +56,8 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
     revertRemoteWorkspaceColors();
     return;
   }
-  // don't overwrite an already defined custom color
-  if (!getPeacockColorWorkspaceMemento()) {
-    setRemoteWorkspaceColors();
-  }
+
+  await setRemoteWorkspaceColors();
 }
 
 export async function refreshRemoteColor(remote: string): Promise<boolean> {
