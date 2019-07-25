@@ -1,7 +1,6 @@
 import { isValidColorInput } from './color-library';
 import { peacockMementos, extensionShortName, State } from './models';
 import { Logger } from './logging';
-import { peacockVslsMementos } from './live-share/constants';
 
 export interface IMementoLog {
   name: string;
@@ -55,9 +54,6 @@ export async function resetMementos() {
   // Global
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
 
-  await ec.globalState.update(peacockVslsMementos.vslsJoinColor, undefined);
-  await ec.globalState.update(peacockVslsMementos.vslsShareColor, undefined);
-
   // Workspace
   await ec.workspaceState.update(peacockMementos.peacockColor, undefined);
 }
@@ -71,16 +67,6 @@ export function getMementos() {
     name: peacockMementos.favoritesVersion,
     type: 'globalState',
     value: ec.globalState.get(peacockMementos.favoritesVersion),
-  });
-  mementos.push({
-    name: peacockVslsMementos.vslsJoinColor,
-    type: 'globalState',
-    value: ec.globalState.get(peacockVslsMementos.vslsJoinColor),
-  });
-  mementos.push({
-    name: peacockVslsMementos.vslsShareColor,
-    type: 'globalState',
-    value: ec.globalState.get(peacockVslsMementos.vslsShareColor),
   });
 
   // Workspace

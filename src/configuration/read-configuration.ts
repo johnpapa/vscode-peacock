@@ -28,6 +28,7 @@ import {
   getInactiveForegroundColorHex,
 } from '../color-library';
 import { RemoteSettings } from '../remote/enums';
+import { LiveShareSettings } from '../live-share/enums';
 
 const { workspace } = vscode;
 
@@ -110,6 +111,10 @@ export function getDarkForegroundColor() {
 
 export function getRemoteColor(remoteSetting: RemoteSettings) {
   return readConfiguration<string>(remoteSetting, '');
+}
+
+export function getLiveShareColor(liveShareSetting: LiveShareSettings) {
+  return readConfiguration<string>(liveShareSetting, '');
 }
 
 export function getDarkForegroundColorOrOverride() {

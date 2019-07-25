@@ -55,6 +55,8 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.remoteContainersColor       | Peacock color when in a remote with a container.                                                        |
 | peacock.remoteSshColor              | Peacock color when using remote with ssh.                                                               |
 | peacock.remoteWslColor              | Peacock color when using remote with WSL                                                                |
+| peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                               |
+| peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                              |
 
 ### Favorite Colors
 
@@ -326,12 +328,10 @@ This list may change from version to version depending on the Peacock authoring 
 
 Peacock takes advantage of a series of mementos (values stored between sessions and not in settings). Some are global that affect all VS Code instances on the computer. Some are local to the workspace on the computer.
 
-| Name                               | Type      | Description                                                                                                             |
-| ---------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| peacockMementos.peacockColor       | Workspace | The most recently used Peacock color, but not remote or other secondary colors. Ideal when moving in and out of remote. |
-| peacockMementos.favoritesVersion   | Global    | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings              |
-| peacockVslsMementos.vslsJoinColor  | Global    | VS Live Share's Peacock color when joining a session.                                                                   |
-| peacockVslsMementos.vslsShareColor | Global    | VS Live Share's Peacock color when sharing a session.                                                                   |
+| Name                             | Type      | Description                                                                                                             |
+| -------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| peacockMementos.peacockColor     | Workspace | The most recently used Peacock color, but not remote or other secondary colors. Ideal when moving in and out of remote. |
+| peacockMementos.favoritesVersion | Global    | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings              |
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 

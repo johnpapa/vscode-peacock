@@ -15,6 +15,7 @@ import { Logger } from '../logging';
 import { getFavoriteColors } from './read-configuration';
 import { notify } from '../notification';
 import { RemoteSettings } from '../remote/enums';
+import { LiveShareSettings } from '../live-share/enums';
 
 export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
   let config = vscode.workspace.getConfiguration();
@@ -85,7 +86,9 @@ export async function addNewFavoriteColor(name: string, value: string) {
 }
 
 export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
-  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${State.extensionVersion}`;
+  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${
+    State.extensionVersion
+  }`;
   notify(msg, true);
 
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
@@ -98,6 +101,10 @@ export async function updateFavoriteColors(values: IFavoriteColors[]) {
 
 export async function updateRemoteColor(remoteSetting: RemoteSettings, color: string) {
   return await updateGlobalConfiguration(remoteSetting, color);
+}
+
+export async function updateLiveShareColor(liveShareSetting: LiveShareSettings, color: string) {
+  return await updateGlobalConfiguration(liveShareSetting, color);
 }
 
 export async function updateAffectedElements(values: IPeacockAffectedElementSettings) {
