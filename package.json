@@ -75,6 +75,11 @@
         "category": "Peacock"
       },
       {
+        "command": "peacock.changeColorOfLiveShareGuest",
+        "title": "Change Live Share Color (Guest)",
+        "category": "Peacock"
+      },
+      {
         "command": "peacock.darken",
         "title": "Darken",
         "category": "Peacock"
@@ -82,11 +87,6 @@
       {
         "command": "peacock.lighten",
         "title": "Lighten",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorOfLiveShareGuest",
-        "title": "Change Live Share Color (Guest)",
         "category": "Peacock"
       },
       {
@@ -255,6 +255,31 @@
           "type": "boolean",
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session"
+        },
+        "peacock.remoteContainersColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color when in a remote with a container"
+        },
+        "peacock.remoteSshColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color when using remote with ssh"
+        },
+        "peacock.remoteWslColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color when using remote with WSL"
+        },
+        "peacock.vslsShareColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color for Live Share Color when acting as a Host "
+        },
+        "peacock.vslsJoinColor": {
+          "type": "string",
+          "default": "",
+          "description": "Peacock color for Live Share Color when acting as a Guest "
         }
       }
     }

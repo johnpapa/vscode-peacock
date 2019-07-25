@@ -14,6 +14,15 @@ DevOps
 
 - [Adding code coverage and test reporting to Azure Pipelines](https://github.com/johnpapa/vscode-peacock/pull/219)
 
+Refactoring
+
+- Removed remote colors and live share colors from mementos and instead created user settings for these. Mementos are best for values the user cant see, while settings make it easier for the user to see them and modify them directly. This feels right for these colors.
+  - `peacock.remoteContainersColor` - Peacock color when in a remote with a container.
+  - `peacock.remoteSshColor` - Peacock color when using remote with ssh.
+  - `peacock.remoteWslColor` - Peacock color when using remote with WSL
+  - `peacock.vslsShareColor` - Peacock color for Live Share Hosting
+  - `peacock.vslsJoinColor` - Peacock color for Live Share Joining
+
 ## 2.5.0
 
 Features

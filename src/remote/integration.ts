@@ -1,45 +1,41 @@
 import * as vscode from 'vscode';
 
-import { peacockRemoteMementos } from './constants';
 import { changeColor } from '../color-library';
 import { registerRemoteIntegrationCommands } from './remote-commands';
-import { RemoteNames } from './enums';
+import { RemoteNames, RemoteSettings } from './enums';
 import { getPeacockColorWorkspaceMemento } from '../mementos';
 import { State } from '../models';
 import { notify } from '../notification';
+import { getRemoteColor } from '../configuration';
 
-export function remoteMementoName(): string | undefined {
-  let mementoName = undefined;
+function getRemoteSettingName() {
+  let setting = undefined;
   switch (vscode.env.remoteName) {
     case RemoteNames.wsl:
-      mementoName = peacockRemoteMementos.remoteWslColor;
+      setting = RemoteSettings.RemoteWslColor;
       break;
     case RemoteNames.sshRemote:
-      mementoName = peacockRemoteMementos.remoteSshColor;
+      setting = RemoteSettings.RemoteSshColor;
       break;
     case RemoteNames.devContainer:
-      mementoName = peacockRemoteMementos.remoteContainersColor;
+      setting = RemoteSettings.RemoteContainersColor;
       break;
   }
-  return mementoName;
+  return setting;
 }
 
 async function setRemoteWorkspaceColors() {
-  const remoteColorSetting = getRemoteColor();
-  if (!remoteColorSetting) {
+  let setting = getRemoteSettingName();
+
+  if (!setting) {
+    return;
+  }
+  const remoteColor = getRemoteColor(setting);
+  if (!remoteColor) {
     return;
   }
 
-  await changeColor(remoteColorSetting, false);
-}
-
-export function getRemoteColor() {
-  let mementoName = remoteMementoName();
-
-  if (!mementoName) {
-    return;
-  }
-  return State.extensionContext.globalState.get<string>(mementoName);
+  await changeColor(remoteColor, false);
 }
 
 function remoteExtensionsInstalled(): boolean {

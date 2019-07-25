@@ -1,3 +1,6 @@
+import { RemoteSettings } from '../remote/enums';
+import { LiveShareSettings } from '../live-share/enums';
+
 export enum StandardSettings {
   ElementAdjustments = 'elementAdjustments',
   FavoriteColors = 'favoriteColors',
@@ -19,7 +22,7 @@ export enum AffectedSettings {
   TabActiveBorder = 'affectTabActiveBorder',
 }
 
-export type AllSettings = StandardSettings | AffectedSettings;
+export type AllSettings = StandardSettings | AffectedSettings | RemoteSettings | LiveShareSettings;
 
 export enum Commands {
   resetColors = 'peacock.resetColors',
