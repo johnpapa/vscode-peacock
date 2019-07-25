@@ -12,26 +12,26 @@ export function run(): Promise<void> {
     timeout: 7500, // longer timeout, in case
     useColors: true, // colored output from test results
     //----------------------------------------
-    reporter: "mocha-multi-reporters",
+    reporter: 'mocha-multi-reporters',
     reporterOptions: {
-      reporterEnabled: "spec, xunit",
+      reporterEnabled: 'spec, xunit',
       xunitReporterOptions: {
-        output: path.join(__dirname, "..", "..", "test-results.xml")
-      }
-    }
+        output: path.join(__dirname, '..', '..', 'test-results.xml'),
+      },
+    },
   });
   mocha.useColors(true);
 
   const testsRoot = path.resolve(__dirname, '..');
 
   return new Promise((c, e) => {
-    glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
+    glob('**/**.test.js', { cwd: testsRoot }, (err: any, files: any) => {
       if (err) {
         return e(err);
       }
 
       // Add files to the test suite
-      files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
+      files.forEach((f: any) => mocha.addFile(path.resolve(testsRoot, f)));
 
       try {
         // Run the mocha test
