@@ -124,7 +124,7 @@ export async function lightenHandler() {
 export async function showAndCopyCurrentColorHandler() {
   const color = State.recentColor;
   const msg = color
-    ? `The current Peacock color is ${color}`
+    ? `The current Peacock color is ${color} and has been copied to your clipboard.`
     : 'There is no Peacock color set at this time.';
   vscode.env.clipboard.writeText(color);
   notify(msg, true);
