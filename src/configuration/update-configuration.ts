@@ -14,8 +14,8 @@ import {
 import { Logger } from '../logging';
 import { getFavoriteColors } from './read-configuration';
 import { notify } from '../notification';
-import { RemoteSettings } from '../remote/enums';
-import { LiveShareSettings } from '../live-share/enums';
+import { RemoteSettings } from '../remote';
+import { LiveShareSettings } from '../live-share';
 
 export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
   let config = vscode.workspace.getConfiguration();

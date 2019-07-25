@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
 import { changeColor } from '../color-library';
-import { registerRemoteIntegrationCommands } from './remote-commands';
 import { RemoteNames, RemoteSettings } from './enums';
 import { getPeacockColorWorkspaceMemento } from '../mementos';
 import { State } from '../models';
@@ -49,8 +48,6 @@ function remoteExtensionsInstalled(): boolean {
 
 export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   State.extensionContext = context;
-
-  registerRemoteIntegrationCommands();
 
   const remoteExtensions = remoteExtensionsInstalled();
   await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);

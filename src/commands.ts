@@ -20,7 +20,6 @@ import {
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
 import { resetLiveSharePreviousColors } from './live-share';
-import { resetRemotePreviousColors } from './remote';
 import { resetMementos } from './mementos';
 import { notify } from './notification';
 import { clearStatusBar } from './statusbar';
@@ -33,7 +32,6 @@ export async function resetColorsHandler() {
     : colorCustomizations;
 
   await resetLiveSharePreviousColors();
-  await resetRemotePreviousColors();
   await resetMementos();
 
   await updateWorkspaceConfiguration(newColorCustomizations);

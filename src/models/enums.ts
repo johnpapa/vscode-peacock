@@ -1,5 +1,5 @@
-import { RemoteSettings } from '../remote/enums';
-import { LiveShareSettings } from '../live-share/enums';
+import { RemoteSettings } from '../remote';
+import { LiveShareSettings } from '../live-share';
 
 export enum StandardSettings {
   ElementAdjustments = 'elementAdjustments',

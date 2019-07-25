@@ -27,8 +27,8 @@ import {
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
 } from '../color-library';
-import { RemoteSettings } from '../remote/enums';
-import { LiveShareSettings } from '../live-share/enums';
+import { LiveShareSettings } from '../live-share';
+import { RemoteSettings } from '../remote';
 
 const { workspace } = vscode;
 

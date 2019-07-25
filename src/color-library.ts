@@ -189,7 +189,7 @@ export async function changeColor(input: string, primaryEnvironment = true) {
     //} && !vscode.env.remoteName) {
     // Save the recent color to the memento
     // only if we're changing Peacock color,
-    // but not remote or other secondary colors
+    // but not remote color
     savePeacockColorWorkspaceMemento(State.recentColor);
   }
 
