@@ -8,6 +8,12 @@
   },
   // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
   "typescript.tsc.autoDetect": "off",
+  "peacock.colors": {
+    "remoteContainer": "#00ffff",
+    "remoteSSH": "#00ff00",
+    "remotewsl": "#0000ff",
+    "local": "#103362"
+  },
   "workbench.colorCustomizations": {
     "activityBar.background": "#174a8e",
     "activityBar.foreground": "#e7e7e7",
