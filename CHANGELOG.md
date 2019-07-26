@@ -23,6 +23,12 @@ Refactoring
   - `peacock.vslsShareColor` - Peacock color for Live Share Hosting
   - `peacock.vslsJoinColor` - Peacock color for Live Share Joining
 
+## 2.5.1
+
+Bug Fixes
+
+- We now apply peacock colors on startup, in case user level settings change outside the scope of this workspace. example: accent is enabled, but this project you are opening doesn't have colors for it yet. peacock should add them on startup. example: you turned off titlebar, then open a project. peacock should remove titlebar colors.
+
 ## 2.5.0
 
 Features
