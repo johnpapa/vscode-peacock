@@ -80,6 +80,9 @@ export async function applyInitialConfiguration() {
   State.recentColor = getCurrentColorBeforeAdjustments();
 
   await checkSurpriseMeOnStartupLogic();
+
+  // Set Peacock colors, in case any user settings changed
+  await changeColor(State.recentColor);
 }
 
 export function deactivate() {
