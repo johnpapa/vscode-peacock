@@ -181,15 +181,9 @@ Peacock integrates with the Remote Development features of VS Code.
 - Learn more about [VS Code Remote Development](https://code.visualstudio.com/blogs/2019/05/02/remote-development?wt.mc_id=vscodepeacock-github-jopapa)
 - Get the [VS Code Remote Development Extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack&wt.mc_id=vscodepeacock-github-jopapa)
 
-Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color depending on the remote context (container, ssh, wsl).
+Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color when in a remote context. All remote contexts share the same color (wsl, ssh, containers).
 
-| Command                                   | Description                                                                         |
-| ----------------------------------------- | ----------------------------------------------------------------------------------- |
-| Peacock: Change Remote Color (SSH)        | Prompts user to select a color for the SSH remote context from the Favorites        |
-| Peacock: Change Remote Color (Containers) | Prompts user to select a color for the Containers remote context from the Favorites |
-| Peacock: Change Remote Color (WSL)        | Prompts user to select a color for the WSL remote context from the Favorites        |
-
-When a workspace is opened in a remote context, the selected workspace color will be applied.
+When a workspace is opened in a remote context, if a `peacock.remoteColor` is set, it will be applied. Otherwise, the regular `peacock.color` is applied.
 
 VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Peacock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
 
@@ -325,12 +319,11 @@ This list may change from version to version depending on the Peacock authoring 
 
 ### Mementos
 
-Peacock takes advantage of a series of mementos (values stored between sessions and not in settings). Some are global that affect all VS Code instances on the computer. Some are local to the workspace on the computer.
+Peacock takes advantage of a mementos (values stored between sessions and not in settings).
 
-| Name                             | Type      | Description                                                                                                             |
-| -------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| peacockMementos.peacockColor     | Workspace | The most recently used Peacock color, but not remote or other secondary colors. Ideal when moving in and out of remote. |
-| peacockMementos.favoritesVersion | Global    | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings              |
+| Name                             | Type   | Description                                                                                                |
+| -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
+| peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 
