@@ -9,7 +9,6 @@ import {
 
 import { State, peacockGreen } from './models';
 import {
-  getCurrentColorBeforeAdjustments,
   getDarkenLightenPercentage,
   getRandomFavoriteColor,
   getSurpriseMeFromFavoritesOnly,
@@ -45,7 +44,7 @@ export async function resetColorsHandler() {
 }
 
 export async function saveColorToFavoritesHandler() {
-  const color = getCurrentColorBeforeAdjustments();
+  const color = getPeacockColor();
   const name = await promptForFavoriteColorName(color);
   if (!name) {
     return;
@@ -106,7 +105,7 @@ export async function changeColorToFavoriteHandler() {
 }
 
 export async function darkenHandler() {
-  const color = getCurrentColorBeforeAdjustments();
+  const color = getPeacockColor();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
   await changeColor(darkenedColor);
@@ -114,7 +113,7 @@ export async function darkenHandler() {
 }
 
 export async function lightenHandler() {
-  const color = getCurrentColorBeforeAdjustments();
+  const color = getPeacockColor();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
   await changeColor(lightenedColor);

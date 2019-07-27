@@ -55,7 +55,13 @@ export function getUserConfig() {
 }
 
 export function getCurrentColorBeforeAdjustments() {
-  // Get the current color, before any adjustments were made
+  /**
+   * TODO: Not used. But might be useful if we dont want the
+   *       peacock color but instead to calculate it from
+   *       the current colors
+   *
+   * Get the current color, before any adjustments were made
+   */
   let config = getPeacockWorkspaceConfig();
   const elementColors = getElementColors(config);
   let { color, adjustment } = getColorAndAdjustment(elementColors);
@@ -155,7 +161,7 @@ export function getFavoriteColors() {
 
 export function getRandomFavoriteColor() {
   const { values: favoriteColors } = getFavoriteColors();
-  const currentColor = getCurrentColorBeforeAdjustments();
+  const currentColor = getPeacockColor();
   let newColorFromFavorites: IFavoriteColors;
   do {
     newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { favoriteColorSeparator, peacockGreen, Sections } from './models';
-import { getFavoriteColors, getCurrentColorBeforeAdjustments } from './configuration';
+import { getFavoriteColors, getPeacockColor } from './configuration';
 import { changeColor, isValidColorInput } from './color-library';
 
 export async function setPeacockColorCustomizations(colorCustomizations: any) {
@@ -42,7 +42,7 @@ export async function promptForFavoriteColorName(color: string) {
 export async function promptForFavoriteColor() {
   const { menu, values: favoriteColors } = getFavoriteColors();
   let selection = '';
-  const startingColor = getCurrentColorBeforeAdjustments();
+  const startingColor = getPeacockColor();
   const options = {
     placeHolder: 'Pick a favorite color',
     onDidSelectItem: tryColorWithPeacock(),

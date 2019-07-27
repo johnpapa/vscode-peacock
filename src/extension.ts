@@ -22,7 +22,6 @@ import {
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
-  getCurrentColorBeforeAdjustments,
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
   getPeacockColor,
@@ -124,7 +123,7 @@ async function checkSurpriseMeOnStartupLogic() {
     }
 
     await changeColorToRandomHandler();
-    const color = getCurrentColorBeforeAdjustments();
+    const color = getPeacockColor();
     const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }

@@ -5,12 +5,12 @@ import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput, changeColor } from '../color-library';
 import { LiveShareCommands, LiveShareSettings } from './enums';
 import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
-import { getCurrentColorBeforeAdjustments, updateLiveShareColor } from '../configuration';
+import { updateLiveShareColor, getPeacockColor } from '../configuration';
 import { State } from '../models';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   return async function changeColorOfLiveShareSession() {
-    const startingColor = getCurrentColorBeforeAdjustments();
+    const startingColor = getPeacockColor();
     const input = await promptForFavoriteColor();
 
     if (isValidColorInput(input)) {

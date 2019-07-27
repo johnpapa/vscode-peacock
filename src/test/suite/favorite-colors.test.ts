@@ -6,11 +6,7 @@ import { parseFavoriteColorValue } from '../../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
-import {
-  getFavoriteColors,
-  updateFavoriteColors,
-  getCurrentColorBeforeAdjustments,
-} from '../../configuration';
+import { getFavoriteColors, updateFavoriteColors, getPeacockColor } from '../../configuration';
 
 suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
@@ -27,7 +23,7 @@ suite('Favorite colors', () => {
       .returns(Promise.resolve<any>(fakeResponse));
 
     await executeCommand(Commands.changeColorToFavorite);
-    const color = getCurrentColorBeforeAdjustments();
+    const color = getPeacockColor();
     stub.restore();
 
     const parsedResponse = parseFavoriteColorValue(fakeResponse);
@@ -46,9 +42,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    const valueBefore = getCurrentColorBeforeAdjustments();
+    const valueBefore = getPeacockColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const valueAfter = getCurrentColorBeforeAdjustments();
+    const valueAfter = getPeacockColor();
     stub.restore();
 
     assert.ok(valueBefore === valueAfter);
@@ -61,9 +57,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    const colorBefore = getCurrentColorBeforeAdjustments();
+    const colorBefore = getPeacockColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const colorAfter = getCurrentColorBeforeAdjustments();
+    const colorAfter = getPeacockColor();
     stub.restore();
 
     assert.ok(!isValidColorInput(colorAfter));
@@ -86,9 +82,9 @@ suite('Favorite colors', () => {
     // Remove favorites
     await updateFavoriteColors([]);
 
-    const colorBefore = getCurrentColorBeforeAdjustments();
+    const colorBefore = getPeacockColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const colorAfter = getCurrentColorBeforeAdjustments();
+    const colorAfter = getPeacockColor();
     stub.restore();
 
     // Put back original favorites

@@ -8,9 +8,9 @@ import {
   getPeacockWorkspaceConfig,
   updateWorkspaceConfiguration,
   getExistingColorCustomizations,
-  getCurrentColorBeforeAdjustments,
   getFavoriteColors,
   updateSurpriseMeFromFavoritesOnly,
+  getPeacockColor,
 } from '../../configuration';
 
 suite('can set color to built-in color', () => {
@@ -38,7 +38,7 @@ suite('can set color to built-in color', () => {
             let { values: favorites } = getFavoriteColors();
             await updateSurpriseMeFromFavoritesOnly(true);
             await executeCommand(Commands.changeColorToRandom);
-            const color = getCurrentColorBeforeAdjustments();
+            const color = getPeacockColor();
             const match = favorites.find(item => item.value.toLowerCase === color.toLowerCase);
             assert.ok(
               match,
