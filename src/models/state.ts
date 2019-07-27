@@ -36,10 +36,10 @@ export class State {
   public static set extensionContext(ec: vscode.ExtensionContext) {
     this._extContext = ec;
   }
+}
 
-  public static get extensionVersion(): string {
-    let extension = getExtension();
-    let version = extension ? extension.packageJSON.version : '';
-    return version;
-  }
+export function getExtensionVersion() {
+  let extension = getExtension();
+  let version: string = extension ? extension.packageJSON.version : '';
+  return version;
 }

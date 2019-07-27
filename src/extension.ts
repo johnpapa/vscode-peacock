@@ -1,7 +1,13 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Commands, State, StandardSettings, extensionShortName } from './models';
+import {
+  Commands,
+  State,
+  StandardSettings,
+  extensionShortName,
+  getExtensionVersion,
+} from './models';
 import {
   resetColorsHandler,
   enterColorHandler,
@@ -78,11 +84,12 @@ function registerCommands() {
 
 export async function applyInitialConfiguration() {
   State.recentColor = getCurrentColorBeforeAdjustments();
+  const color  = State.recentColor;
 
   await checkSurpriseMeOnStartupLogic();
 
   // Set Peacock colors, in case any user settings changed
-  await changeColor(State.recentColor);
+  await changeColor(color);
 }
 
 export function deactivate() {
@@ -92,9 +99,12 @@ export function deactivate() {
 async function initializeTheStarterSetOfFavorites() {
   let starterSetOfFavoritesVersion = getFavoritesVersionGlobalMemento();
 
-  if (starterSetOfFavoritesVersion !== State.extensionVersion) {
-    saveFavoritesVersionGlobalMemento(State.extensionVersion);
+  // If the version has changed, we write the current set of favorites to user settings.json,
+  // merging them with any the user has created on their own
+  const currentVersion = getExtensionVersion();
+  if (starterSetOfFavoritesVersion !== currentVersion) {
     await writeRecommendedFavoriteColors();
+    await saveFavoritesVersionGlobalMemento(currentVersion);
   } else {
     let msg = `${extensionShortName}: Already wrote the favorite colors once`;
     Logger.info(msg);
@@ -106,8 +116,8 @@ async function checkSurpriseMeOnStartupLogic() {
    * If the "surprise me on startup" setting is true
    * and there is no peacock color set, then choose a new random color.
    * We do not choose a random color if there is already a color set
-   * as this would prevent users from choosing a specific color for
-   * some workspaces and surprise in others.
+   * as this would confuse users who choose a specific color in a
+   * workspace and see it changed to the "surprise" color
    */
   if (getSurpriseMeOnStartup()) {
     if (State.recentColor) {

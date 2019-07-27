@@ -6,10 +6,10 @@ import {
   IPeacockElementAdjustments,
   StandardSettings,
   IFavoriteColors,
-  State,
   IPeacockAffectedElementSettings,
   AffectedSettings,
   starterSetOfFavorites,
+  getExtensionVersion,
 } from '../models';
 import { Logger } from '../logging';
 import { getFavoriteColors } from './read-configuration';
@@ -86,9 +86,8 @@ export async function addNewFavoriteColor(name: string, value: string) {
 }
 
 export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
-  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${
-    State.extensionVersion
-  }`;
+  const version = getExtensionVersion();
+  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${version}`;
   notify(msg, true);
 
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
