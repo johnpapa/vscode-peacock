@@ -2,8 +2,7 @@ import * as vscode from 'vscode';
 
 import { changeColor } from '../color-library';
 import { State, StandardSettings } from '../models';
-import { notify } from '../notification';
-import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
+import { getPeacockRemoteColor } from '../configuration';
 
 async function setRemoteWorkspaceColors() {
   let setting = StandardSettings.RemoteColor;
@@ -34,10 +33,11 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   const remoteExtensions = remoteExtensionsInstalled();
   await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);
 
-  if (!vscode.env.remoteName) {
-    revertRemoteWorkspaceColors();
-    return;
-  }
+  // TODO: Shouldnt need this, since changeColor now changes the color for remote or non-remote
+  // if (!vscode.env.remoteName) {
+  //   revertRemoteWorkspaceColors();
+  //   return;
+  // }
 
   await setRemoteWorkspaceColors();
 }
@@ -61,8 +61,8 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
 //   await setRemoteWorkspaceColors();
 //   return true;
 // }
-
-export async function revertRemoteWorkspaceColors() {
-  const peacockColor = getPeacockColor();
-  await changeColor(peacockColor);
-}
+//
+// export async function revertRemoteWorkspaceColors() {
+//   const peacockColor = getPeacockColor();
+//   await changeColor(peacockColor);
+// }

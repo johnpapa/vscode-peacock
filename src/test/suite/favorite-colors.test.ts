@@ -6,7 +6,11 @@ import { parseFavoriteColorValue } from '../../inputs';
 import assert = require('assert');
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
-import { getFavoriteColors, updateFavoriteColors, getPeacockColor } from '../../configuration';
+import {
+  getFavoriteColors,
+  updateFavoriteColors,
+  getEnvironmentAwareColor,
+} from '../../configuration';
 
 suite('Favorite colors', () => {
   let originalValues = <IPeacockSettings>{};
@@ -23,7 +27,7 @@ suite('Favorite colors', () => {
       .returns(Promise.resolve<any>(fakeResponse));
 
     await executeCommand(Commands.changeColorToFavorite);
-    const color = getPeacockColor();
+    const color = getEnvironmentAwareColor();
     stub.restore();
 
     const parsedResponse = parseFavoriteColorValue(fakeResponse);
@@ -42,9 +46,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    const valueBefore = getPeacockColor();
+    const valueBefore = getEnvironmentAwareColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const valueAfter = getPeacockColor();
+    const valueAfter = getEnvironmentAwareColor();
     stub.restore();
 
     assert.ok(valueBefore === valueAfter);
@@ -57,9 +61,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    const colorBefore = getPeacockColor();
+    const colorBefore = getEnvironmentAwareColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const colorAfter = getPeacockColor();
+    const colorAfter = getEnvironmentAwareColor();
     stub.restore();
 
     assert.ok(!isValidColorInput(colorAfter));
@@ -82,9 +86,9 @@ suite('Favorite colors', () => {
     // Remove favorites
     await updateFavoriteColors([]);
 
-    const colorBefore = getPeacockColor();
+    const colorBefore = getEnvironmentAwareColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const colorAfter = getPeacockColor();
+    const colorAfter = getEnvironmentAwareColor();
     stub.restore();
 
     // Put back original favorites

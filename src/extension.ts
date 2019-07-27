@@ -24,7 +24,7 @@ import {
   checkIfPeacockSettingsChanged,
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
-  getPeacockColor,
+  getEnvironmentAwareColor,
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
@@ -60,12 +60,12 @@ function addSubscriptions() {
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
-    const peacockColor = getPeacockColor();
-    if (checkIfPeacockSettingsChanged(e) && peacockColor) {
+    const color = getEnvironmentAwareColor();
+    if (checkIfPeacockSettingsChanged(e) && color) {
       Logger.info(
-        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${peacockColor}`,
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
-      await changeColor(peacockColor);
+      await changeColor(color);
     }
   };
 }
@@ -114,7 +114,7 @@ async function checkSurpriseMeOnStartupLogic() {
    * as this would confuse users who choose a specific color in a
    * workspace and see it changed to the "surprise" color
    */
-  const peacockColor = getPeacockColor();
+  const peacockColor = getEnvironmentAwareColor();
   if (getSurpriseMeOnStartup()) {
     if (peacockColor) {
       const message = `Peacock did not change the color using "surprise me on startup" because the color ${peacockColor} was already set.`;
@@ -123,7 +123,7 @@ async function checkSurpriseMeOnStartupLogic() {
     }
 
     await changeColorToRandomHandler();
-    const color = getPeacockColor();
+    const color = getEnvironmentAwareColor();
     const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }

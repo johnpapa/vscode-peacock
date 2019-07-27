@@ -7,7 +7,7 @@ import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardo
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
-import { getPeacockWorkspaceConfig, getPeacockColor } from '../../configuration';
+import { getPeacockWorkspaceConfig, getEnvironmentAwareColor } from '../../configuration';
 import { RemoteNames } from '../../remote';
 
 suite('Remote Integration', () => {
@@ -24,7 +24,7 @@ suite('Remote Integration', () => {
     await executeCommand(Commands.changeColorToFavorite);
     qpStub.restore();
     remoteNameStub.restore();
-    const color = getPeacockColor();
+    const color = getEnvironmentAwareColor();
 
     assert.equal(color, azureBlue);
   });
@@ -36,7 +36,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    const color = getPeacockColor();
+    const color = getEnvironmentAwareColor();
 
     assert.ok(isValidColorInput(color));
     assert.equal(color, azureBlue);
@@ -49,7 +49,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    const color = getPeacockColor();
+    const color = getEnvironmentAwareColor();
 
     assert(isValidColorInput(color));
     assert(color === azureBlue);

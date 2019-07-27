@@ -103,7 +103,7 @@ export async function updatePeacockColor(color: string) {
   return await config.update(section, color, vscode.ConfigurationTarget.Workspace);
 }
 
-export async function updateRemoteColorInWorkspace(color: string) {
+export async function updatePeacockRemoteColorRemoteColor(color: string) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
   return await config.update(section, color, vscode.ConfigurationTarget.Workspace);

@@ -15,8 +15,8 @@ import {
   updateWorkspaceConfiguration,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
-  getPeacockColor,
   updatePeacockColor,
+  getEnvironmentAwareColor,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -44,7 +44,7 @@ export async function resetColorsHandler() {
 }
 
 export async function saveColorToFavoritesHandler() {
-  const color = getPeacockColor();
+  const color = getEnvironmentAwareColor();
   const name = await promptForFavoriteColorName(color);
   if (!name) {
     return;
@@ -105,7 +105,7 @@ export async function changeColorToFavoriteHandler() {
 }
 
 export async function darkenHandler() {
-  const color = getPeacockColor();
+  const color = getEnvironmentAwareColor();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
   await changeColor(darkenedColor);
@@ -113,7 +113,7 @@ export async function darkenHandler() {
 }
 
 export async function lightenHandler() {
-  const color = getPeacockColor();
+  const color = getEnvironmentAwareColor();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
   await changeColor(lightenedColor);
@@ -121,11 +121,11 @@ export async function lightenHandler() {
 }
 
 export async function showAndCopyCurrentColorHandler() {
-  const peacockColor = getPeacockColor();
-  const msg = peacockColor
-    ? `The current Peacock color is ${peacockColor} and has been copied to your clipboard.`
+  const color = getEnvironmentAwareColor();
+  const msg = color
+    ? `The current Peacock color is ${color} and has been copied to your clipboard.`
     : 'There is no Peacock color set at this time.';
-  vscode.env.clipboard.writeText(peacockColor);
+  vscode.env.clipboard.writeText(color);
   notify(msg, true);
   return State.extensionContext;
 }

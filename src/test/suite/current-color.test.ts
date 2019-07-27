@@ -3,7 +3,7 @@ import * as assert from 'assert';
 import { IPeacockSettings, Commands, peacockGreen, azureBlue } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import { getPeacockColor } from '../../configuration';
+import { getEnvironmentAwareColor } from '../../configuration';
 import sinon = require('sinon');
 
 suite('Current Color Tests', () => {
@@ -17,7 +17,7 @@ suite('Current Color Tests', () => {
     test('Shows the current color', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       await executeCommand(Commands.showAndCopyCurrentColor);
-      const color = getPeacockColor();
+      const color = getEnvironmentAwareColor();
       assert.equal(color, peacockGreen);
     });
     test('Shows the current color when it is a custom color', async () => {
@@ -27,7 +27,7 @@ suite('Current Color Tests', () => {
         .returns(Promise.resolve<any>(fakeResponse));
 
       await executeCommand(Commands.changeColorToFavorite);
-      const color = getPeacockColor();
+      const color = getEnvironmentAwareColor();
       stub.restore();
 
       await executeCommand(Commands.showAndCopyCurrentColor);
@@ -35,7 +35,7 @@ suite('Current Color Tests', () => {
     });
     test('Shows no color when none is set', async () => {
       await executeCommand(Commands.showAndCopyCurrentColor);
-      const color = getPeacockColor();
+      const color = getEnvironmentAwareColor();
       assert.equal(color, '');
     });
     test('Copies to the clipboard', async () => {

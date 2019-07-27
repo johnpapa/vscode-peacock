@@ -10,7 +10,7 @@ import {
   getExistingColorCustomizations,
   getFavoriteColors,
   updateSurpriseMeFromFavoritesOnly,
-  getPeacockColor,
+  getEnvironmentAwareColor,
 } from '../../configuration';
 
 suite('can set color to built-in color', () => {
@@ -38,7 +38,7 @@ suite('can set color to built-in color', () => {
             let { values: favorites } = getFavoriteColors();
             await updateSurpriseMeFromFavoritesOnly(true);
             await executeCommand(Commands.changeColorToRandom);
-            const color = getPeacockColor();
+            const color = getEnvironmentAwareColor();
             const match = favorites.find(item => item.value.toLowerCase === color.toLowerCase);
             assert.ok(
               match,

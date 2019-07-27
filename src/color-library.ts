@@ -18,6 +18,7 @@ import {
   getLightForegroundColorOrOverride,
   updateWorkspaceConfiguration,
   updatePeacockColor,
+  updatePeacockRemoteColorRemoteColor,
 } from './configuration';
 import { Logger } from './logging';
 import { updateStatusBar } from './statusbar';
@@ -165,11 +166,6 @@ export async function changeColor(input: string) {
 
   const color = getBackgroundColorHex(input);
 
-  if (vscode.env.remoteName) {
-    // TODO: ???
-    // change to remote color ?
-  }
-
   // Delete all Peacock color customizations from the object
   // and return pre-existing color customizations (not Peacock ones)
   const existingColors = deletePeacocksColorCustomizations();
@@ -184,10 +180,18 @@ export async function changeColor(input: string) {
     ...newColors,
   };
 
+  // Write all of the custom of the colors to workspace settings
   await updateWorkspaceConfiguration(colorCustomizations);
 
-  // Now set the most recent color
-  updatePeacockColor(color);
+  if (vscode.env.remoteName) {
+    // We're in a remote env,
+    // so update the workspace for Peacock Remote Color
+    updatePeacockRemoteColorRemoteColor(color);
+  } else {
+    // We're not in a remote env,
+    // so update the workspace for Peacock Color
+    updatePeacockColor(color);
+  }
 
   // Update the statusbar to show the color
   updateStatusBar();

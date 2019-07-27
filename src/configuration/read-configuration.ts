@@ -114,6 +114,11 @@ export function getDarkForegroundColor() {
   return readConfiguration<string>(StandardSettings.DarkForegroundColor, '');
 }
 
+export function getEnvironmentAwareColor() {
+  const color = vscode.env.remoteName ? getPeacockRemoteColor() : getPeacockColor();
+  return color;
+}
+
 export function getPeacockColor() {
   let color = readConfiguration<string>(StandardSettings.Color, '');
   return color;
@@ -161,7 +166,7 @@ export function getFavoriteColors() {
 
 export function getRandomFavoriteColor() {
   const { values: favoriteColors } = getFavoriteColors();
-  const currentColor = getPeacockColor();
+  const currentColor = getEnvironmentAwareColor();
   let newColorFromFavorites: IFavoriteColors;
   do {
     newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];

@@ -4,7 +4,11 @@ import * as sinon from 'sinon';
 import { Commands, IPeacockSettings } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand, lightenActivityBarElementAdjustments } from './lib/constants';
-import { getFavoriteColors, updateElementAdjustments, getPeacockColor } from '../../configuration';
+import {
+  getFavoriteColors,
+  updateElementAdjustments,
+  getEnvironmentAwareColor,
+} from '../../configuration';
 
 const faveName = 'TEST FAVE NAME';
 
@@ -30,7 +34,7 @@ suite('Save favorite color', () => {
     // BUT the color should not change, as we should grab the color
     // before any adjustments are made
 
-    const currentColor = getPeacockColor();
+    const currentColor = getEnvironmentAwareColor();
 
     // Stub the async input box to return a response
     const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(faveName));
@@ -38,7 +42,7 @@ suite('Save favorite color', () => {
     await executeCommand(Commands.saveColorToFavorites);
     stub.restore();
 
-    const newCurrentColor = getPeacockColor();
+    const newCurrentColor = getEnvironmentAwareColor();
     console.log(`currentColor=${currentColor} and newCurrentColor = ${newCurrentColor}`);
 
     assert.equal(currentColor, newCurrentColor);
