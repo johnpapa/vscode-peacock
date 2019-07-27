@@ -25,6 +25,7 @@ import {
   getCurrentColorBeforeAdjustments,
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
+  getPeacockColor,
 } from './configuration';
 import { changeColor } from './color-library';
 import { Logger } from './logging';
@@ -60,11 +61,12 @@ function addSubscriptions() {
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
-    if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
+    const peacockColor = getPeacockColor();
+    if (checkIfPeacockSettingsChanged(e) && peacockColor) {
       Logger.info(
-        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${State.recentColor}`,
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${peacockColor}`,
       );
-      await changeColor(State.recentColor);
+      await changeColor(peacockColor);
     }
   };
 }
@@ -83,8 +85,6 @@ function registerCommands() {
 }
 
 export async function applyInitialConfiguration() {
-  State.recentColor = getCurrentColorBeforeAdjustments();
-
   await checkSurpriseMeOnStartupLogic();
 }
 
@@ -115,9 +115,10 @@ async function checkSurpriseMeOnStartupLogic() {
    * as this would confuse users who choose a specific color in a
    * workspace and see it changed to the "surprise" color
    */
+  const peacockColor = getPeacockColor();
   if (getSurpriseMeOnStartup()) {
-    if (State.recentColor) {
-      const message = `Peacock did not change the color using "surprise me on startup" because the color ${State.recentColor} was already set.`;
+    if (peacockColor) {
+      const message = `Peacock did not change the color using "surprise me on startup" because the color ${peacockColor} was already set.`;
       Logger.info(message);
       return;
     }

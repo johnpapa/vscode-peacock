@@ -16,6 +16,8 @@ import {
   updateWorkspaceConfiguration,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
+  getPeacockColor,
+  updatePeacockColor,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -36,7 +38,7 @@ export async function resetColorsHandler() {
 
   await updateWorkspaceConfiguration(newColorCustomizations);
 
-  State.recentColor = '';
+  updatePeacockColor('');
   clearStatusBar();
 
   return State.extensionContext;
@@ -120,11 +122,11 @@ export async function lightenHandler() {
 }
 
 export async function showAndCopyCurrentColorHandler() {
-  const color = State.recentColor;
-  const msg = color
-    ? `The current Peacock color is ${color} and has been copied to your clipboard.`
+  const peacockColor = getPeacockColor();
+  const msg = peacockColor
+    ? `The current Peacock color is ${peacockColor} and has been copied to your clipboard.`
     : 'There is no Peacock color set at this time.';
-  vscode.env.clipboard.writeText(color);
+  vscode.env.clipboard.writeText(peacockColor);
   notify(msg, true);
   return State.extensionContext;
 }

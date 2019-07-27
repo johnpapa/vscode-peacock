@@ -6,7 +6,6 @@ import {
   ReadabilityRatios,
   inactiveElementAlpha,
   ColorSettings,
-  State,
   ColorAdjustmentOptions,
   defaultAmountToDarkenLighten,
   defaultSaturation,
@@ -18,9 +17,9 @@ import {
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
   updateWorkspaceConfiguration,
+  updatePeacockColor,
 } from './configuration';
 import { Logger } from './logging';
-import { savePeacockColorWorkspaceMemento } from './mementos';
 import { updateStatusBar } from './statusbar';
 
 export function getColorHex(color = '') {
@@ -155,18 +154,28 @@ function formatHex(color: tinycolor.Instance) {
 }
 
 export async function changeColor(input: string) {
+  /**************************************************************
+   * This is the heart of Peacock logic to change the colors.
+   *
+   */
+
   if (!isValidColorInput(input)) {
     return;
   }
 
-  const backgroundHex = getBackgroundColorHex(input);
+  const color = getBackgroundColorHex(input);
+
+  if (vscode.env.remoteName) {
+    // TODO: ???
+    // change to remote color ?
+  }
 
   // Delete all Peacock color customizations from the object
   // and return pre-existing color customizations (not Peacock ones)
   const existingColors = deletePeacocksColorCustomizations();
 
   // Get new Peacock colors
-  const newColors = prepareColors(backgroundHex);
+  const newColors = prepareColors(color);
 
   // merge the existing colors with the new ones
   // order is important here, so our new colors overwrite the old ones
@@ -177,22 +186,15 @@ export async function changeColor(input: string) {
 
   await updateWorkspaceConfiguration(colorCustomizations);
 
-  // Now set the most recent color in State
-  State.recentColor = backgroundHex;
+  // Now set the most recent color
+  updatePeacockColor(color);
 
   // Update the statusbar to show the color
   updateStatusBar();
 
-  Logger.info(`${extensionShortName}: Peacock is now using ${State.recentColor}`);
+  Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
 
-  if (!vscode.env.remoteName) {
-    // Save the recent color to the memento
-    // only if we're changing Peacock color
-    // and we're not in a remote env
-    savePeacockColorWorkspaceMemento(State.recentColor);
-  }
-
-  return backgroundHex;
+  return color;
 }
 
 export function deletePeacocksColorCustomizations() {

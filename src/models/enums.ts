@@ -1,4 +1,3 @@
-import { RemoteSettings } from '../remote';
 import { LiveShareSettings } from '../live-share';
 
 export enum StandardSettings {
@@ -12,6 +11,8 @@ export enum StandardSettings {
   ShowColorInStatusBar = 'showColorInStatusBar',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
+  RemoteColor = 'remoteColor',
+  Color = 'color',
 }
 
 export enum AffectedSettings {
@@ -22,7 +23,7 @@ export enum AffectedSettings {
   TabActiveBorder = 'affectTabActiveBorder',
 }
 
-export type AllSettings = StandardSettings | AffectedSettings | RemoteSettings | LiveShareSettings;
+export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
 
 export enum Commands {
   resetColors = 'peacock.resetColors',
@@ -59,7 +60,7 @@ export enum ColorSettings {
   accentBorders_panelBorder = 'panel.border',
   accentBorders_sideBarBorder = 'sideBar.border',
   accentBorders_editorGroupBorder = 'editorGroup.border',
-  tabActiveBorder = 'tab.activeBorder',
+  tabActiveBorder = 'tab.activeBorder'
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';

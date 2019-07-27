@@ -1,35 +1,17 @@
 import * as vscode from 'vscode';
 
 import { changeColor } from '../color-library';
-import { RemoteNames, RemoteSettings } from './enums';
-import { getPeacockColorWorkspaceMemento } from '../mementos';
-import { State } from '../models';
+import { State, StandardSettings } from '../models';
 import { notify } from '../notification';
-import { getRemoteColor } from '../configuration';
-
-function getRemoteSettingName() {
-  let setting = undefined;
-  switch (vscode.env.remoteName) {
-    case RemoteNames.wsl:
-      setting = RemoteSettings.DefaultRemoteWslColor;
-      break;
-    case RemoteNames.sshRemote:
-      setting = RemoteSettings.DefaultRemoteSshColor;
-      break;
-    case RemoteNames.devContainer:
-      setting = RemoteSettings.DefaultRemoteContainersColor;
-      break;
-  }
-  return setting;
-}
+import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
 
 async function setRemoteWorkspaceColors() {
-  let setting = getRemoteSettingName();
+  let setting = StandardSettings.RemoteColor;
 
   if (!setting) {
     return;
   }
-  const remoteColor = getRemoteColor(setting);
+  const remoteColor = getPeacockRemoteColor();
   if (!remoteColor) {
     return;
   }
@@ -60,27 +42,27 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   await setRemoteWorkspaceColors();
 }
 
-export async function refreshRemoteColor(remote: string): Promise<boolean> {
-  if (vscode.env.remoteName !== remote) {
-    notify(
-      `The selected color will be applied every time you you are in the '${remote}' context.`,
-      true,
-    );
-    return false;
-  }
-  if (getPeacockColorWorkspaceMemento()) {
-    notify(
-      `The current workspace already uses a peacock color, the selected color will not be applied for this workspace.`,
-      true,
-    );
-    return false;
-  }
-  await setRemoteWorkspaceColors();
-  return true;
-}
+// TODO: - not used
+// export async function refreshRemoteColor(remote: string): Promise<boolean> {
+//   if (vscode.env.remoteName !== remote) {
+//     notify(
+//       `The selected color will be applied every time you you are in the '${remote}' context.`,
+//       true,
+//     );
+//     return false;
+//   }
+//   if (getPeacockColor()) {
+//     notify(
+//       `The current workspace already uses a peacock color, the selected color will not be applied for this workspace.`,
+//       true,
+//     );
+//     return false;
+//   }
+//   await setRemoteWorkspaceColors();
+//   return true;
+// }
 
 export async function revertRemoteWorkspaceColors() {
-  // reset the color from the memento. Because the recent color may be the remote color
-  const peacockColor = getPeacockColorWorkspaceMemento();
+  const peacockColor = getPeacockColor();
   await changeColor(peacockColor);
 }

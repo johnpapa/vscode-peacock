@@ -229,20 +229,15 @@
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session"
         },
-        "peacock.defaultRemoteContainersColor": {
+        "peacock.remoteColor": {
           "type": "string",
-          "default": "#0db7ed",
-          "description": "Peacock default color when in a container (remote)"
+          "default": "",
+          "description": "The Peacock color that will be applied to remote workspaces"
         },
-        "peacock.defaultRemoteSshColor": {
+        "peacock.color": {
           "type": "string",
-          "default": "#22222",
-          "description": "Peacock default color when in ssh (remote)"
-        },
-        "peacock.defaultRemoteWslColor": {
-          "type": "string",
-          "default": "#e81123",
-          "description": "Peacock default color when in WSL (remote)"
+          "default": "",
+          "description": "The Peacock color that will be applied to workspaces"
         },
         "peacock.vslsShareColor": {
           "type": "string",
