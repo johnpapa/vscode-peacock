@@ -18,7 +18,7 @@ import {
   getLightForegroundColorOrOverride,
   updateWorkspaceConfiguration,
   updatePeacockColor,
-  updatePeacockRemoteColorRemoteColor,
+  updatePeacockRemoteColor,
 } from './configuration';
 import { Logger } from './logging';
 import { updateStatusBar } from './statusbar';
@@ -187,7 +187,7 @@ export async function changeColor(input: string, trialMode = false) {
     if (vscode.env.remoteName) {
       // We're in a remote env,
       // so update the workspace for Peacock Remote Color
-      await updatePeacockRemoteColorRemoteColor(color);
+      await updatePeacockRemoteColor(color);
     } else {
       // We're not in a remote env,
       // so update the workspace for Peacock Color
