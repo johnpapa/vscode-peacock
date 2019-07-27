@@ -46,8 +46,12 @@ export function getShowColorInStatusBar() {
   return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
 }
 
-export function getPeacockWorkspaceConfig() {
+export function getPeacockWorkspaceColorCustomizationConfig() {
   return workspace.getConfiguration(Sections.workspacePeacockSection);
+}
+
+export function getPeacockWorkspace() {
+  return workspace.getConfiguration('peacock');
 }
 
 export function getUserConfig() {
@@ -62,7 +66,7 @@ export function getCurrentColorBeforeAdjustments() {
    *
    * Get the current color, before any adjustments were made
    */
-  let config = getPeacockWorkspaceConfig();
+  let config = getPeacockWorkspaceColorCustomizationConfig();
   const elementColors = getElementColors(config);
   let { color, adjustment } = getColorAndAdjustment(elementColors);
   let originalColor = '';
@@ -352,7 +356,7 @@ function getColorAndAdjustment(elementColors: IElementColors) {
 }
 
 export function getOriginalColorsForAllElements() {
-  let config = getPeacockWorkspaceConfig();
+  let config = getPeacockWorkspaceColorCustomizationConfig();
 
   const elementColors = getElementColors(config);
 

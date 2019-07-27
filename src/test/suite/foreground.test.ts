@@ -6,7 +6,7 @@ import assert = require('assert');
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 import {
-  getPeacockWorkspaceConfig,
+  getPeacockWorkspaceColorCustomizationConfig,
   getLightForegroundColorOrOverride,
   getDarkForegroundColorOrOverride,
 } from '../../configuration';
@@ -64,7 +64,7 @@ function createForegroundTest(fakeResponse: string, expectedValue: string) {
 
     // fire the command
     await executeCommand(Commands.enterColor);
-    let config = getPeacockWorkspaceConfig();
+    let config = getPeacockWorkspaceColorCustomizationConfig();
     const value = config[ColorSettings.activityBar_foreground];
     stub.restore();
 

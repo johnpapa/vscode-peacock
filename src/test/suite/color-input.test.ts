@@ -5,7 +5,7 @@ import { ColorSettings, Commands, IPeacockSettings } from '../../models';
 import { isValidColorInput } from '../../color-library';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import { getPeacockWorkspaceConfig } from '../../configuration';
+import { getPeacockWorkspaceColorCustomizationConfig } from '../../configuration';
 
 suite('Enter color', () => {
   let originalValues = <IPeacockSettings>{};
@@ -153,7 +153,7 @@ function createColorInputTest(fakeResponse: string, expectedValue: string | unde
 
     // fire the command
     await executeCommand(Commands.enterColor);
-    let config = getPeacockWorkspaceConfig();
+    let config = getPeacockWorkspaceColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
@@ -168,7 +168,7 @@ function createColorInputTestWithParam(fakeResponse: string, expectedValue: stri
   return async () => {
     await executeCommand(Commands.enterColor, fakeResponse);
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getPeacockWorkspaceColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     // undefined is OK, since that means they hit ESC or blank
@@ -181,7 +181,7 @@ function createColorInputTestWithParam(fakeResponse: string, expectedValue: stri
 function createColorInputTestWithParamThatThrowsError(fakeResponse: string) {
   return async () => {
     assert.rejects(async () => await executeCommand(Commands.enterColor, fakeResponse), Error);
-    let config = getPeacockWorkspaceConfig();
+    let config = getPeacockWorkspaceColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     // The value should be undefined when invalid color is set
     assert.ok(!value);
