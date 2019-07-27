@@ -17,6 +17,7 @@ import {
   writeRecommendedFavoriteColors,
   updatePeacockColor,
   getEnvironmentAwareColor,
+  updatePeacockRemoteColor,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -36,8 +37,9 @@ export async function resetColorsHandler() {
   await resetMementos();
 
   await updateWorkspaceConfiguration(newColorCustomizations);
-
   await updatePeacockColor('');
+  await updatePeacockRemoteColor('');
+
   clearStatusBar();
 
   return State.extensionContext;
