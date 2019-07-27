@@ -37,7 +37,7 @@ export async function resetColorsHandler() {
 
   await updateWorkspaceConfiguration(newColorCustomizations);
 
-  updatePeacockColor('');
+  await updatePeacockColor('');
   clearStatusBar();
 
   return State.extensionContext;

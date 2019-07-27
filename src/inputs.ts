@@ -45,7 +45,7 @@ export async function promptForFavoriteColor() {
   const startingColor = getEnvironmentAwareColor();
   const options = {
     placeHolder: 'Pick a favorite color',
-    onDidSelectItem: tryColorWithPeacock(),
+    onDidSelectItem: await tryColorWithPeacock(),
   };
   if (favoriteColors && favoriteColors.length) {
     selection = (await vscode.window.showQuickPick(menu, options)) || '';
@@ -71,9 +71,9 @@ export function parseFavoriteColorValue(text: string) {
   return text.substring(text.indexOf(sep) + sep.length + 1);
 }
 
-function tryColorWithPeacock() {
+async function tryColorWithPeacock() {
   return async (item: string) => {
     const color = parseFavoriteColorValue(item as string);
-    return await changeColor(color);
+    return await changeColor(color, true);
   };
 }

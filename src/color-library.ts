@@ -154,7 +154,7 @@ function formatHex(color: tinycolor.Instance) {
   return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }
 
-export async function changeColor(input: string) {
+export async function changeColor(input: string, trialMode = false) {
   /**************************************************************
    * This is the heart of Peacock logic to change the colors.
    *
@@ -183,20 +183,22 @@ export async function changeColor(input: string) {
   // Write all of the custom of the colors to workspace settings
   await updateWorkspaceConfiguration(colorCustomizations);
 
-  if (vscode.env.remoteName) {
-    // We're in a remote env,
-    // so update the workspace for Peacock Remote Color
-    updatePeacockRemoteColorRemoteColor(color);
-  } else {
-    // We're not in a remote env,
-    // so update the workspace for Peacock Color
-    updatePeacockColor(color);
+  if (!trialMode) {
+    if (vscode.env.remoteName) {
+      // We're in a remote env,
+      // so update the workspace for Peacock Remote Color
+      await updatePeacockRemoteColorRemoteColor(color);
+    } else {
+      // We're not in a remote env,
+      // so update the workspace for Peacock Color
+      await updatePeacockColor(color);
+    }
+
+    // Update the statusbar to show the color
+    updateStatusBar();
+
+    Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
   }
-
-  // Update the statusbar to show the color
-  updateStatusBar();
-
-  Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
 
   return color;
 }
