@@ -7,17 +7,13 @@ export interface IMementoLog {
   value: any;
 }
 
-export async function saveGlobalMemento(mementoName: string, value: any) {
+async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
     Logger.info(
       `${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`,
     );
     await State.extensionContext.globalState.update(mementoName, value);
   }
-}
-
-export function getPeacockColorWorkspaceMemento() {
-  return State.extensionContext.workspaceState.get<string>(peacockMementos.peacockColor, '');
 }
 
 export async function saveFavoritesVersionGlobalMemento(version: string) {
