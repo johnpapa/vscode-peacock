@@ -44,9 +44,10 @@ export async function activate(context: vscode.ExtensionContext) {
   Logger.info(getMementos(), true, 'Mementos');
 
   registerCommands();
-  addSubscriptions();
   await initializeTheStarterSetOfFavorites();
-  await applyInitialConfiguration();
+  await checkSurpriseMeOnStartupLogic();
+
+  addSubscriptions(); // add these AFTER applying initial config
 
   await addLiveShareIntegration(State.extensionContext);
   await addRemoteIntegration(State.extensionContext);
@@ -83,10 +84,6 @@ function registerCommands() {
   commands.registerCommand(Commands.showAndCopyCurrentColor, showAndCopyCurrentColorHandler);
 }
 
-export async function applyInitialConfiguration() {
-  await checkSurpriseMeOnStartupLogic();
-}
-
 export function deactivate() {
   Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now deactive`);
 }
@@ -106,7 +103,7 @@ async function initializeTheStarterSetOfFavorites() {
   }
 }
 
-async function checkSurpriseMeOnStartupLogic() {
+export async function checkSurpriseMeOnStartupLogic() {
   /**
    * If the "surprise me on startup" setting is true
    * and there is no peacock color set, then choose a new random color.
