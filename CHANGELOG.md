@@ -23,6 +23,13 @@ Refactoring
   - `peacock.vslsShareColor` - Peacock color for Live Share Hosting
   - `peacock.vslsJoinColor` - Peacock color for Live Share Joining
 
+## 2.5.2
+
+Bug Fixes
+
+- Reverting 2.5.0. This feature seems to have adverse effects as per user reporting. It was applying Peacock on projects that didn't have Peacock colors yet, as per feedback in issues.
+  - The intended code should have only applied Peacock if there were already colors in the workspace settings.json file. Further testing will be done before putting this back.
+
 ## 2.5.1
 
 Bug Fixes

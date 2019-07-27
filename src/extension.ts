@@ -84,12 +84,8 @@ function registerCommands() {
 
 export async function applyInitialConfiguration() {
   State.recentColor = getCurrentColorBeforeAdjustments();
-  const color  = State.recentColor;
 
   await checkSurpriseMeOnStartupLogic();
-
-  // Set Peacock colors, in case any user settings changed
-  await changeColor(color);
 }
 
 export function deactivate() {
