@@ -51,7 +51,7 @@ export function getPeacockWorkspaceColorCustomizationConfig() {
 }
 
 export function getPeacockWorkspace() {
-  return workspace.getConfiguration('peacock');
+  return workspace.getConfiguration(extensionShortName);
 }
 
 export function getUserConfig() {
