@@ -227,17 +227,17 @@
         "peacock.surpriseMeOnStartup": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies that Peacock should surprise you at the start of every editing session"
+          "description": "Specifies that Peacock should surprise you at the start of every editing session, only when a color isn't already set. "
         },
         "peacock.remoteColor": {
           "type": "string",
           "default": "",
-          "description": "The Peacock color that will be applied to remote workspaces"
+          "description": "The Peacock color that will be applied to remote workspaces."
         },
         "peacock.color": {
           "type": "string",
           "default": "",
-          "description": "The Peacock color that will be applied to workspaces"
+          "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
         },
         "peacock.vslsShareColor": {
           "type": "string",
