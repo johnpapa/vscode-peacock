@@ -1,17 +1,11 @@
 import * as vscode from 'vscode';
-import { favoriteColorSeparator, peacockGreen, Sections } from './models';
-import { getFavoriteColors, getEnvironmentAwareColor } from './configuration';
+import { favoriteColorSeparator, peacockGreen } from './models';
+import {
+  getFavoriteColors,
+  getEnvironmentAwareColor,
+  updateWorkspaceConfiguration,
+} from './configuration';
 import { changeColor, isValidColorInput } from './color-library';
-
-export async function setPeacockColorCustomizations(colorCustomizations: any) {
-  await vscode.workspace
-    .getConfiguration()
-    .update(
-      Sections.peacockColorCustomizationSection,
-      colorCustomizations,
-      vscode.ConfigurationTarget.Workspace,
-    );
-}
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -21,7 +15,7 @@ export async function promptForColor() {
       'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
     value: peacockGreen,
   };
-  const inputColor = await vscode.window.showInputBox(options) || '';
+  const inputColor = (await vscode.window.showInputBox(options)) || '';
   return inputColor.trim();
 }
 
@@ -60,7 +54,7 @@ export async function promptForFavoriteColor() {
     await changeColor(startingColor);
   } else {
     // if no color was previously set, reset the current color to `null`
-    await setPeacockColorCustomizations(null);
+    await updateWorkspaceConfiguration(undefined);
   }
 
   return '';

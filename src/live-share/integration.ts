@@ -4,16 +4,19 @@ import * as vscode from 'vscode';
 
 import { changeColor } from '../color-library';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
-import { setPeacockColorCustomizations } from '../inputs';
 import { State } from '../models';
 import { notify } from '../notification';
 import { LiveShareSettings } from './enums';
-import { getLiveShareColor, getExistingColorCustomizations } from '../configuration';
+import {
+  getLiveShareColor,
+  getExistingColorCustomizations,
+  updateWorkspaceConfiguration,
+} from '../configuration';
 
 let peacockColorCustomizations: any;
 
 export async function revertLiveShareWorkspaceColors() {
-  await setPeacockColorCustomizations(peacockColorCustomizations);
+  await updateWorkspaceConfiguration(peacockColorCustomizations);
 
   peacockColorCustomizations = null;
 }
