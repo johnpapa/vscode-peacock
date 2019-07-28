@@ -24,7 +24,7 @@ export function getFavoritesVersionGlobalMemento() {
   return State.extensionContext.globalState.get<string>(peacockMementos.favoritesVersion, '');
 }
 
-export async function resetMementos() {
+export async function resetFavoritesVersionMemento() {
   const ec = State.extensionContext;
 
   Logger.info(

@@ -22,7 +22,7 @@ import {
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
 import { resetLiveSharePreviousColors } from './live-share';
-import { resetMementos } from './mementos';
+import { resetFavoritesVersionMemento } from './mementos';
 import { notify } from './notification';
 import { clearStatusBar } from './statusbar';
 import * as vscode from 'vscode';
@@ -34,7 +34,7 @@ export async function resetColorsHandler() {
     : colorCustomizations;
 
   await resetLiveSharePreviousColors();
-  await resetMementos();
+  await resetFavoritesVersionMemento();
 
   await updateWorkspaceConfiguration(newColorCustomizations);
   await updatePeacockColor('');
