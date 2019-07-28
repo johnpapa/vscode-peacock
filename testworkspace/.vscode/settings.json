@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "peacock.remoteColor": "",
   "peacock.color": "",
-  "peacock.remoteColor": ""
+  "workbench.colorCustomizations": {}
 }
