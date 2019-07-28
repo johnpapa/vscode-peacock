@@ -24,7 +24,7 @@ export function updateStatusBar() {
   const color = getEnvironmentAwareColor();
   sb.text = `$(paintcan) ${color}`;
   sb.command = Commands.showAndCopyCurrentColor;
-  sb.tooltip = 'Current Peacock Color';
+  sb.tooltip = 'Copy the Peacock color';
   if (show) {
     sb.show();
   } else {
