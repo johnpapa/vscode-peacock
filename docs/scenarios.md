@@ -491,3 +491,111 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 // workspace settings
 {}
 ```
+
+### K - Local / User Settings Color / Workspace Color - [User Moves Local to Remote]
+
+```json
+// user settings
+{
+  "peacock.color": "#00ff00"
+}
+```
+
+```json
+// workspace settings
+{
+  "peacock.color": "#00ffff"
+}
+```
+
+- open a project
+- Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color".
+- Workspace settings has "peacock.color" #00ffff
+- Peacock applies color customizations using #00ffff (yellow)
+- No user action was taken, so Peacock does not write the colors.
+
+```json
+// user settings
+{
+  "peacock.color": "#00ff00"
+}
+```
+
+```json
+// workspace settings
+{
+  "peacock.color": "#00ffff"
+}
+```
+
+- User goes to remote env
+- Peacock sees we are in remote env., so it looks for workspace, then user settings for a "peacock.remoteColor". None exist, so we do nothing.
+- Color customizations from local are now also in the remote
+- Nothing applied. Nothing written.
+
+```json
+// user settings
+{
+  "peacock.color": "#00ff00"
+}
+```
+
+```json
+// workspace settings
+{
+  "peacock.color": "#00ffff"
+}
+```
+
+### L - Remote / User Settings Color / Workspace Color - [User Moves Remote to Local]
+
+```json
+// user settings
+{
+  "peacock.remoteColor": "#00ff00"
+}
+```
+
+```json
+// workspace settings
+{
+  "peacock.remoteColor": "#00ffff"
+}
+```
+
+- open a project
+- Peacock sees we are in remote env., so it looks for workspace, then user settings for a "peacock.remoteColor".
+- Workspace settings has "peacock.remoteColor" #00ffff
+- Peacock applies color customizations using #00ffff (yellow)
+- No user action was taken, so Peacock does not write the colors.
+
+```json
+// user settings
+{
+  "peacock.remoteColor": "#00ff00"
+}
+```
+
+```json
+// workspace settings
+{
+  "peacock.remoteColor": "#00ffff"
+}
+```
+
+- User goes to local env
+- Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color". None exist, so we do nothing.
+- Color customizations from remote are now also in the local
+- Nothing applied. Nothing written.
+
+```json
+// user settings
+{
+  "peacock.remoteColor": "#00ff00"
+}
+```
+
+```json
+// workspace settings
+{}
+```
