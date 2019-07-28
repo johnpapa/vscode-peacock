@@ -207,8 +207,9 @@ export async function changeColor(input: string, trialMode = false) {
   await updateWorkspaceConfiguration(colorCustomizations);
 
   // If the color changed, write it to settings
+  // TODO: need to this this 👇
   if (color !== colorInSettings) {
-    updateColorSetting(color, trialMode);
+    await updateColorSetting(color, trialMode);
   }
 
   // Update the statusbar to show the color
