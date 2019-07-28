@@ -23,6 +23,10 @@ import {
   getSurpriseMeFromFavoritesOnly,
   getShowColorInStatusBar,
   updateShowColorInStatusBar,
+  getPeacockColor,
+  getPeacockRemoteColor,
+  updatePeacockColor,
+  updatePeacockRemoteColor,
 } from '../../../configuration';
 
 import { noopElementAdjustments, executeCommand } from './constants';
@@ -46,6 +50,8 @@ export async function setupTestSuite(
   originalValues.lightForegroundColor = getLightForegroundColor();
   originalValues.surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
   originalValues.showColorInStatusBar = getShowColorInStatusBar();
+  originalValues.color = getPeacockColor();
+  originalValues.remoteColor = getPeacockRemoteColor();
 
   // Set the test values
   await updateAffectedElements(<IPeacockAffectedElementSettings>{
@@ -61,6 +67,8 @@ export async function setupTestSuite(
   await updateLightForegroundColor(ForegroundColors.LightForeground);
   await updateSurpriseMeFromFavoritesOnly(false);
   await updateShowColorInStatusBar(true);
+  await updatePeacockColor(originalValues.color);
+  await updatePeacockRemoteColor(originalValues.remoteColor);
   return extension;
 }
 
