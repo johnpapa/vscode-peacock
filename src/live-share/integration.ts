@@ -63,7 +63,7 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
     return;
   }
 
-  vslsApi!.onDidChangeSession(async function onLiveShareSessionCHange(e) {
+  vslsApi!.onDidChangeSession(async e => {
     // If there isn't a session ID, then that
     // means the session has been ended.
     if (!e.session.id) {
