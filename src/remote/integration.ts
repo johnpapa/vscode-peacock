@@ -39,9 +39,11 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   //   return;
   // }
 
-  if (vscode.env.remoteName) {
-    await setRemoteWorkspaceColors();
-  } else {
+  // TODO: revisit this ... should we change colors for remote, non remote, or never, or both?
+  // if (vscode.env.remoteName) {
+  //   await setRemoteWorkspaceColors();
+  // } else {
+  if (!vscode.env.remoteName) {
     const peacockColor = getPeacockColor();
     await changeColor(peacockColor);
   }
