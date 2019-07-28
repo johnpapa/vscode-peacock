@@ -9,7 +9,6 @@ import {
   peacockGreen,
   azureBlue,
   StandardSettings,
-  State,
 } from '../../models';
 import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardown-test-suite';
 import { isValidColorInput, changeColor } from '../../color-library';
@@ -23,7 +22,6 @@ import {
   updatePeacockRemoteColor,
 } from '../../configuration';
 import { RemoteNames, setRemoteWorkspaceColors } from '../../remote';
-import { activate } from '../../extension';
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
