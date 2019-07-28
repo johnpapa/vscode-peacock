@@ -72,8 +72,8 @@ export enum ColorAdjustmentOptions {
 }
 
 export enum Sections {
-  workspacePeacockSection = 'workbench.colorCustomizations',
-  userPeacockSection = 'peacock',
+  peacockColorCustomizationSection = 'workbench.colorCustomizations',
+  peacockSection = 'peacock',
 }
 
 export enum ForegroundColors {

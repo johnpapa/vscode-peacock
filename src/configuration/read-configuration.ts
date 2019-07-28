@@ -47,7 +47,7 @@ export function getShowColorInStatusBar() {
 }
 
 export function getPeacockWorkspaceColorCustomizationConfig() {
-  return workspace.getConfiguration(Sections.workspacePeacockSection);
+  return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
 }
 
 export function getPeacockWorkspace() {
@@ -55,7 +55,7 @@ export function getPeacockWorkspace() {
 }
 
 export function getUserConfig() {
-  return workspace.getConfiguration(Sections.userPeacockSection);
+  return workspace.getConfiguration(Sections.peacockSection);
 }
 
 export function getCurrentColorBeforeAdjustments() {
@@ -78,7 +78,7 @@ export function getCurrentColorBeforeAdjustments() {
 
 export function readConfiguration<T>(setting: AllSettings, defaultValue?: T | undefined) {
   const value: T | undefined = workspace
-    .getConfiguration(Sections.userPeacockSection)
+    .getConfiguration(Sections.peacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
 }
@@ -380,7 +380,7 @@ export function getOriginalColorsForAllElements() {
 }
 
 export function getExistingColorCustomizations() {
-  return workspace.getConfiguration().get(Sections.workspacePeacockSection);
+  return workspace.getConfiguration().get(Sections.peacockColorCustomizationSection);
 }
 
 export function hasFavorites() {

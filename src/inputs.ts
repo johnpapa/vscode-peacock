@@ -7,7 +7,7 @@ export async function setPeacockColorCustomizations(colorCustomizations: any) {
   await vscode.workspace
     .getConfiguration()
     .update(
-      Sections.workspacePeacockSection,
+      Sections.peacockColorCustomizationSection,
       colorCustomizations,
       vscode.ConfigurationTarget.Workspace,
     );

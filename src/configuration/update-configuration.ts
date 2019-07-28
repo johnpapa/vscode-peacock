@@ -36,7 +36,7 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
   Logger.info(colorCustomizations, true);
   return await vscode.workspace
     .getConfiguration()
-    .update(Sections.workspacePeacockSection, colorCustomizations, ConfigurationTarget.Workspace);
+    .update(Sections.peacockColorCustomizationSection, colorCustomizations, ConfigurationTarget.Workspace);
 }
 
 export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
