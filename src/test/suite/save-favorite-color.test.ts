@@ -15,19 +15,44 @@ const faveName = 'TEST FAVE NAME';
 suite('Save favorite color', () => {
   let originalValues = <IPeacockSettings>{};
 
-  // TODO: Verify this works ... allSetupAndTeardown(originalValues);
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
 
   suiteSetup(async () => {
     await updateElementAdjustments(lightenActivityBarElementAdjustments);
+  });
+
+  setup(async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
   });
 
-  test('with valid name', createFavoriteNamingColorTest(faveName));
+  test('with valid name successfully', async () => {
+    // Stub the async input box to return a response
+    const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(faveName));
 
-  test('with no name', createFavoriteNamingColorTest(''));
+    await executeCommand(Commands.saveColorToFavorites);
+    const { values: favoriteColors } = getFavoriteColors();
+    stub.restore();
+
+    assert.ok(favoriteColors.some(f => f.name === faveName));
+  });
+
+  test('with no name should not add the favorite', async () => {
+    const emptyName = '';
+    // Stub the async input box to return a response
+    const stub = await sinon
+      .stub(vscode.window, 'showInputBox')
+      .returns(Promise.resolve(emptyName));
+
+    const { values: favoriteColorsBefore } = getFavoriteColors();
+    await executeCommand(Commands.saveColorToFavorites);
+    const { values: favoriteColorsAfter } = getFavoriteColors();
+    stub.restore();
+
+    assert.equal(favoriteColorsBefore.length, favoriteColorsAfter.length);
+    assert.ok(!favoriteColorsAfter.some(f => f.name === emptyName));
+  });
 
   test('current color does not change', async () => {
     // activity bar is lighter than the titlebar and statusbar
@@ -48,16 +73,3 @@ suite('Save favorite color', () => {
     assert.equal(currentColor, newCurrentColor);
   });
 });
-
-function createFavoriteNamingColorTest(name: string) {
-  return async () => {
-    // Stub the async input box to return a response
-    const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(name));
-
-    await executeCommand(Commands.saveColorToFavorites);
-    const { values: favoriteColors } = getFavoriteColors();
-    stub.restore();
-
-    assert.ok(!favoriteColors.some(f => f.name === name));
-  };
-}
