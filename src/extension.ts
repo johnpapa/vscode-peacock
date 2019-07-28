@@ -26,7 +26,7 @@ import {
   writeRecommendedFavoriteColors,
   getEnvironmentAwareColor,
 } from './configuration';
-import { applyColor } from './color-library';
+import { applyColor } from './apply-color';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';

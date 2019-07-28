@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { applyColor } from '../color-library';
+import { applyColor } from '../apply-color';
 import { State } from '../models';
 import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
 

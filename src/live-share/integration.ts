@@ -2,7 +2,7 @@
 import * as vsls from 'vsls';
 import * as vscode from 'vscode';
 
-import { applyColor } from '../color-library';
+import { applyColor } from '../apply-color';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
 import { State } from '../models';
 import { notify } from '../notification';

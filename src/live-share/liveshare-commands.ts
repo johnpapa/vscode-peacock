@@ -2,7 +2,8 @@
 import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
-import { isValidColorInput, applyColor } from '../color-library';
+import { isValidColorInput } from '../color-library';
+import { applyColor } from '../apply-color';
 import { LiveShareCommands, LiveShareSettings } from './enums';
 import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
 import { updateLiveShareColor, getEnvironmentAwareColor } from '../configuration';

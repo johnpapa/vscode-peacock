@@ -11,7 +11,7 @@ import {
   StandardSettings,
 } from '../../models';
 import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardown-test-suite';
-import { isValidColorInput, applyColor } from '../../color-library';
+import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
 import {
@@ -22,6 +22,7 @@ import {
   updatePeacockRemoteColor,
 } from '../../configuration';
 import { RemoteNames, setRemoteWorkspaceColors } from '../../remote';
+import { applyColor } from '../../apply-color';
 
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};

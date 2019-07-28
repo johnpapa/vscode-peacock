@@ -1,12 +1,11 @@
 import {
   isValidColorInput,
   getRandomColorHex,
-  applyColor,
   deletePeacocksColorCustomizations,
   getDarkenedColorHex,
   getLightenedColorHex,
 } from './color-library';
-
+import { applyColor } from './apply-color';
 import { State, peacockGreen } from './models';
 import {
   getDarkenLightenPercentage,

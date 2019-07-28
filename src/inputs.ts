@@ -5,7 +5,8 @@ import {
   getEnvironmentAwareColor,
   updateWorkspaceConfiguration,
 } from './configuration';
-import { applyColor, isValidColorInput } from './color-library';
+import { isValidColorInput } from './color-library';
+import { applyColor } from './apply-color';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
