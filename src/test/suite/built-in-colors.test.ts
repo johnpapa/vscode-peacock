@@ -20,7 +20,7 @@ import {
   getPeacockWorkspace,
 } from '../../configuration';
 
-suite.only('can set color to built-in color', () => {
+suite('can set color to built-in color', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));
