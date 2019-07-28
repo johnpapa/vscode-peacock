@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 
 import { changeColor } from '../color-library';
-import { State, StandardSettings } from '../models';
+import { State } from '../models';
 import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
 
 export async function setRemoteWorkspaceColors() {
-  let setting = StandardSettings.RemoteColor;
+  // let setting = StandardSettings.RemoteColor;
 
-  if (!setting) {
-    return;
-  }
+  // if (!setting) {
+  //   return;
+  // }
   const remoteColor = getPeacockRemoteColor();
   if (!remoteColor) {
     return;
@@ -40,10 +40,9 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   // }
 
   // TODO: revisit this ... should we change colors for remote, non remote, or never, or both?
-  // if (vscode.env.remoteName) {
-  //   await setRemoteWorkspaceColors();
-  // } else {
-  if (!vscode.env.remoteName) {
+  if (vscode.env.remoteName) {
+    await setRemoteWorkspaceColors();
+  } else {
     const peacockColor = getPeacockColor();
     await changeColor(peacockColor);
   }
