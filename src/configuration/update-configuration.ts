@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ConfigurationTarget } from 'vscode';
 import {
   extensionShortName,
   AllSettings,
@@ -25,7 +26,7 @@ export async function updateGlobalConfiguration<T>(setting: AllSettings, value?:
   } else {
     Logger.info(`${extensionShortName}: ${section} = ${value}`, true);
   }
-  return await config.update(section, value, vscode.ConfigurationTarget.Global);
+  return await config.update(section, value, ConfigurationTarget.Global);
 }
 
 export async function updateWorkspaceConfiguration(colorCustomizations: {} | undefined) {
@@ -35,11 +36,7 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
   Logger.info(colorCustomizations, true);
   return await vscode.workspace
     .getConfiguration()
-    .update(
-      Sections.workspacePeacockSection,
-      colorCustomizations,
-      vscode.ConfigurationTarget.Workspace,
-    );
+    .update(Sections.workspacePeacockSection, colorCustomizations, ConfigurationTarget.Workspace);
 }
 
 export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
@@ -100,13 +97,13 @@ export async function updateFavoriteColors(values: IFavoriteColors[]) {
 export async function updatePeacockColor(color: string) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.Color}`;
-  return await config.update(section, color, vscode.ConfigurationTarget.Workspace);
+  return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 
 export async function updatePeacockRemoteColor(color: string) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
-  return await config.update(section, color, vscode.ConfigurationTarget.Workspace);
+  return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 
 export async function updateLiveShareColor(liveShareSetting: LiveShareSettings, color: string) {
