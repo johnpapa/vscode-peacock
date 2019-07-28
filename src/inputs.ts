@@ -21,8 +21,8 @@ export async function promptForColor() {
       'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
     value: peacockGreen,
   };
-  const inputColor = await vscode.window.showInputBox(options);
-  return inputColor || '';
+  const inputColor = await vscode.window.showInputBox(options) || '';
+  return inputColor.trim();
 }
 
 export async function promptForFavoriteColorName(color: string) {
