@@ -62,7 +62,9 @@ function addSubscriptions() {
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     const color = getEnvironmentAwareColor();
-    if (checkIfPeacockSettingsChanged(e) && color) { //} && color) { // TODO: keep color or not?
+    if (checkIfPeacockSettingsChanged(e) && color) {
+      // TODO: We'd like reset colors if no color is passed.
+      // However, this logic has not been tested (allowing !color).
       Logger.info(
         `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
