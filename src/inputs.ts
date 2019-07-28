@@ -5,7 +5,7 @@ import {
   getEnvironmentAwareColor,
   updateWorkspaceConfiguration,
 } from './configuration';
-import { changeColor, isValidColorInput } from './color-library';
+import { applyColor, isValidColorInput } from './color-library';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -51,7 +51,7 @@ export async function promptForFavoriteColor() {
 
   if (isValidColorInput(startingColor)) {
     // when there is no selection and startingColor, revert to starting color
-    await changeColor(startingColor);
+    await applyColor(startingColor);
   } else {
     // if no color was previously set, reset the current color to `null`
     await updateWorkspaceConfiguration(undefined);
@@ -68,6 +68,6 @@ export function parseFavoriteColorValue(text: string) {
 async function tryColorWithPeacock() {
   return async (item: string) => {
     const color = parseFavoriteColorValue(item as string);
-    return await changeColor(color, true);
+    return await applyColor(color, true);
   };
 }

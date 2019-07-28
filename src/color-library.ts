@@ -165,9 +165,9 @@ export async function updateColorSetting(color: string, trialMode = false) {
   }
 }
 
-export async function changeColor(input: string, trialMode = false) {
+export async function applyColor(input: string, trialMode = false) {
   /**************************************************************
-   * This is the heart of Peacock logic to change the colors.
+   * This is the heart of Peacock logic to apply the colors.
    *
    */
   const colorInSettings = getEnvironmentAwareColor();

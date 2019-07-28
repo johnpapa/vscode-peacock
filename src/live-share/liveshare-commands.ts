@@ -2,7 +2,7 @@
 import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
-import { isValidColorInput, changeColor } from '../color-library';
+import { isValidColorInput, applyColor } from '../color-library';
 import { LiveShareCommands, LiveShareSettings } from './enums';
 import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
 import { updateLiveShareColor, getEnvironmentAwareColor } from '../configuration';
@@ -34,7 +34,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
       // if there was a color set prior to color picker,
       // set that color back
     } else {
-      await changeColor(startingColor);
+      await applyColor(startingColor);
     }
 
     return State.extensionContext;

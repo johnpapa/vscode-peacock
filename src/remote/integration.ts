@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { changeColor } from '../color-library';
+import { applyColor } from '../color-library';
 import { State } from '../models';
 import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
 
@@ -15,7 +15,7 @@ export async function setRemoteWorkspaceColors() {
     return;
   }
 
-  await changeColor(remoteColor);
+  await applyColor(remoteColor);
 }
 
 function remoteExtensionsInstalled(): boolean {
@@ -44,7 +44,7 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
     await setRemoteWorkspaceColors();
   } else {
     const peacockColor = getPeacockColor();
-    await changeColor(peacockColor);
+    await applyColor(peacockColor);
   }
 }
 

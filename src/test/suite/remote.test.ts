@@ -11,7 +11,7 @@ import {
   StandardSettings,
 } from '../../models';
 import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardown-test-suite';
-import { isValidColorInput, changeColor } from '../../color-library';
+import { isValidColorInput, applyColor } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
 import {
@@ -64,7 +64,7 @@ suite('Remote Integration', () => {
     const remoteNameStub2 = sinon.stub(vscode.env, 'remoteName').value(undefined);
     // Follow the logic that runs when we activate ...
     const color = getEnvironmentAwareColor();
-    await changeColor(color);
+    await applyColor(color);
 
     const peacockLocalColor = getEnvironmentAwareColor();
     remoteNameStub2.restore();

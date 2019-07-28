@@ -1,7 +1,7 @@
 import {
   isValidColorInput,
   getRandomColorHex,
-  changeColor,
+  applyColor,
   deletePeacocksColorCustomizations,
   getDarkenedColorHex,
   getLightenedColorHex,
@@ -63,7 +63,7 @@ export async function enterColorHandler(color?: string) {
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
-  await changeColor(input);
+  await applyColor(input);
   return State.extensionContext;
 }
 
@@ -84,7 +84,7 @@ export async function changeColorToRandomHandler() {
     color = getRandomColorHex();
   }
 
-  await changeColor(color);
+  await applyColor(color);
   return State.extensionContext;
 }
 
@@ -94,14 +94,14 @@ export async function addRecommendedFavoritesHandler() {
 }
 
 export async function changeColorToPeacockGreenHandler() {
-  await changeColor(peacockGreen);
+  await applyColor(peacockGreen);
   return State.extensionContext;
 }
 
 export async function changeColorToFavoriteHandler() {
   const input = await promptForFavoriteColor();
   if (isValidColorInput(input)) {
-    await changeColor(input);
+    await applyColor(input);
   }
   return State.extensionContext;
 }
@@ -110,7 +110,7 @@ export async function darkenHandler() {
   const color = getEnvironmentAwareColor();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
-  await changeColor(darkenedColor);
+  await applyColor(darkenedColor);
   return State.extensionContext;
 }
 
@@ -118,7 +118,7 @@ export async function lightenHandler() {
   const color = getEnvironmentAwareColor();
   const darkenLightenPercentage = getDarkenLightenPercentage();
   const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
-  await changeColor(lightenedColor);
+  await applyColor(lightenedColor);
   return State.extensionContext;
 }
 

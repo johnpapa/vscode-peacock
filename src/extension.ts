@@ -26,7 +26,7 @@ import {
   writeRecommendedFavoriteColors,
   getEnvironmentAwareColor,
 } from './configuration';
-import { changeColor } from './color-library';
+import { applyColor } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
@@ -68,7 +68,7 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
       Logger.info(
         `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
-      await changeColor(color);
+      await applyColor(color);
     }
   };
 }
