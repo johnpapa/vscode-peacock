@@ -68,7 +68,7 @@ suite('Save favorite color', () => {
     stub.restore();
 
     const newCurrentColor = getEnvironmentAwareColor();
-    console.log(`currentColor=${currentColor} and newCurrentColor = ${newCurrentColor}`);
+    // console.log(`currentColor=${currentColor} and newCurrentColor = ${newCurrentColor}`);
 
     assert.equal(currentColor, newCurrentColor);
   });
