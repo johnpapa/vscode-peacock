@@ -9,19 +9,23 @@ import {
   peacockGreen,
   azureBlue,
   StandardSettings,
+  State,
 } from '../../models';
 import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardown-test-suite';
-import { isValidColorInput } from '../../color-library';
+import { isValidColorInput, changeColor } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
 import {
   getPeacockWorkspaceColorCustomizationConfig,
   getEnvironmentAwareColor,
   getPeacockWorkspace,
+  updatePeacockColor,
+  updatePeacockRemoteColor,
 } from '../../configuration';
-import { RemoteNames } from '../../remote';
+import { RemoteNames, setRemoteWorkspaceColors } from '../../remote';
+import { activate } from '../../extension';
 
-suite.only('Remote Integration', () => {
+suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   const azureBlueResponse = `Azure Blue -> ${azureBlue}`;
   const peacockGreenResponse = `Peacock Green -> ${peacockGreen}`;
@@ -29,6 +33,56 @@ suite.only('Remote Integration', () => {
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
+
+  test('when in remote, and peacock.color is empty and peacock.remoteColor is a color, remote color should be applied', async () => {
+    await updatePeacockColor('');
+    await updatePeacockRemoteColor(peacockGreen);
+
+    // Go to remote env
+    const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
+    await setRemoteWorkspaceColors();
+    const peacockRemoteColor = getEnvironmentAwareColor();
+    remoteNameStub.restore();
+
+    let config = getPeacockWorkspace();
+    const remoteColorInSettings = config[StandardSettings.RemoteColor];
+    const colorInSettings = config[StandardSettings.Color];
+
+    assert.equal(remoteColorInSettings, peacockRemoteColor);
+    assert.equal(colorInSettings, '');
+  });
+
+  test('when in remote and we go out of remote, and peacock.color is empty and peacock.remoteColor is a color, colors should be unapplied ', async () => {
+    await updatePeacockColor('');
+    await updatePeacockRemoteColor(peacockGreen);
+
+    // Go to remote env
+    const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
+    await setRemoteWorkspaceColors();
+    // const peacockRemoteColor = getEnvironmentAwareColor();
+    remoteNameStub.restore();
+
+    // Go to local env
+    const remoteNameStub2 = sinon.stub(vscode.env, 'remoteName').value(undefined);
+    // Follow the logic that runs when we activate ...
+    const color = getEnvironmentAwareColor();
+    await changeColor(color);
+
+    const peacockLocalColor = getEnvironmentAwareColor();
+    remoteNameStub2.restore();
+
+    let config = getPeacockWorkspace();
+    const remoteColorInSettings = config[StandardSettings.RemoteColor];
+    const colorInSettings = config[StandardSettings.Color];
+
+    assert.equal(colorInSettings, '', 'Applied colors should not exist');
+    assert.equal(colorInSettings, peacockLocalColor, 'There should be no peacock color');
+    assert.ok(remoteColorInSettings, 'Remote color should exist');
+    assert.ok(
+      remoteColorInSettings !== colorInSettings,
+      'Remote color should not equal regular color',
+    );
+  });
 
   test('can set to remote color and it is stored in workspace config', async () => {
     // Go to remote env and set to blue
