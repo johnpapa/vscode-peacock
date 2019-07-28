@@ -184,8 +184,10 @@ suite('Affected elements', () => {
     test('activity bar badge styles are set when activity bar is affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       let config = getPeacockWorkspaceColorCustomizationConfig();
-      assert.ok(config[ColorSettings.activityBar_badgeBackground]);
-      assert.ok(config[ColorSettings.activityBar_badgeForeground]);
+      const badgeBackground = config[ColorSettings.activityBar_badgeBackground]
+      const badgeForeground = config[ColorSettings.activityBar_badgeForeground]
+      assert.ok(badgeBackground);
+      assert.ok(badgeForeground);
     });
 
     test('activity bar badge styles are not set when activity bar is not affected', async () => {
