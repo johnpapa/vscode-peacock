@@ -55,6 +55,8 @@ export interface IPeacockSettings {
   showColorInStatusBar: boolean;
   surpriseMeFromFavoritesOnly: boolean;
   surpriseMeOnStartup: boolean;
+  color: string;
+  remoteColor: string;
 }
 
 export interface IElementColors {
