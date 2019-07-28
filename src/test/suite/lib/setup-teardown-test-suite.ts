@@ -67,8 +67,8 @@ export async function setupTestSuite(
   await updateLightForegroundColor(ForegroundColors.LightForeground);
   await updateSurpriseMeFromFavoritesOnly(false);
   await updateShowColorInStatusBar(true);
-  await updatePeacockColor(originalValues.color);
-  await updatePeacockRemoteColor(originalValues.remoteColor);
+  await updatePeacockColor('');
+  await updatePeacockRemoteColor('');
   return extension;
 }
 
@@ -85,4 +85,6 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateSurpriseMeFromFavoritesOnly(originalValues.surpriseMeFromFavoritesOnly);
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
   await updateShowColorInStatusBar(originalValues.showColorInStatusBar);
+  await updatePeacockColor(originalValues.color);
+  await updatePeacockRemoteColor(originalValues.remoteColor);
 }
