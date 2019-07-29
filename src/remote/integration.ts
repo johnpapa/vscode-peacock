@@ -44,7 +44,9 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
     await setRemoteWorkspaceColors();
   } else {
     const peacockColor = getPeacockColor();
-    await applyColor(peacockColor);
+    if (peacockColor) {
+      await applyColor(peacockColor);
+    }
   }
 }
 

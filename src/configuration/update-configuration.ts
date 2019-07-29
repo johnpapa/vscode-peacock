@@ -36,7 +36,11 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
   Logger.info(colorCustomizations, true);
   return await vscode.workspace
     .getConfiguration()
-    .update(Sections.peacockColorCustomizationSection, colorCustomizations, ConfigurationTarget.Workspace);
+    .update(
+      Sections.peacockColorCustomizationSection,
+      colorCustomizations,
+      ConfigurationTarget.Workspace,
+    );
 }
 
 export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
@@ -94,13 +98,13 @@ export async function updateFavoriteColors(values: IFavoriteColors[]) {
   return await updateGlobalConfiguration(StandardSettings.FavoriteColors, values);
 }
 
-export async function updatePeacockColor(color: string) {
+export async function updatePeacockColor(color: string | undefined) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.Color}`;
   return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 
-export async function updatePeacockRemoteColor(color: string) {
+export async function updatePeacockRemoteColor(color: string | undefined) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
   return await config.update(section, color, ConfigurationTarget.Workspace);

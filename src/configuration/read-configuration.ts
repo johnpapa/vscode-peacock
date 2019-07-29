@@ -18,6 +18,7 @@ import {
   IElementColors,
   ForegroundColors,
   defaultAmountToDarkenLighten,
+  ColorSource,
 } from '../models';
 import {
   getAdjustedColorHex,
@@ -123,13 +124,34 @@ export function getEnvironmentAwareColor() {
   return color;
 }
 
+export function inspectColor() {
+  const setting = vscode.env.remoteName ? StandardSettings.RemoteColor : StandardSettings.Color;
+  const section = `${Sections.peacockSection}.${setting}`;
+  const config = workspace.getConfiguration().inspect(section);
+
+  let colorSource = ColorSource.None;
+  if (!config) {
+    return {colorSource};
+  }
+
+  if (config.workspaceValue) {
+    colorSource = ColorSource.WorkspaceValue;
+  } else if (config.globalValue) {
+    colorSource = ColorSource.GlobalValue;
+  } else if (config.defaultValue) {
+    colorSource = ColorSource.DefaultValue;
+  }
+
+  return { colorSource, ...config };
+}
+
 export function getPeacockColor() {
-  let color = readConfiguration<string>(StandardSettings.Color, '');
+  let color = readConfiguration<string>(StandardSettings.Color);
   return color;
 }
 
 export function getPeacockRemoteColor() {
-  let remoteColor = readConfiguration<string>(StandardSettings.RemoteColor, '');
+  let remoteColor = readConfiguration<string>(StandardSettings.RemoteColor);
   return remoteColor;
 }
 

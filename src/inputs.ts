@@ -1,11 +1,6 @@
 import * as vscode from 'vscode';
 import { favoriteColorSeparator, peacockGreen } from './models';
-import {
-  getFavoriteColors,
-  getEnvironmentAwareColor,
-  updateWorkspaceConfiguration,
-} from './configuration';
-import { isValidColorInput } from './color-library';
+import { getFavoriteColors } from './configuration';
 import { applyColor } from './apply-color';
 
 export async function promptForColor() {
@@ -37,7 +32,6 @@ export async function promptForFavoriteColorName(color: string) {
 export async function promptForFavoriteColor() {
   const { menu, values: favoriteColors } = getFavoriteColors();
   let selection = '';
-  const startingColor = getEnvironmentAwareColor();
   const options = {
     placeHolder: 'Pick a favorite color',
     onDidSelectItem: await tryColorWithPeacock(),
@@ -50,14 +44,6 @@ export async function promptForFavoriteColor() {
     return selectedColor || '';
   }
 
-  if (isValidColorInput(startingColor)) {
-    // when there is no selection and startingColor, revert to starting color
-    await applyColor(startingColor);
-  } else {
-    // if no color was previously set, reset the current color to `null`
-    await updateWorkspaceConfiguration(undefined);
-  }
-
   return '';
 }
 
@@ -68,7 +54,7 @@ export function parseFavoriteColorValue(text: string) {
 
 async function tryColorWithPeacock() {
   return async (item: string) => {
-    const color = parseFavoriteColorValue(item as string);
-    return await applyColor(color, true);
+    const color = parseFavoriteColorValue(item);
+    return await applyColor(color);
   };
 }

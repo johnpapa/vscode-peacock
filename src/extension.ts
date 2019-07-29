@@ -7,6 +7,7 @@ import {
   StandardSettings,
   extensionShortName,
   getExtensionVersion,
+  ColorSource,
 } from './models';
 import {
   resetColorsHandler,
@@ -25,8 +26,9 @@ import {
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
   getEnvironmentAwareColor,
+  inspectColor,
 } from './configuration';
-import { applyColor } from './apply-color';
+import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
@@ -69,6 +71,13 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
         `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
       await applyColor(color);
+
+      // Only update the color in the workspace settings
+      // if there was already a workspace setting
+      const colorSource = inspectColor();
+      if (colorSource.colorSource === ColorSource.WorkspaceValue) {
+        await updateColorSetting(color);
+      }
     }
   };
 }

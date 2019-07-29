@@ -5,7 +5,7 @@ import {
   getDarkenedColorHex,
   getLightenedColorHex,
 } from './color-library';
-import { applyColor } from './apply-color';
+import { applyColor, unapplyColors, updateColorSetting } from './apply-color';
 import { State, peacockGreen } from './models';
 import {
   getDarkenLightenPercentage,
@@ -36,8 +36,8 @@ export async function resetColorsHandler() {
   await resetFavoritesVersionMemento();
 
   await updateWorkspaceConfiguration(newColorCustomizations);
-  await updatePeacockColor('');
-  await updatePeacockRemoteColor('');
+  await updatePeacockColor(undefined);
+  await updatePeacockRemoteColor(undefined);
 
   clearStatusBar();
 
@@ -46,11 +46,13 @@ export async function resetColorsHandler() {
 
 export async function saveColorToFavoritesHandler() {
   const color = getEnvironmentAwareColor();
-  const name = await promptForFavoriteColorName(color);
-  if (!name) {
-    return;
+  if (color) {
+    const name = await promptForFavoriteColorName(color);
+    if (!name) {
+      return;
+    }
+    await addNewFavoriteColor(name, color);
   }
-  await addNewFavoriteColor(name, color);
   return State.extensionContext;
 }
 
@@ -63,6 +65,7 @@ export async function enterColorHandler(color?: string) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
   await applyColor(input);
+  await updateColorSetting(input);
   return State.extensionContext;
 }
 
@@ -84,6 +87,7 @@ export async function changeColorToRandomHandler() {
   }
 
   await applyColor(color);
+  await updateColorSetting(color);
   return State.extensionContext;
 }
 
@@ -94,35 +98,53 @@ export async function addRecommendedFavoritesHandler() {
 
 export async function changeColorToPeacockGreenHandler() {
   await applyColor(peacockGreen);
+  await updateColorSetting(peacockGreen);
   return State.extensionContext;
 }
 
 export async function changeColorToFavoriteHandler() {
-  const input = await promptForFavoriteColor();
-  if (isValidColorInput(input)) {
-    await applyColor(input);
+  // Remember the color we started with
+  const startingColor = getEnvironmentAwareColor();
+  const favoriteColor = await promptForFavoriteColor();
+  if (isValidColorInput(favoriteColor)) {
+    await applyColor(favoriteColor);
+    await updateColorSetting(favoriteColor);
+  } else if (startingColor) {
+    await applyColor(startingColor);
+    await updateColorSetting(startingColor);
+  } else {
+    await unapplyColors();
   }
   return State.extensionContext;
 }
 
 export async function darkenHandler() {
   const color = getEnvironmentAwareColor();
-  const darkenLightenPercentage = getDarkenLightenPercentage();
-  const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
-  await applyColor(darkenedColor);
+  if (color) {
+    const darkenLightenPercentage = getDarkenLightenPercentage();
+    const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
+    await applyColor(darkenedColor);
+    await updateColorSetting(darkenedColor);
+  }
   return State.extensionContext;
 }
 
 export async function lightenHandler() {
   const color = getEnvironmentAwareColor();
-  const darkenLightenPercentage = getDarkenLightenPercentage();
-  const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
-  await applyColor(lightenedColor);
+  if (color) {
+    const darkenLightenPercentage = getDarkenLightenPercentage();
+    const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
+    await applyColor(lightenedColor);
+    await updateColorSetting(lightenedColor);
+  }
   return State.extensionContext;
 }
 
 export async function showAndCopyCurrentColorHandler() {
   const color = getEnvironmentAwareColor();
+  if (!color) {
+    return;
+  }
   const msg = color
     ? `Peacock's color is ${color} and has been copied to your clipboard.`
     : 'There is no Peacock color set at this time.';

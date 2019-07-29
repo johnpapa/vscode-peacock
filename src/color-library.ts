@@ -139,7 +139,8 @@ export function getReadabilityRatio(backgroundColor = '', foregroundColor = '') 
 }
 
 export function isValidColorInput(input: string) {
-  return tinycolor(input).isValid();
+  const isValid = typeof input === 'string' && tinycolor(input).isValid();
+  return isValid;
 }
 
 export function deletePeacocksColorCustomizations() {

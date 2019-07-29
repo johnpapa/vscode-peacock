@@ -25,7 +25,7 @@ export function updateStatusBar() {
   sb.text = `$(paintcan) ${color}`;
   sb.command = Commands.showAndCopyCurrentColor;
   sb.tooltip = 'Copy the Peacock color';
-  if (show) {
+  if (show && !!color) {
     sb.show();
   } else {
     clearStatusBar();

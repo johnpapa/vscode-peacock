@@ -60,7 +60,7 @@ export enum ColorSettings {
   accentBorders_panelBorder = 'panel.border',
   accentBorders_sideBarBorder = 'sideBar.border',
   accentBorders_editorGroupBorder = 'editorGroup.border',
-  tabActiveBorder = 'tab.activeBorder'
+  tabActiveBorder = 'tab.activeBorder',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
@@ -86,4 +86,11 @@ export enum ReadabilityRatios {
   UserInterfaceLow = 2,
   UserInterface = 3,
   Text = 4.5,
+}
+
+export enum ColorSource {
+  WorkspaceValue = 'workspaceValue',
+  GlobalValue = 'globalValue',
+  DefaultValue = 'defaultValue',
+  None = 'none',
 }
