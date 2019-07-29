@@ -70,16 +70,6 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.changeColorOfLiveShareHost",
-        "title": "Change Live Share Color (Host)",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorOfLiveShareGuest",
-        "title": "Change Live Share Color (Guest)",
-        "category": "Peacock"
-      },
-      {
         "command": "peacock.darken",
         "title": "Darken",
         "category": "Peacock"
@@ -92,6 +82,16 @@
       {
         "command": "peacock.showAndCopyCurrentColor",
         "title": "Copy the Current Color to the Clipboard",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareHost",
+        "title": "Change Live Share Color (Host)",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareGuest",
+        "title": "Change Live Share Color (Guest)",
         "category": "Peacock"
       }
     ],
@@ -109,11 +109,51 @@
       "commandPalette": [
         {
           "command": "peacock.changeColorOfLiveShareHost",
-          "when": "peacock:liveshare == true"
+          "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
         },
         {
           "command": "peacock.changeColorOfLiveShareGuest",
-          "when": "peacock:liveshare == true"
+          "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
+        },
+        {
+          "command": "peacock.resetColors",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.saveColorToFavorites",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.enterColor",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.changeColorToPeacockGreen",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.addRecommendedFavorites",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.changeColorToRandom",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.changeColorToFavorite",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.darken",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.lighten",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.showAndCopyCurrentColor",
+          "when": "workspaceFolderCount != 0"
         }
       ]
     },

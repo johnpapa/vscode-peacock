@@ -16,6 +16,11 @@ import {
 } from './color-library';
 
 export async function unapplyColors() {
+  if (!vscode.workspace.workspaceFolders) {
+    // If we are not in a workspace, don't allow Peacock to apply colors or write to settings.
+    return;
+  }
+
   // Overwite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
   const existingColors = deletePeacocksColorCustomizations();
@@ -30,7 +35,13 @@ export async function applyColor(input: string) {
    *
    */
 
-  if (!isValidColorInput(input)) {
+  if (!vscode.workspace.workspaceFolders) {
+    // If we are not in a workspace, don't allow Peacock to apply colors or write to settings.
+    return;
+  }
+
+   if (!isValidColorInput(input)) {
+    await unapplyColors();
     return;
   }
 
@@ -61,6 +72,11 @@ export async function applyColor(input: string) {
 }
 
 export async function updateColorSetting(color: string) {
+  if (!vscode.workspace.workspaceFolders) {
+    // If we are not in a workspace, don't allow Peacock to apply colors or write to settings.
+    return;
+  }
+
   if (!color) {
     return;
   }

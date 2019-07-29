@@ -48,12 +48,22 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   await initializeTheStarterSetOfFavorites();
-  await checkSurpriseMeOnStartupLogic();
+
+  if (workspace.workspaceFolders) {
+    Logger.info('Peacock is in a workspace, so Peacock functionality is available.');
+    /**
+     * We only run this logic if we are in a workspace
+     * because they may write peacock settings, and it will fail.
+     * This entire function will re-run when a workspace is opened.
+     */
+    await checkSurpriseMeOnStartupLogic();
+    await addLiveShareIntegration(State.extensionContext);
+    await addRemoteIntegration(State.extensionContext);
+  } else {
+    Logger.info('Peacock is not in a workspace, so Peacock functionality is not available.');
+  }
 
   addSubscriptions(); // add these AFTER applying initial config
-
-  await addLiveShareIntegration(State.extensionContext);
-  await addRemoteIntegration(State.extensionContext);
 }
 
 function addSubscriptions() {
@@ -65,7 +75,7 @@ function addSubscriptions() {
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     const color = getEnvironmentAwareColor();
-    const appliedColor  = getCurrentColorBeforeAdjustments();
+    const appliedColor = getCurrentColorBeforeAdjustments();
     if (checkIfPeacockSettingsChanged(e) && color !== appliedColor) {
       // TODO: We'd like reset colors if no color is passed.
       // However, this logic has not been tested (allowing !color).
