@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## 3.0.0-rc.1
+## 3.0.0-rc.2
 
 Features
 
@@ -41,6 +41,7 @@ Breaking Changes
 DevOps
 
 - [Adding code coverage and test reporting to Azure Pipelines](https://github.com/johnpapa/vscode-peacock/pull/219)
+- Added several new tests for testing the `peacock.color` and `peacock.remoteColor`
 
 Bug Fixes
 
