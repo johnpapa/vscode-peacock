@@ -9,8 +9,9 @@ import {
   peacockGreen,
   azureBlue,
   StandardSettings,
+  extensionShortName,
 } from '../../models';
-import { setupTestSuite, setupTest, teardownTestSuite } from './lib/setup-teardown-test-suite';
+import { setupTestSuite, teardownTestSuite } from './lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
@@ -21,18 +22,63 @@ import {
   updatePeacockColor,
   updatePeacockRemoteColor,
   getPeacockRemoteColor,
+  getCurrentColorBeforeAdjustments,
 } from '../../configuration';
 import { RemoteNames } from '../../remote';
 import { applyColor } from '../../apply-color';
+import { ConfigurationTarget } from 'vscode';
 
-suite('Remote Integration', () => {
+const remoteSection = `${extensionShortName}.${StandardSettings.RemoteColor}`;
+
+suite.only('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   const azureBlueResponse = `Azure Blue -> ${azureBlue}`;
   const peacockGreenResponse = `Peacock Green -> ${peacockGreen}`;
+  const yellow = `#ffff00`;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
-  setup(async () => await setupTest());
+
+  /**
+   * These tests can't reset colors before each test
+   * because these tests are modifying the
+   * colors (peacock.remoteColor and peacock. color).
+   */
+  // setup(async () => await setupTest());
+
+  suite('when in remote and manually changing the User Settings remoteColor', async () => {
+    let remoteNameStub: sinon.SinonStub<any>;
+    suite(
+      'when User Settings remoteColor is a GREEN and Workspace remoteColor is BLUE',
+      async () => {
+        suiteSetup(async () => {
+          await updateRemoteColorInUserSettings(peacockGreen);
+          await updateRemoteColorInWorkspace(azureBlue);
+        });
+        setup(async () => {
+          // Go to remote env
+          remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
+          // Set remote color
+          await applyColor(getPeacockRemoteColor());
+        });
+        teardown(() => {
+          remoteNameStub.restore();
+        });
+
+        test('user changes User Settings remoteColor to YELLOW, color should remain BLUE', async () => {
+          await updateRemoteColorInWorkspace(yellow);
+          let appliedColor = getCurrentColorBeforeAdjustments();
+          assert.equal(appliedColor, azureBlue);
+        });
+
+        test('user removes User Settings remoteColor, color should remain BLUE', async () => {
+          await updateRemoteColorInWorkspace(undefined);
+          let appliedColor = getCurrentColorBeforeAdjustments();
+          assert.equal(appliedColor, azureBlue);
+        });
+      },
+    );
+  });
 
   test('when in remote, and peacock.color is empty and peacock.remoteColor is a color, remote color should be applied', async () => {
     await updatePeacockColor('');
@@ -103,8 +149,8 @@ suite('Remote Integration', () => {
     assert.equal(colorInSettings, peacockRemoteColor);
   });
 
-  test('when setting remote, remote color is different than regular color', async () => {
-    // Set to green
+  test('when setting remote, remote color is different than local color', async () => {
+    // Set local to green
     const qpStub1 = await stubQuickPick(peacockGreenResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockColor = getEnvironmentAwareColor();
@@ -222,3 +268,14 @@ suite('Remote Integration', () => {
 
 const stubQuickPick = async (fakeResponse: string) =>
   await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+
+const updateRemoteColorInWorkspace = async (color: any) => {
+  return await vscode.workspace
+    .getConfiguration()
+    .update(remoteSection, color, ConfigurationTarget.Workspace);
+};
+const updateRemoteColorInUserSettings = async (color: any) => {
+  return await vscode.workspace
+    .getConfiguration()
+    .update(remoteSection, color, ConfigurationTarget.Global);
+};
