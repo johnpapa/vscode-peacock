@@ -106,13 +106,21 @@ export async function changeColorToFavoriteHandler() {
   // Remember the color we started with
   const startingColor = getEnvironmentAwareColor();
   const favoriteColor = await promptForFavoriteColor();
+
   if (isValidColorInput(favoriteColor)) {
+    // We have a valid Favorite color,
+    // apply it and write the new color to settings
     await applyColor(favoriteColor);
     await updateColorSetting(favoriteColor);
   } else if (startingColor) {
+    // No favorite was selected.
+    // We need to re-apply the starting color
+    // and write the new color to settings
     await applyColor(startingColor);
     await updateColorSetting(startingColor);
   } else {
+    // No favorite was selected. We had no color to start, either.
+    // We need re unapply the colors, and NOT write a color to settings.
     await unapplyColors();
   }
   return State.extensionContext;
