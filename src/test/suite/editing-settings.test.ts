@@ -9,7 +9,7 @@ import {
   StandardSettings,
   extensionShortName,
 } from '../../models';
-import { setupTestSuite, teardownTestSuite } from './lib/setup-teardown-test-suite';
+import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 
 import {
   getPeacockRemoteColor,
@@ -29,31 +29,26 @@ suite('Manual Editing of Settings', () => {
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
-
-  /**
-   * These tests can't reset colors before each test
-   * because these tests are modifying the
-   * colors (peacock.remoteColor and peacock. color).
-   */
-  // setup(async () => await setupTest());
+  setup(async () => await setupTest());
 
   suite('when in remote and manually changing the User Settings remoteColor', async () => {
     let remoteNameStub: sinon.SinonStub<any>;
     suite(
       'when User Settings remoteColor is a GREEN and Workspace remoteColor is BLUE',
       async () => {
-        suiteSetup(async () => {
+        setup(async () => {
+          remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
           await updateRemoteColorInUserSettings(peacockGreen);
           await updateRemoteColorInWorkspace(azureBlue);
-        });
-        setup(async () => {
-          // Go to remote env
-          remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-          // Set remote color
           await applyColor(getPeacockRemoteColor());
         });
         teardown(() => {
           remoteNameStub.restore();
+        });
+
+        test('color-customizations should be BLUE', async () => {
+          let appliedColor = getCurrentColorBeforeAdjustments();
+          assert.equal(appliedColor, azureBlue);
         });
 
         test('user changes User Settings remoteColor to YELLOW, color should remain BLUE', async () => {
@@ -74,16 +69,19 @@ suite('Manual Editing of Settings', () => {
     suite(
       'when User Settings remoteColor is GREEN and Workspace remoteColor is undefined',
       async () => {
-        suiteSetup(async () => {
-          await updateRemoteColorInUserSettings(peacockGreen);
-          await updateRemoteColorInWorkspace(undefined);
-        });
         setup(async () => {
           remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
+          await updateRemoteColorInUserSettings(peacockGreen);
+          await updateRemoteColorInWorkspace(undefined);
           await applyColor(getPeacockRemoteColor());
         });
         teardown(() => {
           remoteNameStub.restore();
+        });
+
+        test('color-customizations should be GREEN', async () => {
+          let appliedColor = getCurrentColorBeforeAdjustments();
+          assert.equal(appliedColor, peacockGreen);
         });
 
         test('user changes User Settings remoteColor to YELLOW, color-customizations should be YELLOW', async () => {
@@ -105,16 +103,19 @@ suite('Manual Editing of Settings', () => {
   suite('when in local and manually changing the User Settings color', async () => {
     let remoteNameStub: sinon.SinonStub<any>;
     suite('when User Settings color is GREEN and Workspace color is BLUE', async () => {
-      suiteSetup(async () => {
-        await updateLocalColorInUserSettings(peacockGreen);
-        await updateLocalColorInWorkspace(azureBlue);
-      });
       setup(async () => {
         remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(undefined);
+        await updateLocalColorInUserSettings(peacockGreen);
+        await updateLocalColorInWorkspace(azureBlue);
         await applyColor(getPeacockColor());
       });
       teardown(() => {
         remoteNameStub.restore();
+      });
+
+      test('color-customizations should be BLUE', async () => {
+        let appliedColor = getCurrentColorBeforeAdjustments();
+        assert.equal(appliedColor, azureBlue);
       });
 
       test('user changes User Settings color to YELLOW, color should remain BLUE', async () => {
@@ -132,16 +133,19 @@ suite('Manual Editing of Settings', () => {
       });
     });
     suite('when User Settings color is a GREEN and Workspace color is undefined', async () => {
-      suiteSetup(async () => {
-        await updateLocalColorInUserSettings(peacockGreen);
-        await updateLocalColorInWorkspace(undefined);
-      });
       setup(async () => {
         remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(undefined);
+        await updateLocalColorInUserSettings(peacockGreen);
+        await updateLocalColorInWorkspace(undefined);
         await applyColor(getPeacockColor());
       });
       teardown(() => {
         remoteNameStub.restore();
+      });
+
+      test('color-customizations should be GREEN', async () => {
+        let appliedColor = getCurrentColorBeforeAdjustments();
+        assert.equal(appliedColor, peacockGreen);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be YELLOW', async () => {
