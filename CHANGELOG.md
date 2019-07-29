@@ -10,10 +10,6 @@ Features
   - `Copy the Current Color to the Clipboard` - Shows the current color and copies it to the clipboard
     - This command can be executed from the command palette or by clicking the statusBar item for peacock's color
 
-New scenario documentation
-
-- To help get a better handle on how Peacock behaves, a new [scenarios](./docs/scenarios.md) document has been added.
-
 New Settings
 
 - Removed remote colors and live share colors from mementos and instead created user settings for these. Mementos are best for values the user cant see, while settings make it easier for the user to see them and modify them directly. This feels right for these colors.
