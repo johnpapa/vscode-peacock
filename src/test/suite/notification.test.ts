@@ -6,7 +6,7 @@ import { notify } from '../../notification';
 import sinon = require('sinon');
 import { Logger } from '../../logging';
 
-suite.only('Notification Tests', () => {
+suite('Notification Tests', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));
