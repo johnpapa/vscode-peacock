@@ -76,9 +76,13 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     const color = getEnvironmentAwareColor();
     const appliedColor = getCurrentColorBeforeAdjustments();
-    if (checkIfPeacockSettingsChanged(e) && color !== appliedColor) {
-      // TODO: We'd like reset colors if no color is passed.
-      // However, this logic has not been tested (allowing !color).
+    if (checkIfPeacockSettingsChanged(e) && (color || appliedColor)) {
+      /**
+       * If the settings have changed
+       * AND (either we have a peacock.color/remoteColor to apply
+       *       OR we have an applied color already in the color customizations),
+       * Then we apply the "color"
+       */
       Logger.info(
         `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
