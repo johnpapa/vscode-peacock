@@ -27,6 +27,8 @@ import {
   getPeacockRemoteColor,
   updatePeacockColor,
   updatePeacockRemoteColor,
+  getKeepBadgeColor,
+  updateKeepBadgeColor,
 } from '../../../configuration';
 
 import { noopElementAdjustments, executeCommand, allAffectedElements } from './constants';
@@ -48,6 +50,7 @@ export async function setupTestSuite(
   originalValues.favoriteColors = favoriteColors;
   originalValues.darkForegroundColor = getDarkForegroundColor();
   originalValues.lightForegroundColor = getLightForegroundColor();
+  originalValues.keepBadgeColor = getKeepBadgeColor();
   originalValues.surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
   originalValues.showColorInStatusBar = getShowColorInStatusBar();
   originalValues.color = getPeacockColor();
@@ -61,6 +64,7 @@ export async function setupTestSuite(
   await updateElementAdjustments(noopElementAdjustments);
   await updateDarkForegroundColor(ForegroundColors.DarkForeground);
   await updateLightForegroundColor(ForegroundColors.LightForeground);
+  await updateKeepBadgeColor(false);
   await updateSurpriseMeFromFavoritesOnly(false);
   await updateShowColorInStatusBar(true);
   await updatePeacockColor('');
@@ -78,6 +82,7 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateKeepForegroundColor(originalValues.keepForegroundColor);
   await updateDarkForegroundColor(originalValues.darkForegroundColor);
   await updateLightForegroundColor(originalValues.lightForegroundColor);
+  await updateKeepBadgeColor(originalValues.keepBadgeColor);
   await updateSurpriseMeFromFavoritesOnly(originalValues.surpriseMeFromFavoritesOnly);
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
   await updateShowColorInStatusBar(originalValues.showColorInStatusBar);
