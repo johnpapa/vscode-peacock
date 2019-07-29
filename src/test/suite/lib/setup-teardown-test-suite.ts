@@ -29,7 +29,7 @@ import {
   updatePeacockRemoteColor,
 } from '../../../configuration';
 
-import { noopElementAdjustments, executeCommand } from './constants';
+import { noopElementAdjustments, executeCommand, allAffectedElements } from './constants';
 
 export async function setupTest() {
   await executeCommand(Commands.resetColors);
@@ -54,11 +54,7 @@ export async function setupTestSuite(
   originalValues.remoteColor = getPeacockRemoteColor();
 
   // Set the test values
-  await updateAffectedElements(<IPeacockAffectedElementSettings>{
-    statusBar: true,
-    activityBar: true,
-    titleBar: true,
-  });
+  await updateAffectedElements(allAffectedElements);
   await updateFavoriteColors(starterSetOfFavorites);
   await updateKeepForegroundColor(false);
   await updateSurpriseMeOnStartup(false);
