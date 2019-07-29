@@ -18,7 +18,7 @@ import { ConfigurationTarget } from 'vscode';
 
 const remoteSection = `${extensionShortName}.${StandardSettings.RemoteColor}`;
 
-suite.only('Manual Editing of Settings', () => {
+suite('Manual Editing of Settings', () => {
   let originalValues = <IPeacockSettings>{};
   const yellow = `#ffff00`;
 

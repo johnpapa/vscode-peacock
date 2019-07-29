@@ -25,7 +25,7 @@ import {
 import { RemoteNames } from '../../remote';
 import { applyColor } from '../../apply-color';
 
-suite.only('Remote Integration', () => {
+suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   const azureBlueResponse = `Azure Blue -> ${azureBlue}`;
   const peacockGreenResponse = `Peacock Green -> ${peacockGreen}`;
