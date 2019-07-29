@@ -20,8 +20,9 @@ import {
   getPeacockWorkspace,
   updatePeacockColor,
   updatePeacockRemoteColor,
+  getPeacockRemoteColor,
 } from '../../configuration';
-import { RemoteNames, setRemoteWorkspaceColors } from '../../remote';
+import { RemoteNames } from '../../remote';
 import { applyColor } from '../../apply-color';
 
 suite('Remote Integration', () => {
@@ -39,7 +40,9 @@ suite('Remote Integration', () => {
 
     // Go to remote env
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-    await setRemoteWorkspaceColors();
+    // Set remote color
+    await applyColor(getPeacockRemoteColor());
+
     const peacockRemoteColor = getEnvironmentAwareColor();
     remoteNameStub.restore();
 
@@ -57,8 +60,9 @@ suite('Remote Integration', () => {
 
     // Go to remote env
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-    await setRemoteWorkspaceColors();
-    // const peacockRemoteColor = getEnvironmentAwareColor();
+    // Set remote color
+    await applyColor(getPeacockRemoteColor());
+    const peacockRemoteColor = getEnvironmentAwareColor();
     remoteNameStub.restore();
 
     // Go to local env
@@ -76,6 +80,7 @@ suite('Remote Integration', () => {
 
     assert.equal(colorInSettings, '', 'Applied colors should not exist');
     assert.equal(colorInSettings, peacockLocalColor, 'There should be no peacock color');
+    assert.equal(peacockRemoteColor, remoteColorInSettings, 'Remote color should not change');
     assert.ok(remoteColorInSettings, 'Remote color should exist');
     assert.ok(
       remoteColorInSettings !== colorInSettings,

@@ -4,20 +4,6 @@ import { applyColor } from '../apply-color';
 import { State } from '../models';
 import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
 
-export async function setRemoteWorkspaceColors() {
-  // let setting = StandardSettings.RemoteColor;
-
-  // if (!setting) {
-  //   return;
-  // }
-  const remoteColor = getPeacockRemoteColor();
-  if (!remoteColor) {
-    return;
-  }
-
-  await applyColor(remoteColor);
-}
-
 function remoteExtensionsInstalled(): boolean {
   let remoteExtensions = [
     'ms-vscode-remote.remote-containers',
@@ -33,44 +19,12 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   const remoteExtensions = remoteExtensionsInstalled();
   await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);
 
-  // TODO: Shouldnt need this, since changeColor now changes the color for remote or non-remote
-  // if (!vscode.env.remoteName) {
-  //   revertRemoteWorkspaceColors();
-  //   return;
-  // }
-
   // TODO: revisit this ... should we change colors for remote, non remote, or never, or both?
   if (vscode.env.remoteName) {
-    await setRemoteWorkspaceColors();
+    const remoteColor = getPeacockRemoteColor();
+    await applyColor(remoteColor);
   } else {
     const peacockColor = getPeacockColor();
-    if (peacockColor) {
-      await applyColor(peacockColor);
-    }
+    await applyColor(peacockColor);
   }
 }
-
-// TODO: - not used
-// export async function refreshRemoteColor(remote: string): Promise<boolean> {
-//   if (vscode.env.remoteName !== remote) {
-//     notify(
-//       `The selected color will be applied every time you you are in the '${remote}' context.`,
-//       true,
-//     );
-//     return false;
-//   }
-//   if (getPeacockColor()) {
-//     notify(
-//       `The current workspace already uses a peacock color, the selected color will not be applied for this workspace.`,
-//       true,
-//     );
-//     return false;
-//   }
-//   await setRemoteWorkspaceColors();
-//   return true;
-// }
-//
-// export async function revertRemoteWorkspaceColors() {
-//   const peacockColor = getPeacockColor();
-//   await changeColor(peacockColor);
-// }
