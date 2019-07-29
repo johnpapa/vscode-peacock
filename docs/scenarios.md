@@ -80,7 +80,6 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // user settings
 {
-  "peacock.color": "#00ff00"
 }
 ```
 
@@ -321,7 +320,6 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // user settings
 {
-  "peacock.color": "#00ff00"
 }
 ```
 
