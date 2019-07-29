@@ -79,8 +79,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 
 ```json
 // user settings
-{
-}
+{}
 ```
 
 ```json
@@ -319,8 +318,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 
 ```json
 // user settings
-{
-}
+{}
 ```
 
 ```json
@@ -595,5 +593,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 
 ```json
 // workspace settings
-{}
+{
+  "peacock.remoteColor": "#00ffff"
+}
 ```
