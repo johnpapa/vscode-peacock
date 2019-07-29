@@ -27,6 +27,7 @@ import {
   writeRecommendedFavoriteColors,
   getEnvironmentAwareColor,
   inspectColor,
+  getCurrentColorBeforeAdjustments,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
@@ -64,7 +65,8 @@ function addSubscriptions() {
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
     const color = getEnvironmentAwareColor();
-    if (checkIfPeacockSettingsChanged(e) && color) {
+    const appliedColor  = getCurrentColorBeforeAdjustments();
+    if (checkIfPeacockSettingsChanged(e) && color !== appliedColor) {
       // TODO: We'd like reset colors if no color is passed.
       // However, this logic has not been tested (allowing !color).
       Logger.info(

@@ -61,9 +61,9 @@ export function getUserConfig() {
 
 export function getCurrentColorBeforeAdjustments() {
   /**
-   * TODO: Not used. But might be useful if we dont want the
+   * Useful if we dont want the
    *       peacock color but instead to calculate it from
-   *       the current colors
+   *       the current customized colors
    *
    * Get the current color, before any adjustments were made
    */
