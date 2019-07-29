@@ -1,6 +1,5 @@
 import {
   IPeacockSettings,
-  IPeacockAffectedElementSettings,
   Commands,
   ForegroundColors,
   starterSetOfFavorites,
@@ -76,6 +75,7 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await executeCommand(Commands.resetColors);
 
   // put back the original peacock user settings
+
   await updateAffectedElements(originalValues.affectedElements);
   await updateElementAdjustments(originalValues.elementAdjustments);
   await updateFavoriteColors(originalValues.favoriteColors);
