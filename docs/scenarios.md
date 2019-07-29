@@ -85,7 +85,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
@@ -136,7 +136,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
@@ -152,14 +152,14 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
 - open a project
 - Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color".
-- Workspace settings has "peacock.color" #00ffff
-- Peacock applies color customizations using #00ffff (yellow)
+- Workspace settings has "peacock.color" #ff0000 (yellow)
+- Peacock applies color customizations using #ff0000 (yellow)
 - No user action was taken, so Peacock does not write the colors.
 
 ```json
@@ -172,7 +172,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
@@ -207,14 +207,14 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
 - open a project
 - Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color".
-- Workspace settings has "peacock.color" #00ffff (yellow)
-- Peacock applies color customizations using #00ffff (yellow)
+- Workspace settings has "peacock.color" #ff0000 (yellow)
+- Peacock applies color customizations using #ff0000 (yellow)
 - No user action was taken, so Peacock does not write the colors.
 
 ```json
@@ -227,7 +227,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
@@ -324,7 +324,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -376,7 +376,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -392,7 +392,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -400,8 +400,8 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 - Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color". None exist, so we do nothing.
 - User goes to remote environment
 - Peacock sees we are in remote env., so it looks for workspace, then user settings for a "peacock.remoteColor".
-- Workspace settings has "peacock.remoteColor" #00ffff
-- Peacock applies color customizations using #00ffff (yellow)
+- Workspace settings has "peacock.remoteColor" #ff0000 (yellow)
+- Peacock applies color customizations using #ff0000 (yellow)
 - No user action was taken, so Peacock does not write the colors.
 
 ```json
@@ -414,7 +414,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -449,7 +449,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -457,8 +457,8 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 - Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color". None exist, so we do nothing.
 - User goes to remote environment
 - Peacock sees we are in remote env., so it looks for workspace, then user settings for a "peacock.remoteColor".
-- Workspace settings has "peacock.remoteColor" #00ffff (yellow)
-- Peacock applies color customizations using #00ffff (yellow)
+- Workspace settings has "peacock.remoteColor" #ff0000 (yellow)
+- Peacock applies color customizations using #ff0000 (yellow)
 - No user action was taken, so Peacock does not write the colors.
 
 ```json
@@ -471,7 +471,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -500,14 +500,14 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
 - open a project
 - Peacock sees we are in local env., so it looks for workspace, then user settings for a "peacock.color".
-- Workspace settings has "peacock.color" #00ffff
-- Peacock applies color customizations using #00ffff (yellow)
+- Workspace settings has "peacock.color" #ff0000
+- Peacock applies color customizations using #ff0000 (yellow)
 - No user action was taken, so Peacock does not write the colors.
 
 ```json
@@ -520,7 +520,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
@@ -539,7 +539,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.color": "#00ffff"
+  "peacock.color": "#ff0000"
 }
 ```
 
@@ -555,14 +555,14 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
 - open a project
 - Peacock sees we are in remote env., so it looks for workspace, then user settings for a "peacock.remoteColor".
-- Workspace settings has "peacock.remoteColor" #00ffff
-- Peacock applies color customizations using #00ffff (yellow)
+- Workspace settings has "peacock.remoteColor" #ff0000
+- Peacock applies color customizations using #ff0000 (yellow)
 - No user action was taken, so Peacock does not write the colors.
 
 ```json
@@ -575,7 +575,7 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
 
@@ -594,6 +594,6 @@ This set of scenarios clarifies Peacock's intended behavior when in a remote or 
 ```json
 // workspace settings
 {
-  "peacock.remoteColor": "#00ffff"
+  "peacock.remoteColor": "#ff0000"
 }
 ```
