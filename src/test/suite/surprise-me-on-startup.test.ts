@@ -24,7 +24,7 @@ suite('Surprise me on startup', () => {
   setup(async () => await setupTest());
 
   setup(async () => {
-    await executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetWorkspaceColors);
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,
       activityBar: true,

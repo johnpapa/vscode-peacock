@@ -2,13 +2,16 @@
 
 All notable changes to the code will be documented in this file.
 
-## 3.0.0-rc.2
+## 3.0.0-rc.3
 
 Features
 
-- New Commands
+- Commands
   - `Copy the Current Color to the Clipboard` - Shows the current color and copies it to the clipboard
     - This command can be executed from the command palette or by clicking the statusBar item for peacock's color
+  - `Peacock: Reset Workspace Colors` - Removes any of the color settings from the `.vscode/settings.json` file. If colors exist in the user settings, they may be applied
+    - This used be named `Peacock: Reset Colors` and was renamed for clarity
+  - `Peacock: Remove All Global and Workspace Colors` - Removes all of the color settings from both the Workspace `.vscode/settings.json` file and the Global user `settings.json` file.
 
 New Settings
 
@@ -22,12 +25,12 @@ New Settings
 
     - currently selected local color. this replaced the workspace memento for the current/recent color, which may solve reported problems with mysterious colors changing (because workspace settings are visible, get removed by peacock commands, and users can manually edit them).
 
-* `peacock.remoteColor` - The Peacock color that will be applied to remote workspaces
+  - `peacock.remoteColor` - The Peacock color that will be applied to remote workspaces
 
-  - currently selected remote color. color for all types of remote environments (ssh, wsl, containers). this consolidates the 3 into 1.
+    - currently selected remote color. color for all types of remote environments (ssh, wsl, containers). this consolidates the 3 into 1.
 
-* `peacock.vslsShareColor` - Peacock color for Live Share Hosting
-* `peacock.vslsJoinColor` - Peacock color for Live Share Joining
+  - `peacock.vslsShareColor` - Peacock color for Live Share Hosting
+  - `peacock.vslsJoinColor` - Peacock color for Live Share Joining
 
 Breaking Changes
 
@@ -46,6 +49,7 @@ DevOps
 Bug Fixes
 
 - When trying the favorites out in the quick pick list, continually selecting a new one, but not selecting one, Peacock would start looping thru colors in a rapid fashion and never stop. This has been corrected.
+- Peacock used to copy any extra workbench.colorCustomizations in the global user settings.json to the workspace, because the get configuration API in vs code get a merged set of settings. This has been refactored to only get the colors that are in the workspace and the Peacock uses. This now uses `read-configuration.ts`'s `getColorCustomizationConfigFromWorkspace` function
 
 ## 2.5.2
 

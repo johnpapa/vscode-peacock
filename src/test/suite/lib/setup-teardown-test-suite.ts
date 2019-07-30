@@ -33,7 +33,7 @@ import {
 import { noopElementAdjustments, executeCommand, allAffectedElements } from './constants';
 
 export async function setupTest() {
-  await executeCommand(Commands.resetColors);
+  await executeCommand(Commands.resetWorkspaceColors);
 }
 
 export async function setupTestSuite(
@@ -72,7 +72,7 @@ export async function setupTestSuite(
 }
 
 export async function teardownTestSuite(originalValues: IPeacockSettings) {
-  await executeCommand(Commands.resetColors);
+  await executeCommand(Commands.resetWorkspaceColors);
 
   // put back the original peacock user settings
 

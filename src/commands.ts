@@ -15,17 +15,24 @@ import {
   updatePeacockColor,
   getEnvironmentAwareColor,
   updatePeacockRemoteColor,
+  updatePeacockRemoteColorInUserSettings,
+  updatePeacockColorInUserSettings,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
 import { resetLiveSharePreviousColors } from './live-share';
 import { notify } from './notification';
-import { clearStatusBar } from './statusbar';
 import * as vscode from 'vscode';
 
-export async function resetColorsHandler() {
-  await resetLiveSharePreviousColors();
+export async function removeAllPeacockColorsHandler() {
+  await resetWorkspaceColorsHandler();
+  await updatePeacockColorInUserSettings(undefined);
+  await updatePeacockRemoteColorInUserSettings(undefined);
+  return State.extensionContext;
+}
 
+export async function resetWorkspaceColorsHandler() {
+  await resetLiveSharePreviousColors();
   await updatePeacockColor(undefined);
   await updatePeacockRemoteColor(undefined);
   return State.extensionContext;

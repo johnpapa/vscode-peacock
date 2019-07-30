@@ -10,7 +10,7 @@ import {
   ColorSource,
 } from './models';
 import {
-  resetColorsHandler,
+  resetWorkspaceColorsHandler,
   enterColorHandler,
   changeColorToRandomHandler,
   changeColorToPeacockGreenHandler,
@@ -20,6 +20,7 @@ import {
   darkenHandler,
   lightenHandler,
   showAndCopyCurrentColorHandler,
+  removeAllPeacockColorsHandler,
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -99,7 +100,8 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
 }
 
 function registerCommands() {
-  commands.registerCommand(Commands.resetColors, resetColorsHandler);
+  commands.registerCommand(Commands.resetWorkspaceColors, resetWorkspaceColorsHandler);
+  commands.registerCommand(Commands.removeAllColors, removeAllPeacockColorsHandler);
   commands.registerCommand(Commands.saveColorToFavorites, saveColorToFavoritesHandler);
   commands.registerCommand(Commands.enterColor, enterColorHandler);
   commands.registerCommand(Commands.changeColorToRandom, changeColorToRandomHandler);

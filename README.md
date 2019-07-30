@@ -142,18 +142,19 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 
 ## Commands
 
-| Command                                  | Description                                                             |
-| ---------------------------------------- | ----------------------------------------------------------------------- |
-| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/settings.json` file |
-| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))      |
-| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                           |
-| Peacock: Surprise me with a Random Color | Sets the color to a random color                                        |
-| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
-| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
-| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
-| Peacock: Darken                          | Darkens the current color by `darkenLightenPercentage`                  |
-| Peacock: Lighten                         | Lightens the current color by `darkenLightenPercentage`                 |
-| Peacock: Show and Copy Current Color     | Shows the current color and copies it to the clipboard                  |
+| Command                                         | Description                                                                                                                        |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Peacock: Reset Workspace Colors                 | Removes any of the color settings from the `.vscode/settings.json` file. If colors exist in the user settings, they may be applied |
+| Peacock: Remove All Global and Workspace Colors | Removes all of the color settings from both the Workspace `.vscode/settings.json` file and the Global user `settings.json` file.   |
+| Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))                                                                 |
+| Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                      |
+| Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                   |
+| Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites                                                                                        |
+| Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                              |
+| Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
+| Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
+| Peacock: Lighten                                | Lightens the current color by `darkenLightenPercentage`                                                                            |
+| Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
 
 ## Integrations
 

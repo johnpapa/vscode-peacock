@@ -98,6 +98,18 @@ export async function updateFavoriteColors(values: IFavoriteColors[]) {
   return await updateGlobalConfiguration(StandardSettings.FavoriteColors, values);
 }
 
+export async function updatePeacockColorInUserSettings(color: string | undefined) {
+  let config = vscode.workspace.getConfiguration();
+  const section = `${extensionShortName}.${StandardSettings.Color}`;
+  return await config.update(section, color, ConfigurationTarget.Global);
+}
+
+export async function updatePeacockRemoteColorInUserSettings(color: string | undefined) {
+  let config = vscode.workspace.getConfiguration();
+  const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
+  return await config.update(section, color, ConfigurationTarget.Global);
+}
+
 export async function updatePeacockColor(color: string | undefined) {
   let config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.Color}`;
@@ -110,7 +122,10 @@ export async function updatePeacockRemoteColor(color: string | undefined) {
   return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 
-export async function updateLiveShareColor(liveShareSetting: LiveShareSettings, color: string | undefined) {
+export async function updateLiveShareColor(
+  liveShareSetting: LiveShareSettings,
+  color: string | undefined,
+) {
   return await updateGlobalConfiguration(liveShareSetting, color);
 }
 

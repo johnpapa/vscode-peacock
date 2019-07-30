@@ -26,7 +26,8 @@ export enum AffectedSettings {
 export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
 
 export enum Commands {
-  resetColors = 'peacock.resetColors',
+  resetWorkspaceColors = 'peacock.resetWorkspaceColors',
+  removeAllColors = 'peacock.removeAllColors',
   saveColorToFavorites = 'peacock.saveColorToFavorites',
   enterColor = 'peacock.enterColor',
   changeColorToRandom = 'peacock.changeColorToRandom',

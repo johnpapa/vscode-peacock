@@ -21,7 +21,7 @@ suite('Foreground color', () => {
   suiteTeardown(() => teardownTestSuite(originalValues));
 
   setup(async () => {
-    await executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetWorkspaceColors);
   });
 
   test(

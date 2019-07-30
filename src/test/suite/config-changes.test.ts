@@ -30,7 +30,7 @@ suite('changes to configuration', () => {
   setup(async () => {
     // This suite's tests flips these switches a lot,
     // so we reset before each test just to be sure.
-    await executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetWorkspaceColors);
     // Set the test values
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,

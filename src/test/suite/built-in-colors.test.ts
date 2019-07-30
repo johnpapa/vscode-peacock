@@ -79,7 +79,7 @@ suite('can set color to built-in color', () => {
       // Add one non Peacock setting
       await updateWorkspaceConfiguration(extraSetting);
 
-      await executeCommand(Commands.resetColors);
+      await executeCommand(Commands.resetWorkspaceColors);
       let config = getColorCustomizationConfig();
       assert.equal(config[extraSettingName], extraSettingValue);
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
@@ -90,7 +90,7 @@ suite('can set color to built-in color', () => {
     });
 
     test('removes colorCustomizations if the object is empty', async () => {
-      await executeCommand(Commands.resetColors);
+      await executeCommand(Commands.resetWorkspaceColors);
       let config = getColorCustomizationConfig();
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
@@ -98,13 +98,13 @@ suite('can set color to built-in color', () => {
     });
 
     test('removes peacockColor', async () => {
-      await executeCommand(Commands.resetColors);
+      await executeCommand(Commands.resetWorkspaceColors);
       let config = getPeacockWorkspace();
       assert.ok(!config[StandardSettings.Color]);
     });
 
     test('removes peacockRemoteColor', async () => {
-      await executeCommand(Commands.resetColors);
+      await executeCommand(Commands.resetWorkspaceColors);
       let config = getPeacockWorkspace();
       assert.ok(!config[StandardSettings.RemoteColor]);
     });

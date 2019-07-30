@@ -35,8 +35,13 @@
   "contributes": {
     "commands": [
       {
-        "command": "peacock.resetColors",
+        "command": "peacock.resetWorkspaceColors",
         "title": "Reset Workspace Colors",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.removeAllColors",
+        "title": "Remove All Global and Workspace Colors",
         "category": "Peacock"
       },
       {
@@ -116,7 +121,11 @@
           "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
         },
         {
-          "command": "peacock.resetColors",
+          "command": "peacock.resetWorkspaceColors",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.removeAllColors",
           "when": "workspaceFolderCount != 0"
         },
         {
