@@ -66,8 +66,8 @@ export async function setupTestSuite(
   await updateKeepBadgeColor(false);
   await updateSurpriseMeFromFavoritesOnly(false);
   await updateShowColorInStatusBar(true);
-  await updatePeacockColor('');
-  await updatePeacockRemoteColor('');
+  await updatePeacockColor(undefined);
+  await updatePeacockRemoteColor(undefined);
   return extension;
 }
 
