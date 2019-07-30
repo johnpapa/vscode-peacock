@@ -30,7 +30,7 @@ suite('Live Share Integration', () => {
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     const settingValue = getLiveShareColor(LiveShareSettings.VSLSShareColor) || '';
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
     stub.restore();
 
     assert.ok(isValidColorInput(settingValue));
@@ -42,7 +42,7 @@ suite('Live Share Integration', () => {
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareGuest);
     const settingValue = getLiveShareColor(LiveShareSettings.VSLSJoinColor) || '';
-    await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, undefined);
     stub.restore();
 
     assert.ok(isValidColorInput(settingValue));
@@ -68,7 +68,7 @@ suite('Live Share Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(isValidColorInput(value));
     assert.equal(value, azureBlue);
@@ -94,7 +94,7 @@ suite('Live Share Integration', () => {
     let config = getPeacockWorkspaceColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(!isValidColorInput(value));
     assert.ok(!value);
@@ -118,7 +118,7 @@ suite('Live Share Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(isValidColorInput(value));
     assert.equal(value, azureBlue);
@@ -155,7 +155,7 @@ suite('Live Share Integration', () => {
     assert.equal(value, color2);
 
     await vslsApi.end();
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 
   test('Workspace color is reverted after Live Share session when updated the color multiple times.', async () => {
@@ -205,7 +205,7 @@ suite('Live Share Integration', () => {
     assert.ok(!isValidColorInput(value));
     assert.ok(!value);
 
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 
   test('Workspace color is reverted to a preset color after Live Share session when updated the color multiple times.', async () => {
@@ -259,7 +259,7 @@ suite('Live Share Integration', () => {
     assert.ok(isValidColorInput(value));
     assert.equal(value, startColor);
 
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 });
 

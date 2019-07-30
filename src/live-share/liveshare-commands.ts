@@ -57,6 +57,6 @@ export function registerLiveShareIntegrationCommands() {
 }
 
 export async function resetLiveSharePreviousColors() {
-  await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
-  await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, '');
+  await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
+  await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, undefined);
 }
