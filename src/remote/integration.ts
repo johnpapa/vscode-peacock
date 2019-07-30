@@ -19,7 +19,6 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   // const remoteExtensions = remoteExtensionsInstalled();
   // await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);
 
-  // TODO: revisit this ... should we change colors for remote, non remote, or never, or both?
   if (vscode.env.remoteName) {
     const remoteColor = getPeacockRemoteColor();
     await applyColor(remoteColor);

@@ -48,14 +48,9 @@ export function getShowColorInStatusBar() {
 }
 
 export function getColorCustomizationConfig() {
-  // TODO: This currently gets the merged color customization set.
+  // This currently gets the merged color customization set.
   // If we want to get just the ones from workspace,
   // we should change functions to use getColorCustomizationConfigFromWorkspace
-  return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
-}
-
-// TODO: Used to be used - but we have getColorCustomizationConfig. So we should be fine with that.
-export function getExistingColorCustomizations() {
   return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
 }
 
@@ -70,11 +65,7 @@ export function getColorCustomizationConfigFromWorkspace() {
     return {};
   }
 
-  let colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
-
-  // Object.keys(colorCustomizations).forEach(key => {
-  //   colorCustomizations[key]
-  // });
+  const colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
 
   return colorCustomizations;
 }

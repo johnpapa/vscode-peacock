@@ -24,10 +24,8 @@ export async function unapplyColors() {
   // Overwite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
   const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations();
-  // await updateWorkspaceConfiguration(undefined);
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
-  // Hide the status bar
-  updateStatusBar(); //TODO: test if we need this or not.
+  updateStatusBar();
 }
 
 export async function applyColor(input: string) {
@@ -63,7 +61,6 @@ export async function applyColor(input: string) {
   };
 
   await updateWorkspaceConfiguration(colorCustomizations);
-
   updateStatusBar();
 
   Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
