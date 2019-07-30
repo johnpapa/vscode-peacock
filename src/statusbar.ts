@@ -14,7 +14,7 @@ export const getStatusBarItem = () => {
 
 export function clearStatusBar() {
   const sb = _statusBarItem;
-  // sb.text = '';
+  sb.text = '';
   sb.hide();
 }
 
