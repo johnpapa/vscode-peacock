@@ -13,7 +13,7 @@ import { isValidColorInput } from '../../../color-library';
 import { executeCommand } from '../../../test/suite/lib/constants';
 import { LiveShareCommands, LiveShareSettings } from '../../enums';
 import {
-  getPeacockWorkspaceColorCustomizationConfig,
+  getColorCustomizationConfig,
   updateLiveShareColor,
   getLiveShareColor,
 } from '../../../configuration';
@@ -64,7 +64,7 @@ suite('Live Share Integration', () => {
     await vslsApi.share();
     await timeout(1000);
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
@@ -91,7 +91,7 @@ suite('Live Share Integration', () => {
     await vslsApi.end();
     await timeout(1000);
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
@@ -114,7 +114,7 @@ suite('Live Share Integration', () => {
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
@@ -148,7 +148,7 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(isValidColorInput(value));
@@ -199,7 +199,7 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(!isValidColorInput(value));
@@ -253,7 +253,7 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(isValidColorInput(value));

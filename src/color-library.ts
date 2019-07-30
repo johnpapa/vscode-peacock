@@ -10,7 +10,7 @@ import {
   defaultSaturation,
 } from './models';
 import {
-  getExistingColorCustomizations,
+  getColorCustomizationConfigFromWorkspace,
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
 } from './configuration';
@@ -144,9 +144,8 @@ export function isValidColorInput(input: string) {
 }
 
 export function deletePeacocksColorCustomizations() {
-  const newColorCustomizations: any = {
-    ...getExistingColorCustomizations(),
-  };
+  const newColorCustomizations = getColorCustomizationConfigFromWorkspace();
+
   Object.values(ColorSettings).forEach(setting => {
     delete newColorCustomizations[setting];
   });

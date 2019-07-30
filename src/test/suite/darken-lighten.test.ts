@@ -1,6 +1,6 @@
 import { IPeacockSettings, Commands, ColorSettings, peacockGreen } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
-import { getPeacockWorkspaceColorCustomizationConfig, getDarkenLightenPercentage } from '../../configuration';
+import { getColorCustomizationConfig, getDarkenLightenPercentage } from '../../configuration';
 import { executeCommand } from './lib/constants';
 import assert = require('assert');
 import { getLightenedColorHex, getDarkenedColorHex } from '../../color-library';
@@ -15,7 +15,7 @@ suite('Darken/Lighten commands', () => {
   test('can lighten a color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     await executeCommand(Commands.lighten);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const pct = getDarkenLightenPercentage();
 
     assert.equal(
@@ -27,7 +27,7 @@ suite('Darken/Lighten commands', () => {
   test('can darken a color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     await executeCommand(Commands.darken);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const pct = getDarkenLightenPercentage();
 
     assert.equal(

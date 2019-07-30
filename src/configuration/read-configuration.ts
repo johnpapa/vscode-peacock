@@ -47,8 +47,36 @@ export function getShowColorInStatusBar() {
   return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
 }
 
-export function getPeacockWorkspaceColorCustomizationConfig() {
+export function getColorCustomizationConfig() {
+  // TODO: This currently gets the merged color customization set.
+  // If we want to get just the ones from workspace,
+  // we should change functions to use getColorCustomizationConfigFromWorkspace
   return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
+}
+
+// TODO: Used to be used - but we have getColorCustomizationConfig. So we should be fine with that.
+export function getExistingColorCustomizations() {
+  return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
+}
+
+export function getColorCustomizationConfigFromWorkspace() {
+  const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
+
+  if (!inspect) {
+    return {};
+  }
+
+  if (typeof inspect.workspaceValue !== 'object') {
+    return {};
+  }
+
+  let colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
+
+  // Object.keys(colorCustomizations).forEach(key => {
+  //   colorCustomizations[key]
+  // });
+
+  return colorCustomizations;
 }
 
 export function getPeacockWorkspace() {
@@ -67,7 +95,7 @@ export function getCurrentColorBeforeAdjustments() {
    *
    * Get the current color, before any adjustments were made
    */
-  let config = getPeacockWorkspaceColorCustomizationConfig();
+  let config = getColorCustomizationConfig();
   const elementColors = getElementColors(config);
   let { color, adjustment } = getColorAndAdjustment(elementColors);
   let originalColor = '';
@@ -131,7 +159,7 @@ export function inspectColor() {
 
   let colorSource = ColorSource.None;
   if (!config) {
-    return {colorSource};
+    return { colorSource };
   }
 
   if (config.workspaceValue) {
@@ -378,7 +406,7 @@ function getColorAndAdjustment(elementColors: IElementColors) {
 }
 
 export function getOriginalColorsForAllElements() {
-  let config = getPeacockWorkspaceColorCustomizationConfig();
+  let config = getColorCustomizationConfig();
 
   const elementColors = getElementColors(config);
 
@@ -399,10 +427,6 @@ export function getOriginalColorsForAllElements() {
     ),
   };
   return originalElementColors;
-}
-
-export function getExistingColorCustomizations() {
-  return workspace.getConfiguration().get(Sections.peacockColorCustomizationSection);
 }
 
 export function hasFavorites() {

@@ -23,10 +23,11 @@ export async function unapplyColors() {
 
   // Overwite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
-  const existingColors = deletePeacocksColorCustomizations();
-  await updateWorkspaceConfiguration(existingColors);
+  const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations();
+  // await updateWorkspaceConfiguration(undefined);
+  await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
   // Hide the status bar
-  updateStatusBar();
+  updateStatusBar(); //TODO: test if we need this or not.
 }
 
 export async function applyColor(input: string) {
@@ -40,7 +41,7 @@ export async function applyColor(input: string) {
     return;
   }
 
-   if (!isValidColorInput(input)) {
+  if (!isValidColorInput(input)) {
     await unapplyColors();
     return;
   }
@@ -49,7 +50,7 @@ export async function applyColor(input: string) {
 
   // Delete all Peacock color customizations from the object
   // and return pre-existing color customizations (not Peacock settings)
-  const existingColors = deletePeacocksColorCustomizations();
+  const colorCustomizationsWithoutPeacock = deletePeacocksColorCustomizations();
 
   // Get new Peacock colors.
   const newColors = prepareColors(color);
@@ -57,11 +58,10 @@ export async function applyColor(input: string) {
   // merge the existing colors with the new ones
   // order is important here, so our new colors overwrite the old ones
   const colorCustomizations: any = {
-    ...existingColors,
+    ...colorCustomizationsWithoutPeacock,
     ...newColors,
   };
 
-  // Write all of the custom of the colors to workspace settings
   await updateWorkspaceConfiguration(colorCustomizations);
 
   updateStatusBar();

@@ -1,7 +1,6 @@
 import {
   isValidColorInput,
   getRandomColorHex,
-  deletePeacocksColorCustomizations,
   getDarkenedColorHex,
   getLightenedColorHex,
 } from './color-library';
@@ -11,7 +10,6 @@ import {
   getDarkenLightenPercentage,
   getRandomFavoriteColor,
   getSurpriseMeFromFavoritesOnly,
-  updateWorkspaceConfiguration,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
   updatePeacockColor,
@@ -21,26 +19,15 @@ import {
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
 import { resetLiveSharePreviousColors } from './live-share';
-import { resetFavoritesVersionMemento } from './mementos';
 import { notify } from './notification';
 import { clearStatusBar } from './statusbar';
 import * as vscode from 'vscode';
 
 export async function resetColorsHandler() {
-  const colorCustomizations = deletePeacocksColorCustomizations();
-  const newColorCustomizations = isObjectEmpty(colorCustomizations)
-    ? undefined
-    : colorCustomizations;
-
   await resetLiveSharePreviousColors();
-  await resetFavoritesVersionMemento();
 
-  await updateWorkspaceConfiguration(newColorCustomizations);
   await updatePeacockColor(undefined);
   await updatePeacockRemoteColor(undefined);
-
-  clearStatusBar();
-
   return State.extensionContext;
 }
 
@@ -159,8 +146,4 @@ export async function showAndCopyCurrentColorHandler() {
   vscode.env.clipboard.writeText(color);
   notify(msg, true);
   return State.extensionContext;
-}
-
-function isObjectEmpty(o: {}) {
-  return !Object.keys(o).length;
 }

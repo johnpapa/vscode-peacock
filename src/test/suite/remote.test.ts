@@ -15,7 +15,7 @@ import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 
 import {
-  getPeacockWorkspaceColorCustomizationConfig,
+  getColorCustomizationConfig,
   getEnvironmentAwareColor,
   getPeacockWorkspace,
   updatePeacockColor,
@@ -25,17 +25,17 @@ import {
 import { RemoteNames } from '../../remote';
 import { applyColor } from '../../apply-color';
 
+
 suite('Remote Integration', () => {
   let originalValues = <IPeacockSettings>{};
   const azureBlueResponse = `Azure Blue -> ${azureBlue}`;
-  const peacockGreenResponse = `Peacock Green -> ${peacockGreen}`;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
 
   test('when in remote, and peacock.color is empty and peacock.remoteColor is a color, remote color should be applied', async () => {
-    await updatePeacockColor('');
+    await updatePeacockColor(undefined);
     await updatePeacockRemoteColor(peacockGreen);
 
     // Go to remote env
@@ -55,7 +55,7 @@ suite('Remote Integration', () => {
   });
 
   test('when in remote and we go out of remote, and peacock.color is empty and peacock.remoteColor is a color, colors should be unapplied ', async () => {
-    await updatePeacockColor('');
+    await updatePeacockColor(undefined);
     await updatePeacockRemoteColor(peacockGreen);
 
     // Go to remote env
@@ -89,6 +89,8 @@ suite('Remote Integration', () => {
   });
 
   test('can set to remote color and it is stored in workspace config', async () => {
+    await updatePeacockColor(undefined);
+    await updatePeacockRemoteColor(peacockGreen);
     // Go to remote env and set to blue
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
     const qpStub2 = await stubQuickPick(azureBlueResponse);
@@ -104,11 +106,9 @@ suite('Remote Integration', () => {
   });
 
   test('when setting remote, remote color is different than local color', async () => {
-    // Set local to green
-    const qpStub1 = await stubQuickPick(peacockGreenResponse);
-    await executeCommand(Commands.changeColorToFavorite);
+    await updatePeacockColor(peacockGreen);
+    await updatePeacockRemoteColor(azureBlue);
     const peacockColor = getEnvironmentAwareColor();
-    qpStub1.restore();
 
     // Go to remote env and set to blue
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
@@ -125,39 +125,45 @@ suite('Remote Integration', () => {
   });
 
   test('can set color when in a Remote WSL', async () => {
+    await updatePeacockColor(peacockGreen);
+    const peacockColor = getEnvironmentAwareColor();
+
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
     const qpStub = await stubQuickPick(azureBlueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub.restore();
     remoteNameStub.restore();
-    const peacockColor = getEnvironmentAwareColor();
 
     assert.equal(peacockRemoteColor, azureBlue);
     assert.ok(peacockRemoteColor !== peacockColor);
   });
 
   test('can set color when in a Remote SSH', async () => {
+    await updatePeacockColor(peacockGreen);
+    const peacockColor = getEnvironmentAwareColor();
+
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.sshRemote);
     const qpStub = await stubQuickPick(azureBlueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub.restore();
     remoteNameStub.restore();
-    const peacockColor = getEnvironmentAwareColor();
 
     assert.equal(peacockRemoteColor, azureBlue);
     assert.ok(peacockRemoteColor !== peacockColor);
   });
 
   test('can set color when in a Remote Container', async () => {
+    await updatePeacockColor(peacockGreen);
+    const peacockColor = getEnvironmentAwareColor();
+
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.devContainer);
     const qpStub = await stubQuickPick(azureBlueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub.restore();
     remoteNameStub.restore();
-    const peacockColor = getEnvironmentAwareColor();
 
     assert.equal(peacockRemoteColor, azureBlue);
     assert.ok(peacockRemoteColor !== peacockColor);
@@ -170,7 +176,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert.ok(isValidColorInput(value));
@@ -184,7 +190,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert(isValidColorInput(value));
@@ -198,7 +204,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert(isValidColorInput(value));
@@ -210,7 +216,7 @@ suite('Remote Integration', () => {
     await executeCommand<vscode.ExtensionContext>(Commands.changeColorToPeacockGreen);
     remoteNameStub.restore();
 
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     // we should be back to green

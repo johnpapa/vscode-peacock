@@ -9,7 +9,7 @@ import {
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
   updateElementAdjustments,
-  getPeacockWorkspaceColorCustomizationConfig,
+  getColorCustomizationConfig,
   updateAffectedElements,
 } from '../../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
@@ -35,25 +35,25 @@ suite('Element adjustments', () => {
 
   test('can lighten the color of an affected element', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     assert.equal(getLightenedColorHex(peacockGreen), config[ColorSettings.activityBar_background]);
   });
 
   test('can darken the color of an affected element', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     assert.equal(getDarkenedColorHex(peacockGreen), config[ColorSettings.statusBar_background]);
   });
 
   test('set adjustment to none for an affected element is noop', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     assert.equal(peacockGreen, config[ColorSettings.titleBar_activeBackground]);
   });
 
   test('set adjustment to lighten for an affected element is lighter color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
 
     const originalBrightness = getColorBrightness(peacockGreen);
     const adjustedBrightness = getColorBrightness(config[ColorSettings.activityBar_background]);
@@ -65,7 +65,7 @@ suite('Element adjustments', () => {
 
   test('set adjustment to darken for an affected element is darker color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
 
     const originalBrightness = getColorBrightness(peacockGreen);
     const adjustedBrightness = getColorBrightness(config[ColorSettings.statusBar_background]);
@@ -77,7 +77,7 @@ suite('Element adjustments', () => {
 
   test('can adjust the color of an affected elements independently', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
     assert.equal(getLightenedColorHex(peacockGreen), config[ColorSettings.activityBar_background]);
     assert.equal(getDarkenedColorHex(peacockGreen), config[ColorSettings.statusBar_background]);
     assert.equal(peacockGreen, config[ColorSettings.titleBar_activeBackground]);
@@ -91,7 +91,7 @@ suite('Element adjustments', () => {
     });
 
     await executeCommand(Commands.changeColorToPeacockGreen);
-    let config = getPeacockWorkspaceColorCustomizationConfig();
+    let config = getColorCustomizationConfig();
 
     assert.equal(getDarkenedColorHex(peacockGreen), config[ColorSettings.statusBar_background]);
     assert.ok(!config[ColorSettings.activityBar_background]);

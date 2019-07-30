@@ -15,7 +15,7 @@ import {
   getKeepBadgeColor,
   updateKeepBadgeColor,
   getElementStyle,
-  getPeacockWorkspaceColorCustomizationConfig,
+  getColorCustomizationConfig,
   updateAffectedElements,
 } from '../../configuration';
 import assert = require('assert');
@@ -122,7 +122,7 @@ suite('Affected elements', () => {
 
     test('does not set any color customizations when no elements affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
-      let config = getPeacockWorkspaceColorCustomizationConfig();
+      let config = getColorCustomizationConfig();
 
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
       assert.ok(!config[ColorSettings.titleBar_activeForeground]);
@@ -183,7 +183,7 @@ suite('Affected elements', () => {
   suite('Activity bar badge', () => {
     test('activity bar badge styles are set when activity bar is affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
-      let config = getPeacockWorkspaceColorCustomizationConfig();
+      let config = getColorCustomizationConfig();
       const badgeBackground = config[ColorSettings.activityBar_badgeBackground]
       const badgeForeground = config[ColorSettings.activityBar_badgeForeground]
       assert.ok(badgeBackground);
@@ -198,7 +198,7 @@ suite('Affected elements', () => {
       });
 
       await executeCommand(Commands.changeColorToPeacockGreen);
-      let config = getPeacockWorkspaceColorCustomizationConfig();
+      let config = getColorCustomizationConfig();
       assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
       assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
 
@@ -236,7 +236,7 @@ suite('Affected elements', () => {
         .returns(Promise.resolve(backgroundHex));
       // fire the command
       await executeCommand(Commands.enterColor);
-      let config = getPeacockWorkspaceColorCustomizationConfig();
+      let config = getColorCustomizationConfig();
       const value = config[ColorSettings.activityBar_badgeBackground];
       stub.restore();
 
@@ -251,7 +251,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
     statusBar: false,
   });
   await executeCommand(Commands.changeColorToPeacockGreen);
-  const config = getPeacockWorkspaceColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
   const keepForegroundColor = getKeepForegroundColor();
   const style = getElementStyle(peacockGreen);
 
@@ -288,7 +288,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
 
 async function testsSetsColorCustomizationsForAffectedElements() {
   await executeCommand(Commands.changeColorToPeacockGreen);
-  const config = getPeacockWorkspaceColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
   const keepForegroundColor = getKeepForegroundColor();
   const keepBadgeColor = getKeepBadgeColor();
 
@@ -368,7 +368,7 @@ async function getColorSettingAfterEnterColor(colorInput: string, setting: Color
   const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(colorInput));
   // fire the command
   await vscode.commands.executeCommand(Commands.enterColor);
-  const config = getPeacockWorkspaceColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
   stub.restore();
   return config[setting];
 }
@@ -378,7 +378,7 @@ function shouldKeepColorTest(
   colorSetting: ColorSettings,
   keepColor: boolean,
 ) {
-  const config = getPeacockWorkspaceColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
   let match = elementStyle === config[colorSetting];
   let passesTest = keepColor ? !match : match;
   return passesTest;
@@ -389,7 +389,7 @@ async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
 
   // fire the command
   await vscode.commands.executeCommand(Commands.enterColor);
-  const config = getPeacockWorkspaceColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
   stub.restore();
 
   return config;

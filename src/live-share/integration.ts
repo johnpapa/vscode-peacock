@@ -9,7 +9,7 @@ import { notify } from '../notification';
 import { LiveShareSettings } from './enums';
 import {
   getLiveShareColor,
-  getExistingColorCustomizations,
+  getColorCustomizationConfigFromWorkspace,
   updateWorkspaceConfiguration,
 } from '../configuration';
 
@@ -72,7 +72,7 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
 
     // we need to update `peacockColorCustomizations` only when it is `undefined`
     // to prevent the case of multiple color changes during live share session
-    peacockColorCustomizations = await getExistingColorCustomizations();
+    peacockColorCustomizations = await getColorCustomizationConfigFromWorkspace();
 
     const isHost = e.session.role === vsls.Role.Host;
     return await setLiveShareSessionWorkspaceColors(isHost);
