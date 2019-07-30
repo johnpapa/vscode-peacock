@@ -110,7 +110,7 @@ export async function updatePeacockRemoteColor(color: string | undefined) {
   return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 
-export async function updateLiveShareColor(liveShareSetting: LiveShareSettings, color: string) {
+export async function updateLiveShareColor(liveShareSetting: LiveShareSettings, color: string | undefined) {
   return await updateGlobalConfiguration(liveShareSetting, color);
 }
 
