@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## 3.0.0-rc.3
 
+Migration
+
+- Version 2 of Peacock stored the peacock color in a memento. Version 3 of Peacock stores the color in the settings. If the v2 memento exists, Peacock gets the color, removes the memento, and writes the color to the settings. Fixes [#230](https://github.com/johnpapa/vscode-peacock/issues/230)
+
 Features
 
 - Commands
