@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## 3.0.0-rc.4
+## 3.0.0
 
 Migration
 
