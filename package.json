@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "2.5.2",
+  "version": "3.0.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -35,8 +35,13 @@
   "contributes": {
     "commands": [
       {
-        "command": "peacock.resetColors",
-        "title": "Reset Colors",
+        "command": "peacock.resetWorkspaceColors",
+        "title": "Reset Workspace Colors",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.removeAllColors",
+        "title": "Remove All Global and Workspace Colors",
         "category": "Peacock"
       },
       {
@@ -70,16 +75,6 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.changeColorOfLiveShareHost",
-        "title": "Change Live Share Color (Host)",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorOfLiveShareGuest",
-        "title": "Change Live Share Color (Guest)",
-        "category": "Peacock"
-      },
-      {
         "command": "peacock.darken",
         "title": "Darken",
         "category": "Peacock"
@@ -90,23 +85,18 @@
         "category": "Peacock"
       },
       {
-        "command": "peacock.changeColorOfRemoteContainers",
-        "title": "Change Remote Color (Containers)",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorOfRemoteSsh",
-        "title": "Change Remote Color (SSH)",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.changeColorOfRemoteWsl",
-        "title": "Change Remote Color (WSL)",
-        "category": "Peacock"
-      },
-      {
         "command": "peacock.showAndCopyCurrentColor",
         "title": "Copy the Current Color to the Clipboard",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareHost",
+        "title": "Change Live Share Color (Host)",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.changeColorOfLiveShareGuest",
+        "title": "Change Live Share Color (Guest)",
         "category": "Peacock"
       }
     ],
@@ -124,23 +114,55 @@
       "commandPalette": [
         {
           "command": "peacock.changeColorOfLiveShareHost",
-          "when": "peacock:liveshare == true"
+          "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
         },
         {
           "command": "peacock.changeColorOfLiveShareGuest",
-          "when": "peacock:liveshare == true"
+          "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
         },
         {
-          "command": "peacock.changeColorOfRemoteContainers",
-          "when": "peacock:remote == true"
+          "command": "peacock.resetWorkspaceColors",
+          "when": "workspaceFolderCount != 0"
         },
         {
-          "command": "peacock.changeColorOfRemoteSsh",
-          "when": "peacock:remote == true"
+          "command": "peacock.removeAllColors",
+          "when": "workspaceFolderCount != 0"
         },
         {
-          "command": "peacock.changeColorOfRemoteWsl",
-          "when": "isWindows && peacock:remote == true"
+          "command": "peacock.saveColorToFavorites",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.enterColor",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.changeColorToPeacockGreen",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.addRecommendedFavorites",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.changeColorToRandom",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.changeColorToFavorite",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.darken",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.lighten",
+          "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "peacock.showAndCopyCurrentColor",
+          "when": "workspaceFolderCount != 0"
         }
       ]
     },
@@ -254,22 +276,17 @@
         "peacock.surpriseMeOnStartup": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies that Peacock should surprise you at the start of every editing session"
+          "description": "Specifies that Peacock should surprise you at the start of every editing session, only when a color isn't already set. "
         },
-        "peacock.remoteContainersColor": {
+        "peacock.remoteColor": {
           "type": "string",
           "default": "",
-          "description": "Peacock color when in a remote with a container"
+          "description": "The Peacock color that will be applied to remote workspaces."
         },
-        "peacock.remoteSshColor": {
+        "peacock.color": {
           "type": "string",
           "default": "",
-          "description": "Peacock color when using remote with ssh"
-        },
-        "peacock.remoteWslColor": {
-          "type": "string",
-          "default": "",
-          "description": "Peacock color when using remote with WSL"
+          "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
         },
         "peacock.vslsShareColor": {
           "type": "string",

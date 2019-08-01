@@ -27,7 +27,6 @@ suite.skip('StatusBar Tests', () => {
     //   .update('peacock.showColorInStatusBar', true, vscode.ConfigurationTarget.Global);
 
     const s = getStatusBarItem();
-    // const rc = State.recentColor;
 
     // status bar should exist
     assert.ok(!!s);

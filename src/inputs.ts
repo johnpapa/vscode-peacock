@@ -1,17 +1,7 @@
 import * as vscode from 'vscode';
-import { favoriteColorSeparator, peacockGreen, Sections } from './models';
-import { getFavoriteColors, getCurrentColorBeforeAdjustments } from './configuration';
-import { changeColor, isValidColorInput } from './color-library';
-
-export async function setPeacockColorCustomizations(colorCustomizations: any) {
-  await vscode.workspace
-    .getConfiguration()
-    .update(
-      Sections.workspacePeacockSection,
-      colorCustomizations,
-      vscode.ConfigurationTarget.Workspace,
-    );
-}
+import { favoriteColorSeparator, peacockGreen } from './models';
+import { getFavoriteColors } from './configuration';
+import { applyColor } from './apply-color';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -21,8 +11,8 @@ export async function promptForColor() {
       'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
     value: peacockGreen,
   };
-  const inputColor = await vscode.window.showInputBox(options);
-  return inputColor || '';
+  const inputColor = (await vscode.window.showInputBox(options)) || '';
+  return inputColor.trim();
 }
 
 export async function promptForFavoriteColorName(color: string) {
@@ -39,13 +29,12 @@ export async function promptForFavoriteColorName(color: string) {
   return inputName || '';
 }
 
-export async function promptForFavoriteColor(isPrimaryEnvironment: boolean = false) {
+export async function promptForFavoriteColor() {
   const { menu, values: favoriteColors } = getFavoriteColors();
   let selection = '';
-  const startingColor = getCurrentColorBeforeAdjustments();
   const options = {
     placeHolder: 'Pick a favorite color',
-    onDidSelectItem: tryColorWithPeacock(isPrimaryEnvironment),
+    onDidSelectItem: await tryColorWithPeacock(),
   };
   if (favoriteColors && favoriteColors.length) {
     selection = (await vscode.window.showQuickPick(menu, options)) || '';
@@ -53,14 +42,6 @@ export async function promptForFavoriteColor(isPrimaryEnvironment: boolean = fal
   if (selection) {
     let selectedColor = parseFavoriteColorValue(selection);
     return selectedColor || '';
-  }
-
-  if (isValidColorInput(startingColor)) {
-    // when there is no selection and startingColor, revert to starting color
-    await changeColor(startingColor, isPrimaryEnvironment);
-  } else {
-    // if no color was previously set, reset the current color to `null`
-    await setPeacockColorCustomizations(null);
   }
 
   return '';
@@ -71,9 +52,9 @@ export function parseFavoriteColorValue(text: string) {
   return text.substring(text.indexOf(sep) + sep.length + 1);
 }
 
-function tryColorWithPeacock(isPrimaryEnvironement: boolean) {
+async function tryColorWithPeacock() {
   return async (item: string) => {
-    const color = parseFavoriteColorValue(item as string);
-    return await changeColor(color, isPrimaryEnvironement);
+    const color = parseFavoriteColorValue(item);
+    return await applyColor(color);
   };
 }

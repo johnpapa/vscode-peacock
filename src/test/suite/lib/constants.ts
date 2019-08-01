@@ -16,7 +16,7 @@ export const lightenActivityBarElementAdjustments = <IPeacockElementAdjustments>
 };
 
 export const allAffectedElements = <IPeacockAffectedElementSettings>{
-  statusBar: true,
   activityBar: true,
+  statusBar: true,
   titleBar: true,
 };

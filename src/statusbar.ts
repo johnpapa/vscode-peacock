@@ -1,6 +1,9 @@
 import { StatusBarAlignment, window, StatusBarItem } from 'vscode';
-import { getShowColorInStatusBar } from './configuration';
-import { State, Commands } from './models';
+import {
+  getShowColorInStatusBar,
+  getEnvironmentAwareColor,
+} from './configuration';
+import { Commands } from './models';
 
 const _statusBarItem: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
@@ -11,17 +14,18 @@ export const getStatusBarItem = () => {
 
 export function clearStatusBar() {
   const sb = _statusBarItem;
-  // sb.text = '';
+  sb.text = '';
   sb.hide();
 }
 
 export function updateStatusBar() {
   const sb = _statusBarItem;
   const show = getShowColorInStatusBar();
-  sb.text = `$(paintcan) ${State.recentColor}`;
+  const color = getEnvironmentAwareColor();
+  sb.text = `$(paintcan) ${color}`;
   sb.command = Commands.showAndCopyCurrentColor;
-  sb.tooltip = 'Current Peacock Color';
-  if (show) {
+  sb.tooltip = 'Copy the Peacock color';
+  if (show && !!color) {
     sb.show();
   } else {
     clearStatusBar();

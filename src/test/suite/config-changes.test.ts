@@ -30,7 +30,7 @@ suite('changes to configuration', () => {
   setup(async () => {
     // This suite's tests flips these switches a lot,
     // so we reset before each test just to be sure.
-    await executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetWorkspaceColors);
     // Set the test values
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,
@@ -70,24 +70,21 @@ suite('changes to configuration', () => {
     });
 
     test('will change color when unselecting activitybar', async () => {
-      const colors1: IElementColors = getOriginalColorsForAllElements();
-      let config1 = getUserConfig();
-      await updateGlobalConfiguration(
-        AffectedSettings.ActivityBar,
-        !config1[AffectedSettings.ActivityBar],
-      );
+      const colorsBefore: IElementColors = getOriginalColorsForAllElements();
+      let configBefore = getUserConfig();
+      await updateGlobalConfiguration(AffectedSettings.ActivityBar, false);
 
       await timeout(delayInMs);
 
-      const colors2: IElementColors = getOriginalColorsForAllElements();
-      assert.ok(colors1[ElementNames.activityBar] !== colors2[ElementNames.activityBar]);
+      const colorsAfter: IElementColors = getOriginalColorsForAllElements();
+      assert.ok(colorsBefore[ElementNames.activityBar] !== colorsAfter[ElementNames.activityBar]);
       assert.ok(
-        !!config1[AffectedSettings.StatusBar] &&
-          colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
+        !!configBefore[AffectedSettings.StatusBar] &&
+          colorsBefore[ElementNames.statusBar] === colorsAfter[ElementNames.statusBar],
       );
       assert.ok(
-        !!config1[AffectedSettings.TitleBar] &&
-          colors1[ElementNames.titleBar] === colors2[ElementNames.titleBar],
+        !!configBefore[AffectedSettings.TitleBar] &&
+          colorsBefore[ElementNames.titleBar] === colorsAfter[ElementNames.titleBar],
       );
     });
 

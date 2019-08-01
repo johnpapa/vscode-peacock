@@ -7,9 +7,11 @@ import {
   StandardSettings,
   extensionShortName,
   getExtensionVersion,
+  ColorSource,
+  Sections,
 } from './models';
 import {
-  resetColorsHandler,
+  resetWorkspaceColorsHandler,
   enterColorHandler,
   changeColorToRandomHandler,
   changeColorToPeacockGreenHandler,
@@ -19,14 +21,19 @@ import {
   darkenHandler,
   lightenHandler,
   showAndCopyCurrentColorHandler,
+  removeAllPeacockColorsHandler,
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
-  getCurrentColorBeforeAdjustments,
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
+  getEnvironmentAwareColor,
+  inspectColor,
+  getCurrentColorBeforeAdjustments,
+  getPeacockColor,
+  updatePeacockColor,
 } from './configuration';
-import { changeColor } from './color-library';
+import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
@@ -44,12 +51,61 @@ export async function activate(context: vscode.ExtensionContext) {
   Logger.info(getMementos(), true, 'Mementos');
 
   registerCommands();
-  addSubscriptions();
   await initializeTheStarterSetOfFavorites();
-  await applyInitialConfiguration();
 
-  await addLiveShareIntegration(State.extensionContext);
-  await addRemoteIntegration(State.extensionContext);
+  if (workspace.workspaceFolders) {
+    Logger.info('Peacock is in a workspace, so Peacock functionality is available.');
+    /**
+     * We only run this logic if we are in a workspace
+     * because they may write peacock settings, and it will fail.
+     * This entire function will re-run when a workspace is opened.
+     */
+    await checkSurpriseMeOnStartupLogic();
+    await addLiveShareIntegration(State.extensionContext);
+    await addRemoteIntegration(State.extensionContext);
+  } else {
+    Logger.info('Peacock is not in a workspace, so Peacock functionality is not available.');
+  }
+
+  addSubscriptions(); // add these AFTER applying initial config
+
+  /**
+   * Check if we need to migrate.
+   * If we do migrate, we write to the settings,
+   * so we need to do this after we are already
+   * listening for settings changes.
+   */
+  await migrateFromMementoToSettingsAsNeeded();
+}
+
+async function migrateFromMementoToSettingsAsNeeded() {
+  /**
+   * Version 2 of Peacock stored the peacock color in a memento.
+   * Version 3 of Peacock stores the color in the settings.
+   * If the v2 memento exists, we need to get the color,
+   * remove the memento, and write the color to the settings.
+   *
+   * @deprecated since version 3.0.
+   * Will be deleted in version 4.0 and once v3.0 users have migrated
+   */
+
+  // Check for the v2 memento
+  const peacockColorMementoName = `${extensionShortName}.peacockColor`;
+  const peacockColorMemento = State.extensionContext.workspaceState.get<string>(
+    peacockColorMementoName,
+  );
+
+  // The v2 memento is gone, so no need to migrate.
+  if (!peacockColorMemento) {
+    return;
+  }
+
+  // Remove the v2 memento
+  await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
+
+  // Migrate the color that was in the v2 memento to the v3 workspace setting
+  const color = peacockColorMemento;
+  await updatePeacockColor(color);
 }
 
 function addSubscriptions() {
@@ -60,17 +116,33 @@ function addSubscriptions() {
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
-    if (checkIfPeacockSettingsChanged(e) && State.recentColor) {
+    const color = getEnvironmentAwareColor();
+    const appliedColor = getCurrentColorBeforeAdjustments();
+    if (checkIfPeacockSettingsChanged(e) && (color || appliedColor)) {
+      /**
+       * If the settings have changed
+       * AND (either we have a peacock.color/remoteColor to apply
+       *       OR we have an applied color already in the color customizations),
+       * Then we apply the "color"
+       */
       Logger.info(
-        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${State.recentColor}`,
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
-      await changeColor(State.recentColor);
+      await applyColor(color);
+
+      // Only update the color in the workspace settings
+      // if there was already a workspace setting
+      const colorSource = inspectColor();
+      if (colorSource.colorSource === ColorSource.WorkspaceValue) {
+        await updateColorSetting(color);
+      }
     }
   };
 }
 
 function registerCommands() {
-  commands.registerCommand(Commands.resetColors, resetColorsHandler);
+  commands.registerCommand(Commands.resetWorkspaceColors, resetWorkspaceColorsHandler);
+  commands.registerCommand(Commands.removeAllColors, removeAllPeacockColorsHandler);
   commands.registerCommand(Commands.saveColorToFavorites, saveColorToFavoritesHandler);
   commands.registerCommand(Commands.enterColor, enterColorHandler);
   commands.registerCommand(Commands.changeColorToRandom, changeColorToRandomHandler);
@@ -80,12 +152,6 @@ function registerCommands() {
   commands.registerCommand(Commands.darken, darkenHandler);
   commands.registerCommand(Commands.lighten, lightenHandler);
   commands.registerCommand(Commands.showAndCopyCurrentColor, showAndCopyCurrentColorHandler);
-}
-
-export async function applyInitialConfiguration() {
-  State.recentColor = getCurrentColorBeforeAdjustments();
-
-  await checkSurpriseMeOnStartupLogic();
 }
 
 export function deactivate() {
@@ -107,7 +173,7 @@ async function initializeTheStarterSetOfFavorites() {
   }
 }
 
-async function checkSurpriseMeOnStartupLogic() {
+export async function checkSurpriseMeOnStartupLogic() {
   /**
    * If the "surprise me on startup" setting is true
    * and there is no peacock color set, then choose a new random color.
@@ -115,15 +181,16 @@ async function checkSurpriseMeOnStartupLogic() {
    * as this would confuse users who choose a specific color in a
    * workspace and see it changed to the "surprise" color
    */
+  const peacockColor = getEnvironmentAwareColor();
   if (getSurpriseMeOnStartup()) {
-    if (State.recentColor) {
-      const message = `Peacock did not change the color using "surprise me on startup" because the color ${State.recentColor} was already set.`;
+    if (peacockColor) {
+      const message = `Peacock did not change the color using "surprise me on startup" because the color ${peacockColor} was already set.`;
       Logger.info(message);
       return;
     }
 
     await changeColorToRandomHandler();
-    const color = getCurrentColorBeforeAdjustments();
+    const color = getEnvironmentAwareColor();
     const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }

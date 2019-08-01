@@ -15,7 +15,8 @@ export const peacockGreen = '#42b883';
 
 export const peacockMementos = {
   favoritesVersion: `${extensionShortName}.favoritesVersion`,
-  peacockColor: `${extensionShortName}.peacockColor`,
 };
 
 export const timeout = async (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
+
+export const isObjectEmpty = (o: {}) => !Object.keys(o).length;

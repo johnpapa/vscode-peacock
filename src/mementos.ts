@@ -1,4 +1,3 @@
-import { isValidColorInput } from './color-library';
 import { peacockMementos, extensionShortName, State } from './models';
 import { Logger } from './logging';
 
@@ -8,32 +7,13 @@ export interface IMementoLog {
   value: any;
 }
 
-export async function saveGlobalMemento(mementoName: string, value: any) {
+async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
     Logger.info(
       `${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`,
     );
     await State.extensionContext.globalState.update(mementoName, value);
   }
-}
-
-async function saveWorkspaceMemento(mementoName: string, value: any) {
-  if (mementoName) {
-    Logger.info(
-      `${extensionShortName}: Saving the workspaceState ${mementoName} memento with value ${value}`,
-    );
-    await State.extensionContext.workspaceState.update(mementoName, value);
-  }
-}
-
-export async function savePeacockColorWorkspaceMemento(color: string) {
-  if (isValidColorInput(color)) {
-    await saveWorkspaceMemento(peacockMementos.peacockColor, color);
-  }
-}
-
-export function getPeacockColorWorkspaceMemento() {
-  return State.extensionContext.workspaceState.get<string>(peacockMementos.peacockColor, '');
 }
 
 export async function saveFavoritesVersionGlobalMemento(version: string) {
@@ -44,7 +24,7 @@ export function getFavoritesVersionGlobalMemento() {
   return State.extensionContext.globalState.get<string>(peacockMementos.favoritesVersion, '');
 }
 
-export async function resetMementos() {
+export async function resetFavoritesVersionMemento() {
   const ec = State.extensionContext;
 
   Logger.info(
@@ -53,9 +33,6 @@ export async function resetMementos() {
 
   // Global
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
-
-  // Workspace
-  await ec.workspaceState.update(peacockMementos.peacockColor, undefined);
 }
 
 export function getMementos() {
@@ -67,13 +44,6 @@ export function getMementos() {
     name: peacockMementos.favoritesVersion,
     type: 'globalState',
     value: ec.globalState.get(peacockMementos.favoritesVersion),
-  });
-
-  // Workspace
-  mementos.push({
-    name: peacockMementos.peacockColor,
-    type: 'workspaceState',
-    value: ec.workspaceState.get(peacockMementos.peacockColor),
   });
 
   return mementos;

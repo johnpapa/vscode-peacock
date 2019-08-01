@@ -2,15 +2,16 @@
 import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
-import { isValidColorInput, changeColor } from '../color-library';
+import { isValidColorInput } from '../color-library';
+import { applyColor } from '../apply-color';
 import { LiveShareCommands, LiveShareSettings } from './enums';
 import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
-import { getCurrentColorBeforeAdjustments, updateLiveShareColor } from '../configuration';
+import { updateLiveShareColor, getEnvironmentAwareColor } from '../configuration';
 import { State } from '../models';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   return async function changeColorOfLiveShareSession() {
-    const startingColor = getCurrentColorBeforeAdjustments();
+    const startingColor = getEnvironmentAwareColor();
     const input = await promptForFavoriteColor();
 
     if (isValidColorInput(input)) {
@@ -34,7 +35,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
       // if there was a color set prior to color picker,
       // set that color back
     } else {
-      await changeColor(startingColor);
+      await applyColor(startingColor);
     }
 
     return State.extensionContext;
@@ -56,6 +57,6 @@ export function registerLiveShareIntegrationCommands() {
 }
 
 export async function resetLiveSharePreviousColors() {
-  await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
-  await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, '');
+  await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
+  await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, undefined);
 }

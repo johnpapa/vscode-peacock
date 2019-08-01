@@ -2,18 +2,21 @@
 import * as vsls from 'vsls';
 import * as vscode from 'vscode';
 
-import { changeColor } from '../color-library';
+import { applyColor } from '../apply-color';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
-import { setPeacockColorCustomizations } from '../inputs';
 import { State } from '../models';
 import { notify } from '../notification';
 import { LiveShareSettings } from './enums';
-import { getLiveShareColor, getExistingColorCustomizations } from '../configuration';
+import {
+  getLiveShareColor,
+  getColorCustomizationConfigFromWorkspace,
+  updateWorkspaceConfiguration,
+} from '../configuration';
 
 let peacockColorCustomizations: any;
 
 export async function revertLiveShareWorkspaceColors() {
-  await setPeacockColorCustomizations(peacockColorCustomizations);
+  await updateWorkspaceConfiguration(peacockColorCustomizations);
 
   peacockColorCustomizations = null;
 }
@@ -28,7 +31,7 @@ async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
     return;
   }
 
-  await changeColor(liveShareColorSetting);
+  await applyColor(liveShareColorSetting);
 }
 
 export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise<boolean> {
@@ -60,7 +63,7 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
     return;
   }
 
-  vslsApi!.onDidChangeSession(async function onLiveShareSessionCHange(e) {
+  vslsApi!.onDidChangeSession(async e => {
     // If there isn't a session ID, then that
     // means the session has been ended.
     if (!e.session.id) {
@@ -69,7 +72,7 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
 
     // we need to update `peacockColorCustomizations` only when it is `undefined`
     // to prevent the case of multiple color changes during live share session
-    peacockColorCustomizations = await getExistingColorCustomizations();
+    peacockColorCustomizations = await getColorCustomizationConfigFromWorkspace();
 
     const isHost = e.session.role === vsls.Role.Host;
     return await setLiveShareSessionWorkspaceColors(isHost);

@@ -5,22 +5,15 @@ import {
   ReadabilityRatios,
   inactiveElementAlpha,
   ColorSettings,
-  State,
   ColorAdjustmentOptions,
   defaultAmountToDarkenLighten,
   defaultSaturation,
-  extensionShortName,
 } from './models';
 import {
-  prepareColors,
-  getExistingColorCustomizations,
+  getColorCustomizationConfigFromWorkspace,
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
-  updateWorkspaceConfiguration,
 } from './configuration';
-import { Logger } from './logging';
-import { savePeacockColorWorkspaceMemento } from './mementos';
-import { updateStatusBar } from './statusbar';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -146,62 +139,19 @@ export function getReadabilityRatio(backgroundColor = '', foregroundColor = '') 
 }
 
 export function isValidColorInput(input: string) {
-  return tinycolor(input).isValid();
-}
-
-function formatHex(color: tinycolor.Instance) {
-  return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
-}
-
-export async function changeColor(input: string, primaryEnvironment = true) {
-  // if the color input is blank, get out
-  if (!isValidColorInput(input)) {
-    return;
-  }
-
-  const backgroundHex = getBackgroundColorHex(input);
-
-  // Delete all Peacock color customizations from the object
-  // and return pre-existing color customizations (not Peacock ones)
-  const existingColors = deletePeacocksColorCustomizations();
-
-  // Get new Peacock colors
-  const newColors = prepareColors(backgroundHex);
-
-  // merge the existing colors with the new ones
-  // order is important here, so our new colors overwrite the old ones
-  const colorCustomizations: any = {
-    ...existingColors,
-    ...newColors,
-  };
-
-  await updateWorkspaceConfiguration(colorCustomizations);
-
-  // Now set the most recent color in State
-  State.recentColor = backgroundHex;
-
-  // Update the statusbar to show the color
-  updateStatusBar();
-
-  Logger.info(`${extensionShortName}: Peacock is now using ${State.recentColor}`);
-
-  if (primaryEnvironment) {
-    //} && !vscode.env.remoteName) {
-    // Save the recent color to the memento
-    // only if we're changing Peacock color,
-    // but not remote or other secondary colors
-    savePeacockColorWorkspaceMemento(State.recentColor);
-  }
-
-  return backgroundHex;
+  const isValid = typeof input === 'string' && tinycolor(input).isValid();
+  return isValid;
 }
 
 export function deletePeacocksColorCustomizations() {
-  const newColorCustomizations: any = {
-    ...getExistingColorCustomizations(),
-  };
+  const newColorCustomizations = getColorCustomizationConfigFromWorkspace();
+
   Object.values(ColorSettings).forEach(setting => {
     delete newColorCustomizations[setting];
   });
   return newColorCustomizations;
+}
+
+function formatHex(color: tinycolor.Instance) {
+  return color.getAlpha() < 1 ? color.toHex8String() : color.toHexString();
 }

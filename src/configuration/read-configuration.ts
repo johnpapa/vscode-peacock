@@ -18,6 +18,7 @@ import {
   IElementColors,
   ForegroundColors,
   defaultAmountToDarkenLighten,
+  ColorSource,
 } from '../models';
 import {
   getAdjustedColorHex,
@@ -27,8 +28,7 @@ import {
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
 } from '../color-library';
-import { RemoteSettings } from '../remote/enums';
-import { LiveShareSettings } from '../live-share/enums';
+import { LiveShareSettings } from '../live-share';
 
 const { workspace } = vscode;
 
@@ -47,17 +47,46 @@ export function getShowColorInStatusBar() {
   return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
 }
 
-export function getPeacockWorkspaceConfig() {
-  return workspace.getConfiguration(Sections.workspacePeacockSection);
+export function getColorCustomizationConfig() {
+  // This currently gets the merged color customization set.
+  // If we want to get just the ones from workspace,
+  // we should change functions to use getColorCustomizationConfigFromWorkspace
+  return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
+}
+
+export function getColorCustomizationConfigFromWorkspace() {
+  const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
+
+  if (!inspect) {
+    return {};
+  }
+
+  if (typeof inspect.workspaceValue !== 'object') {
+    return {};
+  }
+
+  const colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
+
+  return colorCustomizations;
+}
+
+export function getPeacockWorkspace() {
+  return workspace.getConfiguration(extensionShortName);
 }
 
 export function getUserConfig() {
-  return workspace.getConfiguration(Sections.userPeacockSection);
+  return workspace.getConfiguration(Sections.peacockSection);
 }
 
 export function getCurrentColorBeforeAdjustments() {
-  // Get the current color, before any adjustments were made
-  let config = getPeacockWorkspaceConfig();
+  /**
+   * Useful if we dont want the
+   *       peacock color but instead to calculate it from
+   *       the current customized colors
+   *
+   * Get the current color, before any adjustments were made
+   */
+  let config = getColorCustomizationConfig();
   const elementColors = getElementColors(config);
   let { color, adjustment } = getColorAndAdjustment(elementColors);
   let originalColor = '';
@@ -69,7 +98,7 @@ export function getCurrentColorBeforeAdjustments() {
 
 export function readConfiguration<T>(setting: AllSettings, defaultValue?: T | undefined) {
   const value: T | undefined = workspace
-    .getConfiguration(Sections.userPeacockSection)
+    .getConfiguration(Sections.peacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
 }
@@ -109,8 +138,40 @@ export function getDarkForegroundColor() {
   return readConfiguration<string>(StandardSettings.DarkForegroundColor, '');
 }
 
-export function getRemoteColor(remoteSetting: RemoteSettings) {
-  return readConfiguration<string>(remoteSetting, '');
+export function getEnvironmentAwareColor() {
+  const color = vscode.env.remoteName ? getPeacockRemoteColor() : getPeacockColor();
+  return color;
+}
+
+export function inspectColor() {
+  const setting = vscode.env.remoteName ? StandardSettings.RemoteColor : StandardSettings.Color;
+  const section = `${Sections.peacockSection}.${setting}`;
+  const config = workspace.getConfiguration().inspect(section);
+
+  let colorSource = ColorSource.None;
+  if (!config) {
+    return { colorSource };
+  }
+
+  if (config.workspaceValue) {
+    colorSource = ColorSource.WorkspaceValue;
+  } else if (config.globalValue) {
+    colorSource = ColorSource.GlobalValue;
+  } else if (config.defaultValue) {
+    colorSource = ColorSource.DefaultValue;
+  }
+
+  return { colorSource, ...config };
+}
+
+export function getPeacockColor() {
+  let color = readConfiguration<string>(StandardSettings.Color);
+  return color;
+}
+
+export function getPeacockRemoteColor() {
+  let remoteColor = readConfiguration<string>(StandardSettings.RemoteColor);
+  return remoteColor;
 }
 
 export function getLiveShareColor(liveShareSetting: LiveShareSettings) {
@@ -150,7 +211,7 @@ export function getFavoriteColors() {
 
 export function getRandomFavoriteColor() {
   const { values: favoriteColors } = getFavoriteColors();
-  const currentColor = getCurrentColorBeforeAdjustments();
+  const currentColor = getEnvironmentAwareColor();
   let newColorFromFavorites: IFavoriteColors;
   do {
     newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
@@ -336,7 +397,7 @@ function getColorAndAdjustment(elementColors: IElementColors) {
 }
 
 export function getOriginalColorsForAllElements() {
-  let config = getPeacockWorkspaceConfig();
+  let config = getColorCustomizationConfig();
 
   const elementColors = getElementColors(config);
 
@@ -357,10 +418,6 @@ export function getOriginalColorsForAllElements() {
     ),
   };
   return originalElementColors;
-}
-
-export function getExistingColorCustomizations() {
-  return workspace.getConfiguration().get(Sections.workspacePeacockSection);
 }
 
 export function hasFavorites() {

@@ -1,56 +1,52 @@
 import {
   isValidColorInput,
   getRandomColorHex,
-  changeColor,
-  deletePeacocksColorCustomizations,
   getDarkenedColorHex,
   getLightenedColorHex,
 } from './color-library';
-
+import { applyColor, unapplyColors, updateColorSetting } from './apply-color';
 import { State, peacockGreen } from './models';
 import {
-  getCurrentColorBeforeAdjustments,
   getDarkenLightenPercentage,
   getRandomFavoriteColor,
   getSurpriseMeFromFavoritesOnly,
-  updateWorkspaceConfiguration,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
+  updatePeacockColor,
+  getEnvironmentAwareColor,
+  updatePeacockRemoteColor,
+  updatePeacockRemoteColorInUserSettings,
+  updatePeacockColorInUserSettings,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
 import { resetLiveSharePreviousColors } from './live-share';
-import { resetRemotePreviousColors } from './remote';
-import { resetMementos } from './mementos';
 import { notify } from './notification';
-import { clearStatusBar } from './statusbar';
 import * as vscode from 'vscode';
 
-export async function resetColorsHandler() {
-  const colorCustomizations = deletePeacocksColorCustomizations();
-  const newColorCustomizations = isObjectEmpty(colorCustomizations)
-    ? undefined
-    : colorCustomizations;
+export async function removeAllPeacockColorsHandler() {
+  await resetWorkspaceColorsHandler();
+  await updatePeacockColorInUserSettings(undefined);
+  await updatePeacockRemoteColorInUserSettings(undefined);
+  return State.extensionContext;
+}
 
+export async function resetWorkspaceColorsHandler() {
   await resetLiveSharePreviousColors();
-  await resetRemotePreviousColors();
-  await resetMementos();
-
-  await updateWorkspaceConfiguration(newColorCustomizations);
-
-  State.recentColor = '';
-  clearStatusBar();
-
+  await updatePeacockColor(undefined);
+  await updatePeacockRemoteColor(undefined);
   return State.extensionContext;
 }
 
 export async function saveColorToFavoritesHandler() {
-  const color = getCurrentColorBeforeAdjustments();
-  const name = await promptForFavoriteColorName(color);
-  if (!name) {
-    return;
+  const color = getEnvironmentAwareColor();
+  if (color) {
+    const name = await promptForFavoriteColorName(color);
+    if (!name) {
+      return;
+    }
+    await addNewFavoriteColor(name, color);
   }
-  await addNewFavoriteColor(name, color);
   return State.extensionContext;
 }
 
@@ -62,7 +58,8 @@ export async function enterColorHandler(color?: string) {
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
-  await changeColor(input);
+  await applyColor(input);
+  await updateColorSetting(input);
   return State.extensionContext;
 }
 
@@ -83,7 +80,8 @@ export async function changeColorToRandomHandler() {
     color = getRandomColorHex();
   }
 
-  await changeColor(color);
+  await applyColor(color);
+  await updateColorSetting(color);
   return State.extensionContext;
 }
 
@@ -93,44 +91,66 @@ export async function addRecommendedFavoritesHandler() {
 }
 
 export async function changeColorToPeacockGreenHandler() {
-  await changeColor(peacockGreen);
+  await applyColor(peacockGreen);
+  await updateColorSetting(peacockGreen);
   return State.extensionContext;
 }
 
 export async function changeColorToFavoriteHandler() {
-  const input = await promptForFavoriteColor();
-  if (isValidColorInput(input)) {
-    await changeColor(input);
+  // Remember the color we started with
+  const startingColor = getEnvironmentAwareColor();
+  const favoriteColor = await promptForFavoriteColor();
+
+  if (isValidColorInput(favoriteColor)) {
+    // We have a valid Favorite color,
+    // apply it and write the new color to settings
+    await applyColor(favoriteColor);
+    await updateColorSetting(favoriteColor);
+  } else if (startingColor) {
+    // No favorite was selected.
+    // We need to re-apply the starting color
+    // and write the new color to settings
+    await applyColor(startingColor);
+    await updateColorSetting(startingColor);
+  } else {
+    // No favorite was selected. We had no color to start, either.
+    // We need re unapply the colors, and NOT write a color to settings.
+    await unapplyColors();
   }
   return State.extensionContext;
 }
 
 export async function darkenHandler() {
-  const color = getCurrentColorBeforeAdjustments();
-  const darkenLightenPercentage = getDarkenLightenPercentage();
-  const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
-  await changeColor(darkenedColor);
+  const color = getEnvironmentAwareColor();
+  if (color) {
+    const darkenLightenPercentage = getDarkenLightenPercentage();
+    const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
+    await applyColor(darkenedColor);
+    await updateColorSetting(darkenedColor);
+  }
   return State.extensionContext;
 }
 
 export async function lightenHandler() {
-  const color = getCurrentColorBeforeAdjustments();
-  const darkenLightenPercentage = getDarkenLightenPercentage();
-  const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
-  await changeColor(lightenedColor);
+  const color = getEnvironmentAwareColor();
+  if (color) {
+    const darkenLightenPercentage = getDarkenLightenPercentage();
+    const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
+    await applyColor(lightenedColor);
+    await updateColorSetting(lightenedColor);
+  }
   return State.extensionContext;
 }
 
 export async function showAndCopyCurrentColorHandler() {
-  const color = State.recentColor;
+  const color = getEnvironmentAwareColor();
+  if (!color) {
+    return;
+  }
   const msg = color
-    ? `The current Peacock color is ${color} and has been copied to your clipboard.`
+    ? `Peacock's color is ${color} and has been copied to your clipboard.`
     : 'There is no Peacock color set at this time.';
   vscode.env.clipboard.writeText(color);
   notify(msg, true);
   return State.extensionContext;
-}
-
-function isObjectEmpty(o: {}) {
-  return !Object.keys(o).length;
 }

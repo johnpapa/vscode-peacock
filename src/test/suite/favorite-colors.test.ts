@@ -9,7 +9,7 @@ import { executeCommand } from './lib/constants';
 import {
   getFavoriteColors,
   updateFavoriteColors,
-  getCurrentColorBeforeAdjustments,
+  getEnvironmentAwareColor,
 } from '../../configuration';
 
 suite('Favorite colors', () => {
@@ -27,7 +27,7 @@ suite('Favorite colors', () => {
       .returns(Promise.resolve<any>(fakeResponse));
 
     await executeCommand(Commands.changeColorToFavorite);
-    const color = getCurrentColorBeforeAdjustments();
+    const color = getEnvironmentAwareColor();
     stub.restore();
 
     const parsedResponse = parseFavoriteColorValue(fakeResponse);
@@ -46,9 +46,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    const valueBefore = getCurrentColorBeforeAdjustments();
+    const valueBefore = getEnvironmentAwareColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const valueAfter = getCurrentColorBeforeAdjustments();
+    const valueAfter = getEnvironmentAwareColor();
     stub.restore();
 
     assert.ok(valueBefore === valueAfter);
@@ -61,9 +61,9 @@ suite('Favorite colors', () => {
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));
 
-    const colorBefore = getCurrentColorBeforeAdjustments();
+    const colorBefore = getEnvironmentAwareColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const colorAfter = getCurrentColorBeforeAdjustments();
+    const colorAfter = getEnvironmentAwareColor();
     stub.restore();
 
     assert.ok(!isValidColorInput(colorAfter));
@@ -86,9 +86,9 @@ suite('Favorite colors', () => {
     // Remove favorites
     await updateFavoriteColors([]);
 
-    const colorBefore = getCurrentColorBeforeAdjustments();
+    const colorBefore = getEnvironmentAwareColor();
     await executeCommand(Commands.changeColorToFavorite);
-    const colorAfter = getCurrentColorBeforeAdjustments();
+    const colorAfter = getEnvironmentAwareColor();
     stub.restore();
 
     // Put back original favorites

@@ -8,8 +8,9 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) | [![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat-square)](#contributors)                                                                                                                         |
 | [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)                                                                                             | [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)                                                                                                |
-| [![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)                                                                                                       | [![Greenkeeper badge](https://badges.greenkeeper.io/johnpapa/vscode-peacock.svg)](https://greenkeeper.io/)                                                                                                                                |
-| [![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=vscodepeacock-github-jopapa)                                                                                                            | [![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master) |
+| [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)                                                                                           | [![Greenkeeper badge](https://badges.greenkeeper.io/johnpapa/vscode-peacock.svg)](https://greenkeeper.io/)                                                                                                                                |
+| [![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)                                                                                                       | [![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master) |
+| [![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=vscodepeacock-github-jopapa)                                                                                                            |                                                                                                                                                                                                                                           |
 
 ## Install
 
@@ -52,9 +53,8 @@ Commands can be found in the command palette. Look for commands beginning with `
 | peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                           |
 | peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color |
 | peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                |
-| peacock.remoteContainersColor       | Peacock color when in a remote with a container.                                                        |
-| peacock.remoteSshColor              | Peacock color when using remote with ssh.                                                               |
-| peacock.remoteWslColor              | Peacock color when using remote with WSL                                                                |
+| peacock.remoteColor                 | The Peacock color that will be applied to remote workspaces                                             |
+| peacock.color                       | The Peacock color that will be applied to workspaces                                                    |
 | peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                               |
 | peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                              |
 
@@ -143,18 +143,19 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 
 ## Commands
 
-| Command                                  | Description                                                             |
-| ---------------------------------------- | ----------------------------------------------------------------------- |
-| Peacock: Reset Colors                    | Removes any of the color settings from the `.vscode/settings.json` file |
-| Peacock: Enter a Color                   | Prompts you to enter a color (see [input formats](#input-formats))      |
-| Peacock: Color to Peacock Green          | Sets the color to Peacock main color, #42b883                           |
-| Peacock: Surprise me with a Random Color | Sets the color to a random color                                        |
-| Peacock: Change to a Favorite Color      | Prompts user to select from their Favorites                             |
-| Peacock: Save Current Color to Favorites | Save Current Color to their Favorites                                   |
-| Peacock: Add Recommended Favorites       | Add the recommended favorites to user settings (override same names)    |
-| Peacock: Darken                          | Darkens the current color by `darkenLightenPercentage`                  |
-| Peacock: Lighten                         | Lightens the current color by `darkenLightenPercentage`                 |
-| Peacock: Show and Copy Current Color     | Shows the current color and copies it to the clipboard                  |
+| Command                                         | Description                                                                                                                        |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Peacock: Reset Workspace Colors                 | Removes any of the color settings from the `.vscode/settings.json` file. If colors exist in the user settings, they may be applied |
+| Peacock: Remove All Global and Workspace Colors | Removes all of the color settings from both the Workspace `.vscode/settings.json` file and the Global user `settings.json` file.   |
+| Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))                                                                 |
+| Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                      |
+| Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                   |
+| Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites                                                                                        |
+| Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                              |
+| Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
+| Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
+| Peacock: Lighten                                | Lightens the current color by `darkenLightenPercentage`                                                                            |
+| Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
 
 ## Integrations
 
@@ -182,15 +183,9 @@ Peacock integrates with the Remote Development features of VS Code.
 - Learn more about [VS Code Remote Development](https://code.visualstudio.com/blogs/2019/05/02/remote-development?wt.mc_id=vscodepeacock-github-jopapa)
 - Get the [VS Code Remote Development Extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack&wt.mc_id=vscodepeacock-github-jopapa)
 
-Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color depending on the remote context (container, ssh, wsl).
+Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) extension is installed and adds commands that allow the user to change color when in a remote context. All remote contexts share the same color (wsl, ssh, containers).
 
-| Command                                   | Description                                                                         |
-| ----------------------------------------- | ----------------------------------------------------------------------------------- |
-| Peacock: Change Remote Color (SSH)        | Prompts user to select a color for the SSH remote context from the Favorites        |
-| Peacock: Change Remote Color (Containers) | Prompts user to select a color for the Containers remote context from the Favorites |
-| Peacock: Change Remote Color (WSL)        | Prompts user to select a color for the WSL remote context from the Favorites        |
-
-When a workspace is opened in a remote context, the selected workspace color will be applied.
+When a workspace is opened in a remote context, if a `peacock.remoteColor` is set, it will be applied. Otherwise, the regular `peacock.color` is applied.
 
 VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Peacock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
 
@@ -326,12 +321,11 @@ This list may change from version to version depending on the Peacock authoring 
 
 ### Mementos
 
-Peacock takes advantage of a series of mementos (values stored between sessions and not in settings). Some are global that affect all VS Code instances on the computer. Some are local to the workspace on the computer.
+Peacock takes advantage of a mementos (values stored between sessions and not in settings).
 
-| Name                             | Type      | Description                                                                                                             |
-| -------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| peacockMementos.peacockColor     | Workspace | The most recently used Peacock color, but not remote or other secondary colors. Ideal when moving in and out of remote. |
-| peacockMementos.favoritesVersion | Global    | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings              |
+| Name                             | Type   | Description                                                                                                |
+| -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
+| peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
 
 ![Sketchnote](./resources/peacock-sketchnote.png)
 

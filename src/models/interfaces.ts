@@ -45,6 +45,7 @@ export interface IPeacockElementAdjustments {
 
 export interface IPeacockSettings {
   affectedElements: IPeacockAffectedElementSettings;
+  affectAccentBorders: boolean;
   elementAdjustments: IPeacockElementAdjustments;
   favoriteColors: IFavoriteColors[];
   keepBadgeColor: boolean;
@@ -55,6 +56,8 @@ export interface IPeacockSettings {
   showColorInStatusBar: boolean;
   surpriseMeFromFavoritesOnly: boolean;
   surpriseMeOnStartup: boolean;
+  color: string;
+  remoteColor: string;
 }
 
 export interface IElementColors {

@@ -1,5 +1,4 @@
-import { RemoteSettings } from '../remote/enums';
-import { LiveShareSettings } from '../live-share/enums';
+import { LiveShareSettings } from '../live-share';
 
 export enum StandardSettings {
   ElementAdjustments = 'elementAdjustments',
@@ -12,6 +11,8 @@ export enum StandardSettings {
   ShowColorInStatusBar = 'showColorInStatusBar',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
+  RemoteColor = 'remoteColor',
+  Color = 'color',
 }
 
 export enum AffectedSettings {
@@ -22,10 +23,11 @@ export enum AffectedSettings {
   TabActiveBorder = 'affectTabActiveBorder',
 }
 
-export type AllSettings = StandardSettings | AffectedSettings | RemoteSettings | LiveShareSettings;
+export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
 
 export enum Commands {
-  resetColors = 'peacock.resetColors',
+  resetWorkspaceColors = 'peacock.resetWorkspaceColors',
+  removeAllColors = 'peacock.removeAllColors',
   saveColorToFavorites = 'peacock.saveColorToFavorites',
   enterColor = 'peacock.enterColor',
   changeColorToRandom = 'peacock.changeColorToRandom',
@@ -71,8 +73,8 @@ export enum ColorAdjustmentOptions {
 }
 
 export enum Sections {
-  workspacePeacockSection = 'workbench.colorCustomizations',
-  userPeacockSection = 'peacock',
+  peacockColorCustomizationSection = 'workbench.colorCustomizations',
+  peacockSection = 'peacock',
 }
 
 export enum ForegroundColors {
@@ -85,4 +87,11 @@ export enum ReadabilityRatios {
   UserInterfaceLow = 2,
   UserInterface = 3,
   Text = 4.5,
+}
+
+export enum ColorSource {
+  WorkspaceValue = 'workspaceValue',
+  GlobalValue = 'globalValue',
+  DefaultValue = 'defaultValue',
+  None = 'none',
 }

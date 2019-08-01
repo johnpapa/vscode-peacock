@@ -13,7 +13,7 @@ import { isValidColorInput } from '../../../color-library';
 import { executeCommand } from '../../../test/suite/lib/constants';
 import { LiveShareCommands, LiveShareSettings } from '../../enums';
 import {
-  getPeacockWorkspaceConfig,
+  getColorCustomizationConfig,
   updateLiveShareColor,
   getLiveShareColor,
 } from '../../../configuration';
@@ -30,7 +30,7 @@ suite('Live Share Integration', () => {
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     const settingValue = getLiveShareColor(LiveShareSettings.VSLSShareColor) || '';
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
     stub.restore();
 
     assert.ok(isValidColorInput(settingValue));
@@ -42,7 +42,7 @@ suite('Live Share Integration', () => {
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareGuest);
     const settingValue = getLiveShareColor(LiveShareSettings.VSLSJoinColor) || '';
-    await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSJoinColor, undefined);
     stub.restore();
 
     assert.ok(isValidColorInput(settingValue));
@@ -64,11 +64,11 @@ suite('Live Share Integration', () => {
     await vslsApi.share();
     await timeout(1000);
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(isValidColorInput(value));
     assert.equal(value, azureBlue);
@@ -91,10 +91,10 @@ suite('Live Share Integration', () => {
     await vslsApi.end();
     await timeout(1000);
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(!isValidColorInput(value));
     assert.ok(!value);
@@ -114,11 +114,11 @@ suite('Live Share Integration', () => {
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(isValidColorInput(value));
     assert.equal(value, azureBlue);
@@ -148,14 +148,14 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(isValidColorInput(value));
     assert.equal(value, color2);
 
     await vslsApi.end();
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 
   test('Workspace color is reverted after Live Share session when updated the color multiple times.', async () => {
@@ -199,13 +199,13 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(!isValidColorInput(value));
     assert.ok(!value);
 
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 
   test('Workspace color is reverted to a preset color after Live Share session when updated the color multiple times.', async () => {
@@ -253,13 +253,13 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getPeacockWorkspaceConfig();
+    let config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(isValidColorInput(value));
     assert.equal(value, startColor);
 
-    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, '');
+    await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 });
 

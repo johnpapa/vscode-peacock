@@ -9,12 +9,12 @@ import {
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
-import { applyInitialConfiguration } from '../../extension';
 import {
   getOriginalColorsForAllElements,
   updateAffectedElements,
   updateSurpriseMeOnStartup,
 } from '../../configuration';
+import { checkSurpriseMeOnStartupLogic } from '../../extension';
 
 suite('Surprise me on startup', () => {
   let originalValues = <IPeacockSettings>{};
@@ -24,7 +24,7 @@ suite('Surprise me on startup', () => {
   setup(async () => await setupTest());
 
   setup(async () => {
-    await executeCommand(Commands.resetColors);
+    await executeCommand(Commands.resetWorkspaceColors);
     await updateAffectedElements(<IPeacockAffectedElementSettings>{
       statusBar: true,
       activityBar: true,
@@ -57,7 +57,7 @@ suite('Surprise me on startup', () => {
 
   async function testColorsBeforeAndAfterInitialConfiguration(assertEquality: EqualityAssertion) {
     const colors1: IElementColors = getOriginalColorsForAllElements();
-    await applyInitialConfiguration();
+    await checkSurpriseMeOnStartupLogic();
     const colors2: IElementColors = getOriginalColorsForAllElements();
     assertEquality(colors1[ElementNames.activityBar], colors2[ElementNames.activityBar]);
     assertEquality(colors1[ElementNames.statusBar], colors2[ElementNames.statusBar]);
