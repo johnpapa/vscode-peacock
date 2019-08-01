@@ -8,6 +8,7 @@ import {
   extensionShortName,
   getExtensionVersion,
   ColorSource,
+  Sections,
 } from './models';
 import {
   resetWorkspaceColorsHandler,
@@ -29,6 +30,8 @@ import {
   getEnvironmentAwareColor,
   inspectColor,
   getCurrentColorBeforeAdjustments,
+  getPeacockColor,
+  updatePeacockColor,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
@@ -65,6 +68,44 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   addSubscriptions(); // add these AFTER applying initial config
+
+  /**
+   * Check if we need to migrate.
+   * If we do migrate, we write to the settings,
+   * so we need to do this after we are already
+   * listening for settings changes.
+   */
+  await migrateFromMementoToSettingsAsNeeded();
+}
+
+async function migrateFromMementoToSettingsAsNeeded() {
+  /**
+   * Version 2 of Peacock stored the peacock color in a memento.
+   * Version 3 of Peacock stores the color in the settings.
+   * If the v2 memento exists, we need to get the color,
+   * remove the memento, and write the color to the settings.
+   *
+   * @deprecated since version 3.0.
+   * Will be deleted in version 4.0 and once v3.0 users have migrated
+   */
+
+  // Check for the v2 memento
+  const peacockColorMementoName = `${extensionShortName}.peacockColor`;
+  const peacockColorMemento = State.extensionContext.workspaceState.get<string>(
+    peacockColorMementoName,
+  );
+
+  // The v2 memento is gone, so no need to migrate.
+  if (!peacockColorMemento) {
+    return;
+  }
+
+  // Remove the v2 memento
+  await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
+
+  // Migrate the color that was in the v2 memento to the v3 workspace setting
+  const color = peacockColorMemento;
+  await updatePeacockColor(color);
 }
 
 function addSubscriptions() {
