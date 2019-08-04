@@ -19,4 +19,5 @@ export const peacockMementos = {
 
 export const timeout = async (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const isObjectEmpty = (o: {}) => !Object.keys(o).length;
+export const isObjectEmpty = (o: {} | undefined) =>
+  typeof o === 'object' && Object.keys(o).length === 0;
