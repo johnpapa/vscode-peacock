@@ -5,14 +5,12 @@ import {
   peacockGreen,
   azureBlue,
   Commands,
-  ColorSettings,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
   getOriginalColorsForAllElements,
   updatePeacockColorInUserSettings,
   updatePeacockColor,
-  getColorCustomizationConfigFromWorkspace,
   getPeacockColor,
 } from '../../configuration';
 import { executeCommand } from './lib/constants';

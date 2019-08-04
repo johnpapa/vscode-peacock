@@ -1,6 +1,4 @@
-import vscode = require('vscode');
-import sinon = require('sinon');
-import assert = require('assert');
+import * as assert from 'assert';
 import * as vsls from 'vsls';
 
 import { IPeacockSettings, Commands, ColorSettings, timeout, azureBlue } from '../../../models';
@@ -10,7 +8,7 @@ import {
   setupTest,
 } from '../../../test/suite/lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../../color-library';
-import { executeCommand } from '../../../test/suite/lib/constants';
+import { executeCommand, stubQuickPick } from '../../../test/suite/lib/constants';
 import { LiveShareCommands, LiveShareSettings } from '../../enums';
 import {
   getColorCustomizationConfig,
@@ -262,6 +260,3 @@ suite('Live Share Integration', () => {
     await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
   });
 });
-
-const stubQuickPick = async (fakeResponse: string) =>
-  await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));

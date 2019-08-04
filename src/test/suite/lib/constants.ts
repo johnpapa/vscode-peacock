@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as sinon from 'sinon';
 import { IPeacockAffectedElementSettings, IPeacockElementAdjustments } from '../../../models';
 
 export const executeCommand = vscode.commands.executeCommand;
@@ -20,3 +21,8 @@ export const allAffectedElements = <IPeacockAffectedElementSettings>{
   statusBar: true,
   titleBar: true,
 };
+
+export const stubQuickPick = async (fakeResponse: string) =>
+  await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));
+export const stubInputBox = async (fakeResponse: string) =>
+  await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve<any>(fakeResponse));

@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
+import * as sinon from 'sinon';
 import * as assert from 'assert';
 import { IPeacockSettings, Commands, peacockGreen, azureBlue } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { getEnvironmentAwareColor } from '../../configuration';
-import sinon = require('sinon');
 
 suite('Current Color Tests', () => {
   let originalValues = <IPeacockSettings>{};

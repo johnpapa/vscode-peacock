@@ -1,6 +1,6 @@
-import vscode = require('vscode');
-import sinon = require('sinon');
-import assert = require('assert');
+import * as vscode from 'vscode';
+import * as sinon from 'sinon';
+import * as assert from 'assert';
 
 import {
   IPeacockSettings,
@@ -12,7 +12,7 @@ import {
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
-import { executeCommand } from './lib/constants';
+import { executeCommand, stubQuickPick } from './lib/constants';
 
 import {
   getColorCustomizationConfig,
@@ -225,6 +225,3 @@ suite('Remote Integration', () => {
     assert.equal(value, peacockGreen);
   });
 });
-
-const stubQuickPick = async (fakeResponse: string) =>
-  await sinon.stub(vscode.window, 'showQuickPick').returns(Promise.resolve<any>(fakeResponse));

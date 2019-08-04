@@ -1,5 +1,6 @@
-import vscode = require('vscode');
-import sinon = require('sinon');
+import * as vscode from 'vscode';
+import * as sinon from 'sinon';
+import * as assert from 'assert';
 import {
   IPeacockSettings,
   IPeacockAffectedElementSettings,
@@ -18,7 +19,6 @@ import {
   getColorCustomizationConfig,
   updateAffectedElements,
 } from '../../configuration';
-import assert = require('assert');
 import { getColorBrightness, getReadabilityRatio } from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
