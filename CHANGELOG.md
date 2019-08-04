@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 3.0.1
+
+Fixes
+
+- When settings.json doesn't exist, and surprise me on startup is true, Peacock was writing an empty file for settings.json. It shouldn't. So it now checks if it is trying to write an empty object AND there is no workbench.colorCustomizations section already, it won't write.
+
 ## 3.0.0
 
 Migration
