@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import {
   IPeacockSettings,
   IPeacockElementAdjustments,
@@ -13,7 +14,6 @@ import {
   updateAffectedElements,
 } from '../../configuration';
 import { executeCommand, allAffectedElements } from './lib/constants';
-import assert = require('assert');
 import { getLightenedColorHex, getDarkenedColorHex, getColorBrightness } from '../../color-library';
 
 suite('Element adjustments', () => {

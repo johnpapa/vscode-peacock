@@ -1,9 +1,9 @@
-import vscode = require('vscode');
-import sinon = require('sinon');
+import * as vscode from 'vscode';
+import * as sinon from 'sinon';
+import * as assert from 'assert';
 import { IPeacockSettings, Commands, azureBlue } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { parseFavoriteColorValue } from '../../inputs';
-import assert = require('assert');
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 import {

@@ -1,8 +1,8 @@
+import * as assert from 'assert';
 import { IPeacockSettings, Commands, ColorSettings, peacockGreen } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { getColorCustomizationConfig, getDarkenLightenPercentage } from '../../configuration';
 import { executeCommand } from './lib/constants';
-import assert = require('assert');
 import { getLightenedColorHex, getDarkenedColorHex } from '../../color-library';
 
 suite('Darken/Lighten commands', () => {
