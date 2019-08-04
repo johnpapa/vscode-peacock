@@ -11,9 +11,10 @@ import {
   AffectedSettings,
   starterSetOfFavorites,
   getExtensionVersion,
+  isObjectEmpty,
 } from '../models';
 import { Logger } from '../logging';
-import { getFavoriteColors } from './read-configuration';
+import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
 import { notify } from '../notification';
 import { LiveShareSettings } from '../live-share';
 
@@ -30,6 +31,22 @@ export async function updateGlobalConfiguration<T>(setting: AllSettings, value?:
 }
 
 export async function updateWorkspaceConfiguration(colorCustomizations: {} | undefined) {
+  if (isObjectEmpty(colorCustomizations)) {
+    // We are receiving an empty object, so let's make it undefined.
+    // This means we can skip writing the workbench.colorCustomizations section
+    // if one doesnt already exist.
+    colorCustomizations = undefined;
+  }
+
+  if (!colorCustomizations) {
+    // If it is undefined and the file doesn't exist, let's just get out.
+    // Otherwise, we risk writing an empty file, which is annoying.
+    const existingWorkspace = getColorCustomizationConfigFromWorkspace();
+    if (isObjectEmpty(existingWorkspace)) {
+      return;
+    }
+  }
+
   Logger.info(
     `${extensionShortName}: Updating the workspace with the following color customizations`,
   );
