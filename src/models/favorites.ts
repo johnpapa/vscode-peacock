@@ -5,6 +5,7 @@ export const starterSetOfFavorites = [
   { name: 'C# Purple', value: '#68217A' },
   { name: 'Gatsby Purple', value: '#639' },
   { name: 'Go Cyan', value: '#5dc9e2' },
+  { name: 'Ionic Blue', value: '#3880FF' },
   { name: 'Java Blue-Gray', value: '#557c9b' },
   { name: 'JavaScript Yellow', value: '#f9e64f' },
   { name: 'Mandalorian Blue', value: '#1857a4' },
