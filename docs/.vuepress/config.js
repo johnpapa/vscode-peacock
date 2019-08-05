@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Peacock for Visual Studio Code',
+  title: 'Peacock',
   description: 'Coloring the World, One VS Code at a Time',
   ga: 'your-ga-id',
   markdown: {
@@ -22,7 +22,7 @@ module.exports = {
       { text: 'ChangeLog', link: '/changelog/' },
       { text: '@john_papa', link: 'https://twitter.com/john_papa' },
     ],
-    logo: '/resources/peacock-icon-small.png',
+    logo: '/assets/peacock-icon-small.png',
     // Assumes GitHub. Can also be a full GitLab url.
     repo: 'johnpapa/vscode-peacock',
     // Customising the header label

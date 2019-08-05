@@ -10,7 +10,7 @@ meta:
 
 # Peacock for Visual Studio Code
 
-![Peacock Icon](/resources/peacock-icon-small.png 'Peacock')
+![Peacock Icon](/assets/peacock-icon-small.png 'Peacock')
 
 ## Overview
 
@@ -35,7 +35,7 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 1. Click **Install**
 1. Click **Reload**, if required
 
-![Peacock Windows](/resources/peacock-windows.png 'Peacock Windows')
+![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
 
 ## Features
 
@@ -100,7 +100,7 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
 
 When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
-![Animated GIF](/resources/named-colors.gif)
+![Animated GIF](/assets/named-colors.gif)
 
 #### Save Favorite Color
 
@@ -112,7 +112,7 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. The choices are:
 
-![Animated GIF](/resources/affected-settings.jpg)
+![Animated GIF](/assets/affected-settings.jpg)
 
 ### Element Adjustments
 
@@ -135,7 +135,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
 
 This results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
-![Animated GIF](/resources/element-adjustments.png)
+![Animated GIF](/assets/element-adjustments.png)
 
 ### Keep Foreground Color
 
@@ -177,7 +177,7 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 
 ### VS Live Share Integration
 
-![Animated GIF](/resources/peacock-live-share-demo.gif)
+![Animated GIF](/assets/peacock-live-share-demo.gif)
 
 Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
 
@@ -203,7 +203,7 @@ Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/i
 
 When a workspace is opened in a remote context, if a `peacock.remoteColor` is set, it will be applied. Otherwise, the regular `peacock.color` is applied.
 
-![Remote Integration with Peacock](/resources/peacock-remote.gif)
+![Remote Integration with Peacock](/assets/peacock-remote.gif)
 
 VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Peacock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
 
@@ -295,7 +295,7 @@ On macOS there are additional settings that can impact the Title Bar style and f
 
 A successful and recommended settings configuration to colorize the Title Bar is:
 
-![Title Bar Settings](/resources/title-bar-coloring-settings.png)
+![Title Bar Settings](/assets/title-bar-coloring-settings.png)
 
 ### How Foreground Colors are Calculated
 
@@ -345,7 +345,7 @@ Peacock takes advantage of a mementos (values stored between sessions and not in
 | -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
 | peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
 
-![Sketchnote](/resources/peacock-sketchnote.png)
+![Sketchnote](/assets/peacock-sketchnote.png)
 
 ## Try the Code
 

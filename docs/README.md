@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: resources/element-adjustments.png
+heroImage: assets/hero.png
 actionText: Get Started →
 actionLink: /guide/
 features:
@@ -12,5 +12,3 @@ features:
     details: Color your Visual Studio Code editor uniquely when you are in a Live Share session as a Guest or a Host
 footer: MIT Licensed | Copyright © 2019-present John Papa
 ---
-
-![Peacock Icon](/resources/peacock-icon-small.png 'Peacock')
