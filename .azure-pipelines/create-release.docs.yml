@@ -12,11 +12,11 @@ steps:
       replaceExistingArchive: true
       #verbose: # Optional
       #quiet: # Optional
-    condition: and(succeeded())
+    condition: succeeded()
 
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Docs Pipeline Artifact'
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     # Only create the release for Linux on Node 12
-    condition: and(succeeded())
+    condition: succeeded()

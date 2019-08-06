@@ -5,7 +5,7 @@ steps:
       archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       destinationFolder: '$(Build.ArtifactStagingDirectory)/extracted'
       cleanDestinationFolder: true
-    condition: and(succeeded())
+    condition: succeeded()
 
   - task: AzureCLI@1
     displayName: 'Upload the files to Azure Storage'
@@ -14,4 +14,4 @@ steps:
       scriptLocation: 'scriptPath'
       scriptPath: '.azure-pipelines/upload-docs.sh'
       arguments: '$(Build.ArtifactStagingDirectory)/extracted'
-    condition: and(succeeded())
+    condition: succeeded()
