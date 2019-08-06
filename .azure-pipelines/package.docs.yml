@@ -20,3 +20,9 @@ steps:
       targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     # Only create the release for Linux on Node 12
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
+
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      destinationFolder: '$(Build.ArtifactStagingDirectory)/extracted'
+      cleanDestinationFolder: true
