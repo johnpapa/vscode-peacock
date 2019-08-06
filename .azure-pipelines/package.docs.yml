@@ -4,12 +4,12 @@ steps:
   - task: ArchiveFiles@2
     displayName: 'Create Docs Pipeline Artifact'
     inputs:
-      rootFolderOrFile: 'docs/.vuepress/dist'
+      rootFolderOrFile: '$(Build.SourcesDirectory)/docs/.vuepress/dist'
       includeRootFolder: false
       archiveType: 'zip' # Options: zip, 7z, tar, wim
       #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      #replaceExistingArchive: true
+      replaceExistingArchive: true
       #verbose: # Optional
       #quiet: # Optional
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))

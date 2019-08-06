@@ -9,14 +9,15 @@ pr:
     # must quote since "*" is a YAML reserved character; we want a string
 
 jobs:
-- job: Linux
-  pool:
-    name: Hosted Ubuntu 1604
-    demands: npm
-  strategy:
-    matrix:
-      node_12_x:
-        node_version: 12.x
+  - job: Linux
+    pool:
+      name: Hosted Ubuntu 1604
+      demands: npm
+    strategy:
+      matrix:
+        node_12_x:
+          node_version: 12.x
 
-  steps:
-    - template: .azure-pipelines/build.docs.yml
+    steps:
+      - template: .azure-pipelines/build.docs.yml
+      - template: .azure-pipelines/package.docs.yml
