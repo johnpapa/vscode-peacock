@@ -10,11 +10,11 @@ meta:
 
 # About Peacock
 
-Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
+Subtly change the color of your Visual Studio (VS) Code workspace. Ideal when you have multiple VS Code instances, use Visual Studio Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
 ## Why Peacock
 
-Have you ever found yourself switching between multiple instances of VS Code, while trying to find which one you were looking for? I often have multiple instances open for coding, writing (like this article), and pretty much everything I do with text. Being able to quickly identify each instance is super helpful.
+Have you ever found yourself switching between multiple instances of VS Code, while trying to find which one you were looking for? I often have multiple instances open for coding, writing, and pretty much everything I do with text. Being able to quickly identify each instance is super helpful.
 
 I used to switch the colors of a few key aspects of VS Code manually so I could differentiate them. I was using this technique at conferences where I presented and found it helpful for the audience so they could identify my code too. I finally decided to automate this. That's where [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) came from.
 
