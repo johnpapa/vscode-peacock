@@ -21,7 +21,7 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 ## Documentation
 
-Read the extensive [documentation here](https://peacockcode.dev)
+Read the extensive <a href="https://peacockcode.dev" target="_blank"> documentation here </a>
 
 ![Peacock Windows](./resources/hero.png 'Peacock Windows')
 
