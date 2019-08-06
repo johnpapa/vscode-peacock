@@ -22,7 +22,7 @@ steps:
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
 
   - task: ExtractFiles@1
-    displayName: 'Extract what we jsut zipped - because'
+    displayName: 'Extract what we just zipped - because'
     inputs:
       archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       destinationFolder: '$(Build.ArtifactStagingDirectory)/extracted'
@@ -35,3 +35,4 @@ steps:
       azureSubscription: 'john.papa(cfd12dd7-4872-4b83-8cd8-2ed6083047d7)'
       scriptLocation: 'scriptPath'
       scriptPath: '.azure-pipelines/upload-docs.sh'
+      arguments: '$(Build.ArtifactStagingDirectory)/extracted'
