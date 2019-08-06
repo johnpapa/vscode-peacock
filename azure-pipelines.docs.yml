@@ -20,4 +20,4 @@ jobs:
 
     steps:
       - template: .azure-pipelines/build.docs.yml
-      - template: .azure-pipelines/package.docs.yml
+      - template: .azure-pipelines/release.docs.yml
