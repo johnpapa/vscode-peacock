@@ -1,0 +1,17 @@
+steps:
+  - task: ExtractFiles@1
+    displayName: 'Extract what we just zipped - because'
+    inputs:
+      archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      destinationFolder: '$(Build.ArtifactStagingDirectory)/extracted'
+      cleanDestinationFolder: true
+    condition: and(succeeded())
+
+  - task: AzureCLI@1
+    displayName: 'Upload the files to Azure Storage'
+    inputs:
+      azureSubscription: 'john.papa(cfd12dd7-4872-4b83-8cd8-2ed6083047d7)'
+      scriptLocation: 'scriptPath'
+      scriptPath: '.azure-pipelines/upload-docs.sh'
+      arguments: '$(Build.ArtifactStagingDirectory)/extracted'
+    condition: and(succeeded())
