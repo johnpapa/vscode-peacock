@@ -1,8 +1,10 @@
 $accentColor = #00b3e6
 $textColor = #111
 $borderColor = #00b3e6
+$borderAccentColor = #42b883
 $codeBgColor = #011627
 $arrowBgColor = #00b3e6
+$lightTextColor = #fff
 
 //2c3e50
 
@@ -17,13 +19,14 @@ a.repo-link
 a.nav-link
 a.nav-link.router-link-active
 svg.icon.outbound
-  color: #fff
+  color: $lightTextColor
   &:hover
-    color: #00b3e6
+    color: $accentColor
 
 .page .theme-default-content
   h2
   h3
+  h4
     border-left: 16px solid $borderColor
     border-bottom: 1px solid $borderColor
     padding-top: 2px
@@ -33,8 +36,49 @@ svg.icon.outbound
     a.header-anchor
       padding-left: 16px
     margin-top: 48px
+  h3
+    border-left: 8px solid $borderColor
+    padding-left: 16px
+  h4
+    border-left: none
+    padding-left: 0
 
 .sidebar-link.active
   border-left: 8px $accentColor solid
 .sidebar-sub-headers a.sidebar-link
   border-left: none
+
+.theme-default-content code
+  background-color: #00b3e622
+  letter-spacing: 2px
+
+td
+  line-height: 22px
+
+.line-number
+  color: $accentColor
+
+.sidebar-button
+  color: $lightTextColor
+
+@media (max-width: 719px)
+  .sidebar
+    .nav-links
+      span.site-name.can-hide
+      .nav-item
+      a.repo-link
+      a.nav-link
+      a.nav-link.router-link-active
+      svg.icon.outbound
+        color: $textColor
+        &:hover
+          color: $accentColor
+
+.page-edit .edit-link a
+  color: #777
+  &::before
+    content: "{ "
+  &::after
+    content: " }"
+  &:hover
+    color: $accentColor

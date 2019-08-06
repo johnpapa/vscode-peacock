@@ -16,8 +16,8 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 ## Install
 
-1. Open **Extensions** sideBar panel in Visual Studio Code. `View → Extensions`
-1. Search for `Peacock`
+1. Open **Extensions** sideBar panel in Visual Studio Code via the menu item `View → Extensions`
+1. Search for **Peacock**
 1. Click **Install**
 1. Click **Reload**, if required
 
@@ -25,7 +25,7 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 ## Features
 
-Commands can be found in the command palette. Look for commands beginning with `Peacock:`
+Commands can be found in the command palette. Look for commands beginning with "Peacock:"
 
 - Change the color of [Affected Elements](#Affected-Elements) (see `peacock.affect*` in the [Settings](#Settings) section) to
   - [user defined color](#Input-Formats)
@@ -62,7 +62,7 @@ Commands can be found in the command palette. Look for commands beginning with `
 
 ### Favorite Colors
 
-After setting 1 or more colors (hex or named) in the user setting for `peacock.favoriteColors`, you can select `Peacock: Change to a Favorite Color` and you will be prompted with the list from `peacock.favoriteColors` from user settings.
+After setting 1 or more colors (hex or named) in the user setting for `peacock.favoriteColors`, you can select **Peacock: Change to a Favorite Color** and you will be prompted with the list from `peacock.favoriteColors` from user settings.
 
 ```text
 Gatsby Purple -> #123456
@@ -160,6 +160,8 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
 
 ## Integrations
+
+Peacock integrates with other extensions, as described in this section.
 
 ### VS Live Share Integration
 
