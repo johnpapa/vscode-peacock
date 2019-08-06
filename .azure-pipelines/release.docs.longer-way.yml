@@ -36,3 +36,4 @@ steps:
       scriptLocation: 'scriptPath'
       scriptPath: '.azure-pipelines/upload-docs.sh'
       arguments: '$(Build.ArtifactStagingDirectory)/extracted'
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
