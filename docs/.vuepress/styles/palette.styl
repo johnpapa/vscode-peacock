@@ -1,8 +1,10 @@
 $accentColor = #00b3e6
-$textColor = #2c3e50
+$textColor = #111
 $borderColor = #00b3e6
 $codeBgColor = #011627
 $arrowBgColor = #00b3e6
+
+//2c3e50
 
 header.navbar
 header.navbar .links
@@ -24,9 +26,15 @@ svg.icon.outbound
   h3
     border-left: 16px solid $borderColor
     border-bottom: 1px solid $borderColor
+    padding-top: 2px
+    padding-bottom: 6px
     padding-left: 8px
     padding-right: 16px
     a.header-anchor
       padding-left: 16px
     margin-top: 48px
-    padding-top: 2px
+
+.sidebar-link.active
+  border-left: 8px $accentColor solid
+.sidebar-sub-headers a.sidebar-link
+  border-left: none

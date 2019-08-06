@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Peacock',
-  description: 'Coloring the World, One VS Code at a Time',
+  description: 'Coloring your world, one Code editor at a time',
   ga: 'your-ga-id',
   markdown: {
     lineNumbers: true,
