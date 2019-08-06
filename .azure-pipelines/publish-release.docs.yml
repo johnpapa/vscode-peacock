@@ -9,7 +9,7 @@ steps:
   - task: ExtractFiles@1
     displayName: 'Extract what we just zipped - because'
     inputs:
-      archiveFilePatterns:  ‘$(System.ArtifactsDirectory)/*.zip'
+      archiveFilePatterns:  '$(System.ArtifactsDirectory)/*.zip'
       destinationFolder: '$(Build.ArtifactStagingDirectory)/extracted'
       cleanDestinationFolder: true
     condition: succeeded()
