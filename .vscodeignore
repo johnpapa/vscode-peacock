@@ -27,3 +27,7 @@ coverage/
 out-cov/
 .eslintrc
 .prettierrc
+docs
+testworkspace
+webpack.config.js
+.prettierrc.js

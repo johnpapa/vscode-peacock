@@ -302,6 +302,8 @@
     }
   },
   "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "package": "npx vsce package",
     "publish": "npx vsce publish",
     "vscode:prepublish": "webpack --mode production",
