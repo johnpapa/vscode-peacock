@@ -6,5 +6,3 @@ az storage blob upload-batch \
   --account-name papapeacockstorage \
   -s $SOURCE \
   --pattern '*'
-
-echo $SOURCE
