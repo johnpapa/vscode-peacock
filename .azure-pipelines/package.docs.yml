@@ -34,6 +34,6 @@ steps:
     inputs:
       azureSubscription: 'john.papa(cfd12dd7-4872-4b83-8cd8-2ed6083047d7)'
       scriptLocation: 'inlineScript'
-      inlineScript: 'az storage blob upload-batch -d $web --account-name papapeacockstorage -s '$(Build.ArtifactStagingDirectory)/extracted' --pattern *
+      inlineScript: 'az storage blob upload-batch -d $web --account-name papapeacockstorage -s '$(Build.ArtifactStagingDirectory)/extracted' --pattern '*'
 
 
