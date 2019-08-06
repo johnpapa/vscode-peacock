@@ -1,0 +1,22 @@
+steps:
+  # Archive files
+  # Compress files into .7z, .tar.gz, or .zip
+  - task: ArchiveFiles@2
+    displayName: 'Create Docs Pipeline Artifact'
+    inputs:
+      rootFolderOrFile: 'docs/.vuepress/dist'
+      includeRootFolder: false
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      #replaceExistingArchive: true
+      #verbose: # Optional
+      #quiet: # Optional
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Docs Pipeline Artifact'
+    inputs:
+      targetPath: $(Build.BuildId).zip
+    # Only create the release for Linux on Node 12
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
