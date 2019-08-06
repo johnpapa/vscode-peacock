@@ -5,7 +5,7 @@ title: Guide
 description: Documentation guide for the Visual Studio Code Peacock extension
 meta:
   - name: keywords
-  - content: vscode "visual studio code" peacock theme extension documentation docs guide help
+  - content: vscode "visual studio code" peacock theme extension documentation docs guide help "get started"
 ---
 
 # Peacock for Visual Studio Code
