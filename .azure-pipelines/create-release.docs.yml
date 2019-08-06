@@ -14,9 +14,20 @@ steps:
       #quiet: # Optional
     condition: succeeded()
 
-  - task: PublishPipelineArtifact@0
-    displayName: 'Publish Docs Pipeline Artifact'
+  # - task: PublishPipelineArtifact@0
+  #   displayName: 'Publish Docs Pipeline Artifact'
+  #   inputs:
+  #     targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+  #   condition: succeeded()
+
+  # Publish build artifacts
+  # Publish build artifacts to Azure Pipelines or a Windows file share
+  - task: PublishBuildArtifacts@1
     inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    # Only create the release for Linux on Node 12
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      artifactName: 'MyDocsOutput'
+      #publishLocation: 'Container' # Options: container, filePath
+      #targetPath: # Required when publishLocation == FilePath
+      #parallel: false # Optional
+      #parallelCount: # Optional
     condition: succeeded()

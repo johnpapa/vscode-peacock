@@ -10,9 +10,6 @@ steps:
       targetPath: release.vsix
     # Only create the release for Linux on Node 12
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
-    #
-    #
-    #
 # Instead of running this task and npm install and build again,
 # let's just create the vsix in a previous task to save time.
 # If one of them fails, the entire build fails anyway

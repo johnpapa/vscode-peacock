@@ -27,7 +27,7 @@ stages:
 
   - stage: Release_the_docs
     jobs:
-      - job: Linux
+      - job: Push_to_Storage
         pool:
           name: Hosted Ubuntu 1604
         strategy:
