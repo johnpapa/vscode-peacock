@@ -10,7 +10,7 @@ pr:
     # must quote since "*" is a YAML reserved character; we want a string
 
 stages:
-  - stage: Build the Extension
+  - stage: Build_the_Extension
     jobs:
     - job: OS_and_Platform
       strategy:
