@@ -22,16 +22,18 @@ steps:
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
 
   - task: ExtractFiles@1
+    displayName: 'Extract what we jsut zipped - because'
     inputs:
       archiveFilePatterns: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       destinationFolder: '$(Build.ArtifactStagingDirectory)/extracted'
       cleanDestinationFolder: true
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
 
-  - task: AzureFileCopy@3
+- task: AzureCLI@1
+    displayName: 'Upload the files to Azure Storage'
     inputs:
-      SourcePath: '$(Build.ArtifactStagingDirectory)/extracted'
       azureSubscription: 'john.papa(cfd12dd7-4872-4b83-8cd8-2ed6083047d7)'
-      Destination: 'AzureBlob'
-      storage: 'papapeacockstorage'
-      ContainerName: '$web'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az storage blob upload-batch -d $web --account-name papapeacockstorage -s '$(Build.ArtifactStagingDirectory)/extracted' --pattern *'
+
+
