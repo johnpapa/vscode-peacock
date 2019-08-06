@@ -2,6 +2,7 @@ steps:
   - task: DownloadBuildArtifacts@0
     inputs:
       buildType: 'current'
+      artifactName: 'MyDocsOutput'
       downloadType: 'single'
       downloadPath: '$(System.ArtifactsDirectory)'
 
