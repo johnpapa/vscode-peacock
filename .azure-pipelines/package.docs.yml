@@ -17,6 +17,6 @@ steps:
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Docs Pipeline Artifact'
     inputs:
-      targetPath: $(Build.BuildId).zip
+      targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     # Only create the release for Linux on Node 12
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
