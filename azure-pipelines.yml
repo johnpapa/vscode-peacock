@@ -9,52 +9,54 @@ pr:
     - '*'
     # must quote since "*" is a YAML reserved character; we want a string
 
-jobs:
-- job: Linux
-  pool:
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    name: Hosted Ubuntu 1604
-    demands: npm
-  strategy:
-    matrix:
-      node_10_x:
-        node_version: 10.x
-      node_12_x:
-        node_version: 12.x
+stages:
+  - stage: Build_the_Extension
+    jobs:
+    - job: Linux
+      pool:
+        # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
+        name: Hosted Ubuntu 1604
+        demands: npm
+      strategy:
+        matrix:
+          node_10_x:
+            node_version: 10.x
+          node_12_x:
+            node_version: 12.x
 
-  steps:
-  - template: .azure-pipelines/build.yml
-  - template: .azure-pipelines/lint.yml
-  - template: .azure-pipelines/test.yml
-  - template: .azure-pipelines/package.yml
+      steps:
+      - template: .azure-pipelines/build.yml
+      - template: .azure-pipelines/lint.yml
+      - template: .azure-pipelines/test.yml
+      - template: .azure-pipelines/package.yml
 
-- job: Windows
-  pool:
-    name: Hosted VS2017
-    demands: npm
-  strategy:
-    matrix:
-      node_10_x:
-        node_version: 10.x
-      node_12_x:
-        node_version: 12.x
-  steps:
-  - template: .azure-pipelines/build.yml
-  - template: .azure-pipelines/lint.yml
-  - template: .azure-pipelines/test.yml
+    - job: Windows
+      pool:
+        name: Hosted VS2017
+        demands: npm
+      strategy:
+        matrix:
+          node_10_x:
+            node_version: 10.x
+          node_12_x:
+            node_version: 12.x
+      steps:
+      - template: .azure-pipelines/build.yml
+      - template: .azure-pipelines/lint.yml
+      - template: .azure-pipelines/test.yml
 
-- job: macOS
-  pool:
-    name: Hosted macOS
-    demands: npm
-  strategy:
-    matrix:
-      node_10_x:
-        node_version: 10.x
-      node_12_x:
-        node_version: 12.x
-  steps:
-  - template: .azure-pipelines/build.yml
-  - template: .azure-pipelines/lint.yml
-  - template: .azure-pipelines/test.yml
+    - job: macOS
+      pool:
+        name: Hosted macOS
+        demands: npm
+      strategy:
+        matrix:
+          node_10_x:
+            node_version: 10.x
+          node_12_x:
+            node_version: 12.x
+      steps:
+      - template: .azure-pipelines/build.yml
+      - template: .azure-pipelines/lint.yml
+      - template: .azure-pipelines/test.yml
 
