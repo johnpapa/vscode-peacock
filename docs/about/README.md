@@ -29,5 +29,3 @@ I'm often working on multiple code projects an articles I am writing in markdown
 I decided to automate this. Once I had a working extension completed, I created a simple animated gif and shared it on twitter to see if anyone else was interested. Then I went to bed. I woke up he next morning to a lot of positive reactions than from the community (thank you). I also received many great contributions already (thank you again!).
 
 If you are interested in trying out Peacock, you can [find it here in the marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa).
-
-`shayne`
