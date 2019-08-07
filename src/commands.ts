@@ -5,7 +5,7 @@ import {
   getLightenedColorHex,
 } from './color-library';
 import { applyColor, unapplyColors, updateColorSetting } from './apply-color';
-import { State, peacockGreen } from './models';
+import { State, peacockGreen, docsUri } from './models';
 import {
   getDarkenLightenPercentage,
   getRandomFavoriteColor,
@@ -28,6 +28,11 @@ export async function removeAllPeacockColorsHandler() {
   await resetWorkspaceColorsHandler();
   await updatePeacockColorInUserSettings(undefined);
   await updatePeacockRemoteColorInUserSettings(undefined);
+  return State.extensionContext;
+}
+
+export async function showDocumentationHandler() {
+  const ableToOpen = await vscode.env.openExternal(docsUri);
   return State.extensionContext;
 }
 

@@ -35,6 +35,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "peacock.docs",
+        "title": "Open the Documentation",
+        "category": "Peacock"
+      },
+      {
         "command": "peacock.resetWorkspaceColors",
         "title": "Reset Workspace Colors",
         "category": "Peacock"
@@ -112,6 +117,9 @@
     ],
     "menus": {
       "commandPalette": [
+        {
+          "command": "peacock.docs"
+        },
         {
           "command": "peacock.changeColorOfLiveShareHost",
           "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
