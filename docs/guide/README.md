@@ -158,6 +158,7 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
 | Peacock: Lighten                                | Lightens the current color by `darkenLightenPercentage`                                                                            |
 | Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
+| Peacock: Show the Documentation                 | Opens the Peacock documentation web site in a browser                                                                              |
 
 ## Integrations
 
