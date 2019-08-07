@@ -8,7 +8,6 @@ import {
   extensionShortName,
   getExtensionVersion,
   ColorSource,
-  Sections,
 } from './models';
 import {
   resetWorkspaceColorsHandler,
@@ -22,6 +21,7 @@ import {
   lightenHandler,
   showAndCopyCurrentColorHandler,
   removeAllPeacockColorsHandler,
+  showDocumentationHandler,
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -30,7 +30,6 @@ import {
   getEnvironmentAwareColor,
   inspectColor,
   getCurrentColorBeforeAdjustments,
-  getPeacockColor,
   updatePeacockColor,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
@@ -141,6 +140,7 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
 }
 
 function registerCommands() {
+  commands.registerCommand(Commands.showDocumentation, showDocumentationHandler);
   commands.registerCommand(Commands.resetWorkspaceColors, resetWorkspaceColorsHandler);
   commands.registerCommand(Commands.removeAllColors, removeAllPeacockColorsHandler);
   commands.registerCommand(Commands.saveColorToFavorites, saveColorToFavoritesHandler);

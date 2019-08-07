@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -34,6 +34,11 @@
   "main": "./dist/extension",
   "contributes": {
     "commands": [
+      {
+        "command": "peacock.docs",
+        "title": "Open the Documentation",
+        "category": "Peacock"
+      },
       {
         "command": "peacock.resetWorkspaceColors",
         "title": "Reset Workspace Colors",
@@ -112,6 +117,9 @@
     ],
     "menus": {
       "commandPalette": [
+        {
+          "command": "peacock.docs"
+        },
         {
           "command": "peacock.changeColorOfLiveShareHost",
           "when": "workspaceFolderCount != 0 && peacock:liveshare == true"

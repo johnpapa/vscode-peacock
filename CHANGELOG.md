@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 3.1.0
+
+Fixes
+
+- Added a command to show the Peacock documentation web site <https://peacockcode.dev>
+
 ## 3.0.1
 
 Fixes
