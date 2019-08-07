@@ -5,7 +5,7 @@ import { IPeacockSettings, Commands, docsUri } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 
-suite('Basic Extension Tests', () => {
+suite('Documentation Tests', () => {
   let originalValues = <IPeacockSettings>{};
 
   suiteSetup(async () => await setupTestSuite(originalValues));
