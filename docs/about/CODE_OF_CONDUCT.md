@@ -1,3 +1,12 @@
+---
+title: Code of Conduct
+# We can even add meta tags to the page! This sets the keywords meta tag.
+# <meta name="keywords" content="my SEO keywords"/>
+description: Code of Conduct guide for the Visual Studio Code Peacock extension
+meta:
+  - name: keywords
+  - content: vscode "visual studio code" peacock theme extension Code of Conduct
+---
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge

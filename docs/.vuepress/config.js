@@ -18,16 +18,16 @@ module.exports = {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' },
+      { text: 'ChangeLog', link: '/changelog/' },
       {
         text: 'About',
         items: [
-          { link: '/about/' },
-          { link: '/about/code-of-conduct.md' },
-          { link: '/about/contributions.md' },
-          { link: '/about/license.md' },
+          { text: 'About', link: '/about/history.md' },
+          { text: 'Code of Conduct', link: '/about/code_of_conduct.md' },
+          { text: 'Contributing', link: '/about/contributing.md' },
+          { text: 'License', link: '/about/license.md' },
         ],
       },
-      { text: 'ChangeLog', link: '/changelog/' },
       { text: '@john_papa', link: 'https://twitter.com/john_papa' },
     ],
     logo: '/assets/peacock-icon-small.png',

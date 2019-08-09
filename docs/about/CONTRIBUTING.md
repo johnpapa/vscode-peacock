@@ -1,4 +1,13 @@
-# Contributing to vscode-peacock
+---
+title: Contributing
+# We can even add meta tags to the page! This sets the keywords meta tag.
+# <meta name="keywords" content="my SEO keywords"/>
+description: Conributions guide for the Visual Studio Code Peacock extension
+meta:
+  - name: keywords
+  - content: vscode "visual studio code" peacock theme extension contributions
+---
+# Contributing
 
 We would love for you to contribute and help make it even better
 than it is today! As a contributor, here are the guidelines we would like you
