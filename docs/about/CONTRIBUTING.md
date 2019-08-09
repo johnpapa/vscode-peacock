@@ -21,7 +21,7 @@ to follow:
 
 ## <a name="coc" > </a> Code of Conduct
 
-Help us keep this project open and inclusive.Please read and follow our [Code of Conduct](/code-of-conduct).
+Help us keep this project open and inclusive.Please read and follow our [Code of Conduct](./code_of_conduct).
 
 ## <a name="issue" > </a> Found an Issue?
 
@@ -63,7 +63,7 @@ You can file new issues by providing the above information [here](https://github
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-- Search[GitHub](https://github.com/johnpapa/vscode-peacock/pulls) for an open or closed PR
+- Search [GitHub](https://github.com/johnpapa/vscode-peacock/pulls) for an open or closed PR
   that relates to your submission.You don't want to duplicate effort.
 
   - Make your changes in a new git fork:
