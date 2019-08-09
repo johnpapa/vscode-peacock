@@ -18,7 +18,15 @@ module.exports = {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' },
-      { text: 'About', link: '/about/' },
+      {
+        text: 'About',
+        items: [
+          { link: '/about/' },
+          { link: '/about/code-of-conduct.md' },
+          { link: '/about/contributions.md' },
+          { link: '/about/license.md' },
+        ],
+      },
       { text: 'ChangeLog', link: '/changelog/' },
       { text: '@john_papa', link: 'https://twitter.com/john_papa' },
     ],
