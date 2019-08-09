@@ -1,3 +1,12 @@
+---
+title: License
+# We can even add meta tags to the page! This sets the keywords meta tag.
+# <meta name="keywords" content="my SEO keywords"/>
+description: License for the Visual Studio Code Peacock extension
+meta:
+  - name: keywords
+  - content: vscode "visual studio code" peacock theme extension license
+---
     MIT License
 
     Copyright (c) JohnPapa.net, LLC. All rights reserved.

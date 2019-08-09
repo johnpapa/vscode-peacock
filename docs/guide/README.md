@@ -27,12 +27,12 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Commands can be found in the command palette. Look for commands beginning with "Peacock:"
 
-- Change the color of [Affected Elements](#Affected-Elements) (see `peacock.affect*` in the [Settings](#Settings) section) to
-  - [user defined color](#Input-Formats)
+- Change the color of [Affected Elements](#affected-elements) (see `peacock.affect*` in the [Settings](#settings) section) to
+  - [user defined color](#input-formats)
   - a random color
-- Select a user-defined color from your [Favorite Colors](#Favorite-Colors)
-- Save a user-defined color with the [Save Favorite Color](#Save-Favorite-Color)
-- [Adjust the coloring of affected elements](#Element-Adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
+- Select a user-defined color from your [Favorite Colors](#favorite-colors)
+- Save a user-defined color with the [Save Favorite Color](#save-favorite-color)
+- [Adjust the coloring of affected elements](#element-adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
 - Integrates with [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa).
 - Integrates with [VS Code Remote](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack&wt.mc_id=vscodepeacock-github-jopapa).
@@ -139,7 +139,7 @@ If this setting is `true` and there is no peacock color set, then Peacock will c
 
 ### Lighten and Darken
 
-You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#Commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `darkenLightenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
+You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `darkenLightenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
 
 There are key bindings for the lighten command `alt+cmd+=` and for darken command `alt+cmd+-`, to make it easier to adjust the colors.
 
@@ -225,6 +225,8 @@ All formats offer flexible data validation:
 ## Roadmap
 
 There are many features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
+
+See these pages for details on [contributions](/contributions) and our [code of conduct](/code-of-conduct).
 
 ## Changes
 

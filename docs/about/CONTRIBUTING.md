@@ -1,4 +1,13 @@
-# Contributing to vscode-peacock
+---
+title: Contributing
+# We can even add meta tags to the page! This sets the keywords meta tag.
+# <meta name="keywords" content="my SEO keywords"/>
+description: Conributions guide for the Visual Studio Code Peacock extension
+meta:
+  - name: keywords
+  - content: vscode "visual studio code" peacock theme extension contributions
+---
+# Contributing
 
 We would love for you to contribute and help make it even better
 than it is today! As a contributor, here are the guidelines we would like you
@@ -12,7 +21,7 @@ to follow:
 
 ## <a name="coc" > </a> Code of Conduct
 
-Help us keep this project open and inclusive.Please read and follow our [Code of Conduct](code_of_conduct /).
+Help us keep this project open and inclusive.Please read and follow our [Code of Conduct](./code_of_conduct).
 
 ## <a name="issue" > </a> Found an Issue?
 
@@ -43,7 +52,7 @@ chances of your issue being dealt with quickly:
   - **Version** - what version is affected (e.g. 0.1.2)
     - **Motivation for or Use Case** - explain what are you trying to do and why the current behavior is a bug for you
       - **Browsers and Operating System** - is this a problem with all browsers?
-- **Reproduce the Error** - provide a live example [Runnable][runnable]) or a unambiguous set of steps
+- **Reproduce the Error** - provide a live example or a unambiguous set of steps
   - **Related Issues** - has a similar issue been reported before?
 - **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
   causing the problem (line of code or commit)
@@ -54,7 +63,7 @@ You can file new issues by providing the above information [here](https://github
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-- Search[GitHub](https://github.com/johnpapa/vscode-peacock/pulls) for an open or closed PR
+- Search [GitHub](https://github.com/johnpapa/vscode-peacock/pulls) for an open or closed PR
   that relates to your submission.You don't want to duplicate effort.
 
   - Make your changes in a new git fork:
