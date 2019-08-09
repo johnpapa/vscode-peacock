@@ -52,7 +52,7 @@ chances of your issue being dealt with quickly:
   - **Version** - what version is affected (e.g. 0.1.2)
     - **Motivation for or Use Case** - explain what are you trying to do and why the current behavior is a bug for you
       - **Browsers and Operating System** - is this a problem with all browsers?
-- **Reproduce the Error** - provide a live example [Runnable][runnable]) or a unambiguous set of steps
+- **Reproduce the Error** - provide a live example or a unambiguous set of steps
   - **Related Issues** - has a similar issue been reported before?
 - **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
   causing the problem (line of code or commit)
