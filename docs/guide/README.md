@@ -94,6 +94,20 @@ When you apply a color you enjoy, you can go to the workspace `settings.json` an
 
 The `Peacock: Save Current Color as Favorite Color` feature allows you to save the currently set color as a favorite color, and prompts you to name it.
 
+### Set Default Colors
+
+Setting `"peacock.color"` or `"peacock.remoteColor"` in the user settings.json can be done manually. If set, peacock will use that color as the default color to colorize VS Code.
+
+#### Considerations:
+
+* this can only be set or unset manually.
+* this will make every vs code instance that doesnt have a color in their workspace use the default color
+* this could be annoying, use wisely (this is why it is not set via any command)
+
+#### Why does this exist at all then?
+
+* Good question. The setting is important in the workspace and vs code merges settings across user and workspace settings. So it must exist in all of them, even tho peacock really mostly cares about the workspace. This is why the user setting is not set by default.
+
 ### Affected Elements
 
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. The choices are:
