@@ -31,16 +31,13 @@ import {
   inspectColor,
   getCurrentColorBeforeAdjustments,
   updatePeacockColor,
+  getFavoriteColors,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
-import {
-  saveFavoritesVersionGlobalMemento,
-  getFavoritesVersionGlobalMemento,
-  getMementos,
-} from './mementos';
+import { saveFavoritesVersionGlobalMemento, getMementos } from './mementos';
 
 const { commands, workspace } = vscode;
 
@@ -159,12 +156,15 @@ export function deactivate() {
 }
 
 async function initializeTheStarterSetOfFavorites() {
-  let starterSetOfFavoritesVersion = getFavoritesVersionGlobalMemento();
-
   // If the version has changed, we write the current set of favorites to user settings.json,
   // merging them with any the user has created on their own
   const currentVersion = getExtensionVersion();
-  if (starterSetOfFavoritesVersion !== currentVersion) {
+  // TODO: Revisit how we merge favorites
+  // For now we'll just add the starter set of favorites one time.
+  // If there are favorites, do not write new ones.
+  // We'll revisit this later so we do not overwrite favorites.
+  const { values: favoritesValues } = getFavoriteColors();
+  if (!favoritesValues.length) {
     await writeRecommendedFavoriteColors();
     await saveFavoritesVersionGlobalMemento(currentVersion);
   } else {

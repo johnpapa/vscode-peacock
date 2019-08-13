@@ -17,6 +17,7 @@ All notable changes to the code will be documented in this file.
 Fixes
 
 - Added a command to show the Peacock documentation web site <https://peacockcode.dev>
+- Writing Favorites - For now we'll just add the starter set of favorites one time. If there are favorites, do not write new ones. We'll revisit this later so we do not overwrite favorites.
 
 ## 3.0.1
 
