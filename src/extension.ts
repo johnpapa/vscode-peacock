@@ -91,16 +91,23 @@ async function migrateFromMementoToSettingsAsNeeded() {
     peacockColorMementoName,
   );
 
+  let derivedColor = '';
   // The v2 memento is gone, so no need to migrate.
   if (!peacockColorMemento) {
-    return;
+    /**
+     * If there is no memento, check if there is a
+     * color set in the 'old style' w/o the setting peacock.color.
+     * If there is, then let's grab it and set it.
+     */
+    derivedColor = getCurrentColorBeforeAdjustments();
   }
 
-  // Remove the v2 memento
+  // Remove the v2 memento (it's ok if it doesnt exist)
   await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
 
-  // Migrate the color that was in the v2 memento to the v3 workspace setting
-  const color = peacockColorMemento;
+  // Migrate the color that was in the v2 memento
+  // or the derived color to the v3 workspace setting
+  const color = peacockColorMemento || derivedColor;
   await updatePeacockColor(color);
 }
 
