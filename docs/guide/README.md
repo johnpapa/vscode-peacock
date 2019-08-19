@@ -336,7 +336,17 @@ Peacock takes advantage of a mementos (values stored between sessions and not in
 | -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
 | peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
 
-![Sketchnote](/assets/peacock-sketchnote.png)
+## Migration
+
+Migration notes between versions will be documented here.
+
+### To Version 3+
+
+Version 3+ of Peacock stores the color in the settings `peacock.color`. When migrating from version 2.5, the peacock color was in a memento. When migrating from version < 2.5, the color was not stored, but can often be derived through a calculation by grabbing the color from one of the `workbench.colorCustomizations` that Peacock uses.
+
+Once the color is determined, peacock removes the memento, and writes the color to the settings `peacock.color`. Fixes [#230](https://github.com/johnpapa/vscode-peacock/issues/230) and addresses [#258](https://github.com/johnpapa/vscode-peacock/issues/258)
+
+This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it.
 
 ## Try the Code
 
@@ -350,3 +360,5 @@ Then you can run the debugger for the launch configuration `Run Extension`. Set 
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=peacock-github-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?wt.mc_id=peacock-github-jopapa)
 - [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
+
+![Sketchnote](/assets/peacock-sketchnote.png)
