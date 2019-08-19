@@ -348,6 +348,42 @@ Once the color is determined, peacock removes the memento, and writes the color 
 
 This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it.
 
+This logic is marked as deprecated but will not be removed until version 4.0 is released and enough time ahas passed reasonably for people to migrate.
+
+Examples:
+
+1. If this is detected at startup with `#ff0`, then the `peacock.color` will bet set to match it.
+
+```json
+// .vscode/settings.json
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#ff0"
+  }
+}
+```
+
+2. If this is detected at startup and there is a peacock memento, then the `peacock.color` will set set to match the memento color.
+
+```json
+// .vscode/settings.json
+{}
+```
+
+3. If this is detected at startup and there is no peacock memento, no migration will occur.
+
+```json
+// .vscode/settings.json
+{}
+```
+
+4. If there already is a `peacock.color`, no migration will occur.
+
+```json
+// .vscode/settings.json
+{}
+```
+
 ## Try the Code
 
 If you want to try the extension out start by cloning this repo, `cd` into the folder, and then run `npm install`.
