@@ -13,8 +13,7 @@ import {
 const faveName = 'TEST FAVE NAME';
 
 suite('Save favorite color', () => {
-  let originalValues = <IPeacockSettings>{};
-
+  const originalValues = {} as IPeacockSettings;
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());

@@ -17,7 +17,7 @@ import {
 import { checkSurpriseMeOnStartupLogic } from '../../extension';
 
 suite('Surprise me on startup', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -25,11 +25,11 @@ suite('Surprise me on startup', () => {
 
   setup(async () => {
     await executeCommand(Commands.resetWorkspaceColors);
-    await updateAffectedElements(<IPeacockAffectedElementSettings>{
+    await updateAffectedElements({
       statusBar: true,
       activityBar: true,
       titleBar: true,
-    });
+    } as IPeacockAffectedElementSettings);
   });
 
   test('when not set has no effect if no customizations exist', async () => {

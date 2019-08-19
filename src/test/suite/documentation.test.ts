@@ -6,7 +6,7 @@ import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardo
 import { executeCommand } from './lib/constants';
 
 suite('Documentation Tests', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));

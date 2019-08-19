@@ -24,7 +24,7 @@ const remoteSection = `${extensionShortName}.${StandardSettings.RemoteColor}`;
 const localSection = `${extensionShortName}.${StandardSettings.Color}`;
 
 suite('Manual Editing of Settings', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
   const yellow = `#ffff00`;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -48,21 +48,21 @@ suite('Manual Editing of Settings', () => {
         });
 
         test('color-customizations should be BLUE', async () => {
-          let appliedColor = getCurrentColorBeforeAdjustments();
+          const appliedColor = getCurrentColorBeforeAdjustments();
           assert.equal(appliedColor, azureBlue);
         });
 
         test('user changes User Settings remoteColor to YELLOW, color should remain BLUE', async () => {
           await updateRemoteColorInUserSettings(yellow);
           await applyColor(getPeacockRemoteColor());
-          let appliedColor = getCurrentColorBeforeAdjustments();
+          const appliedColor = getCurrentColorBeforeAdjustments();
           assert.equal(appliedColor, azureBlue);
         });
 
         test('user removes User Settings remoteColor, color should remain BLUE', async () => {
           await updateRemoteColorInUserSettings(undefined);
           await applyColor(getPeacockRemoteColor());
-          let appliedColor = getCurrentColorBeforeAdjustments();
+          const appliedColor = getCurrentColorBeforeAdjustments();
           assert.equal(appliedColor, azureBlue);
         });
       },
@@ -82,21 +82,21 @@ suite('Manual Editing of Settings', () => {
         });
 
         test('color-customizations should be GREEN', async () => {
-          let appliedColor = getCurrentColorBeforeAdjustments();
+          const appliedColor = getCurrentColorBeforeAdjustments();
           assert.equal(appliedColor, peacockGreen);
         });
 
         test('user changes User Settings remoteColor to YELLOW, color-customizations should be YELLOW', async () => {
           await updateRemoteColorInUserSettings(yellow);
           await applyColor(getPeacockRemoteColor());
-          let appliedColor = getCurrentColorBeforeAdjustments();
+          const appliedColor = getCurrentColorBeforeAdjustments();
           assert.equal(appliedColor, yellow);
         });
 
         test('user removes User Settings remoteColor, color-customizations should be unapplied', async () => {
           await updateRemoteColorInUserSettings(undefined);
           await applyColor(getPeacockRemoteColor());
-          let appliedColor = getCurrentColorBeforeAdjustments();
+          const appliedColor = getCurrentColorBeforeAdjustments();
           assert.ok(!appliedColor);
         });
       },
@@ -114,21 +114,21 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('color-customizations should be BLUE', async () => {
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be BLUE', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
 
       test('user removes Workspace Settings color, color-customizations should be unapplied', async () => {
         await updateLocalColorInWorkspace(undefined);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.ok(!appliedColor);
       });
     });
@@ -145,21 +145,21 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('color-customizations should be undefined', async () => {
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.ok(!appliedColor);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be YELLOW', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, yellow);
       });
 
       test('user changes Workspace Settings color to BLUE, color-customizations should be BLUE', async () => {
         await updateLocalColorInWorkspace(azureBlue);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
     });
@@ -180,21 +180,21 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('color-customizations should be BLUE', async () => {
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
 
       test('user changes User Settings color to YELLOW, color should remain BLUE', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
 
       test('user removes User Settings color, color should remain BLUE', async () => {
         await updateLocalColorInUserSettings(undefined);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
     });
@@ -211,21 +211,21 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('color-customizations should be GREEN', async () => {
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, peacockGreen);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be YELLOW', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, yellow);
       });
 
       test('user removes User Settings color, color-customizations should be unapplied', async () => {
         await updateLocalColorInUserSettings(undefined);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.ok(!appliedColor);
       });
     });
@@ -242,21 +242,21 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('color-customizations should be BLUE', async () => {
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be BLUE', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
 
       test('user removes Workspace Settings color, color-customizations should be unapplied', async () => {
         await updateLocalColorInWorkspace(undefined);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.ok(!appliedColor);
       });
     });
@@ -273,21 +273,21 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('color-customizations should be undefined', async () => {
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.ok(!appliedColor);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be YELLOW', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, yellow);
       });
 
       test('user changes Workspace Settings color to BLUE, color-customizations should be BLUE', async () => {
         await updateLocalColorInWorkspace(azureBlue);
         await applyColor(getPeacockColor());
-        let appliedColor = getCurrentColorBeforeAdjustments();
+        const appliedColor = getCurrentColorBeforeAdjustments();
         assert.equal(appliedColor, azureBlue);
       });
     });

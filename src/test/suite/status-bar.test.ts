@@ -5,7 +5,7 @@ import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardo
 import { getStatusBarItem } from '../../statusbar';
 
 suite.skip('StatusBar Tests', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
   let extension: vscode.Extension<any>;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -13,7 +13,7 @@ suite.skip('StatusBar Tests', () => {
   setup(async () => await setupTest());
 
   suiteSetup(() => {
-    extension = <vscode.Extension<any>>getExtension();
+    extension = getExtension() as vscode.Extension<any>;
   });
 
   test('status bar', async () => {

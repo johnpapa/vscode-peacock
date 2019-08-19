@@ -17,7 +17,7 @@ import {
 } from '../../../configuration';
 
 suite('Live Share Integration', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -62,7 +62,7 @@ suite('Live Share Integration', () => {
     await vslsApi.share();
     await timeout(1000);
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
@@ -89,7 +89,7 @@ suite('Live Share Integration', () => {
     await vslsApi.end();
     await timeout(1000);
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
@@ -112,7 +112,7 @@ suite('Live Share Integration', () => {
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     await vslsApi.end();
@@ -146,7 +146,7 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(isValidColorInput(value));
@@ -197,7 +197,7 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(!isValidColorInput(value));
@@ -251,7 +251,7 @@ suite('Live Share Integration', () => {
 
     await timeout(1000);
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground] as string;
 
     assert.ok(isValidColorInput(value));

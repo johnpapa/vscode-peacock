@@ -21,7 +21,7 @@ import {
 const delayInMs = 500;
 
 suite('changes to configuration', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -32,17 +32,17 @@ suite('changes to configuration', () => {
     // so we reset before each test just to be sure.
     await executeCommand(Commands.resetWorkspaceColors);
     // Set the test values
-    await updateAffectedElements(<IPeacockAffectedElementSettings>{
+    await updateAffectedElements({
       statusBar: true,
       activityBar: true,
       titleBar: true,
-    });
+    } as IPeacockAffectedElementSettings);
   });
 
   suite('when starting with no colors in the workspace config', () => {
     test('have no effect', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
-      let config1 = getUserConfig();
+      const config1 = getUserConfig();
       await updateGlobalConfiguration(
         AffectedSettings.ActivityBar,
         !config1[AffectedSettings.ActivityBar],
@@ -71,7 +71,7 @@ suite('changes to configuration', () => {
 
     test('will change color when unselecting activitybar', async () => {
       const colorsBefore: IElementColors = getOriginalColorsForAllElements();
-      let configBefore = getUserConfig();
+      const configBefore = getUserConfig();
       await updateGlobalConfiguration(AffectedSettings.ActivityBar, false);
 
       await timeout(delayInMs);
@@ -90,7 +90,7 @@ suite('changes to configuration', () => {
 
     test('will change color when unselecting statusbar', async () => {
       const colors1: IElementColors = getOriginalColorsForAllElements();
-      let config1 = getUserConfig();
+      const config1 = getUserConfig();
       await updateGlobalConfiguration(
         AffectedSettings.StatusBar,
         !config1[AffectedSettings.StatusBar],
@@ -111,7 +111,7 @@ suite('changes to configuration', () => {
     });
 
     test('will change color when unselecting titlebar', async () => {
-      let config1 = getUserConfig();
+      const config1 = getUserConfig();
       const colors1: IElementColors = getOriginalColorsForAllElements();
       await updateGlobalConfiguration(
         AffectedSettings.TitleBar,

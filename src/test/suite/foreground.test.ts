@@ -12,7 +12,7 @@ import {
 } from '../../configuration';
 
 suite('Foreground color', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => {
     await setupTestSuite(originalValues);
@@ -64,7 +64,7 @@ function createForegroundTest(fakeResponse: string, expectedValue: string) {
 
     // fire the command
     await executeCommand(Commands.enterColor);
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.activityBar_foreground];
     stub.restore();
 

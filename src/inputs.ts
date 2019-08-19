@@ -40,7 +40,7 @@ export async function promptForFavoriteColor() {
     selection = (await vscode.window.showQuickPick(menu, options)) || '';
   }
   if (selection) {
-    let selectedColor = parseFavoriteColorValue(selection);
+    const selectedColor = parseFavoriteColorValue(selection);
     return selectedColor || '';
   }
 

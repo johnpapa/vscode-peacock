@@ -27,7 +27,7 @@ import { applyColor } from '../../apply-color';
 
 
 suite('Remote Integration', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
   const azureBlueResponse = `Azure Blue -> ${azureBlue}`;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -46,7 +46,7 @@ suite('Remote Integration', () => {
     const peacockRemoteColor = getEnvironmentAwareColor();
     remoteNameStub.restore();
 
-    let config = getPeacockWorkspace();
+    const config = getPeacockWorkspace();
     const remoteColorInSettings = config[StandardSettings.RemoteColor];
     const colorInSettings = config[StandardSettings.Color];
 
@@ -74,7 +74,7 @@ suite('Remote Integration', () => {
     const peacockLocalColor = getEnvironmentAwareColor();
     remoteNameStub2.restore();
 
-    let config = getPeacockWorkspace();
+    const config = getPeacockWorkspace();
     const remoteColorInSettings = config[StandardSettings.RemoteColor];
     const colorInSettings = config[StandardSettings.Color];
 
@@ -99,7 +99,7 @@ suite('Remote Integration', () => {
     qpStub2.restore();
     remoteNameStub.restore();
 
-    let config = getPeacockWorkspace();
+    const config = getPeacockWorkspace();
     const colorInSettings = config[StandardSettings.RemoteColor];
     assert.ok(colorInSettings);
     assert.equal(colorInSettings, peacockRemoteColor);
@@ -176,7 +176,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert.ok(isValidColorInput(value));
@@ -190,7 +190,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert(isValidColorInput(value));
@@ -204,7 +204,7 @@ suite('Remote Integration', () => {
     qpStub.restore();
     remoteNameStub.restore();
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert(isValidColorInput(value));
@@ -216,7 +216,7 @@ suite('Remote Integration', () => {
     await executeCommand<vscode.ExtensionContext>(Commands.changeColorToPeacockGreen);
     remoteNameStub.restore();
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     // we should be back to green

@@ -58,6 +58,7 @@ export function getReadableAccentColorHex(backgroundColor = '', ratio = Readabil
   const foreground = background.triad()[1];
 
   // Convert the color to HSL to work with the channels individually
+  // eslint-disable-next-line prefer-const
   let { h, s, l } = foreground.toHsl();
 
   // When there is no saturation we have some kind of grayscale color,

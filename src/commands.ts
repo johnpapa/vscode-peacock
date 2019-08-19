@@ -32,7 +32,7 @@ export async function removeAllPeacockColorsHandler() {
 }
 
 export async function showDocumentationHandler() {
-  const ableToOpen = await vscode.env.openExternal(docsUri);
+  await vscode.env.openExternal(docsUri);
   return State.extensionContext;
 }
 
@@ -69,7 +69,7 @@ export async function enterColorHandler(color?: string) {
 }
 
 export async function changeColorToRandomHandler() {
-  let surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
+  const surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
   let color = '';
 
   if (surpriseMeFromFavoritesOnly) {

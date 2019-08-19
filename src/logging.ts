@@ -19,7 +19,7 @@ export class Logger {
     if (title) {
       this._outputChannel.appendLine(title);
     }
-    let message = prepareMessage(value, indent);
+    const message = prepareMessage(value, indent);
     this._outputChannel.appendLine(message);
   }
 }

@@ -21,6 +21,15 @@ Migration
   - This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it.
   - See more details in the readme/guide
 
+Fixes
+
+- Upgraded to typescript-eslint 2 plugin and parser. This caused some rules to kick in from recommended list that were not previously firing. Fixed all linting issues related to this.
+
+  ```json
+  "@typescript-eslint/eslint-plugin": "^2.0.0",
+  "@typescript-eslint/parser": "^2.0.0",
+  ```
+
 ## 3.1.0
 
 Fixes

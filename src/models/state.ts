@@ -14,7 +14,7 @@ export class State {
 }
 
 export function getExtensionVersion() {
-  let extension = getExtension();
-  let version: string = extension ? extension.packageJSON.version : '';
+  const extension = getExtension();
+  const version: string = extension ? extension.packageJSON.version : '';
   return version;
 }
