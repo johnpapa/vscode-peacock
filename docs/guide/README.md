@@ -224,9 +224,19 @@ All formats offer flexible data validation:
 
 ## Roadmap
 
-There are many features in the roadmap. Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
+There are many features in the roadmap.
+
+### Issues
+
+Please refer to the [issues list and feel free to grab one and contribute](https://github.com/johnpapa/vscode-peacock/issues)!
+
+### Contributions
 
 See these pages for details on [contributions](/contributions) and our [code of conduct](/code-of-conduct).
+
+### Logging
+
+Peacock writes to VS Code's log output. You can open the output panel and select "Peacock" to see the log. This can be helpful when reporting issues.
 
 ## Changes
 
