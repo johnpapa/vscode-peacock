@@ -86,9 +86,9 @@ export function getCurrentColorBeforeAdjustments() {
    *
    * Get the current color, before any adjustments were made
    */
-  let config = getColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
   const elementColors = getElementColors(config);
-  let { color, adjustment } = getColorAndAdjustment(elementColors);
+  const { color, adjustment } = getColorAndAdjustment(elementColors);
   let originalColor = '';
   if (color) {
     originalColor = getOriginalColor(color, adjustment);
@@ -111,17 +111,17 @@ export function prepareColors(backgroundHex: string) {
   const keepForegroundColor = getKeepForegroundColor();
   const keepBadgeColor = getKeepBadgeColor();
 
-  let titleBarSettings = collectTitleBarSettings(backgroundHex, keepForegroundColor);
+  const titleBarSettings = collectTitleBarSettings(backgroundHex, keepForegroundColor);
 
-  let activityBarSettings = collectActivityBarSettings(
+  const activityBarSettings = collectActivityBarSettings(
     backgroundHex,
     keepForegroundColor,
     keepBadgeColor,
   );
 
-  let accentBorderSettings = collectAccentBorderSettings(backgroundHex);
+  const accentBorderSettings = collectAccentBorderSettings(backgroundHex);
 
-  let statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
+  const statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
   // Merge all color settings
   const newColorCustomizations: any = {
@@ -165,12 +165,12 @@ export function inspectColor() {
 }
 
 export function getPeacockColor() {
-  let color = readConfiguration<string>(StandardSettings.Color);
+  const color = readConfiguration<string>(StandardSettings.Color);
   return color;
 }
 
 export function getPeacockRemoteColor() {
-  let remoteColor = readConfiguration<string>(StandardSettings.RemoteColor);
+  const remoteColor = readConfiguration<string>(StandardSettings.RemoteColor);
   return remoteColor;
 }
 
@@ -227,13 +227,13 @@ export function getSurpriseMeOnStartup() {
 }
 
 export function getAffectedElements() {
-  return <IPeacockAffectedElementSettings>{
+  return {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
     accentBorders: readConfiguration<boolean>(AffectedSettings.AccentBorders) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
-  };
+  } as IPeacockAffectedElementSettings;
 }
 
 export function getElementAdjustments() {
@@ -262,13 +262,13 @@ export function getElementStyle(
     }
   }
 
-  let style = <IElementStyle>{
+  const style = {
     backgroundHex: styleHex,
     backgroundHoverHex: getBackgroundHoverColorHex(styleHex),
     foregroundHex: getForegroundColorHex(styleHex),
     inactiveBackgroundHex: getInactiveBackgroundColorHex(styleHex),
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex),
-  };
+  } as IElementStyle;
 
   if (includeBadgeStyles) {
     style.badgeBackgroundHex = getBadgeBackgroundColorHex(styleHex);
@@ -279,7 +279,7 @@ export function getElementStyle(
 }
 
 export function getAllSettingNames() {
-  let settings = [];
+  const settings = [];
   const affectedSettings = Object.values(AffectedSettings).map(
     value => `${extensionShortName}.${value}`,
   );
@@ -296,7 +296,7 @@ export function checkIfPeacockSettingsChanged(e: vscode.ConfigurationChangeEvent
 }
 
 function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boolean) {
-  const titleBarSettings = <ISettingsIndexer>{};
+  const titleBarSettings = {} as ISettingsIndexer;
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     const titleBarStyle = getElementStyle(backgroundHex, ElementNames.titleBar);
     titleBarSettings[ColorSettings.titleBar_activeBackground] = titleBarStyle.backgroundHex;
@@ -317,7 +317,7 @@ function collectActivityBarSettings(
   keepForegroundColor: boolean,
   keepBadgeColor: boolean,
 ) {
-  const activityBarSettings = <ISettingsIndexer>{};
+  const activityBarSettings = {} as ISettingsIndexer;
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBarStyle = getElementStyle(backgroundHex, ElementNames.activityBar, true);
@@ -340,7 +340,7 @@ function collectActivityBarSettings(
 }
 
 function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: boolean) {
-  const statusBarSettings = <ISettingsIndexer>{};
+  const statusBarSettings = {} as ISettingsIndexer;
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
     const statusBarStyle = getElementStyle(backgroundHex, ElementNames.statusBar);
     statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
@@ -355,7 +355,7 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
 }
 
 function collectAccentBorderSettings(backgroundHex: string) {
-  const accentBorderSettings = <ISettingsIndexer>{};
+  const accentBorderSettings = {} as ISettingsIndexer;
 
   // use same adjustments and activity bar
   const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
@@ -397,13 +397,13 @@ function getColorAndAdjustment(elementColors: IElementColors) {
 }
 
 export function getOriginalColorsForAllElements() {
-  let config = getColorCustomizationConfig();
+  const config = getColorCustomizationConfig();
 
   const elementColors = getElementColors(config);
 
   const elementAdjustments = getElementAdjustments();
 
-  let originalElementColors: IElementColors = {
+  const originalElementColors: IElementColors = {
     [ElementNames.activityBar]: getOriginalColor(
       elementColors[ElementNames.activityBar],
       elementAdjustments[ElementNames.activityBar],

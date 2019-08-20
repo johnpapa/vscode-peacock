@@ -37,7 +37,7 @@ export async function resetFavoritesVersionMemento() {
 
 export function getMementos() {
   const ec = State.extensionContext;
-  let mementos: IMementoLog[] = [];
+  const mementos: IMementoLog[] = [];
 
   // Globals
   mementos.push({

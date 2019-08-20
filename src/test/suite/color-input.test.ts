@@ -8,7 +8,7 @@ import { executeCommand } from './lib/constants';
 import { getColorCustomizationConfig } from '../../configuration';
 
 suite('Enter color', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -153,7 +153,7 @@ function createColorInputTest(fakeResponse: string, expectedValue: string | unde
 
     // fire the command
     await executeCommand(Commands.enterColor);
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
@@ -168,7 +168,7 @@ function createColorInputTestWithParam(fakeResponse: string, expectedValue: stri
   return async () => {
     await executeCommand(Commands.enterColor, fakeResponse);
 
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
     // undefined is OK, since that means they hit ESC or blank
@@ -181,7 +181,7 @@ function createColorInputTestWithParam(fakeResponse: string, expectedValue: stri
 function createColorInputTestWithParamThatThrowsError(fakeResponse: string) {
   return async () => {
     assert.rejects(async () => await executeCommand(Commands.enterColor, fakeResponse), Error);
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     // The value should be undefined when invalid color is set
     assert.ok(!value);

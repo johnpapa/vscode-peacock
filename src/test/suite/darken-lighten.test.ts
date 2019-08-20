@@ -6,7 +6,7 @@ import { executeCommand } from './lib/constants';
 import { getLightenedColorHex, getDarkenedColorHex } from '../../color-library';
 
 suite('Darken/Lighten commands', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -15,7 +15,7 @@ suite('Darken/Lighten commands', () => {
   test('can lighten a color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     await executeCommand(Commands.lighten);
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const pct = getDarkenLightenPercentage();
 
     assert.equal(
@@ -27,7 +27,7 @@ suite('Darken/Lighten commands', () => {
   test('can darken a color', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
     await executeCommand(Commands.darken);
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     const pct = getDarkenLightenPercentage();
 
     assert.equal(

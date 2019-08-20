@@ -1,11 +1,5 @@
 import * as assert from 'assert';
-import {
-  IPeacockSettings,
-  ElementNames,
-  peacockGreen,
-  azureBlue,
-  Commands,
-} from '../../models';
+import { IPeacockSettings, ElementNames, peacockGreen, azureBlue, Commands } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
   getOriginalColorsForAllElements,
@@ -16,7 +10,7 @@ import {
 import { executeCommand } from './lib/constants';
 
 suite('Reset Tests', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));

@@ -19,7 +19,7 @@ import { notify } from '../notification';
 import { LiveShareSettings } from '../live-share';
 
 export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
-  let config = vscode.workspace.getConfiguration();
+  const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${setting}`;
   Logger.info(`${extensionShortName}: Updating the user settings with the following changes:`);
   if (value && Array.isArray(value) && value.length > 0) {
@@ -104,7 +104,7 @@ export async function addNewFavoriteColor(name: string, value: string) {
 
 export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
   const version = getExtensionVersion();
-  let msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${version}`;
+  const msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${version}`;
   notify(msg, true);
 
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
@@ -116,25 +116,25 @@ export async function updateFavoriteColors(values: IFavoriteColors[]) {
 }
 
 export async function updatePeacockColorInUserSettings(color: string | undefined) {
-  let config = vscode.workspace.getConfiguration();
+  const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.Color}`;
   return await config.update(section, color, ConfigurationTarget.Global);
 }
 
 export async function updatePeacockRemoteColorInUserSettings(color: string | undefined) {
-  let config = vscode.workspace.getConfiguration();
+  const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
   return await config.update(section, color, ConfigurationTarget.Global);
 }
 
 export async function updatePeacockColor(color: string | undefined) {
-  let config = vscode.workspace.getConfiguration();
+  const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.Color}`;
   return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 
 export async function updatePeacockRemoteColor(color: string | undefined) {
-  let config = vscode.workspace.getConfiguration();
+  const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
   return await config.update(section, color, ConfigurationTarget.Workspace);
 }
@@ -157,12 +157,12 @@ export async function updateAffectedElements(values: IPeacockAffectedElementSett
 }
 
 function removeDuplicatesToStarterSet(overrideFavorites?: IFavoriteColors[]) {
-  let starter = overrideFavorites || starterSetOfFavorites;
+  const starter = overrideFavorites || starterSetOfFavorites;
 
   const { values: existingFavoriteColors } = getFavoriteColors();
 
   // starter set must be first, so it overrides the existing ones if their are dupes.
-  let faves = [...starter, ...existingFavoriteColors];
+  const faves = [...starter, ...existingFavoriteColors];
   return faves.filter((fav, position, arr) => {
     return arr.map(o => o.name).indexOf(fav.name) === position;
   });

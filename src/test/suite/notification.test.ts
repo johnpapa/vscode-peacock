@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { IPeacockSettings } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
@@ -7,7 +6,7 @@ import sinon = require('sinon');
 import { Logger } from '../../logging';
 
 suite('Notification Tests', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));

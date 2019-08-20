@@ -9,7 +9,7 @@ import {
 import { executeCommand, stubInputBox } from './lib/constants';
 
 suite('Save starter favorite colors', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -74,12 +74,12 @@ suite('Save starter favorite colors', () => {
 
     const { values: favoriteColorsBefore } = getFavoriteColors();
 
-    let gatsbyPurple = favoriteColorsBefore.find(item => item.name === 'Gatsby Purple') || {
+    const gatsbyPurple = favoriteColorsBefore.find(item => item.name === 'Gatsby Purple') || {
       name: '',
       value: '',
     };
 
-    let azureBlue = favoriteColorsBefore.find(item => item.name === 'Azure Blue') || {
+    const azureBlue = favoriteColorsBefore.find(item => item.name === 'Azure Blue') || {
       name: '',
       value: '',
     };

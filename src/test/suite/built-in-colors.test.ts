@@ -21,7 +21,7 @@ import {
 } from '../../configuration';
 
 suite('can set color to built-in color', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -31,7 +31,7 @@ suite('can set color to built-in color', () => {
 
   test('can set to color and it is stored in workspace config', async () => {
     await executeCommand(Commands.changeColorToRandom);
-    let config = getPeacockWorkspace();
+    const config = getPeacockWorkspace();
     const color = config[StandardSettings.Color];
     assert.ok(color);
     assert.ok(isValidColorInput(color));
@@ -40,7 +40,7 @@ suite('can set color to built-in color', () => {
   suite('can set color to Random color', () => {
     test('color is valid', async () => {
       await executeCommand(Commands.changeColorToRandom);
-      let config = getColorCustomizationConfig();
+      const config = getColorCustomizationConfig();
       assert.ok(isValidColorInput(config[ColorSettings.titleBar_activeBackground]));
     });
 
@@ -50,7 +50,7 @@ suite('can set color to built-in color', () => {
         const limit = 10;
         for (let index = 0; index < limit; index++) {
           test(`test run ${index} of ${limit}`, async () => {
-            let { values: favorites } = getFavoriteColors();
+            const { values: favorites } = getFavoriteColors();
             await updateSurpriseMeFromFavoritesOnly(true);
             await executeCommand(Commands.changeColorToRandom);
             const color = getEnvironmentAwareColor();
@@ -80,7 +80,7 @@ suite('can set color to built-in color', () => {
       await updateWorkspaceConfiguration(extraSetting);
 
       await executeCommand(Commands.resetWorkspaceColors);
-      let config = getColorCustomizationConfig();
+      const config = getColorCustomizationConfig();
       assert.equal(config[extraSettingName], extraSettingValue);
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
@@ -91,7 +91,7 @@ suite('can set color to built-in color', () => {
 
     test('removes colorCustomizations if the object is empty', async () => {
       await executeCommand(Commands.resetWorkspaceColors);
-      let config = getColorCustomizationConfig();
+      const config = getColorCustomizationConfig();
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
       assert.ok(!config[ColorSettings.activityBar_background]);
@@ -99,13 +99,13 @@ suite('can set color to built-in color', () => {
 
     test('removes peacockColor', async () => {
       await executeCommand(Commands.resetWorkspaceColors);
-      let config = getPeacockWorkspace();
+      const config = getPeacockWorkspace();
       assert.ok(!config[StandardSettings.Color]);
     });
 
     test('removes peacockRemoteColor', async () => {
       await executeCommand(Commands.resetWorkspaceColors);
-      let config = getPeacockWorkspace();
+      const config = getPeacockWorkspace();
       assert.ok(!config[StandardSettings.RemoteColor]);
     });
   });
@@ -123,7 +123,7 @@ function testBuiltInColor(
 ): ((this: Mocha.ITestCallbackContext, done: MochaDone) => any) | undefined {
   return async () => {
     await vscode.commands.executeCommand(cmd);
-    let config = getColorCustomizationConfig();
+    const config = getColorCustomizationConfig();
     assert.equal(builtInColor, config[ColorSettings.titleBar_activeBackground]);
   };
 }

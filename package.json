@@ -336,7 +336,7 @@
     "@types/node": "12.7.2",
     "@types/sinon": "^7.0.13",
     "@types/vscode": "^1.36.0",
-    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "eslint": "^6.0.0",
     "eslint-config-prettier": "^6.0.0",

@@ -14,7 +14,7 @@ import {
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 
 suite('Basic Extension Tests', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
   let extension: vscode.Extension<any>;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -22,7 +22,7 @@ suite('Basic Extension Tests', () => {
   setup(async () => await setupTest());
 
   suiteSetup(() => {
-    extension = <vscode.Extension<any>>getExtension();
+    extension = getExtension() as vscode.Extension<any>;
   });
 
   test('Sample Test', async () => {
@@ -37,27 +37,27 @@ suite('Basic Extension Tests', () => {
   test('Extension loads in VSCode and is active', async () => {
     // Hopefully a timeout will allow the extension to activate within Windows
     // otherwise we get a false result.
-    // let extension = <vscode.Extension<any>>getExtension();
+    // let extension = getExtension() as vscode.Extension<any>;
 
     await timeout(3000);
     assert.equal(extension.isActive, true);
   });
 
   test('Commands exist in package.json', () => {
-    // let extension = <vscode.Extension<any>>getExtension();
+    // let extension = getExtension() as vscode.Extension<any>;
     const commandCollection: ICommand[] = extension.packageJSON.contributes.commands;
-    for (let command in Commands) {
+    for (const command in Commands) {
       const result = commandCollection.some(c => c.command === Commands[command]);
       assert.ok(result);
     }
   });
 
   test('Settings exist in package.json', () => {
-    // let extension = <vscode.Extension<any>>getExtension();
+    // let extension = getExtension() as vscode.Extension<any>;
 
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
-    for (let setting in StandardSettings) {
+    for (const setting in StandardSettings) {
       const result = properties.some(
         property => property === `${extensionShortName}.${StandardSettings[setting]}`,
       );
@@ -66,10 +66,10 @@ suite('Basic Extension Tests', () => {
   });
 
   test('AffectedSettings exist in package.json', () => {
-    // let extension = <vscode.Extension<any>>getExtension();
+    // let extension = getExtension() as vscode.Extension<any>;
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
-    for (let setting in AffectedSettings) {
+    for (const setting in AffectedSettings) {
       const result = properties.some(
         property => property === `${extensionShortName}.${AffectedSettings[setting]}`,
       );
@@ -78,7 +78,7 @@ suite('Basic Extension Tests', () => {
   });
 
   test('package.json commands registered in extension', done => {
-    // let extension = <vscode.Extension<any>>getExtension();
+    // let extension = getExtension() as vscode.Extension<any>;
 
     const commandStrings: string[] = extension.packageJSON.contributes.commands.map(
       (c: ICommand) => c.command,

@@ -7,7 +7,7 @@ import { executeCommand } from './lib/constants';
 import { getEnvironmentAwareColor } from '../../configuration';
 
 suite('Current Color Tests', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));

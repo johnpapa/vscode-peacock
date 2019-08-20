@@ -40,7 +40,7 @@ export async function setupTestSuite(
   // extension: vscode.Extension<any> | undefined,
   originalValues: IPeacockSettings,
 ) {
-  let extension = getExtension();
+  const extension = getExtension();
 
   // Save the original values
   originalValues.affectedElements = getAffectedElements();

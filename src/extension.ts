@@ -191,7 +191,7 @@ async function initializeTheStarterSetOfFavorites() {
     await writeRecommendedFavoriteColors();
     await saveFavoritesVersionGlobalMemento(currentVersion);
   } else {
-    let msg = `${extensionShortName}: Already wrote the favorite colors once`;
+    const msg = `${extensionShortName}: Already wrote the favorite colors once`;
     Logger.info(msg);
   }
 }

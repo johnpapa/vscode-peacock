@@ -23,7 +23,7 @@ import { getColorBrightness, getReadabilityRatio } from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
 suite('Affected elements', () => {
-  let originalValues = <IPeacockSettings>{};
+  const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -111,18 +111,18 @@ suite('Affected elements', () => {
 
   suite('No affected elements', () => {
     suiteSetup(async () => {
-      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+      await updateAffectedElements({
         activityBar: false,
         statusBar: false,
         titleBar: false,
         accentBorders: false,
         tabActiveBorder: false,
-      });
+      } as IPeacockAffectedElementSettings);
     });
 
     test('does not set any color customizations when no elements affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
-      let config = getColorCustomizationConfig();
+      const config = getColorCustomizationConfig();
 
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
       assert.ok(!config[ColorSettings.titleBar_activeForeground]);
@@ -183,22 +183,22 @@ suite('Affected elements', () => {
   suite('Activity bar badge', () => {
     test('activity bar badge styles are set when activity bar is affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
-      let config = getColorCustomizationConfig();
-      const badgeBackground = config[ColorSettings.activityBar_badgeBackground]
-      const badgeForeground = config[ColorSettings.activityBar_badgeForeground]
+      const config = getColorCustomizationConfig();
+      const badgeBackground = config[ColorSettings.activityBar_badgeBackground];
+      const badgeForeground = config[ColorSettings.activityBar_badgeForeground];
       assert.ok(badgeBackground);
       assert.ok(badgeForeground);
     });
 
     test('activity bar badge styles are not set when activity bar is not affected', async () => {
-      await updateAffectedElements(<IPeacockAffectedElementSettings>{
+      await updateAffectedElements({
         activityBar: false,
         statusBar: true,
         titleBar: true,
-      });
+      } as IPeacockAffectedElementSettings);
 
       await executeCommand(Commands.changeColorToPeacockGreen);
-      let config = getColorCustomizationConfig();
+      const config = getColorCustomizationConfig();
       assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
       assert.ok(!config[ColorSettings.activityBar_badgeBackground]);
 
@@ -236,7 +236,7 @@ suite('Affected elements', () => {
         .returns(Promise.resolve(backgroundHex));
       // fire the command
       await executeCommand(Commands.enterColor);
-      let config = getColorCustomizationConfig();
+      const config = getColorCustomizationConfig();
       const value = config[ColorSettings.activityBar_badgeBackground];
       stub.restore();
 
@@ -246,10 +246,10 @@ suite('Affected elements', () => {
 });
 
 async function testsDoesNotSetColorCustomizationsForAffectedElements() {
-  await updateAffectedElements(<IPeacockAffectedElementSettings>{
+  await updateAffectedElements({
     activityBar: false,
     statusBar: false,
-  });
+  } as IPeacockAffectedElementSettings);
   await executeCommand(Commands.changeColorToPeacockGreen);
   const config = getColorCustomizationConfig();
   const keepForegroundColor = getKeepForegroundColor();
@@ -379,8 +379,8 @@ function shouldKeepColorTest(
   keepColor: boolean,
 ) {
   const config = getColorCustomizationConfig();
-  let match = elementStyle === config[colorSetting];
-  let passesTest = keepColor ? !match : match;
+  const match = elementStyle === config[colorSetting];
+  const passesTest = keepColor ? !match : match;
   return passesTest;
 }
 async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {

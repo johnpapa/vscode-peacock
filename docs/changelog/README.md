@@ -19,6 +19,16 @@ Migration
 - Version 3+ of Peacock stores the color in the settings `peacock.color`. When migrating from version 2.5, the peacock color was in a memento. When migrating from version < 2.5, the color was not stored, but can often be derived through a calculation by grabbing the color from one of the `workbench.colorCustomizations` that Peacock uses.
   - Once the color is determined, peacock removes the memento, and writes the color to the settings `peacock.color`. Fixes [#230](https://github.com/johnpapa/vscode-peacock/issues/230) and addresses [#258](https://github.com/johnpapa/vscode-peacock/issues/258)
   - This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it.
+  - See more details in the readme/guide
+
+Fixes
+
+- Upgraded to typescript-eslint 2 plugin and parser. This caused some rules to kick in from recommended list that were not previously firing. Fixed all linting issues related to this.
+
+  ```json
+  "@typescript-eslint/eslint-plugin": "^2.0.0",
+  "@typescript-eslint/parser": "^2.0.0",
+  ```
 
 ## 3.1.0
 
