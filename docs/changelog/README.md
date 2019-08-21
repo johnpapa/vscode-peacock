@@ -14,9 +14,10 @@ All notable changes to the code will be documented in this file.
 
 ## 3.1.2
 
-Logger
+Changes
 
 - Writing less but clearer messages to the output channel for Peacock
+- Added more migration and FAQ to the guide/docs
 
 ## 3.1.1
 
