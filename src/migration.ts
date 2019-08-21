@@ -1,5 +1,8 @@
 import { State, extensionShortName } from './models';
-import { getCurrentColorBeforeAdjustments, getPeacockColor } from './configuration';
+import {
+  getPeacockColor,
+  getWorkspaceColorIfExists,
+} from './configuration';
 import { updateColorSetting } from './apply-color';
 import { Logger } from './logging';
 
@@ -33,12 +36,13 @@ export async function migrateFromMementoToSettingsAsNeeded() {
     await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
   } else {
     /**
-     * If there is no memento, check if there is a
-     * color set in the 'old style' w/o the setting peacock.color.
+     * There is no memento, so let's check if there is a
+     * color set in the 'old style' w/o the setting peacock.color
+     * and let's only check in the workspace settings.json.
      * If there is, then let's grab it and set it.
      */
-    colorConfig = getColorCustomizationConfigFromWorkspace();
-    derivedColor = getCurrentColorBeforeAdjustments() || undefined;
+
+    derivedColor = getWorkspaceColorIfExists() || undefined;
   }
   // Migrate the color that was in the v2 memento
   // or the derived color to the v3 workspace setting

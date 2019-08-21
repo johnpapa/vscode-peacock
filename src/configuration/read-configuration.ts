@@ -371,7 +371,9 @@ function collectAccentBorderSettings(backgroundHex: string) {
   return accentBorderSettings;
 }
 
-function getElementColors(config: vscode.WorkspaceConfiguration): IElementColors {
+function getElementColors(
+  config: vscode.WorkspaceConfiguration | ISettingsIndexer,
+): IElementColors {
   return {
     [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
     [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
@@ -396,9 +398,55 @@ function getColorAndAdjustment(elementColors: IElementColors) {
   return { color, adjustment };
 }
 
+export function getWorkspaceColorIfExists() {
+  // Get the workspace color customizations
+  const config = getColorCustomizationConfigFromWorkspace();
+
+  // Pull out just the three main colors from the workspace
+  const elementColors = {
+    [ElementNames.activityBar]: config[ColorSettings.activityBar_background],
+    [ElementNames.statusBar]: config[ColorSettings.statusBar_background],
+    [ElementNames.titleBar]: config[ColorSettings.titleBar_activeBackground],
+  };
+
+  if (!elementColors.activityBar && !elementColors.statusBar && !elementColors.titleBar) {
+    // There is no color
+    return undefined;
+  }
+
+  // Get the adjustments so we can reverse the affects of them
+  const elementAdjustments = getElementAdjustments();
+
+  // Calculate the colors without the adjustments
+  const originalElementColors: IElementColors = {
+    [ElementNames.activityBar]: getOriginalColor(
+      elementColors[ElementNames.activityBar],
+      elementAdjustments[ElementNames.activityBar],
+    ),
+    [ElementNames.statusBar]: getOriginalColor(
+      elementColors[ElementNames.statusBar],
+      elementAdjustments[ElementNames.statusBar],
+    ),
+    [ElementNames.titleBar]: getOriginalColor(
+      elementColors[ElementNames.titleBar],
+      elementAdjustments[ElementNames.titleBar],
+    ),
+  };
+
+  // We just want one color, so we an realistically calculate what that color is
+  const color =
+    originalElementColors.activityBar ||
+    originalElementColors.statusBar ||
+    originalElementColors.titleBar;
+
+  return color;
+}
+
 export function getOriginalColorsForAllElements() {
   const config = getColorCustomizationConfig();
+  // const config = getColorCustomizationConfigFromWorkspace(); // TODO: do we always only want workspac colors?
 
+  // Pull out just the three main colors from the workspace
   const elementColors = getElementColors(config);
 
   const elementAdjustments = getElementAdjustments();
@@ -457,6 +505,8 @@ function getAllUserSettings() {
 }
 
 function getOriginalColor(color: string, adjustment: ColorAdjustment) {
+  if (!color) return color;
+
   let oppositeAdjustment: ColorAdjustmentOptions;
 
   switch (adjustment) {
