@@ -12,12 +12,22 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## 3.1.2
+## 3.1.4
+
+Fixes
+
+- Migration occurs when colors are in user settings but not in workspace.
+  - During migration, Peacock is checking if the current workspace has a color set in the old style. This could be a `activityBar.background`, `titleBar.background`, or `statusBar.background`. PeacockVS Code's API merges default settings, users settings and workspace settings. Therefore, this migration logic was sometimes getting a migrating, and it should not. Peacock should only migrate to the new `peacock.color settings (which make sit much easier to determine what the color is definitively) if there is a color in the workspace settings. The fix for this was to write logic that gets the workspace colors only. This is done in a new function named`getWorkspaceColorIfExists`.
 
 Changes
 
 - Writing less but clearer messages to the output channel for Peacock
 - Added more migration and FAQ to the guide/docs
+- Refactored migration logic to a single file.
+- Function refactorings
+  - `getWorkspaceColorIfExists` --> get (and calculate for adjustments) a single color from the workspace settings if one exists. Ideal for migration when peacock.color did not exist in < v3.
+  - `getOriginalColor` --> if a non color is passed in, then pass the same thing back out. This protects against having a undefined or empty string passed in and #000 being passed out.
+  - `getElementColors` --> allows both `vscode.workspaceConfiguration` type AND `ISettingsIndexer`, since sometimes we have one or the other
 
 ## 3.1.1
 

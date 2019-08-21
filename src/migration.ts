@@ -1,8 +1,5 @@
 import { State, extensionShortName } from './models';
-import {
-  getPeacockColor,
-  getWorkspaceColorIfExists,
-} from './configuration';
+import { getPeacockColor, getWorkspaceColorIfExists } from './configuration';
 import { updateColorSetting } from './apply-color';
 import { Logger } from './logging';
 
@@ -42,6 +39,7 @@ export async function migrateFromMementoToSettingsAsNeeded() {
      * If there is, then let's grab it and set it.
      */
 
+    // NOTE: If we ever remove this migration logic entirely, check if this function `getWorkspaceColorIfExists` is still be using or not, too.
     derivedColor = getWorkspaceColorIfExists() || undefined;
   }
   // Migrate the color that was in the v2 memento
