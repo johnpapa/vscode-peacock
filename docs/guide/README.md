@@ -244,7 +244,11 @@ See the [CHANGELOG](CHANGELOG.md) for the latest changes.
 
 ## FAQ
 
-### Peacock Behavior
+### Peacock commands are not appearing
+
+Peacock only works if a workspace is open in Visual Studio Code because it needs the settings.json file to work. When it is not in a workspace, all commands are hidden and disabled except for the "Peacock: Open Documentation" command.
+
+### What does Peacock affect
 
 Peacock affects:
 
@@ -253,7 +257,7 @@ Peacock affects:
 - background and foreground colors
 - any elements that are displayed within these peacock elements (e.g. badges, hover)
 
-### Changing User Settings
+### What happens when you change the user settings
 
 When any Peacock setting is changed, Peacock should update the colors appropriately based on the most recently used color during the active VS Code instance's session.
 
@@ -285,7 +289,7 @@ User opens VS Code, has no colors in workspace, and immediately changes which el
 1. User goes to settings and unchecks the "Peacock: Affect StatusBar"
 1. Peacock listens to this change, however no colors are applied
 
-### Title Bar Coloring
+### How does title bar coloring work
 
 The VS Code Title Bar style can be configured to be custom or native with the `window.titleBarStyle` setting. When operating in native mode, Peacock is unable to colorize the Title Bar because VS Code defers Title Bar management to the OS. In order to leverage the Affect Title Bar setting to colorize the Title Bar, the `window.titleBarStyle` must be set to custom.
 
@@ -298,7 +302,7 @@ A successful and recommended settings configuration to colorize the Title Bar is
 
 ![Title Bar Settings](/assets/title-bar-coloring-settings.png)
 
-### How Foreground Colors are Calculated
+### How are foreground colors calculated
 
 Peacock is using tinycolor which provides some basic color theory mechanisms to determine whether or not to show a light or dark foreground color based on the perceived brightness of the background. More or less, if it thinks the background is darker than 50% then Peacock uses the light foreground. If it thinks the background is greater than 50% then Peacock uses the dark foreground.
 
@@ -330,7 +334,7 @@ const readability = tinycolor.readability(lightForeground, background); // 2.669
 const isReadable = tinycolor.isReadable(lightForeground, background); // false
 ```
 
-### Recommended Favorites
+### What are recommended favorites
 
 Recommended favorites are a list of constants found in `favorites.ts`. These are alphabetized.
 
@@ -338,9 +342,9 @@ Recommended favorites are a starting point for favorites. They will be installed
 
 This list may change from version to version depending on the Peacock authoring team.
 
-### Mementos
+### What are mementos
 
-Peacock takes advantage of a mementos (values stored between sessions and not in settings).
+Peacock takes advantage of a memento (a value stored between sessions and not in settings).
 
 | Name                             | Type   | Description                                                                                                |
 | -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
