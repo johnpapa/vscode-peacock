@@ -12,6 +12,12 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.1.2
+
+Logger
+
+- Writing less but clearer messages to the output channel for Peacock
+
 ## 3.1.1
 
 Migration
