@@ -43,8 +43,8 @@ const { commands, workspace } = vscode;
 
 export async function activate(context: vscode.ExtensionContext) {
   State.extensionContext = context;
-  Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now active!`);
-  Logger.info(getMementos(), true, 'Mementos');
+  // Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now active!`);
+  Logger.info(getMementos(), true, 'Peacock Mementos');
 
   registerCommands();
   await initializeTheStarterSetOfFavorites();
@@ -103,8 +103,9 @@ async function migrateFromMementoToSettingsAsNeeded() {
   // The v2 memento is gone, so no need to migrate.
   if (peacockColorMemento) {
     Logger.info('Migration: Migrating from peacock memento to peacock.color setting.');
+    // Remove the v2 memento (it's ok if it doesnt exist)
+    await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
   } else {
-    Logger.info('Migration: Detected color customization. Migrating to peacock.color setting.');
     /**
      * If there is no memento, check if there is a
      * color set in the 'old style' w/o the setting peacock.color.
@@ -112,9 +113,6 @@ async function migrateFromMementoToSettingsAsNeeded() {
      */
     derivedColor = getCurrentColorBeforeAdjustments() || undefined;
   }
-
-  // Remove the v2 memento (it's ok if it doesnt exist)
-  await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
 
   // Migrate the color that was in the v2 memento
   // or the derived color to the v3 workspace setting
@@ -175,7 +173,7 @@ function registerCommands() {
 }
 
 export function deactivate() {
-  Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now deactive`);
+  // Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now deactive`);
 }
 
 async function initializeTheStarterSetOfFavorites() {
@@ -190,9 +188,6 @@ async function initializeTheStarterSetOfFavorites() {
   if (!favoritesValues.length) {
     await writeRecommendedFavoriteColors();
     await saveFavoritesVersionGlobalMemento(currentVersion);
-  } else {
-    const msg = `${extensionShortName}: Already wrote the favorite colors once`;
-    Logger.info(msg);
   }
 }
 
