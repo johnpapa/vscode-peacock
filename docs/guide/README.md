@@ -348,7 +348,9 @@ Peacock takes advantage of a mementos (values stored between sessions and not in
 
 ## Migration
 
-Migration notes between versions will be documented here.
+Migration notes between versions are documented here.
+
+> Note: If at any time Peacock is writing colors unexpectedly, it may be due to a migration (see migration notes below). However, as always, you can run the command `Peacock: Reset Workspace Colors` and all color settings will be removed from the `.vscode/settings.json` file.
 
 ### To Version 3+
 
@@ -358,7 +360,7 @@ Once the color is determined, peacock removes the memento, and writes the color 
 
 This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it.
 
-This logic is marked as deprecated but will not be removed until version 4.0 is released and enough time ahas passed reasonably for people to migrate.
+This logic is marked as deprecated but will not be removed until version 4.0 is released and enough time has passed reasonably for people to migrate.
 
 Examples:
 
