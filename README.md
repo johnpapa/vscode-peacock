@@ -6,7 +6,6 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Read the extensive [documentation here](https://peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://papapeacockstorage.z13.web.core.windows.net/changelog/)
 
-
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
@@ -28,7 +27,7 @@ Read the extensive [documentation here](https://peacockcode.dev) which includes 
 
 ## Documentation
 
-Read the extensive [documentation here](https://peacockcode.dev)
+Read the extensive [documentation here](https://peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://papapeacockstorage.z13.web.core.windows.net/changelog/)
 
 ![Peacock Windows](./resources/hero.png 'Peacock Windows')
 
