@@ -32,8 +32,7 @@ If you find a bug in the source code or a mistake in the documentation, you can 
 
 ## <a name="feature" > </a> Want a Feature?
 
-You can _request_ a new feature by [submitting an issue](#submit-issue) to our [GitHub
-Repository][github].If you would like to _implement_ a new feature, please submit an issue with
+You can _request_ a new feature by [submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/johnpapa/vscode-peacock).If you would like to _implement_ a new feature, please submit an issue with
 a proposal for your work first, to be sure that we can use it.
 
 - **Small Features** can be crafted and directly [submitted as a Pull Request](#submit-pr).
