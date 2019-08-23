@@ -26,7 +26,7 @@ Help us keep this project open and inclusive.Please read and follow our [Code of
 ## <a name="issue" > </a> Found an Issue?
 
 If you find a bug in the source code or a mistake in the documentation, you can help us by
-[submitting an issue](#submit - issue) to our [GitHub Repository](https://github.com/johnpapa/vscode-peacock). Even better, you can
+[submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/johnpapa/vscode-peacock). Even better, you can
 [submit a Pull Request](#submit-pr) with a fix.
 
 ## <a name="feature" > </a> Want a Feature?
