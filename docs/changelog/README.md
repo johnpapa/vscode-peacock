@@ -16,6 +16,14 @@ All notable changes to the code will be documented in this file.
 
 Fixes
 
+- npm audit fix
+- pointer to the changelog in the docs
+- fixed broken doc link
+
+## 3.1.4
+
+Fixes
+
 - Migration occurs when colors are in user settings but not in workspace.
   - Fixes [263](https://github.com/johnpapa/vscode-peacock/issues/263)
   - During migration, Peacock is checking if the current workspace has a color set in the old style. This could be a `activityBar.background`, `titleBar.background`, or `statusBar.background`. PeacockVS Code's API merges default settings, users settings and workspace settings. Therefore, this migration logic was sometimes getting a migrating, and it should not. Peacock should only migrate to the new `peacock.color settings (which make sit much easier to determine what the color is definitively) if there is a color in the workspace settings. The fix for this was to write logic that gets the workspace colors only. This is done in a new function named`getWorkspaceColorIfExists`.
