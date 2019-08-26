@@ -12,7 +12,7 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## 3.1.4
+## 3.1.5
 
 Fixes
 
