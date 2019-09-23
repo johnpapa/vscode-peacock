@@ -25,6 +25,13 @@ Read the extensive [documentation here](https://peacockcode.dev) which includes 
 1. Click **Install**
 1. Click **Reload**, if required
 
+## Usage
+
+1. Open **Command Palette** (<kbd>cmd</kbd>+<kbd>shift></kbd>+<kbd>p</kbd> or <kbd>ctrl</kbd>+<kbd>shift></kbd>+<kbd>p</kbd>)
+1. Choose **Peacock: Change to a Favourite Colour**
+1. Pick a colour
+1. Enjoy
+
 ## Documentation
 
 Read the extensive [documentation here](https://peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://papapeacockstorage.z13.web.core.windows.net/changelog/)
