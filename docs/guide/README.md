@@ -23,6 +23,15 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 ![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
 
+## Quick Usage
+
+Lets see Peacock in action!
+
+1. Open the command palette (command + shift + p for Mac or control + shift + p for Windows/Linux)
+1. Type `Peacock:`
+1. Choose `Peacock: Change to a favorite color`
+1. Choose one of the pre-defined colors and see how it changes your editor
+
 ## Features
 
 Commands can be found in the command palette. Look for commands beginning with "Peacock:"
