@@ -34,7 +34,6 @@ Let's see Peacock in action!
 
 Now enjoy exploring the rest of the features explained in the docs, here!
 
-
 ## Features
 
 Commands can be found in the command palette. Look for commands beginning with "Peacock:"
