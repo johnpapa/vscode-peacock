@@ -23,6 +23,8 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 ![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
 
+> You can also [install Peacock from the marketplace here](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+
 ## Quick Usage
 
 Let's see Peacock in action!
