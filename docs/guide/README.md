@@ -439,5 +439,6 @@ Then you can run the debugger for the launch configuration `Run Extension`. Set 
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=peacock-github-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?wt.mc_id=peacock-github-jopapa)
 - [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
+- [Try Azure Free](https://azure.microsoft.com/free?wt.mc_id=peacock-github-jopapa)
 
 ![Sketchnote](/assets/peacock-sketchnote.png)
