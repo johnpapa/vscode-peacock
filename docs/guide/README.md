@@ -417,6 +417,20 @@ If you want to try the extension out start by cloning this repo, `cd` into the f
 
 Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!
 
+## Badges
+
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=vscodepeacock-github-jopapa)
+
+[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat-square)](#contributors)
+
+[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/johnpapa/vscode-peacock.svg)](https://greenkeeper.io/)
+
 ## Resources
 
 - [Get VS Code](https://code.visualstudio.com/?wt.mc_id=peacock-github-jopapa)

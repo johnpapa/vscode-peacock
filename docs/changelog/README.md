@@ -12,6 +12,18 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.1.6
+
+Fixes
+
+- npm audit fix
+
+Minor Changes
+
+- Node version compat updates
+- Added badges to the docs
+- Added version to home page of docs
+
 ## 3.1.5
 
 Fixes
