@@ -233,6 +233,10 @@ All formats offer flexible data validation:
 - For any hex value, the `#` is optional.
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
+### Alpha Support
+
+Peacock allows for control of the alpha channel through a variety of input formats listed above. In general, it is recommended to avoid using transparent colors because it may result in poor readability. This is due to elements being affected by Peacock rendering over the VSCode workbench which will have either a light or a dark background based on the current theme. At the current time, extensions within VSCode do not have access to information about the current workbench color which will impact the readability calculations that Peacock performs to select various element colors based on the entered color. See [#293](https://github.com/johnpapa/vscode-peacock/issues/293#issuecomment-548968718) for more information.
+
 ## Roadmap
 
 There are many features in the roadmap.
