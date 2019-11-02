@@ -235,6 +235,10 @@ All formats offer flexible data validation:
 - For any hex value, the `#` is optional.
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
+### Alpha Support
+
+Peacock allows for control of the alpha channel through a variety of input formats listed above. In general, it is recommended to avoid using transparent colors because it may result in poor readability. This is due to elements being affected by Peacock rendering over the VS Code workbench which will have either a light or a dark background based on the current theme. At the current time, extensions within VS Code do not have access to information about the current workbench color which will impact the readability calculations that Peacock performs to select various element colors based on the entered color. See [#293](https://github.com/johnpapa/vscode-peacock/issues/293#issuecomment-548968718) for more information.
+
 ## Roadmap
 
 There are many features in the roadmap.
@@ -346,6 +350,13 @@ The readability calculations and metrics are based on Web Content Accessibility 
 const readability = tinycolor.readability(lightForeground, background); // 2.669008
 const isReadable = tinycolor.isReadable(lightForeground, background); // false
 ```
+### Why is the foreground hard to see with my transparent color
+
+The readability calculations that Peacock uses to determine an appropriate foreground color are based only on the color information of the entered background color. The alpha component is currently ignored in these calculations because of complications with VS Code that make it difficult to determine the actual background color of the affected elements. See [Alpha Support](#alpha-support) for more information.
+
+### Why are my affected elements not transparent
+
+Peacock allows you to enter colors that can be transparent, but the VS Code window itself is not transparent. If the entered color has some level of transparency, the resulting color of the affected elements will be based on the transparent color overlaying the default color of the VS Code workbench. In light themes the VS Code workbench color will be a very light gray and in dark themes a very dark gray.
 
 ### What are recommended favorites
 
