@@ -248,11 +248,7 @@ export function getElementAdjustment(elementName: string): ColorAdjustment {
   return elementAdjustments[elementName];
 }
 
-export function getElementStyle(
-  backgroundHex: string,
-  elementName?: string,
-  includeBadgeStyles = false,
-): IElementStyle {
+export function getElementStyle(backgroundHex: string, elementName?: string): IElementStyle {
   let styleHex = backgroundHex;
 
   if (elementName) {
@@ -270,10 +266,8 @@ export function getElementStyle(
     inactiveForegroundHex: getInactiveForegroundColorHex(styleHex),
   } as IElementStyle;
 
-  if (includeBadgeStyles) {
-    style.badgeBackgroundHex = getBadgeBackgroundColorHex(styleHex);
-    style.badgeForegroundHex = getForegroundColorHex(style.badgeBackgroundHex);
-  }
+  style.badgeBackgroundHex = getBadgeBackgroundColorHex(styleHex);
+  style.badgeForegroundHex = getForegroundColorHex(style.badgeBackgroundHex);
 
   return style;
 }
@@ -320,8 +314,10 @@ function collectActivityBarSettings(
   const activityBarSettings = {} as ISettingsIndexer;
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
-    const activityBarStyle = getElementStyle(backgroundHex, ElementNames.activityBar, true);
+    const activityBarStyle = getElementStyle(backgroundHex, ElementNames.activityBar);
     activityBarSettings[ColorSettings.activityBar_background] = activityBarStyle.backgroundHex;
+    activityBarSettings[ColorSettings.activityBar_activeBorder] =
+      activityBarStyle.badgeBackgroundHex;
 
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;

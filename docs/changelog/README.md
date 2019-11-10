@@ -12,6 +12,12 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.2.0
+
+Features
+
+- October 2019 release of VS Code added `activityBar.activeBorder` color. It was using a color that often clashed, so it now uses the accent color from the badge color. this color setting is available in October 2019 release of vs code as shown here. https://code.visualstudio.com/updates/v1_40
+
 ## 3.1.6
 
 Fixes
