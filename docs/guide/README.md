@@ -21,7 +21,20 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 1. Click **Install**
 1. Click **Reload**, if required
 
+> You can also [install Peacock from the marketplace here](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+
 ![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
+
+## Quick Usage
+
+Let's see Peacock in action!
+
+1. Press `F1` to open the command palette
+1. Type `Peacock`
+1. Choose `Peacock: Change to a favorite color`
+1. Choose one of the pre-defined colors and see how it changes your editor
+
+Now enjoy exploring the rest of the features explained in the docs, here!
 
 ## Features
 
@@ -222,6 +235,10 @@ All formats offer flexible data validation:
 - For any hex value, the `#` is optional.
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
+### Alpha Support
+
+Peacock allows for control of the alpha channel through a variety of input formats listed above. In general, it is recommended to avoid using transparent colors because it may result in poor readability. This is due to elements being affected by Peacock rendering over the VS Code workbench which will have either a light or a dark background based on the current theme. At the current time, extensions within VS Code do not have access to information about the current workbench color which will impact the readability calculations that Peacock performs to select various element colors based on the entered color. See [#293](https://github.com/johnpapa/vscode-peacock/issues/293#issuecomment-548968718) for more information.
+
 ## Roadmap
 
 There are many features in the roadmap.
@@ -333,6 +350,13 @@ The readability calculations and metrics are based on Web Content Accessibility 
 const readability = tinycolor.readability(lightForeground, background); // 2.669008
 const isReadable = tinycolor.isReadable(lightForeground, background); // false
 ```
+### Why is the foreground hard to see with my transparent color
+
+The readability calculations that Peacock uses to determine an appropriate foreground color are based only on the color information of the entered background color. The alpha component is currently ignored in these calculations because of complications with VS Code that make it difficult to determine the actual background color of the affected elements. See [Alpha Support](#alpha-support) for more information.
+
+### Why are my affected elements not transparent
+
+Peacock allows you to enter colors that can be transparent, but the VS Code window itself is not transparent. If the entered color has some level of transparency, the resulting color of the affected elements will be based on the transparent color overlaying the default color of the VS Code workbench. In light themes the VS Code workbench color will be a very light gray and in dark themes a very dark gray.
 
 ### What are recommended favorites
 
@@ -406,11 +430,26 @@ If you want to try the extension out start by cloning this repo, `cd` into the f
 
 Then you can run the debugger for the launch configuration `Run Extension`. Set breakpoints, step through the code, and enjoy!
 
+## Badges
+
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=vscodepeacock-github-jopapa)
+
+[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat-square)](#contributors)
+
+[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/johnpapa/vscode-peacock.svg)](https://greenkeeper.io/)
+
 ## Resources
 
 - [Get VS Code](https://code.visualstudio.com/?wt.mc_id=peacock-github-jopapa)
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=peacock-github-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?wt.mc_id=peacock-github-jopapa)
 - [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
+- [Try Azure Free](https://azure.microsoft.com/free?wt.mc_id=peacock-github-jopapa)
 
 ![Sketchnote](/assets/peacock-sketchnote.png)

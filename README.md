@@ -31,6 +31,17 @@ Read the extensive [documentation here](https://peacockcode.dev) which includes 
 
 ![Peacock Windows](./resources/hero.png 'Peacock Windows')
 
+## Quick Usage
+
+Let's see Peacock in action!
+
+1. Press `F1` to open the command palette
+1. Type `Peacock`
+1. Choose `Peacock: Change to a favorite color`
+1. Choose one of the pre-defined colors and see how it changes your editor
+
+Now enjoy exploring the rest of the features explained in the docs!
+
 ## Resources
 
 - [Get VS Code](https://code.visualstudio.com/?wt.mc_id=peacock-github-jopapa)
