@@ -333,7 +333,7 @@
     "@types/istanbul-lib-source-maps": "^1.2.2",
     "@types/istanbul-reports": "^1.1.1",
     "@types/mocha": "^5.2.7",
-    "@types/node": "12.12.9",
+    "@types/node": "12.12.10",
     "@types/sinon": "^7.0.13",
     "@types/vscode": "^1.36.0",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
