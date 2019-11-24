@@ -12,10 +12,12 @@ import {
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {
+  getColorCustomizationConfigFromWorkspace,
   getOriginalColorsForAllElements,
   getUserConfig,
   updateAffectedElements,
   updateGlobalConfiguration,
+  updateWorkspaceConfiguration,
 } from '../../configuration';
 
 const delayInMs = 500;
@@ -128,6 +130,24 @@ suite('changes to configuration', () => {
       assert.ok(
         !!config1[AffectedSettings.StatusBar] &&
           colors1[ElementNames.statusBar] === colors2[ElementNames.statusBar],
+      );
+    });
+
+    test('will preserve setting order', async () => {
+      const originalCustomizations = getColorCustomizationConfigFromWorkspace();
+      const keptKeys = Object.keys(originalCustomizations).filter((_, i) => i % 2);
+      const removedKeys = Object.keys(originalCustomizations).filter((_, i) => ~i % 2);
+      removedKeys.forEach(r => delete originalCustomizations[r]);
+      await updateWorkspaceConfiguration(originalCustomizations);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const updatedCustomizations = getColorCustomizationConfigFromWorkspace();
+
+      assert.deepEqual(
+        Object.keys(updatedCustomizations),
+        keptKeys.concat(removedKeys),
+        'existing setting order was not preserved',
       );
     });
   });

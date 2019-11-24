@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 
-import { extensionShortName } from './models';
+import { ColorSettings, extensionShortName, ISettingsIndexer } from './models';
 import {
+  getColorCustomizationConfigFromWorkspace,
   prepareColors,
   updateWorkspaceConfiguration,
   updatePeacockColor,
@@ -28,6 +29,22 @@ export async function unapplyColors() {
   updateStatusBar();
 }
 
+function mergeColorCustomizations(existing: ISettingsIndexer, updated: ISettingsIndexer) {
+  const mergedCustomizations = { ...existing };
+
+  // Remove colors that are not set in updated.
+  Object.values(ColorSettings)
+    .filter(c => !(c in updated))
+    .forEach(c => delete mergedCustomizations[c]);
+
+  // Apply updated changes.
+  Object.keys(updated)
+    .sort()
+    .forEach(c => (mergedCustomizations[c] = updated[c]));
+
+  return mergedCustomizations;
+}
+
 export async function applyColor(input: string) {
   /**************************************************************
    * This is the heart of Peacock logic to apply the colors.
@@ -46,19 +63,13 @@ export async function applyColor(input: string) {
 
   const color = getBackgroundColorHex(input);
 
-  // Delete all Peacock color customizations from the object
-  // and return pre-existing color customizations (not Peacock settings)
-  const colorCustomizationsWithoutPeacock = deletePeacocksColorCustomizations();
+  // Get existing color customizations.
+  const existingColors = getColorCustomizationConfigFromWorkspace();
 
   // Get new Peacock colors.
   const newColors = prepareColors(color);
 
-  // merge the existing colors with the new ones
-  // order is important here, so our new colors overwrite the old ones
-  const colorCustomizations: any = {
-    ...colorCustomizationsWithoutPeacock,
-    ...newColors,
-  };
+  const colorCustomizations = mergeColorCustomizations(existingColors, newColors);
 
   await updateWorkspaceConfiguration(colorCustomizations);
   updateStatusBar();
