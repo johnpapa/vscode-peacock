@@ -30,7 +30,10 @@
   "activationEvents": [
     "*"
   ],
-  "extensionKind": "ui",
+  "extensionKind": [
+    "ui", 
+    "workspace"
+  ],
   "main": "./dist/extension",
   "contributes": {
     "commands": [
