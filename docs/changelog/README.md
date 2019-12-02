@@ -16,8 +16,12 @@ All notable changes to the code will be documented in this file.
 
 Fixes
 
-- doc links to contriutions, code of conduct, and changelog from the guide are now fixed
+- doc links to contributions, code of conduct, and changelog from the guide are now fixed
 - merged npm audit fixes for packages
+
+- Adopt the new 'extensionKind' format. As per [Erich Gamma](https://github.com/egamma) from [PR #314 and Issue #313](https://github.com/johnpapa/vscode-peacock/pull/314)
+
+> As of VS Code 1.40 the `extensionKind` attribute in the `package.json` of the extension can be an array, pls see the documentation. We will be deprecating the string type for `extensionKind` property in favour of string array type. The `extensionKind` attribute should be set to `["ui", "workspace"]`. Indicating that the extension can run both as a UI extension and as a workspace extension (e.g. in the browser).
 
 ## 3.2.0
 
