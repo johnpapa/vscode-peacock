@@ -249,7 +249,7 @@ Please refer to the [issues list and feel free to grab one and contribute](https
 
 ### Contributions
 
-See these pages for details on [contributions](/contributions) and our [code of conduct](/code-of-conduct).
+See these pages for details on [contributions](/about/contributing) and our [code of conduct](/about/code_of_conduct).
 
 ### Logging
 
@@ -257,7 +257,7 @@ Peacock writes to VS Code's log output. You can open the output panel and select
 
 ## Changes
 
-See the [CHANGELOG](CHANGELOG.md) for the latest changes.
+See the [CHANGELOG](/changelog) latest changes.
 
 ## FAQ
 
@@ -350,6 +350,7 @@ The readability calculations and metrics are based on Web Content Accessibility 
 const readability = tinycolor.readability(lightForeground, background); // 2.669008
 const isReadable = tinycolor.isReadable(lightForeground, background); // false
 ```
+
 ### Why is the foreground hard to see with my transparent color
 
 The readability calculations that Peacock uses to determine an appropriate foreground color are based only on the color information of the entered background color. The alpha component is currently ignored in these calculations because of complications with VS Code that make it difficult to determine the actual background color of the affected elements. See [Alpha Support](#alpha-support) for more information.
