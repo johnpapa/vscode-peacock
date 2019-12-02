@@ -12,6 +12,13 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.3.0-next
+
+Fixes
+
+- doc links to contriutions, code of conduct, and changelog from the guide are now fixed
+- merged npm audit fixes for packages
+
 ## 3.2.0
 
 Features
