@@ -33,7 +33,7 @@ Read the extensive [documentation here](https://peacockcode.dev) which includes 
 
 Let's see Peacock in action!
 
-1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](http://localhost:8080/guide/#peacock-commands-are-not-appearing))
+1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://papapeacockstorage.z13.web.core.windows.net/guide/#peacock-commands-are-not-appearing))
 1. Press `F1` to open the command palette
 1. Type `Peacock`
 1. Choose `Peacock: Change to a favorite color`
