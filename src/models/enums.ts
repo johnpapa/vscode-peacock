@@ -54,6 +54,7 @@ export enum ColorSettings {
   activityBar_background = 'activityBar.background',
   activityBar_foreground = 'activityBar.foreground',
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
+  activityBar_activeBorder = 'activityBar.activeBorder',
   activityBar_badgeBackground = 'activityBarBadge.background',
   activityBar_badgeForeground = 'activityBarBadge.foreground',
   statusBar_background = 'statusBar.background',

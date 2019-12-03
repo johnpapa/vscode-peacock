@@ -28,3 +28,4 @@ Verify that the following are valid
 - [ ] Dead code removed
 - [ ] Unnecessary comments removed
 - [ ] Images updated (if applicable)
+- [ ] Version updated everywhere

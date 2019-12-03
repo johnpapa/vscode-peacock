@@ -12,6 +12,23 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.3.0-next
+
+Fixes
+
+- doc links to contributions, code of conduct, and changelog from the guide are now fixed
+- merged npm audit fixes for packages
+
+- Adopt the new 'extensionKind' format. As per [Erich Gamma](https://github.com/egamma) from [PR #314 and Issue #313](https://github.com/johnpapa/vscode-peacock/pull/314)
+
+> As of VS Code 1.40 the `extensionKind` attribute in the `package.json` of the extension can be an array, pls see the documentation. We will be deprecating the string type for `extensionKind` property in favour of string array type. The `extensionKind` attribute should be set to `["ui", "workspace"]`. Indicating that the extension can run both as a UI extension and as a workspace extension (e.g. in the browser).
+
+## 3.2.0
+
+Features
+
+- October 2019 release of VS Code added `activityBar.activeBorder` color. It was using a color that often clashed, so it now uses the accent color from the badge color. this color setting is available in October 2019 release of vs code as shown here. https://code.visualstudio.com/updates/v1_40
+
 ## 3.1.6
 
 Fixes
