@@ -345,7 +345,7 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "glob": "^7.1.4",
-    "istanbul-lib-coverage": "^2.0.5",
+    "istanbul-lib-coverage": "^3.0.0",
     "istanbul-lib-instrument": "^3.3.0",
     "istanbul-lib-report": "^2.0.8",
     "istanbul-lib-source-maps": "^3.0.6",
