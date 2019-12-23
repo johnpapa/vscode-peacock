@@ -348,7 +348,7 @@
     "istanbul-lib-coverage": "^2.0.5",
     "istanbul-lib-instrument": "^3.3.0",
     "istanbul-lib-report": "^2.0.8",
-    "istanbul-lib-source-maps": "^3.0.6",
+    "istanbul-lib-source-maps": "^4.0.0",
     "istanbul-reports": "^2.2.6",
     "mocha": "^6.1.4",
     "mocha-multi-reporters": "^1.1.7",
