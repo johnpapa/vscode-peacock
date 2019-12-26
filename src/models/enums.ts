@@ -27,6 +27,7 @@ export type AllSettings = StandardSettings | AffectedSettings | LiveShareSetting
 
 export enum Commands {
   showDocumentation = 'peacock.docs',
+  showMissingCommands = 'peacock.missingCommands',
   resetWorkspaceColors = 'peacock.resetWorkspaceColors',
   removeAllColors = 'peacock.removeAllColors',
   saveColorToFavorites = 'peacock.saveColorToFavorites',

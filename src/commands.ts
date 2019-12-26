@@ -36,6 +36,11 @@ export async function showDocumentationHandler() {
   return State.extensionContext;
 }
 
+export async function showMissingCommandsMessageHandler() {
+  await vscode.window.showInformationMessage(`Peacock only works if a workspace is open`);
+  return State.extensionContext;
+}
+
 export async function resetWorkspaceColorsHandler() {
   await resetLiveSharePreviousColors();
   await updatePeacockColor(undefined);

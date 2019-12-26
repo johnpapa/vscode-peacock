@@ -22,6 +22,7 @@ import {
   showAndCopyCurrentColorHandler,
   removeAllPeacockColorsHandler,
   showDocumentationHandler,
+  showMissingCommandsMessageHandler
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -108,6 +109,7 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
 
 function registerCommands() {
   commands.registerCommand(Commands.showDocumentation, showDocumentationHandler);
+  commands.registerCommand(Commands.showMissingCommands, showMissingCommandsMessageHandler);
   commands.registerCommand(Commands.resetWorkspaceColors, resetWorkspaceColorsHandler);
   commands.registerCommand(Commands.removeAllColors, removeAllPeacockColorsHandler);
   commands.registerCommand(Commands.saveColorToFavorites, saveColorToFavoritesHandler);

@@ -31,7 +31,7 @@
     "*"
   ],
   "extensionKind": [
-    "ui", 
+    "ui",
     "workspace"
   ],
   "main": "./dist/extension",
@@ -40,6 +40,11 @@
       {
         "command": "peacock.docs",
         "title": "Open the Documentation",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.missingCommands",
+        "title": "Why I am not seeing other Options ?",
         "category": "Peacock"
       },
       {
@@ -122,6 +127,10 @@
       "commandPalette": [
         {
           "command": "peacock.docs"
+        },
+        {
+          "command": "peacock.missingCommands",
+          "when": "workspaceFolderCount == 0"
         },
         {
           "command": "peacock.changeColorOfLiveShareHost",
