@@ -81,8 +81,8 @@ Commands can be found in the command palette. Look for commands beginning with "
 After setting 1 or more colors (hex or named) in the user setting for `peacock.favoriteColors`, you can select **Peacock: Change to a Favorite Color** and you will be prompted with the list from `peacock.favoriteColors` from user settings.
 
 ```text
-Gatsby Purple -> #123456
-Auth0 Orange -> #eb5424
+Violet -> #5f3dc4
+Orange -> #d9480f
 Blue -> #1864ab
 ```
 
@@ -90,8 +90,8 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
 
 ```javascript
   "peacock.favoriteColors": [
-    { "name": "Gatsby Purple", "value": "#639" },
-    { "name": "Auth0 Orange", "value": "#eb5424" },
+    { "name": "Violet", "value": "#5f3dc4" },
+    { "name": "Orange", "value": "#d9480f" },
     { "name": "Blue", "value": "#1864ab" }
   ]
 ```

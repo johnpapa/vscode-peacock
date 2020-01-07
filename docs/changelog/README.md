@@ -438,8 +438,8 @@ The preferred colors require a custom name (`name`) and a value ( `value` ), as 
 
 ```javascript
   "peacock.preferredColors": [
-    { "name": "Gatsby Purple", "value": "#639" },
-    { "name": "Auth0 Orange", "value": "#eb5424" },
+    { "name": "Violet", "value": "#5f3dc4" },
+    { "name": "Orange", "value": "#d9480f" },
     { "name": "Blue", "value": "#1864ab" }
   ]
 ```
