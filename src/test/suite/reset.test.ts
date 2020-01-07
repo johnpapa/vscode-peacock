@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { IPeacockSettings, ElementNames, peacockGreen, azureBlue, Commands } from '../../models';
+import { IPeacockSettings, ElementNames, peacockGreen, blue, Commands } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
   getOriginalColorsForAllElements,
@@ -19,7 +19,7 @@ suite('Reset Tests', () => {
   suite('when resetting workspace colors', () => {
     test('when global color exists, workspace still has colors applied', async () => {
       await updatePeacockColorInUserSettings(peacockGreen);
-      await updatePeacockColor(azureBlue);
+      await updatePeacockColor(blue);
 
       await executeCommand(Commands.resetWorkspaceColors);
 
@@ -36,7 +36,7 @@ suite('Reset Tests', () => {
 
     test('when global color does not exist, no colors should be in the workspace color customizations', async () => {
       await updatePeacockColorInUserSettings(undefined);
-      await updatePeacockColor(azureBlue);
+      await updatePeacockColor(blue);
 
       await executeCommand(Commands.resetWorkspaceColors);
 
@@ -53,7 +53,7 @@ suite('Reset Tests', () => {
 
   test('when removing all colors, no colors nor color customizations remain', async () => {
     await updatePeacockColorInUserSettings(peacockGreen);
-    await updatePeacockColor(azureBlue);
+    await updatePeacockColor(blue);
 
     await executeCommand(Commands.removeAllColors);
 

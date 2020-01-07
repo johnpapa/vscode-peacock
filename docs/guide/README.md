@@ -83,7 +83,7 @@ After setting 1 or more colors (hex or named) in the user setting for `peacock.f
 ```text
 Gatsby Purple -> #123456
 Auth0 Orange -> #eb5424
-Azure Blue -> #007fff
+Blue -> #1864ab
 ```
 
 Favorite colors require a user-defined name (`name`) and a value ( `value` ), as shown in the example below.
@@ -92,7 +92,7 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
   "peacock.favoriteColors": [
     { "name": "Gatsby Purple", "value": "#639" },
     { "name": "Auth0 Orange", "value": "#eb5424" },
-    { "name": "Azure Blue", "value": "#007fff" }
+    { "name": "Blue", "value": "#1864ab" }
   ]
 ```
 

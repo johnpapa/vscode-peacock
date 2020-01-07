@@ -5,7 +5,7 @@ import assert = require('assert');
 import {
   IPeacockSettings,
   peacockGreen,
-  azureBlue,
+  blue,
   StandardSettings,
   extensionShortName,
 } from '../../models';
@@ -40,7 +40,7 @@ suite('Manual Editing of Settings', () => {
         setup(async () => {
           remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
           await updateRemoteColorInUserSettings(peacockGreen);
-          await updateRemoteColorInWorkspace(azureBlue);
+          await updateRemoteColorInWorkspace(blue);
           await applyColor(getPeacockRemoteColor());
         });
         teardown(() => {
@@ -49,21 +49,21 @@ suite('Manual Editing of Settings', () => {
 
         test('color-customizations should be BLUE', async () => {
           const appliedColor = getCurrentColorBeforeAdjustments();
-          assert.equal(appliedColor, azureBlue);
+          assert.equal(appliedColor, blue);
         });
 
         test('user changes User Settings remoteColor to YELLOW, color should remain BLUE', async () => {
           await updateRemoteColorInUserSettings(yellow);
           await applyColor(getPeacockRemoteColor());
           const appliedColor = getCurrentColorBeforeAdjustments();
-          assert.equal(appliedColor, azureBlue);
+          assert.equal(appliedColor, blue);
         });
 
         test('user removes User Settings remoteColor, color should remain BLUE', async () => {
           await updateRemoteColorInUserSettings(undefined);
           await applyColor(getPeacockRemoteColor());
           const appliedColor = getCurrentColorBeforeAdjustments();
-          assert.equal(appliedColor, azureBlue);
+          assert.equal(appliedColor, blue);
         });
       },
     );
@@ -106,7 +106,7 @@ suite('Manual Editing of Settings', () => {
       setup(async () => {
         remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
         await updateLocalColorInUserSettings(undefined);
-        await updateLocalColorInWorkspace(azureBlue);
+        await updateLocalColorInWorkspace(blue);
         await applyColor(getPeacockColor());
       });
       teardown(() => {
@@ -115,14 +115,14 @@ suite('Manual Editing of Settings', () => {
 
       test('color-customizations should be BLUE', async () => {
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be BLUE', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
 
       test('user removes Workspace Settings color, color-customizations should be unapplied', async () => {
@@ -157,10 +157,10 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('user changes Workspace Settings color to BLUE, color-customizations should be BLUE', async () => {
-        await updateLocalColorInWorkspace(azureBlue);
+        await updateLocalColorInWorkspace(blue);
         await applyColor(getPeacockColor());
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
     });
   });
@@ -172,7 +172,7 @@ suite('Manual Editing of Settings', () => {
       setup(async () => {
         remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(undefined);
         await updateLocalColorInUserSettings(peacockGreen);
-        await updateLocalColorInWorkspace(azureBlue);
+        await updateLocalColorInWorkspace(blue);
         await applyColor(getPeacockColor());
       });
       teardown(() => {
@@ -181,21 +181,21 @@ suite('Manual Editing of Settings', () => {
 
       test('color-customizations should be BLUE', async () => {
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
 
       test('user changes User Settings color to YELLOW, color should remain BLUE', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
 
       test('user removes User Settings color, color should remain BLUE', async () => {
         await updateLocalColorInUserSettings(undefined);
         await applyColor(getPeacockColor());
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
     });
 
@@ -234,7 +234,7 @@ suite('Manual Editing of Settings', () => {
       setup(async () => {
         remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(undefined);
         await updateLocalColorInUserSettings(undefined);
-        await updateLocalColorInWorkspace(azureBlue);
+        await updateLocalColorInWorkspace(blue);
         await applyColor(getPeacockColor());
       });
       teardown(() => {
@@ -243,14 +243,14 @@ suite('Manual Editing of Settings', () => {
 
       test('color-customizations should be BLUE', async () => {
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
 
       test('user changes User Settings color to YELLOW, color-customizations should be BLUE', async () => {
         await updateLocalColorInUserSettings(yellow);
         await applyColor(getPeacockColor());
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
 
       test('user removes Workspace Settings color, color-customizations should be unapplied', async () => {
@@ -285,10 +285,10 @@ suite('Manual Editing of Settings', () => {
       });
 
       test('user changes Workspace Settings color to BLUE, color-customizations should be BLUE', async () => {
-        await updateLocalColorInWorkspace(azureBlue);
+        await updateLocalColorInWorkspace(blue);
         await applyColor(getPeacockColor());
         const appliedColor = getCurrentColorBeforeAdjustments();
-        assert.equal(appliedColor, azureBlue);
+        assert.equal(appliedColor, blue);
       });
     });
   });

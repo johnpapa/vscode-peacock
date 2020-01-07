@@ -7,7 +7,7 @@ import {
   ColorSettings,
   Commands,
   peacockGreen,
-  azureBlue,
+  blue,
   StandardSettings,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
@@ -28,7 +28,7 @@ import { applyColor } from '../../apply-color';
 
 suite('Remote Integration', () => {
   const originalValues = {} as IPeacockSettings;
-  const azureBlueResponse = `Azure Blue -> ${azureBlue}`;
+  const blueResponse = `Blue -> ${blue}`;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
@@ -93,7 +93,7 @@ suite('Remote Integration', () => {
     await updatePeacockRemoteColor(peacockGreen);
     // Go to remote env and set to blue
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-    const qpStub2 = await stubQuickPick(azureBlueResponse);
+    const qpStub2 = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub2.restore();
@@ -107,19 +107,19 @@ suite('Remote Integration', () => {
 
   test('when setting remote, remote color is different than local color', async () => {
     await updatePeacockColor(peacockGreen);
-    await updatePeacockRemoteColor(azureBlue);
+    await updatePeacockRemoteColor(blue);
     const peacockColor = getEnvironmentAwareColor();
 
     // Go to remote env and set to blue
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-    const qpStub2 = await stubQuickPick(azureBlueResponse);
+    const qpStub2 = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub2.restore();
     remoteNameStub.restore();
 
     // colors should be different
-    assert.ok(peacockRemoteColor, azureBlue);
+    assert.ok(peacockRemoteColor, blue);
     assert.ok(peacockColor, peacockGreen);
     assert.ok(peacockRemoteColor !== peacockColor);
   });
@@ -129,13 +129,13 @@ suite('Remote Integration', () => {
     const peacockColor = getEnvironmentAwareColor();
 
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-    const qpStub = await stubQuickPick(azureBlueResponse);
+    const qpStub = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub.restore();
     remoteNameStub.restore();
 
-    assert.equal(peacockRemoteColor, azureBlue);
+    assert.equal(peacockRemoteColor, blue);
     assert.ok(peacockRemoteColor !== peacockColor);
   });
 
@@ -144,13 +144,13 @@ suite('Remote Integration', () => {
     const peacockColor = getEnvironmentAwareColor();
 
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.sshRemote);
-    const qpStub = await stubQuickPick(azureBlueResponse);
+    const qpStub = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub.restore();
     remoteNameStub.restore();
 
-    assert.equal(peacockRemoteColor, azureBlue);
+    assert.equal(peacockRemoteColor, blue);
     assert.ok(peacockRemoteColor !== peacockColor);
   });
 
@@ -159,19 +159,19 @@ suite('Remote Integration', () => {
     const peacockColor = getEnvironmentAwareColor();
 
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.devContainer);
-    const qpStub = await stubQuickPick(azureBlueResponse);
+    const qpStub = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     const peacockRemoteColor = getEnvironmentAwareColor();
     qpStub.restore();
     remoteNameStub.restore();
 
-    assert.equal(peacockRemoteColor, azureBlue);
+    assert.equal(peacockRemoteColor, blue);
     assert.ok(peacockRemoteColor !== peacockColor);
   });
 
   test('Workspace color is updated when in Remote Containers context.', async () => {
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.devContainer);
-    const qpStub = await stubQuickPick(azureBlueResponse);
+    const qpStub = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     qpStub.restore();
     remoteNameStub.restore();
@@ -180,12 +180,12 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert.ok(isValidColorInput(value));
-    assert.equal(value, azureBlue);
+    assert.equal(value, blue);
   });
 
   test('Workspace color is updated when in Remote WSL context.', async () => {
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
-    const qpStub = await stubQuickPick(azureBlueResponse);
+    const qpStub = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     qpStub.restore();
     remoteNameStub.restore();
@@ -194,12 +194,12 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert(isValidColorInput(value));
-    assert(value === azureBlue);
+    assert(value === blue);
   });
 
   test('Workspace color is updated when in Remote SSH context.', async () => {
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.sshRemote);
-    const qpStub = await stubQuickPick(azureBlueResponse);
+    const qpStub = await stubQuickPick(blueResponse);
     await executeCommand(Commands.changeColorToFavorite);
     qpStub.restore();
     remoteNameStub.restore();
@@ -208,7 +208,7 @@ suite('Remote Integration', () => {
     const value = config[ColorSettings.titleBar_activeBackground];
 
     assert(isValidColorInput(value));
-    assert(value === azureBlue);
+    assert(value === blue);
   });
 
   test('Workspace color is reverted when not in a remote context.', async () => {
@@ -221,7 +221,7 @@ suite('Remote Integration', () => {
 
     // we should be back to green
     assert.ok(isValidColorInput(value));
-    assert.ok(value !== azureBlue);
+    assert.ok(value !== blue);
     assert.equal(value, peacockGreen);
   });
 });

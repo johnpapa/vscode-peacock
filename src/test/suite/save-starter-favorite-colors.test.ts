@@ -79,7 +79,7 @@ suite('Save starter favorite colors', () => {
       value: '',
     };
 
-    const azureBlue = favoriteColorsBefore.find(item => item.name === 'Azure Blue') || {
+    const blue = favoriteColorsBefore.find(item => item.name === 'Blue') || {
       name: '',
       value: '',
     };
@@ -89,9 +89,9 @@ suite('Save starter favorite colors', () => {
         name: 'Yoda Green', // new key
         value: 'green', // new value
       },
-      azureBlue: {
-        name: 'Azure Blue', // same key
-        value: '#007fff', // same value
+      blue: {
+        name: 'Blue', // same key
+        value: '#1864ab', // same value
       },
       gatsbyPurple: {
         name: 'Gatsby Purple', // same key
@@ -99,7 +99,7 @@ suite('Save starter favorite colors', () => {
       },
     };
 
-    const testRecommended = [newRecs.gatsbyPurple, newRecs.azureBlue, newRecs.yodaGreen];
+    const testRecommended = [newRecs.gatsbyPurple, newRecs.blue, newRecs.yodaGreen];
 
     // Write 3 to favorites
     await writeRecommendedFavoriteColors(testRecommended);
@@ -112,9 +112,9 @@ suite('Save starter favorite colors', () => {
     assert.ok(
       favoriteColors2.some(
         f =>
-          f.name === azureBlue.name &&
-          f.value === azureBlue.value &&
-          f.value === newRecs.azureBlue.value,
+          f.name === blue.name &&
+          f.value === blue.value &&
+          f.value === newRecs.blue.value,
       ),
     );
     // 2 Should have different value for existing favorite gatsby

@@ -14,7 +14,7 @@ export const defaultAmountToDarkenLighten = 10;
 
 export const defaultSaturation = 0.5;
 
-export const azureBlue = '#007fff';
+export const blue = '#1864ab';
 export const peacockGreen = '#42b883';
 
 export const peacockMementos = {

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as sinon from 'sinon';
 import * as assert from 'assert';
-import { IPeacockSettings, Commands, azureBlue } from '../../models';
+import { IPeacockSettings, Commands, blue } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { parseFavoriteColorValue } from '../../inputs';
 import { isValidColorInput } from '../../color-library';
@@ -21,7 +21,7 @@ suite('Favorite colors', () => {
 
   test('can set color to favorite color', async () => {
     // Stub the async quick pick to return a response
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await sinon
       .stub(vscode.window, 'showQuickPick')
       .returns(Promise.resolve<any>(fakeResponse));

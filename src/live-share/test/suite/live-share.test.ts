@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as vsls from 'vsls';
 
-import { IPeacockSettings, Commands, ColorSettings, timeout, azureBlue } from '../../../models';
+import { IPeacockSettings, Commands, ColorSettings, timeout, blue } from '../../../models';
 import {
   setupTestSuite,
   teardownTestSuite,
@@ -24,7 +24,7 @@ suite('Live Share Integration', () => {
   setup(async () => await setupTest());
 
   test('can set color setting for Live Share host', async () => {
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     const settingValue = getLiveShareColor(LiveShareSettings.VSLSShareColor) || '';
@@ -32,11 +32,11 @@ suite('Live Share Integration', () => {
     stub.restore();
 
     assert.ok(isValidColorInput(settingValue));
-    assert.equal(settingValue, azureBlue);
+    assert.equal(settingValue, blue);
   });
 
   test('can set color setting for Live Share guest', async () => {
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareGuest);
     const settingValue = getLiveShareColor(LiveShareSettings.VSLSJoinColor) || '';
@@ -44,7 +44,7 @@ suite('Live Share Integration', () => {
     stub.restore();
 
     assert.ok(isValidColorInput(settingValue));
-    assert.equal(settingValue, azureBlue);
+    assert.equal(settingValue, blue);
   });
 
   test('Workspace color is updated when Live Share session is started.', async () => {
@@ -54,7 +54,7 @@ suite('Live Share Integration', () => {
       throw new Error('Live Share extension is not installed.');
     }
 
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
@@ -69,7 +69,7 @@ suite('Live Share Integration', () => {
     await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(isValidColorInput(value));
-    assert.equal(value, azureBlue);
+    assert.equal(value, blue);
   });
 
   test('Workspace color is reverted when Live Share session is ended.', async () => {
@@ -79,7 +79,7 @@ suite('Live Share Integration', () => {
       throw new Error('Live Share extension is not installed.');
     }
 
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
@@ -107,7 +107,7 @@ suite('Live Share Integration', () => {
 
     await vslsApi.share();
 
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
@@ -119,7 +119,7 @@ suite('Live Share Integration', () => {
     await updateLiveShareColor(LiveShareSettings.VSLSShareColor, undefined);
 
     assert.ok(isValidColorInput(value));
-    assert.equal(value, azureBlue);
+    assert.equal(value, blue);
   });
 
   test('Workspace color is immediately reflected when updated during Live Share session.', async () => {
@@ -129,7 +129,7 @@ suite('Live Share Integration', () => {
       throw new Error('Live Share extension is not installed.');
     }
 
-    const fakeResponse = `Azure Blue -> ${azureBlue}`;
+    const fakeResponse = `Blue -> ${blue}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(LiveShareCommands.changeColorOfLiveShareHost);
     stub.restore();
@@ -213,8 +213,8 @@ suite('Live Share Integration', () => {
       throw new Error('Live Share extension is not installed.');
     }
 
-    const startColor = '#007fff';
-    const fakeResponse = `Azure Blue -> ${startColor}`;
+    const startColor = '#1864ab';
+    const fakeResponse = `Blue -> ${startColor}`;
     const stub = await stubQuickPick(fakeResponse);
     await executeCommand(Commands.changeColorToFavorite);
     stub.restore();
