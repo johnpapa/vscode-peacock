@@ -103,10 +103,6 @@ export async function addNewFavoriteColor(name: string, value: string) {
 }
 
 export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
-  const version = getExtensionVersion();
-  const msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${version}`;
-  notify(msg, true);
-
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
   return await updateFavoriteColors(newFavoriteColors);
 }
