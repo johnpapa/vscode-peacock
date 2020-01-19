@@ -10,15 +10,13 @@ import {
   IPeacockAffectedElementSettings,
   AffectedSettings,
   starterSetOfFavorites,
-  getExtensionVersion,
   isObjectEmpty,
 } from '../models';
 import { Logger } from '../logging';
 import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
-import { notify } from '../notification';
 import { LiveShareSettings } from '../live-share';
 
-export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
+export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {
   const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${setting}`;
   Logger.info(`${extensionShortName}: Updating the user settings with the following changes:`);
