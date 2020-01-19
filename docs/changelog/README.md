@@ -18,6 +18,7 @@ Fixes
 
 - doc links to contributions, code of conduct, and changelog from the guide are now fixed
 - merged npm audit fixes for packages
+- removed notification when writing the favorites lsit to the settings.json file. it was confusing to see this when first installing peacock, as there is nothing for the user to do.
 
 - Adopt the new 'extensionKind' format. As per [Erich Gamma](https://github.com/egamma) from [PR #314 and Issue #313](https://github.com/johnpapa/vscode-peacock/pull/314)
 
