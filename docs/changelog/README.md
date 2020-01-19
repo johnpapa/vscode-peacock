@@ -12,7 +12,11 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## 3.3.0-next
+## vnext
+
+- tbd
+
+## 3.3.0
 
 Fixes
 
