@@ -16,7 +16,7 @@ All notable changes to the code will be documented in this file.
 
 - tbd
 
-## 3.3.0
+## 3.3.1
 
 Fixes
 
