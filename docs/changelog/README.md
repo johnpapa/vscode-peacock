@@ -17,12 +17,16 @@ All notable changes to the code will be documented in this file.
 Fixes
 
 - doc links to contributions, code of conduct, and changelog from the guide are now fixed
-- merged npm audit fixes for packages
 - removed notification when writing the favorites lsit to the settings.json file. it was confusing to see this when first installing peacock, as there is nothing for the user to do.
 
 - Adopt the new 'extensionKind' format. As per [Erich Gamma](https://github.com/egamma) from [PR #314 and Issue #313](https://github.com/johnpapa/vscode-peacock/pull/314)
 
 > As of VS Code 1.40 the `extensionKind` attribute in the `package.json` of the extension can be an array, pls see the documentation. We will be deprecating the string type for `extensionKind` property in favour of string array type. The `extensionKind` attribute should be set to `["ui", "workspace"]`. Indicating that the extension can run both as a UI extension and as a workspace extension (e.g. in the browser).
+
+Maintenance
+
+- merged npm audit fixes for packages
+- updated several packages as devDependencies to keep up with security updates
 
 ## 3.2.0
 
