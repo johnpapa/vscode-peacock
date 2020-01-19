@@ -46,8 +46,9 @@ suite('Basic Extension Tests', () => {
   test('Commands exist in package.json', () => {
     // let extension = getExtension() as vscode.Extension<any>;
     const commandCollection: ICommand[] = extension.packageJSON.contributes.commands;
+    const indexedCommands: { [idx: string]: Commands } = Commands as any;
     for (const command in Commands) {
-      const result = commandCollection.some(c => c.command === Commands[command]);
+      const result = commandCollection.some(c => c.command === indexedCommands[command]);
       assert.ok(result);
     }
   });
@@ -57,9 +58,10 @@ suite('Basic Extension Tests', () => {
 
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
+    const indexedSettings: { [idx: string]: StandardSettings } = StandardSettings as any;
     for (const setting in StandardSettings) {
       const result = properties.some(
-        property => property === `${extensionShortName}.${StandardSettings[setting]}`,
+        property => property === `${extensionShortName}.${indexedSettings[setting]}`,
       );
       assert.ok(result);
     }
@@ -69,9 +71,10 @@ suite('Basic Extension Tests', () => {
     // let extension = getExtension() as vscode.Extension<any>;
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
     const properties = Object.keys(config.properties);
+    const indexedSettings: { [idx: string]: AffectedSettings } = AffectedSettings as any;
     for (const setting in AffectedSettings) {
       const result = properties.some(
-        property => property === `${extensionShortName}.${AffectedSettings[setting]}`,
+        property => property === `${extensionShortName}.${indexedSettings[setting]}`,
       );
       assert.ok(result);
     }
