@@ -31,7 +31,7 @@
     "*"
   ],
   "extensionKind": [
-    "ui", 
+    "ui",
     "workspace"
   ],
   "main": "./dist/extension",
@@ -357,7 +357,7 @@
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
-    "vscode-test": "^1.0.0-next.0",
+    "vscode-test": "^1.2.2",
     "vuepress": "^1.0.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
