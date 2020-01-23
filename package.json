@@ -365,6 +365,6 @@
   "dependencies": {
     "@types/tinycolor2": "^1.4.1",
     "tinycolor2": "^1.4.1",
-    "vsls": "^0.3.1291"
+    "vsls": "^1.0.1526"
   }
 }
