@@ -12,4 +12,5 @@ export const starterSetOfFavorites = [
   { name: 'React Blue', value: '#61dafb' },
   { name: 'Something Different', value: '#832561' },
   { name: 'Vue Green', value: '#42b883' },
+  { name: 'Svelte Orange', value: '#ff3e00' },
 ];
