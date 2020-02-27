@@ -12,9 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## vnext
+## 3.5.0
 
-- tbd
+- [Reduced favorites](/johnpapa/vscode-peacock/issues/358)
+- [default faves won't appear in user settings.json until they are modified](/johnpapa/vscode-peacock/issues/354)
 
 ## 3.4.0
 
