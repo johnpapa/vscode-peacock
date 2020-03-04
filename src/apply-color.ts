@@ -21,14 +21,14 @@ export async function unapplyColors() {
     return;
   }
 
-  // Overwite color customizations, without the peacock ones.
+  // Overwrite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
   const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations();
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
   updateStatusBar();
 }
 
-export async function applyColor(input: string) {
+export async function applyColor(input: string, updateWorkspaceConfig: boolean) {
   /**************************************************************
    * This is the heart of Peacock logic to apply the colors.
    *
@@ -60,7 +60,11 @@ export async function applyColor(input: string) {
     ...newColors,
   };
 
-  await updateWorkspaceConfiguration(colorCustomizations);
+  // Only update workspace config, when explicitly instructed.
+  if (updateWorkspaceConfig) {
+    await updateWorkspaceConfiguration(colorCustomizations);
+  }
+
   updateStatusBar();
 
   Logger.info(`${extensionShortName}: Peacock is now using ${color}`);

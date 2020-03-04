@@ -41,7 +41,7 @@ suite('Remote Integration', () => {
     // Go to remote env
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
     // Set remote color
-    await applyColor(getPeacockRemoteColor());
+    await applyColor(getPeacockRemoteColor(), true);
 
     const peacockRemoteColor = getEnvironmentAwareColor();
     remoteNameStub.restore();
@@ -61,7 +61,7 @@ suite('Remote Integration', () => {
     // Go to remote env
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
     // Set remote color
-    await applyColor(getPeacockRemoteColor());
+    await applyColor(getPeacockRemoteColor(), true);
     const peacockRemoteColor = getEnvironmentAwareColor();
     remoteNameStub.restore();
 
@@ -69,7 +69,7 @@ suite('Remote Integration', () => {
     const remoteNameStub2 = sinon.stub(vscode.env, 'remoteName').value(undefined);
     // Follow the logic that runs when we activate ...
     const color = getEnvironmentAwareColor();
-    await applyColor(color);
+    await applyColor(color, true);
 
     const peacockLocalColor = getEnvironmentAwareColor();
     remoteNameStub2.restore();

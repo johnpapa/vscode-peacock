@@ -31,7 +31,7 @@ async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
     return;
   }
 
-  await applyColor(liveShareColorSetting);
+  await applyColor(liveShareColorSetting, true);
 }
 
 export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise<boolean> {

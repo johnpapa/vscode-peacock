@@ -80,7 +80,7 @@ export function getUserConfig() {
 
 export function getCurrentColorBeforeAdjustments() {
   /**
-   * Useful if we dont want the
+   * Useful if we don't want the
    *       peacock color but instead to calculate it from
    *       the current customized colors
    *

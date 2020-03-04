@@ -94,7 +94,7 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
       Logger.info(
         `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
-      await applyColor(color);
+      await applyColor(color, true);
 
       // Only update the color in the workspace settings
       // if there was already a workspace setting

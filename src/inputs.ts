@@ -55,6 +55,6 @@ export function parseFavoriteColorValue(text: string) {
 async function tryColorWithPeacock() {
   return async (item: string) => {
     const color = parseFavoriteColorValue(item);
-    return await applyColor(color);
+    return await applyColor(color, true);
   };
 }

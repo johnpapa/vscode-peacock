@@ -35,7 +35,7 @@ const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
       // if there was a color set prior to color picker,
       // set that color back
     } else {
-      await applyColor(startingColor);
+      await applyColor(startingColor, true);
     }
 
     return State.extensionContext;

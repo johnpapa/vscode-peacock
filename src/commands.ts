@@ -63,7 +63,7 @@ export async function enterColorHandler(color?: string) {
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
   }
-  await applyColor(input);
+  await applyColor(input, true);
   await updateColorSetting(input);
   return State.extensionContext;
 }
@@ -85,7 +85,7 @@ export async function changeColorToRandomHandler() {
     color = getRandomColorHex();
   }
 
-  await applyColor(color);
+  await applyColor(color, true);
   await updateColorSetting(color);
   return State.extensionContext;
 }
@@ -96,7 +96,7 @@ export async function addRecommendedFavoritesHandler() {
 }
 
 export async function changeColorToPeacockGreenHandler() {
-  await applyColor(peacockGreen);
+  await applyColor(peacockGreen, true);
   await updateColorSetting(peacockGreen);
   return State.extensionContext;
 }
@@ -109,13 +109,13 @@ export async function changeColorToFavoriteHandler() {
   if (isValidColorInput(favoriteColor)) {
     // We have a valid Favorite color,
     // apply it and write the new color to settings
-    await applyColor(favoriteColor);
+    await applyColor(favoriteColor, true);
     await updateColorSetting(favoriteColor);
   } else if (startingColor) {
     // No favorite was selected.
     // We need to re-apply the starting color
     // and write the new color to settings
-    await applyColor(startingColor);
+    await applyColor(startingColor, true);
     await updateColorSetting(startingColor);
   } else {
     // No favorite was selected. We had no color to start, either.
@@ -130,7 +130,7 @@ export async function darkenHandler() {
   if (color) {
     const darkenLightenPercentage = getDarkenLightenPercentage();
     const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
-    await applyColor(darkenedColor);
+    await applyColor(darkenedColor, true);
     await updateColorSetting(darkenedColor);
   }
   return State.extensionContext;
@@ -141,7 +141,7 @@ export async function lightenHandler() {
   if (color) {
     const darkenLightenPercentage = getDarkenLightenPercentage();
     const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
-    await applyColor(lightenedColor);
+    await applyColor(lightenedColor, true);
     await updateColorSetting(lightenedColor);
   }
   return State.extensionContext;
