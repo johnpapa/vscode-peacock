@@ -12,10 +12,14 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## Next
+
+- Fixed broken links in changelog
+
 ## 3.5.0
 
-- [Reduced favorites](/johnpapa/vscode-peacock/issues/358)
-- [default faves won't appear in user settings.json until they are modified](/johnpapa/vscode-peacock/issues/354)
+- [Reduced favorites](https://github.com/johnpapa/vscode-peacock/issues/358)
+- [default faves won't appear in user settings.json until they are modified](https://github.com/johnpapa/vscode-peacock/issues/354)
 
 ## 3.4.0
 
@@ -23,7 +27,6 @@ Color Adjustments
 
 - Added Svelte color to built-in favorites
 - Adjusted React and Angular colors based on their official logos
-
 
 ## 3.3.1
 
