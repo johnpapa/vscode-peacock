@@ -83,6 +83,7 @@ suite('can set color to built-in color', () => {
       const config = getColorCustomizationConfig();
       assert.equal(config[extraSettingName], extraSettingValue);
       assert.ok(!config[ColorSettings.titleBar_activeBackground]);
+
       assert.ok(!config[ColorSettings.statusBar_background]);
       assert.ok(!config[ColorSettings.activityBar_background]);
       assert.ok(!config[ColorSettings.activityBar_activeBackground]);
