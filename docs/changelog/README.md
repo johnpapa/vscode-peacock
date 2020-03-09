@@ -12,9 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## 3.6.1
+## next
 
 - [Updated sinon](https://github.com/johnpapa/vscode-peacock/issues/356)
+- [Updated mocha types](https://github.com/johnpapa/vscode-peacock/issues/344)
 
 ## 3.6.0
 
