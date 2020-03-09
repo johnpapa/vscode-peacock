@@ -12,9 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## Next
+## 3.6.0
 
-- Fixed broken links in changelog
+- [`activitybar.activeBackground` is now set the same as the activity bar's background](https://github.com/johnpapa/vscode-peacock/issues/345)
+- Fixed [broken links in changelog](https://github.com/johnpapa/vscode-peacock/issues/362)
 
 ## 3.5.0
 
