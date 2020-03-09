@@ -82,7 +82,7 @@ export async function updateLightForegroundColor(value: string) {
   return await updateGlobalConfiguration(StandardSettings.LightForegroundColor, value);
 }
 
-export async function updateDarkenLightenPrecentage(value: number) {
+export async function updateDarkenLightenPercentage(value: number) {
   return await updateGlobalConfiguration(StandardSettings.DarkenLightenPercentage, value);
 }
 
