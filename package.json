@@ -390,7 +390,7 @@
     "mocha": "^7.0.0",
     "mocha-multi-reporters": "^1.1.7",
     "prettier": "^1.19.1",
-    "sinon": "^8.1.0",
+    "sinon": "^9.0.0",
     "ts-loader": "^5.3.3",
     "tslint": "^5.20.1",
     "typescript": "^3.7.5",
