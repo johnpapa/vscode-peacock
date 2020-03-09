@@ -129,6 +129,7 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.titleBar_inactiveBackground]);
       assert.ok(!config[ColorSettings.titleBar_activeForeground]);
       assert.ok(!config[ColorSettings.activityBar_background]);
+      assert.ok(!config[ColorSettings.activityBar_activeBackground]);
       assert.ok(!config[ColorSettings.activityBar_foreground]);
       assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
       assert.ok(!config[ColorSettings.activityBar_activeBorder]);
@@ -282,6 +283,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
   assert.ok(!config[ColorSettings.statusBar_foreground]);
   assert.ok(!config[ColorSettings.statusBar_background]);
+  assert.ok(!config[ColorSettings.activityBar_activeBackground]);
   assert.ok(!config[ColorSettings.activityBar_activeBorder]);
 
   // reset
@@ -320,6 +322,7 @@ async function testsSetsColorCustomizationsForAffectedElements() {
 
   const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
   assert.equal(activityBarStyle.backgroundHex, config[ColorSettings.activityBar_background]);
+  assert.equal(activityBarStyle.backgroundHex, config[ColorSettings.activityBar_activeBackground]);
   assert.equal(activityBarStyle.badgeBackgroundHex, config[ColorSettings.activityBar_activeBorder]);
 
   assert.ok(

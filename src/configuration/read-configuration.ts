@@ -316,7 +316,10 @@ function collectActivityBarSettings(
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBarStyle = getElementStyle(backgroundHex, ElementNames.activityBar);
     activityBarSettings[ColorSettings.activityBar_background] = activityBarStyle.backgroundHex;
-    activityBarSettings[ColorSettings.activityBar_activeBorder] =
+    activityBarSettings[ColorSettings.activityBar_activeBackground] =
+      activityBarStyle.backgroundHex;
+
+      activityBarSettings[ColorSettings.activityBar_activeBorder] =
       activityBarStyle.badgeBackgroundHex;
 
     if (!keepForegroundColor) {
