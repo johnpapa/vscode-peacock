@@ -17,6 +17,7 @@ All notable changes to the code will be documented in this file.
 - [Updated sinon](https://github.com/johnpapa/vscode-peacock/issues/356)
 - [Updated mocha types](https://github.com/johnpapa/vscode-peacock/issues/344)
 - removing remnants of tslint, since peacock moved to eslint months ago
+- added husky and pretty-quick for running prettier pre-commit [#366](https://github.com/johnpapa/vscode-peacock/pull/366)
 
 ## 3.6.0
 
