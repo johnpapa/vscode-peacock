@@ -359,6 +359,7 @@
     "lint-fix": "eslint ./src --ext .js,.ts --fix",
     "webpack": "webpack --mode none",
     "watch": "webpack --mode none --watch",
+    "pretty": "pretty-quick",
     "just-test": "node ./out/test/runTest.js",
     "just-live-share-test": "node out/live-share/test/runTest.js",
     "test-compile": "tsc -p ./ && npm run webpack",
@@ -382,6 +383,7 @@
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "glob": "^7.1.6",
+    "husky": "^4.2.3",
     "istanbul-lib-coverage": "^3.0.0",
     "istanbul-lib-instrument": "^3.3.0",
     "istanbul-lib-report": "^2.0.8",
@@ -390,6 +392,7 @@
     "mocha": "^7.0.0",
     "mocha-multi-reporters": "^1.1.7",
     "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
     "sinon": "^9.0.0",
     "ts-loader": "^5.3.3",
     "typescript": "^3.7.5",
@@ -402,5 +405,10 @@
     "@types/tinycolor2": "^1.4.1",
     "tinycolor2": "^1.4.1",
     "vsls": "^1.0.1526"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
