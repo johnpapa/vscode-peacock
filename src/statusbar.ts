@@ -1,8 +1,5 @@
 import { StatusBarAlignment, window, StatusBarItem } from 'vscode';
-import {
-  getShowColorInStatusBar,
-  getEnvironmentAwareColor,
-} from './configuration';
+import { getShowColorInStatusBar, getEnvironmentAwareColor } from './configuration';
 import { Commands } from './models';
 
 const _statusBarItem: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
