@@ -6,3 +6,4 @@ dist
 !docs/.vuepress/dist
 out-cov
 coverage
+xunit.xml
