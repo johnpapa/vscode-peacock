@@ -392,7 +392,6 @@
     "prettier": "^1.19.1",
     "sinon": "^9.0.0",
     "ts-loader": "^5.3.3",
-    "tslint": "^5.20.1",
     "typescript": "^3.7.5",
     "vscode-test": "^1.2.2",
     "vuepress": "^1.2.0",

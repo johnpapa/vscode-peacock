@@ -16,6 +16,7 @@ All notable changes to the code will be documented in this file.
 
 - [Updated sinon](https://github.com/johnpapa/vscode-peacock/issues/356)
 - [Updated mocha types](https://github.com/johnpapa/vscode-peacock/issues/344)
+- removing remnants of tslint, since peacock moved to eslint months ago
 
 ## 3.6.0
 
