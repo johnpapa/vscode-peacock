@@ -32,7 +32,7 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
   if (isObjectEmpty(colorCustomizations)) {
     // We are receiving an empty object, so let's make it undefined.
     // This means we can skip writing the workbench.colorCustomizations section
-    // if one doesnt already exist.
+    // if one doesn't already exist.
     colorCustomizations = undefined;
   }
 
@@ -82,7 +82,7 @@ export async function updateLightForegroundColor(value: string) {
   return await updateGlobalConfiguration(StandardSettings.LightForegroundColor, value);
 }
 
-export async function updateDarkenLightenPrecentage(value: number) {
+export async function updateDarkenLightenPercentage(value: number) {
   return await updateGlobalConfiguration(StandardSettings.DarkenLightenPercentage, value);
 }
 

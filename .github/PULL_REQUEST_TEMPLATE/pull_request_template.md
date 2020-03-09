@@ -10,13 +10,7 @@
 
 ## How to Test
 
-- ...
-
-## What to Check
-
-Verify that the following are valid
-
-- ...
+- `npm test`
 
 ## Checklist of changes included
 
