@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 
-import { extensionShortName } from './models';
+import { ColorSettings, extensionShortName, ISettingsIndexer, StandardSettings } from './models';
 import {
+  getColorCustomizationConfigFromWorkspace,
   prepareColors,
   updateWorkspaceConfiguration,
   updatePeacockColor,
@@ -14,6 +15,7 @@ import {
   getBackgroundColorHex,
   deletePeacocksColorCustomizations,
 } from './color-library';
+import { ConfigurationTarget } from 'vscode';
 
 export async function unapplyColors() {
   if (!vscode.workspace.workspaceFolders) {
@@ -27,6 +29,55 @@ export async function unapplyColors() {
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
   updateStatusBar();
 }
+
+function mergeColorCustomizations(
+  existingColors: ISettingsIndexer,
+  updatedColors: ISettingsIndexer,
+) {
+  /**
+   * Alays start with the existing colors.
+   * So we clone existing into a new object that will contain
+   * the merged (existing and updated) set of colors.
+   */
+  const existingColorsClone: ISettingsIndexer = { ...existingColors };
+
+  /**
+   * If any existing color settings are not in the set
+   * that Peacock manages, remove them.
+   */
+  Object.values(ColorSettings)
+    .filter(c => !(c in updatedColors))
+    .forEach(c => delete existingColorsClone[c]);
+
+  /**
+   * Merge the updated colors on top of the existing colors.
+   */
+  const mergedCustomizations: ISettingsIndexer = {
+    ...existingColorsClone,
+    ...updatedColors,
+  };
+
+  return mergedCustomizations;
+}
+
+// async function bustTheCache() {
+//   /**
+//    * Workaround: The following code forces VS Code to read the
+//    * workspace configuration fresh from the disk.
+//    * We change a value in the workspace (peacock.cacheBust),
+//    * which forces VS Code to read it again next time.
+//    *
+//    * If VS Code either stops caching or implements a way to
+//    * bust the cache so we can read the workspace configuration
+//    * fresh from the disk, then we can remove this code
+//    *
+//    * See github issue https://github.com/microsoft/vscode/issues/92733
+//    */
+//   const config = vscode.workspace.getConfiguration();
+//   const section = `${extensionShortName}.${StandardSettings.CacheBust}`;
+//   const cachebuster = Math.floor(Math.random() * Math.floor(1000000)).toString();
+//   await config.update(section, cachebuster, ConfigurationTarget.Workspace);
+// }
 
 export async function applyColor(input: string) {
   /**************************************************************
@@ -46,19 +97,16 @@ export async function applyColor(input: string) {
 
   const color = getBackgroundColorHex(input);
 
-  // Delete all Peacock color customizations from the object
-  // and return pre-existing color customizations (not Peacock settings)
-  const colorCustomizationsWithoutPeacock = deletePeacocksColorCustomizations();
+  // Write a value to the workspace.
+  // await bustTheCache();
 
-  // Get new Peacock colors.
-  const newColors = prepareColors(color);
+  // Get existing color customizations.
+  const existingColors = getColorCustomizationConfigFromWorkspace();
 
-  // merge the existing colors with the new ones
-  // order is important here, so our new colors overwrite the old ones
-  const colorCustomizations: any = {
-    ...colorCustomizationsWithoutPeacock,
-    ...newColors,
-  };
+  // Get updated Peacock colors.
+  const updatedColors = prepareColors(color);
+
+  const colorCustomizations = mergeColorCustomizations(existingColors, updatedColors);
 
   await updateWorkspaceConfiguration(colorCustomizations);
   updateStatusBar();

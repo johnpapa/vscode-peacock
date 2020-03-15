@@ -331,6 +331,11 @@
           "default": "",
           "description": "The Peacock color that will be applied to remote workspaces."
         },
+        "peacock.cacheBust": {
+          "type": "string",
+          "default": "",
+          "description": "Ignore this setting. Internal value peacock uses for cache busting the workspace color configuration, which Code caches. The value is not important."
+        },
         "peacock.color": {
           "type": "string",
           "default": "",

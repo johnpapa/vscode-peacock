@@ -1,13 +1,22 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "peacock.cacheBust": "827478",
   "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#42b883",
-    "titleBar.inactiveBackground": "#42b88399",
-    "titleBar.activeForeground": "#15202b",
-    "titleBar.inactiveForeground": "#15202b99",
-    "statusBar.background": "#42b883",
-    "statusBarItem.hoverBackground": "#359268",
-    "statusBar.foreground": "#15202b"
+    "activityBar.activeBackground": "#dd0531",
+    "activityBar.activeBorder": "#0e3e01",
+    "activityBar.background": "#dd0531",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#0e3e01",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#dd0531",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#fa1b49",
+    "titleBar.activeBackground": "#dd0531",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#dd053199",
+    "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#42b883"
+  "peacock.remoteColor": "",
+  "peacock.color": "#dd0531"
 }
