@@ -33,6 +33,9 @@ function mergeColorCustomizations(existing: ISettingsIndexer, updated: ISettings
   const mergedCustomizations = { ...existing };
 
   // Remove colors that are not set in updated.
+  /**
+   * If any colors are not in the
+   */
   Object.values(ColorSettings)
     .filter(c => !(c in updated))
     .forEach(c => delete mergedCustomizations[c]);
@@ -66,10 +69,10 @@ export async function applyColor(input: string) {
   // Get existing color customizations.
   const existingColors = getColorCustomizationConfigFromWorkspace();
 
-  // Get new Peacock colors.
-  const newColors = prepareColors(color);
+  // Get updated Peacock colors.
+  const updatedColors = prepareColors(color);
 
-  const colorCustomizations = mergeColorCustomizations(existingColors, newColors);
+  const colorCustomizations = mergeColorCustomizations(existingColors, updatedColors);
 
   await updateWorkspaceConfiguration(colorCustomizations);
   updateStatusBar();
