@@ -29,12 +29,11 @@ Read the extensive [documentation here](https://peacockcode.dev) which includes 
 
 Read the extensive [documentation here](https://peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://papapeacockstorage.z13.web.core.windows.net/changelog/)
 
-![Peacock Windows](./resources/hero.png 'Peacock Windows')
-
 ## Quick Usage
 
 Let's see Peacock in action!
 
+1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://papapeacockstorage.z13.web.core.windows.net/guide/#peacock-commands-are-not-appearing))
 1. Press `F1` to open the command palette
 1. Type `Peacock`
 1. Choose `Peacock: Change to a favorite color`
@@ -42,8 +41,11 @@ Let's see Peacock in action!
 
 Now enjoy exploring the rest of the features explained in the docs!
 
+![Peacock Windows](./resources/hero.png 'Peacock Windows')
+
 ## Resources
 
+- Peacock docs are hosted on Azure -> [Get a Free Azure Trial](https://azure.microsoft.com/en-us/free/?wt.mc_id=peacock-github-jopapa)
 - [Get VS Code](https://code.visualstudio.com/?wt.mc_id=peacock-github-jopapa)
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=peacock-github-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?wt.mc_id=peacock-github-jopapa)

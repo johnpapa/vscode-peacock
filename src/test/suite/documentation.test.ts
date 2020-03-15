@@ -12,7 +12,7 @@ suite('Documentation Tests', () => {
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
 
-  suiteSetup(() => {});
+  // suiteSetup(async () => {});
 
   test('can open documentation web site in a browser', async () => {
     const openExternalStub = sinon.stub(vscode.env, 'openExternal');

@@ -12,6 +12,47 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## next
+
+- [Updated sinon](https://github.com/johnpapa/vscode-peacock/issues/356)
+- [Updated mocha types](https://github.com/johnpapa/vscode-peacock/issues/344)
+- removing remnants of tslint, since peacock moved to eslint months ago
+- added husky and pretty-quick for running prettier pre-commit [#366](https://github.com/johnpapa/vscode-peacock/pull/366)
+
+## 3.6.0
+
+- [`activitybar.activeBackground` is now set the same as the activity bar's background](https://github.com/johnpapa/vscode-peacock/issues/345)
+- Fixed [broken links in changelog](https://github.com/johnpapa/vscode-peacock/issues/362)
+- Fixed typos in [functions and comments](https://github.com/johnpapa/vscode-peacock/pull/361)
+
+## 3.5.0
+
+- [Reduced favorites](https://github.com/johnpapa/vscode-peacock/issues/358)
+- [default faves won't appear in user settings.json until they are modified](https://github.com/johnpapa/vscode-peacock/issues/354)
+
+## 3.4.0
+
+Color Adjustments
+
+- Added Svelte color to built-in favorites
+- Adjusted React and Angular colors based on their official logos
+
+## 3.3.1
+
+Fixes
+
+- doc links to contributions, code of conduct, and changelog from the guide are now fixed
+- removed notification when writing the favorites list to the settings.json file. it was confusing to see this when first installing peacock, as there is nothing for the user to do.
+
+- Adopt the new 'extensionKind' format. As per [Erich Gamma](https://github.com/egamma) from [PR #314 and Issue #313](https://github.com/johnpapa/vscode-peacock/pull/314)
+
+> As of VS Code 1.40 the `extensionKind` attribute in the `package.json` of the extension can be an array, pls see the documentation. We will be deprecating the string type for `extensionKind` property in favour of string array type. The `extensionKind` attribute should be set to `["ui", "workspace"]`. Indicating that the extension can run both as a UI extension and as a workspace extension (e.g. in the browser).
+
+Maintenance
+
+- merged npm audit fixes for packages
+- updated several packages as devDependencies to keep up with security updates
+
 ## 3.2.0
 
 Features

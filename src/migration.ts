@@ -29,7 +29,7 @@ export async function migrateFromMementoToSettingsAsNeeded() {
   // The v2 memento is gone, so no need to migrate.
   if (peacockColorMemento) {
     Logger.info('Migration: Migrating from peacock memento to peacock.color setting.');
-    // Remove the v2 memento (it's ok if it doesnt exist)
+    // Remove the v2 memento (it's ok if it doesn't exist)
     await State.extensionContext.workspaceState.update(peacockColorMementoName, undefined);
   } else {
     /**

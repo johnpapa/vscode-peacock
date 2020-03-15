@@ -14,6 +14,8 @@ meta:
 
 Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
+> Peacock docs are hosted on Azure -> [Get a Free Azure Trial](https://azure.microsoft.com/en-us/free/?wt.mc_id=peacock-github-jopapa)
+
 ## Install
 
 1. Open **Extensions** sideBar panel in Visual Studio Code via the menu item `View → Extensions`
@@ -23,18 +25,19 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 > You can also [install Peacock from the marketplace here](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
 
-![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
-
 ## Quick Usage
 
 Let's see Peacock in action!
 
+1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](/guide/#peacock-commands-are-not-appearing))
 1. Press `F1` to open the command palette
 1. Type `Peacock`
 1. Choose `Peacock: Change to a favorite color`
 1. Choose one of the pre-defined colors and see how it changes your editor
 
 Now enjoy exploring the rest of the features explained in the docs, here!
+
+![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
 
 ## Features
 
@@ -249,7 +252,7 @@ Please refer to the [issues list and feel free to grab one and contribute](https
 
 ### Contributions
 
-See these pages for details on [contributions](/contributions) and our [code of conduct](/code-of-conduct).
+See these pages for details on [contributions](/about/contributing) and our [code of conduct](/about/code_of_conduct).
 
 ### Logging
 
@@ -257,7 +260,7 @@ Peacock writes to VS Code's log output. You can open the output panel and select
 
 ## Changes
 
-See the [CHANGELOG](CHANGELOG.md) for the latest changes.
+See the [CHANGELOG](/changelog) latest changes.
 
 ## FAQ
 
@@ -350,6 +353,7 @@ The readability calculations and metrics are based on Web Content Accessibility 
 const readability = tinycolor.readability(lightForeground, background); // 2.669008
 const isReadable = tinycolor.isReadable(lightForeground, background); // false
 ```
+
 ### Why is the foreground hard to see with my transparent color
 
 The readability calculations that Peacock uses to determine an appropriate foreground color are based only on the color information of the entered background color. The alpha component is currently ignored in these calculations because of complications with VS Code that make it difficult to determine the actual background color of the affected elements. See [Alpha Support](#alpha-support) for more information.

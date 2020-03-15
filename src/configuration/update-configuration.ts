@@ -10,15 +10,13 @@ import {
   IPeacockAffectedElementSettings,
   AffectedSettings,
   starterSetOfFavorites,
-  getExtensionVersion,
   isObjectEmpty,
 } from '../models';
 import { Logger } from '../logging';
 import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
-import { notify } from '../notification';
 import { LiveShareSettings } from '../live-share';
 
-export async function updateGlobalConfiguration<T>(setting: AllSettings, value?: any) {
+export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {
   const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${setting}`;
   Logger.info(`${extensionShortName}: Updating the user settings with the following changes:`);
@@ -34,7 +32,7 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
   if (isObjectEmpty(colorCustomizations)) {
     // We are receiving an empty object, so let's make it undefined.
     // This means we can skip writing the workbench.colorCustomizations section
-    // if one doesnt already exist.
+    // if one doesn't already exist.
     colorCustomizations = undefined;
   }
 
@@ -84,7 +82,7 @@ export async function updateLightForegroundColor(value: string) {
   return await updateGlobalConfiguration(StandardSettings.LightForegroundColor, value);
 }
 
-export async function updateDarkenLightenPrecentage(value: number) {
+export async function updateDarkenLightenPercentage(value: number) {
   return await updateGlobalConfiguration(StandardSettings.DarkenLightenPercentage, value);
 }
 
@@ -103,10 +101,6 @@ export async function addNewFavoriteColor(name: string, value: string) {
 }
 
 export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
-  const version = getExtensionVersion();
-  const msg = `${extensionShortName}: Adding recommended favorite colors to user settings for version ${version}`;
-  notify(msg, true);
-
   const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
   return await updateFavoriteColors(newFavoriteColors);
 }
