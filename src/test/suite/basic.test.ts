@@ -53,7 +53,7 @@ suite('Basic Extension Tests', () => {
     }
   });
 
-  test('Settings exist in package.json', () => {
+  test.only('Settings exist in package.json', () => {
     // let extension = getExtension() as vscode.Extension<any>;
 
     const config: IConfiguration = extension.packageJSON.contributes.configuration;
