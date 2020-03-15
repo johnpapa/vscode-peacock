@@ -47,24 +47,24 @@ export enum ElementNames {
 }
 
 export enum ColorSettings {
+  activityBar_activeBackground = 'activityBar.activeBackground',
+  activityBar_activeBorder = 'activityBar.activeBorder',
+  activityBar_background = 'activityBar.background',
+  activityBar_foreground = 'activityBar.foreground',
+  activityBar_inactiveForeground = 'activityBar.inactiveForeground',
+  activityBar_badgeBackground = 'activityBarBadge.background',
+  activityBar_badgeForeground = 'activityBarBadge.foreground',
+  accentBorders_editorGroupBorder = 'editorGroup.border',
+  accentBorders_panelBorder = 'panel.border',
+  statusBar_background = 'statusBar.background',
+  accentBorders_sideBarBorder = 'sideBar.border',
+  statusBar_foreground = 'statusBar.foreground',
+  statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
+  tabActiveBorder = 'tab.activeBorder',
   titleBar_activeBackground = 'titleBar.activeBackground',
   titleBar_activeForeground = 'titleBar.activeForeground',
   titleBar_inactiveBackground = 'titleBar.inactiveBackground',
   titleBar_inactiveForeground = 'titleBar.inactiveForeground',
-  activityBar_background = 'activityBar.background',
-  activityBar_foreground = 'activityBar.foreground',
-  activityBar_inactiveForeground = 'activityBar.inactiveForeground',
-  activityBar_activeBorder = 'activityBar.activeBorder',
-  activityBar_activeBackground = 'activityBar.activeBackground',
-  activityBar_badgeBackground = 'activityBarBadge.background',
-  activityBar_badgeForeground = 'activityBarBadge.foreground',
-  statusBar_background = 'statusBar.background',
-  statusBar_foreground = 'statusBar.foreground',
-  statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
-  accentBorders_panelBorder = 'panel.border',
-  accentBorders_sideBarBorder = 'sideBar.border',
-  accentBorders_editorGroupBorder = 'editorGroup.border',
-  tabActiveBorder = 'tab.activeBorder',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
