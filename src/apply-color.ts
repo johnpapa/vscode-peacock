@@ -35,7 +35,7 @@ function mergeColorCustomizations1(
   updatedColors: ISettingsIndexer,
 ) {
   /**
-   * Alays start with the existing colors.
+   * Always start with the existing colors.
    * So we clone existing into a new object that will contain
    * the merged (existing and updated) set of colors.
    */
