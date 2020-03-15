@@ -29,6 +29,7 @@ import {
   getInactiveForegroundColorHex,
 } from '../color-library';
 import { LiveShareSettings } from '../live-share';
+import { sortSettingsIndexer } from '../object-library';
 
 const { workspace } = vscode;
 
@@ -57,11 +58,7 @@ export function getColorCustomizationConfig() {
 export function getColorCustomizationConfigFromWorkspace() {
   const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
 
-  if (!inspect) {
-    return {};
-  }
-
-  if (typeof inspect.workspaceValue !== 'object') {
+  if (!inspect || typeof inspect.workspaceValue !== 'object') {
     return {};
   }
 
@@ -124,12 +121,14 @@ export function prepareColors(backgroundHex: string) {
   const statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
   // Merge all color settings
-  const newColorCustomizations: any = {
+  const mergedSettings: ISettingsIndexer = {
     ...activityBarSettings,
     ...titleBarSettings,
     ...statusBarSettings,
     ...accentBorderSettings,
   };
+
+  const newColorCustomizations = sortSettingsIndexer(mergedSettings);
 
   return newColorCustomizations;
 }
