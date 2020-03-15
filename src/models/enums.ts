@@ -13,6 +13,7 @@ export enum StandardSettings {
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
   RemoteColor = 'remoteColor',
   Color = 'color',
+  CacheBust = 'cacheBust',
 }
 
 export enum AffectedSettings {
