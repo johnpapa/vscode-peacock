@@ -45,6 +45,7 @@ function mergeColorCustomizations(
    * If any existing color settings are not in the set
    * that Peacock manages, remove them from this
    * merged color set.
+   * This preserves the order that they are currently in.
    */
   Object.values(ColorSettings)
     .filter(c => !(c in updatedColors))
@@ -52,13 +53,11 @@ function mergeColorCustomizations(
 
   /**
    * Loop through all updated color settings,
-   * sort them alphabetically,
-   * then where there is a match between existing and udpated colors,
+   * in the same order they are in currently.
+   * Where there is a match between existing and udpated colors,
    * use the updated color.
    */
-  Object.keys(updatedColors)
-    .sort()
-    .forEach(c => (mergedCustomizations[c] = updatedColors[c]));
+  Object.keys(updatedColors).forEach(c => (mergedCustomizations[c] = updatedColors[c]));
 
   return mergedCustomizations;
 }
