@@ -63,7 +63,6 @@ export function getColorCustomizationConfigFromWorkspace() {
   }
 
   const colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
-
   return colorCustomizations;
 }
 
