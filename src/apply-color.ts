@@ -29,21 +29,36 @@ export async function unapplyColors() {
   updateStatusBar();
 }
 
-function mergeColorCustomizations(existing: ISettingsIndexer, updated: ISettingsIndexer) {
-  const mergedCustomizations = { ...existing };
+function mergeColorCustomizations(
+  existingColors: ISettingsIndexer,
+  updatedColors: ISettingsIndexer,
+) {
+  /**
+   * Alays start with the existing colors.
+   * So we clone existing into a new object that will contain
+   * the merged (existing and updated) set of colors.
+   */
+  const mergedCustomizations = { ...existingColors };
 
   // Remove colors that are not set in updated.
   /**
-   * If any colors are not in the
+   * If any existing color settings are not in the set
+   * that Peacock manages, remove them from this
+   * merged color set.
    */
   Object.values(ColorSettings)
-    .filter(c => !(c in updated))
+    .filter(c => !(c in updatedColors))
     .forEach(c => delete mergedCustomizations[c]);
 
-  // Apply updated changes.
-  Object.keys(updated)
+  /**
+   * Loop through all updated color settings,
+   * sort them alphabetically,
+   * then where there is a match between existing and udpated colors,
+   * use the updated color.
+   */
+  Object.keys(updatedColors)
     .sort()
-    .forEach(c => (mergedCustomizations[c] = updated[c]));
+    .forEach(c => (mergedCustomizations[c] = updatedColors[c]));
 
   return mergedCustomizations;
 }
