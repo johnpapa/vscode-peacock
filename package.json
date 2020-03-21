@@ -391,7 +391,7 @@
     "istanbul-reports": "^3.0.0",
     "mocha": "^7.0.0",
     "mocha-multi-reporters": "^1.1.7",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.0",
     "pretty-quick": "^2.0.1",
     "sinon": "^9.0.0",
     "ts-loader": "^5.3.3",
