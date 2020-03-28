@@ -359,7 +359,7 @@
     "lint-fix": "eslint ./src --ext .js,.ts --fix",
     "webpack": "webpack --mode none",
     "watch": "webpack --mode none --watch",
-    "pretty": "pretty-quick",
+    "pretty": "npx prettier@2 src/. --write",
     "just-test": "node ./out/test/runTest.js",
     "just-live-share-test": "node out/live-share/test/runTest.js",
     "test-compile": "tsc -p ./ && npm run webpack",
@@ -392,7 +392,6 @@
     "mocha": "^7.1.1",
     "mocha-multi-reporters": "^1.1.7",
     "prettier": "^2.0.0",
-    "pretty-quick": "^2.0.1",
     "sinon": "^9.0.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.8.3",
@@ -408,7 +407,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "npm run pretty"
     }
   }
 }
