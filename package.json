@@ -371,7 +371,7 @@
     "@types/glob": "^7.1.1",
     "@types/istanbul-lib-instrument": "^1.7.3",
     "@types/istanbul-lib-report": "^1.1.1",
-    "@types/istanbul-lib-source-maps": "^1.2.2",
+    "@types/istanbul-lib-source-maps": "^4.0.0",
     "@types/istanbul-reports": "^1.1.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "12.12.16",
