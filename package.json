@@ -375,7 +375,7 @@
     "@types/istanbul-reports": "^1.1.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "12.12.16",
-    "@types/sinon": "^7.5.2",
+    "@types/sinon": "^9.0.0",
     "@types/vscode": "^1.36.0",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
