@@ -292,6 +292,8 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
   if (isAffectedSettingSelected(AffectedSettings.TitleBar)) {
     const titleBarStyle = getElementStyle(backgroundHex, ElementNames.titleBar);
     titleBarSettings[ColorSettings.titleBar_activeBackground] = titleBarStyle.backgroundHex;
+    titleBarSettings[ColorSettings.titleBar_border] = titleBarStyle.backgroundHex;
+
     titleBarSettings[ColorSettings.titleBar_inactiveBackground] =
       titleBarStyle.inactiveBackgroundHex;
 
@@ -341,6 +343,7 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
   if (isAffectedSettingSelected(AffectedSettings.StatusBar)) {
     const statusBarStyle = getElementStyle(backgroundHex, ElementNames.statusBar);
     statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
+    statusBarSettings[ColorSettings.statusBar_border] = statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
       statusBarStyle.backgroundHoverHex;
 
