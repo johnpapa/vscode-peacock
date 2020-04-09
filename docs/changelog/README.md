@@ -14,8 +14,8 @@ All notable changes to the code will be documented in this file.
 
 ## 3.7.0
 
-- Added statusBar.border to be colored the same as statusBar.background [#366](https://github.com/johnpapa/vscode-peacock/pull/366)
-- Added titleBar.border to be colored the same as titleBar.activeBackground [#366](https://github.com/johnpapa/vscode-peacock/pull/366)
+- Added statusBar.border to be colored the same as statusBar.background [#381](https://github.com/johnpapa/vscode-peacock/pull/381)
+- Added titleBar.border to be colored the same as titleBar.activeBackground [#381](https://github.com/johnpapa/vscode-peacock/pull/381)
 - [Updated sinon](https://github.com/johnpapa/vscode-peacock/issues/356)
 - [Updated mocha types](https://github.com/johnpapa/vscode-peacock/issues/344)
 - removing remnants of tslint, since peacock moved to eslint months ago
