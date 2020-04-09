@@ -15,6 +15,7 @@ All notable changes to the code will be documented in this file.
 ## next
 
 - Added keyboard shortcut for **Surprise Me with a Random Color** command using `cmd+shift+/`
+- Added keyboard shortcuts to the docs
 
 ## 3.7.0
 
