@@ -26,7 +26,9 @@
     "statusBar.foreground": "#e7e7e7",
     "panel.border": "#174a8e",
     "sideBar.border": "#174a8e",
-    "editorGroup.border": "#174a8e"
+    "editorGroup.border": "#174a8e",
+    "statusBar.border": "#103362",
+    "titleBar.border": "#103362"
   },
   "workbench.activityBar.visible": true,
   "workbench.statusBar.visible": true,
