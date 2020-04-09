@@ -12,6 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## next
+
+- Added keyboard shortcut for **Surprise Me with a Random Color** command using `cmd+shift+/`
+
 ## 3.7.0
 
 - Added statusBar.border to be colored the same as statusBar.background [#381](https://github.com/johnpapa/vscode-peacock/pull/381)

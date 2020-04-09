@@ -176,6 +176,14 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
 | Peacock: Show the Documentation                 | Opens the Peacock documentation web site in a browser                                                                              |
 
+## Keyboard Shortcuts
+
+| description                     | key binding | command                     |
+| ------------------------------- | ----------- | --------------------------- |
+| Darken the colors               | alt+cmd+-   | peacock.darken              |
+| Lighten the colors              | alt+cmd+=   | peacock.lighten             |
+| Surprise Me with a Random Color | cmd+shift+k | peacock.changeColorToRandom |
+
 ## Integrations
 
 Peacock integrates with other extensions, as described in this section.
