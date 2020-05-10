@@ -389,7 +389,7 @@
     "glob": "^7.1.6",
     "husky": "^4.2.3",
     "istanbul-lib-coverage": "^3.0.0",
-    "istanbul-lib-instrument": "^3.3.0",
+    "istanbul-lib-instrument": "^4.0.3",
     "istanbul-lib-report": "^2.0.8",
     "istanbul-lib-source-maps": "^3.0.6",
     "istanbul-reports": "^3.0.1",
