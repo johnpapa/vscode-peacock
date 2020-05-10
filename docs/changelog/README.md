@@ -14,6 +14,11 @@ All notable changes to the code will be documented in this file.
 
 ## next
 
+- ...
+
+## 3.7.1
+
+- Updated docs site to <https://www.peacockcode.dev>
 - Added keyboard shortcut for **Surprise Me with a Random Color** command using `cmd+shift+/`
 - Added keyboard shortcuts to the docs
 
@@ -127,7 +132,7 @@ Fixes
 
 Fixes
 
-- Added a command to show the Peacock documentation web site <https://peacockcode.dev>
+- Added a command to show the Peacock documentation web site <https://www.peacockcode.dev>
 - Writing Favorites - For now we'll just add the starter set of favorites one time. If there are favorites, do not write new ones. We'll revisit this later so we do not overwrite favorites.
 
 ## 3.0.1
