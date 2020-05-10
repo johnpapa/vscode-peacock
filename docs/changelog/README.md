@@ -12,14 +12,13 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## next
+## 3.7.2
 
-- ...
+- Removed keyboard shortcut for **Surprise Me with a Random Color** command. Was using wrong key combo!
 
 ## 3.7.1
 
 - Updated docs site to <https://www.peacockcode.dev>
-- Added keyboard shortcut for **Surprise Me with a Random Color** command using `cmd+shift+/`
 - Added keyboard shortcuts to the docs
 
 ## 3.7.0

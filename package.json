@@ -116,10 +116,6 @@
       {
         "key": "alt+cmd+=",
         "command": "peacock.lighten"
-      },
-      {
-        "key": "cmd+shift+k",
-        "command": "peacock.changeColorToRandom"
       }
     ],
     "menus": {
