@@ -10,5 +10,5 @@ features:
     details: Color your Visual Studio Code editor uniquely when you are using the remote integration features.
   - title: Live Share
     details: Color your Visual Studio Code editor uniquely when you are in a Live Share session as a Guest or a Host
-footer: MIT Licensed | Copyright © 2019-present John Papa | Current Version 3.2.0
+footer: MIT Licensed | Copyright © 2019-present John Papa | current version 3.7.2
 ---
