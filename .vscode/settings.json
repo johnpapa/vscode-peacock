@@ -25,10 +25,7 @@
     "statusBarItem.hoverBackground": "#1f6fd0",
     "statusBar.foreground": "#e7e7e7",
     "statusBar.border": "#1857a4",
-    "titleBar.border": "#1857a4",
-    "editorGroup.border": "#1f6fd0",
-    "panel.border": "#1f6fd0",
-    "sideBar.border": "#1f6fd0"
+    "titleBar.border": "#1857a4"
   },
   "workbench.activityBar.visible": true,
   "workbench.statusBar.visible": true,

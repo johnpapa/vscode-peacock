@@ -8,4 +8,8 @@ export const starterSetOfFavorites = [
   { name: 'Something Different', value: '#832561' },
   { name: 'Svelte Orange', value: '#ff3d00' },
   { name: 'Vue Green', value: '#42b883' },
+  { name: 'PowerShell Blue', value: '#012456' },
+  { name: 'C# Purple', value: '#68217a' },
+  { name: 'Auth0 Orange', value: '#eb5424' },
+  { name: 'Gatsby Purple', value: '#663399' }
 ];
