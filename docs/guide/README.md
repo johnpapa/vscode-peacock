@@ -159,6 +159,10 @@ You may like a color but want to lighten or darken it. You can do this through t
 
 There are key bindings for the lighten command `alt+cmd+=` and for darken command `alt+cmd+-`, to make it easier to adjust the colors.
 
+### Setting Default Colors
+
+`peacock.remoteColor` and `peacock.color` sets the default colors for remote and local workspaces if no workspace color is chosen. These options can only be set and unset manually because they affect all workspaces that do not have workspace colors set which could be annoying. This option exists because VS Code merges settings across user and workspace settings. It is not necessary to change this setting, unless you really want to set the default.
+
 ## Commands
 
 | Command                                         | Description                                                                                                                        |
