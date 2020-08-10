@@ -199,6 +199,11 @@
           "default": false,
           "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel)."
         },
+        "peacock.affectStatusAndTitleBorders": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the status or title borders."
+        },
         "peacock.affectTabActiveBorder": {
           "type": "boolean",
           "default": false,

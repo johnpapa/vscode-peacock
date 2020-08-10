@@ -20,6 +20,7 @@ export enum AffectedSettings {
   StatusBar = 'affectStatusBar',
   TitleBar = 'affectTitleBar',
   AccentBorders = 'affectAccentBorders',
+  StatusAndTitleBorders = 'affectStatusAndTitleBorders',
   TabActiveBorder = 'affectTabActiveBorder',
 }
 

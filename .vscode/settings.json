@@ -24,11 +24,13 @@
     "statusBar.background": "#1857a4",
     "statusBarItem.hoverBackground": "#1f6fd0",
     "statusBar.foreground": "#e7e7e7",
+    "XstatusBar.border": "#1857a4",
+    "XtitleBar.border": "#1857a4",
     "statusBar.border": "#1857a4",
     "titleBar.border": "#1857a4",
-    "editorGroup.border": "#1f6fd0",
-    "panel.border": "#1f6fd0",
-    "sideBar.border": "#1f6fd0"
+    "editorGroup.border": "#ff0",
+    "panel.border": "#ff0",
+    "sideBar.border": "#ff0"
   },
   "workbench.activityBar.visible": true,
   "workbench.statusBar.visible": true,
