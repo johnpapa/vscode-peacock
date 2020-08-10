@@ -154,6 +154,7 @@ suite('Affected elements', () => {
         titleBar: true,
         tabActiveBorder: true,
         accentBorders: true,
+        statusAndTitleBorders: false,
       });
 
       const value = await getColorSettingAfterEnterColor(

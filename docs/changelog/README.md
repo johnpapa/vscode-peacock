@@ -12,6 +12,11 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.8.0
+
+- Added new property **Affect Status and Title Borders**, which defaults to **false**. [#397](https://github.com/johnpapa/vscode-peacock/pull/397)
+- merged npm audit fixes for packages
+
 ## 3.7.2
 
 - Removed keyboard shortcut for **Surprise Me with a Random Color** command. Was using wrong key combo!

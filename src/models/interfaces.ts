@@ -36,6 +36,7 @@ export interface IPeacockAffectedElementSettings {
   statusBar: boolean;
   titleBar: boolean;
   accentBorders: boolean;
+  statusAndTitleBorders: boolean;
   tabActiveBorder: boolean;
 }
 
@@ -46,6 +47,7 @@ export interface IPeacockElementAdjustments {
 export interface IPeacockSettings {
   affectedElements: IPeacockAffectedElementSettings;
   affectAccentBorders: boolean;
+  affectStatusAndTitleBorders: boolean;
   elementAdjustments: IPeacockElementAdjustments;
   favoriteColors: IFavoriteColors[];
   keepBadgeColor: boolean;
