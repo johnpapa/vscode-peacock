@@ -147,7 +147,7 @@ export async function updateAffectedElements(values: IPeacockAffectedElementSett
   await updateGlobalConfiguration(AffectedSettings.AccentBorders, values.accentBorders);
   await updateGlobalConfiguration(
     AffectedSettings.StatusAndTitleBorders,
-    values.statusTitleBorders,
+    values.statusAndTitleBorders,
   );
   await updateGlobalConfiguration(AffectedSettings.TabActiveBorder, values.tabActiveBorder);
 

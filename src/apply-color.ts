@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { ColorSettings, extensionShortName, ISettingsIndexer, StandardSettings } from './models';
+import { ColorSettings, extensionShortName, ISettingsIndexer } from './models';
 import {
   getColorCustomizationConfigFromWorkspace,
   prepareColors,
@@ -15,7 +15,7 @@ import {
   getBackgroundColorHex,
   deletePeacocksColorCustomizations,
 } from './color-library';
-import { ConfigurationTarget } from 'vscode';
+// import { ConfigurationTarget } from 'vscode';
 
 export async function unapplyColors() {
   if (!vscode.workspace.workspaceFolders) {

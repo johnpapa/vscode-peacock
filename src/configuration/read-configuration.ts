@@ -230,7 +230,7 @@ export function getAffectedElements() {
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
     accentBorders: readConfiguration<boolean>(AffectedSettings.AccentBorders) || false,
-    statusTitleBorders: readConfiguration<boolean>(AffectedSettings.StatusAndTitleBorders) || false,
+    statusAndTitleBorders: readConfiguration<boolean>(AffectedSettings.StatusAndTitleBorders) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
   } as IPeacockAffectedElementSettings;
 }
