@@ -24,6 +24,7 @@ import {
   getAdjustedColorHex,
   getBadgeBackgroundColorHex,
   getBackgroundHoverColorHex,
+  getDebuggingBackgroundColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
@@ -350,12 +351,19 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
       statusBarStyle.backgroundHoverHex;
 
+    const debuggingColorHex = getDebuggingBackgroundColorHex(statusBarStyle.backgroundHex);
+    statusBarSettings[ColorSettings.statusBar_debuggingBackground] = debuggingColorHex;
+
     if (isAffectedSettingSelected(AffectedSettings.StatusAndTitleBorders)) {
       statusBarSettings[ColorSettings.statusBar_border] = statusBarStyle.backgroundHex;
+      statusBarSettings[ColorSettings.statusBar_debuggingBorder] = debuggingColorHex;
     }
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] = statusBarStyle.foregroundHex;
+      statusBarSettings[ColorSettings.statusBar_debuggingForeground] = getForegroundColorHex(
+        debuggingColorHex,
+      );
     }
   }
   return statusBarSettings;
