@@ -19,7 +19,11 @@ import {
   getColorCustomizationConfig,
   updateAffectedElements,
 } from '../../configuration';
-import { getColorBrightness, getReadabilityRatio } from '../../color-library';
+import {
+  getColorBrightness,
+  getReadabilityRatio,
+  getColorComplementHex,
+} from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
 suite('Affected elements', () => {
@@ -114,6 +118,7 @@ suite('Affected elements', () => {
       await updateAffectedElements({
         activityBar: false,
         statusBar: false,
+        debuggingStatusBar: false,
         titleBar: false,
         accentBorders: false,
         tabActiveBorder: false,
@@ -135,6 +140,9 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.activityBar_activeBorder]);
       assert.ok(!config[ColorSettings.statusBar_foreground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingBackground]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingForeground]);
       assert.ok(!config[ColorSettings.accentBorders_panelBorder]);
       assert.ok(!config[ColorSettings.accentBorders_sideBarBorder]);
       assert.ok(!config[ColorSettings.accentBorders_editorGroupBorder]);
@@ -151,6 +159,7 @@ suite('Affected elements', () => {
       await updateAffectedElements({
         activityBar: true,
         statusBar: false,
+        debuggingStatusBar: false,
         titleBar: true,
         tabActiveBorder: true,
         accentBorders: true,
@@ -180,6 +189,66 @@ suite('Affected elements', () => {
       const hoverBackgroundHex = config[ColorSettings.statusBarItem_hoverBackground];
 
       assert.ok(getColorBrightness(backgroundHex) < getColorBrightness(hoverBackgroundHex));
+    });
+
+    test('debugging styles are set when debugging status bar is affected', async () => {
+      await updateAffectedElements({
+        statusBar: true,
+        debuggingStatusBar: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      const debuggingBackground = config[ColorSettings.statusBar_debuggingBackground];
+      const debuggingForeground = config[ColorSettings.statusBar_debuggingForeground];
+      const debuggingBorder = config[ColorSettings.statusBar_debuggingBorder];
+      assert.ok(debuggingBackground);
+      assert.ok(debuggingForeground);
+      assert.ok(debuggingBorder);
+    });
+
+    test('debugging styles are not set when debugging status bar is not affected', async () => {
+      await updateAffectedElements({
+        statusBar: true,
+        debuggingStatusBar: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      assert.ok(!config[ColorSettings.statusBar_debuggingBackground]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingForeground]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('debugging styles are not set when status bar is not affected', async () => {
+      await updateAffectedElements({
+        statusBar: false,
+        debuggingStatusBar: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      assert.ok(!config[ColorSettings.statusBar_debuggingBackground]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingForeground]);
+      assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('sets debugging background color to a complement of the activity bar color', async () => {
+      await updateAffectedElements({
+        debuggingStatusBar: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      const statusBackgroundHex = config[ColorSettings.statusBar_debuggingBackground];
+      const activityBackgroundHex = config[ColorSettings.activityBar_background];
+      assert.ok(statusBackgroundHex != activityBackgroundHex);
+      assert.ok(statusBackgroundHex === getColorComplementHex(activityBackgroundHex));
     });
   });
 

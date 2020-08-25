@@ -24,6 +24,7 @@ import {
   getAdjustedColorHex,
   getBadgeBackgroundColorHex,
   getBackgroundHoverColorHex,
+  getDebuggingBackgroundColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
@@ -228,6 +229,7 @@ export function getAffectedElements() {
   return {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
+    debuggingStatusBar: readConfiguration<boolean>(AffectedSettings.DebuggingStatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
     accentBorders: readConfiguration<boolean>(AffectedSettings.AccentBorders) || false,
     statusAndTitleBorders:
@@ -356,6 +358,24 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] = statusBarStyle.foregroundHex;
+    }
+
+    if (isAffectedSettingSelected(AffectedSettings.DebuggingStatusBar)) {
+      const debuggingBackgroundColorHex = getDebuggingBackgroundColorHex(
+        statusBarStyle.backgroundHex,
+      );
+      statusBarSettings[ColorSettings.statusBar_debuggingBackground] = debuggingBackgroundColorHex;
+
+      if (isAffectedSettingSelected(AffectedSettings.StatusAndTitleBorders)) {
+        statusBarSettings[ColorSettings.statusBar_debuggingBorder] = debuggingBackgroundColorHex;
+      }
+
+      if (!keepForegroundColor) {
+        const debuggingForegroundColorHex = getForegroundColorHex(debuggingBackgroundColorHex);
+        statusBarSettings[
+          ColorSettings.statusBar_debuggingForeground
+        ] = debuggingForegroundColorHex;
+      }
     }
   }
   return statusBarSettings;
@@ -491,6 +511,7 @@ function getAllUserSettings() {
   const {
     activityBar: affectActivityBar,
     statusBar: affectStatusBar,
+    debuggingStatusBar: affectDebuggingStatusBar,
     titleBar: affectTitleBar,
     accentBorders: affectAccentBorders,
     tabActiveBorder: affectTabActiveBorder,
@@ -505,6 +526,7 @@ function getAllUserSettings() {
     lightForegroundColor,
     affectActivityBar,
     affectStatusBar,
+    affectDebuggingStatusBar,
     affectTitleBar,
     affectAccentBorders,
     affectTabActiveBorder,

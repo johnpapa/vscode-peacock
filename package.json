@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -188,6 +188,11 @@
           "type": "boolean",
           "default": true,
           "description": "Specifies whether Peacock should affect the status bar."
+        },
+        "peacock.affectDebuggingStatusBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the status bar while debugging."
         },
         "peacock.affectTitleBar": {
           "type": "boolean",
