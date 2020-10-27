@@ -15,7 +15,7 @@ Read the extensive [documentation here](https://www.peacockcode.dev) which inclu
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat-square)](#contributors)
 
-[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=master)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=master&WT.mc_id=vscodepeacock-github-jopapa)
+[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=main)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=main&WT.mc_id=vscodepeacock-github-jopapa)
 
 ## Install
 
@@ -81,7 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/egamma"><img src="https://avatars1.githubusercontent.com/u/172399?v=4" width="100px;" alt="Erich Gamma"/><br /><sub><b>Erich Gamma</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=egamma" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/christiannwamba"><img src="https://avatars2.githubusercontent.com/u/8108337?v=4" width="100px;" alt="Christian Nwamba"/><br /><sub><b>Christian Nwamba</b></sub></a><br /><a href="#ideas-christiannwamba" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="http://mattbierner.com"><img src="https://avatars2.githubusercontent.com/u/12821956?v=4" width="100px;" alt="Matt Bierner"/><br /><sub><b>Matt Bierner</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=mjbvz" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.raymondcamden.com"><img src="https://avatars3.githubusercontent.com/u/393660?v=4" width="100px;" alt="Raymond Camden"/><br /><sub><b>Raymond Camden</b></sub></a><br /><a href="#ideas-cfjedimaster" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://www.raymondcamden.com"><img src="https://avatars3.githubusercontent.com/u/393660?v=4" width="100px;" alt="Raymond Camden"/><br /><sub><b>Raymond Camden</b></sub></a><br /><a href="#ideas-cfjedimain" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
   <tr>
     <td align="center"><a href="http://www.aaron-powell.com"><img src="https://avatars0.githubusercontent.com/u/434140?v=4" width="100px;" alt="Aaron Powell"/><br /><sub><b>Aaron Powell</b></sub></a><br /><a href="#ideas-aaronpowell" title="Ideas, Planning, & Feedback">🤔</a></td>

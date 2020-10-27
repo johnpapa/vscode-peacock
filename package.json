@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/johnpapa/vscode-peacock.git"
   },
-  "homepage": "https://github.com/johnpapa/vscode-peacock/blob/master/README.md",
+  "homepage": "https://github.com/johnpapa/vscode-peacock/blob/main/README.md",
   "icon": "resources/peacock-icon.png",
   "galleryBanner": {
     "color": "#373436",

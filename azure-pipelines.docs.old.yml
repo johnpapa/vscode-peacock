@@ -1,8 +1,8 @@
 trigger:
   branches:
     include:
-      - master
-# wwe only publish docs when we push to master. We shuold have a docs staging site tho.
+      - main
+# wwe only publish docs when we push to main. We shuold have a docs staging site tho.
 # pr:
 #   branches:
 #     include:
