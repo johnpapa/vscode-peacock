@@ -16,7 +16,7 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.36.0"
+    "vscode": "^1.50.0"
   },
   "categories": [
     "Other"
@@ -36,11 +36,30 @@
   ],
   "main": "./dist/extension",
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "peacock.colors",
+          "name": "Peacock Colors",
+          "when": "workspaceFolderCount != 0"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "peacock.colors",
+        "contents": "Get started with Peacock ([Learn More](https://peacockcode.dev)).\n\n[Surprise Me](command:peacock.changeColorToRandom)"
+      }
+    ],
     "commands": [
       {
         "command": "peacock.docs",
         "title": "Open the Documentation",
-        "category": "Peacock"
+        "category": "Peacock",
+        "icon": {
+          "light": "resources/light/book.svg",
+          "dark": "resources/dark/book.svg"
+        }
       },
       {
         "command": "peacock.resetWorkspaceColors",
@@ -60,7 +79,11 @@
       {
         "command": "peacock.enterColor",
         "title": "Enter a Color",
-        "category": "Peacock"
+        "category": "Peacock",
+        "icon": {
+          "light": "resources/light/pencil.svg",
+          "dark": "resources/dark/pencil.svg"
+        }
       },
       {
         "command": "peacock.changeColorToPeacockGreen",
@@ -75,7 +98,11 @@
       {
         "command": "peacock.changeColorToRandom",
         "title": "Surprise Me with a Random Color",
-        "category": "Peacock"
+        "category": "Peacock",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
       },
       {
         "command": "peacock.changeColorToFavorite",
@@ -119,6 +146,30 @@
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "peacock.changeColorToRandom",
+          "when": "view == peacock.colors",
+          "group": "navigation@1"
+        },
+        {
+          "command": "peacock.enterColor",
+          "when": "view == peacock.colors",
+          "group": "navigation@2"
+        },
+        {
+          "command": "peacock.docs",
+          "when": "view == peacock.colors",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "peacock.changeColorToRandom",
+          "when": "view == peacock.colors && viewItem == pcontext",
+          "group": "inline"
+        }
+      ],
       "commandPalette": [
         {
           "command": "peacock.docs"
@@ -381,10 +432,10 @@
     "@types/mocha": "^7.0.2",
     "@types/node": "12.12.16",
     "@types/sinon": "^7.5.2",
-    "@types/vscode": "^1.49.0",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
-    "eslint": "^6.8.0",
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
+    "eslint": "^7.1.0",
+    "@types/vscode": "^1.50.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
     "glob": "^7.1.6",
@@ -399,7 +450,7 @@
     "prettier": "^2.1.2",
     "sinon": "^9.1.0",
     "ts-loader": "^5.3.3",
-    "typescript": "^3.9.7",
+    "typescript": "^4.0.2",
     "vscode-test": "^1.4.0",
     "vuepress": "^1.6.0",
     "webpack": "^4.44.2",

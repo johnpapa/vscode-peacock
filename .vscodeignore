@@ -11,6 +11,7 @@ vsc-extension-quickstart.md
 
 # Extra file to ignore
 azure-pipelines.yml
+azure-pipelines.docs.old.yml
 .azure-pipelines/
 ISSUE_TEMPLATE.md
 PULL_REQUEST_TEMPLATE.md

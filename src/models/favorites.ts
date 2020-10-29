@@ -1,4 +1,9 @@
-export const starterSetOfFavorites = [
+export interface PeacockColor {
+  name: string;
+  value: string;
+}
+
+export const starterSetOfFavorites: PeacockColor[] = [
   { name: 'Angular Red', value: '#dd0531' },
   { name: 'Azure Blue', value: '#007fff' },
   { name: 'JavaScript Yellow', value: '#f9e64f' },

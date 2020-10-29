@@ -38,6 +38,7 @@ import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
 import { saveFavoritesVersionGlobalMemento, getMementos } from './mementos';
 import { migrateFromMementoToSettingsAsNeeded } from './migration';
+import { DepColorProvider, DepNodeProvider } from './tree';
 
 const { commands, workspace } = vscode;
 
@@ -70,6 +71,13 @@ export async function activate(context: vscode.ExtensionContext) {
   } else {
     Logger.info('Peacock is not in a workspace, so Peacock functionality is not available.');
   }
+
+  const tree = new DepColorProvider(vscode.workspace.rootPath as string);
+  vscode.window.createTreeView('peacock.colors', {
+    treeDataProvider: tree,
+    showCollapseAll: true,
+    canSelectMany: false,
+  });
 
   addSubscriptions(); // add these AFTER applying initial config
 }
