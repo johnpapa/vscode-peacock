@@ -38,7 +38,7 @@ import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
 import { saveFavoritesVersionGlobalMemento, getMementos } from './mementos';
 import { migrateFromMementoToSettingsAsNeeded } from './migration';
-import { DepColorProvider, DepNodeProvider } from './tree';
+import { DepColorProvider } from './tree';
 
 const { commands, workspace } = vscode;
 
