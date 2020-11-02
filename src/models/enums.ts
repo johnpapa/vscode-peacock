@@ -39,6 +39,7 @@ export enum Commands {
   darken = 'peacock.darken',
   lighten = 'peacock.lighten',
   showAndCopyCurrentColor = 'peacock.showAndCopyCurrentColor',
+  refreshColorsPanel = 'peacock.refreshColorsPanel',
 }
 
 export enum ElementNames {

@@ -100,8 +100,8 @@
         "title": "Surprise Me with a Random Color",
         "category": "Peacock",
         "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
+          "light": "resources/light/present.svg",
+          "dark": "resources/dark/present.svg"
         }
       },
       {

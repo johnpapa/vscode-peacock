@@ -16,15 +16,15 @@ async function saveGlobalMemento(mementoName: string, value: any) {
   }
 }
 
-export async function saveFavoritesVersionGlobalMemento(version: string) {
+export async function saveFavoritesVersionGlobalMemento(version: string): Promise<void> {
   saveGlobalMemento(peacockMementos.favoritesVersion, version);
 }
 
-export function getFavoritesVersionGlobalMemento() {
+export function getFavoritesVersionGlobalMemento(): string {
   return State.extensionContext.globalState.get<string>(peacockMementos.favoritesVersion, '');
 }
 
-export async function resetFavoritesVersionMemento() {
+export async function resetFavoritesVersionMemento(): Promise<void> {
   const ec = State.extensionContext;
 
   Logger.info(
@@ -35,7 +35,7 @@ export async function resetFavoritesVersionMemento() {
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
 }
 
-export function getMementos() {
+export function getMementos(): IMementoLog[] {
   const ec = State.extensionContext;
   const mementos: IMementoLog[] = [];
 

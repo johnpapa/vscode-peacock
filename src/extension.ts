@@ -38,14 +38,16 @@ import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
 import { saveFavoritesVersionGlobalMemento, getMementos } from './mementos';
 import { migrateFromMementoToSettingsAsNeeded } from './migration';
-import { DepColorProvider } from './tree';
+import { getColorTreeDataProvider, refreshColorsView } from './tree';
 
 const { commands, workspace } = vscode;
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
   State.extensionContext = context;
   // Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now active!`);
   Logger.info(getMementos(), true, 'Peacock Mementos');
+
+  getColorTreeDataProvider();
 
   registerCommands();
   await initializeTheStarterSetOfFavorites();
@@ -72,13 +74,6 @@ export async function activate(context: vscode.ExtensionContext) {
     Logger.info('Peacock is not in a workspace, so Peacock functionality is not available.');
   }
 
-  const tree = new DepColorProvider(vscode.workspace.rootPath as string);
-  vscode.window.createTreeView('peacock.colors', {
-    treeDataProvider: tree,
-    showCollapseAll: true,
-    canSelectMany: false,
-  });
-
   addSubscriptions(); // add these AFTER applying initial config
 }
 
@@ -86,6 +81,9 @@ function addSubscriptions() {
   State.extensionContext.subscriptions.push(Logger.getChannel());
 
   State.extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(applyPeacock()));
+  State.extensionContext.subscriptions.push(
+    workspace.onDidChangeConfiguration(() => refreshColorsView()),
+  );
 }
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
@@ -129,7 +127,7 @@ function registerCommands() {
   commands.registerCommand(Commands.showAndCopyCurrentColor, showAndCopyCurrentColorHandler);
 }
 
-export function deactivate() {
+export function deactivate(): void {
   // Logger.info(`${extensionShortName}: Extension "vscode-peacock" is now deactive`);
 }
 
@@ -148,7 +146,7 @@ async function initializeTheStarterSetOfFavorites() {
   }
 }
 
-export async function checkSurpriseMeOnStartupLogic() {
+export async function checkSurpriseMeOnStartupLogic(): Promise<void> {
   /**
    * If the "surprise me on startup" setting is true
    * and there is no peacock color set, then choose a new random color.

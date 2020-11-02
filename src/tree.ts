@@ -1,13 +1,47 @@
-import * as vscode from 'vscode';
-import { Commands, PeacockColor, starterSetOfFavorites } from './models';
+import { Commands, PeacockColor, State } from './models';
 import * as path from 'path';
+import { getFavoriteColors } from './configuration';
+import {
+  Command,
+  Event,
+  EventEmitter,
+  TreeDataProvider,
+  TreeItem,
+  TreeItemCollapsibleState,
+  window,
+  workspace,
+} from 'vscode';
 
-export class DepColorProvider implements vscode.TreeDataProvider<ColorNode> {
-  private _onDidChangeTreeData: vscode.EventEmitter<
+let _colorTreeDataProvider: DepColorProvider;
+
+export function refreshColorsView(): void {
+  getColorTreeDataProvider().refresh();
+}
+
+export function getColorTreeDataProvider(): DepColorProvider {
+  if (!_colorTreeDataProvider) {
+    _colorTreeDataProvider = createTreeDataProvider();
+  }
+  return _colorTreeDataProvider;
+}
+
+function createTreeDataProvider(): DepColorProvider {
+  const tree = new DepColorProvider(workspace.rootPath as string);
+  window.createTreeView('peacock.colors', {
+    treeDataProvider: tree,
+    showCollapseAll: true,
+    canSelectMany: false,
+  });
+
+  return tree;
+}
+
+export class DepColorProvider implements TreeDataProvider<ColorNode> {
+  private _onDidChangeTreeData: EventEmitter<ColorNode | undefined | void> = new EventEmitter<
     ColorNode | undefined | void
-  > = new vscode.EventEmitter<ColorNode | undefined | void>();
-  readonly onDidChangeTreeData: vscode.Event<ColorNode | undefined | void> = this
-    ._onDidChangeTreeData.event;
+  >();
+  readonly onDidChangeTreeData: Event<ColorNode | undefined | void> = this._onDidChangeTreeData
+    .event;
 
   constructor(private workspaceRoot: string) {}
 
@@ -15,13 +49,13 @@ export class DepColorProvider implements vscode.TreeDataProvider<ColorNode> {
     this._onDidChangeTreeData.fire();
   }
 
-  getTreeItem(element: ColorNode): vscode.TreeItem {
+  getTreeItem(element: ColorNode): TreeItem {
     return element;
   }
 
   getChildren(element?: ColorNode): Thenable<ColorNode[]> {
     if (!this.workspaceRoot) {
-      vscode.window.showInformationMessage('No dependency in empty workspace');
+      window.showInformationMessage('No dependency in empty workspace');
       return Promise.resolve([]);
     }
 
@@ -32,50 +66,38 @@ export class DepColorProvider implements vscode.TreeDataProvider<ColorNode> {
     }
   }
 
-  // private async getCommand(): Promise<vscode.Command> {
-  //   const cmds = await vscode.commands.getCommands(true);
-  //   const cmd = cmds.find(c => c === Commands.changeColorToRandom);
-  //   return { command: cmd + '' } as vscode.Command;
-  // }
-
   private getColors(): ColorNode[] {
-    const toColorDep = ({ name, value }: PeacockColor): ColorNode => {
+    const toColorDep = ({ name, value: color }: PeacockColor): ColorNode => {
       const cmd = {
-        command: Commands.changeColorToRandom,
-      } as vscode.Command;
-      // const cmd = await this.getCommand();
-      const colorNode = new ColorNode(name, value, vscode.TreeItemCollapsibleState.None, cmd);
+        command: Commands.enterColor,
+        arguments: [color],
+      } as Command;
+      const colorNode = new ColorNode(name, color, TreeItemCollapsibleState.None, cmd);
       return colorNode;
     };
 
-    return starterSetOfFavorites.map(c => toColorDep(c));
+    const { values: favorites } = getFavoriteColors();
+
+    return favorites.map(c => toColorDep(c));
   }
 }
 
-export class ColorNode extends vscode.TreeItem {
+export class ColorNode extends TreeItem {
   constructor(
     public readonly label: string,
     private readonly color: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly command?: vscode.Command,
+    public readonly collapsibleState: TreeItemCollapsibleState,
+    public readonly command?: Command,
   ) {
     super('$(globe) ${label}', collapsibleState);
 
     this.tooltip = `${this.label} ${this.color}`;
     this.description = this.color;
 
-    this.iconPath = {
-      light: path.join(__filename, '..', '..', '..', '..', 'resources', 'light', 'pencil.svg'),
-      dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'dark', 'pencil.svg'),
-    };
+    // this.iconPath = State.extensionContext.asAbsolutePath(
+    //   path.join('resources', 'colors', 'angular-color.svg'),
+    // );
   }
 
-  // iconPath = {
-  //   // light: '../resources/light/refresh.svg',
-  //   // dark: '../resources/dark/refresh.svg',
-  //   light: path.join(__filename, '..', '..', 'resources', 'light', 'pencil.svg'),
-  //   dark: path.join(__filename, '..', '..', 'resources', 'dark', 'pencil.svg'),
-  // };
-
-  contextValue = 'pcontext';
+  contextValue = this.color; // TODO: do i need this?
 }

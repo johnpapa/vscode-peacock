@@ -23,42 +23,43 @@ import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } fr
 import { resetLiveSharePreviousColors } from './live-share';
 import { notify } from './notification';
 import * as vscode from 'vscode';
+import { ExtensionContext } from 'vscode';
 
-export async function removeAllPeacockColorsHandler() {
+export async function removeAllPeacockColorsHandler(): Promise<ExtensionContext> {
   await resetWorkspaceColorsHandler();
   await updatePeacockColorInUserSettings(undefined);
   await updatePeacockRemoteColorInUserSettings(undefined);
   return State.extensionContext;
 }
 
-export async function showDocumentationHandler() {
+export async function showDocumentationHandler(): Promise<ExtensionContext> {
   await vscode.env.openExternal(docsUri);
   return State.extensionContext;
 }
 
-export async function resetWorkspaceColorsHandler() {
+export async function resetWorkspaceColorsHandler(): Promise<ExtensionContext> {
   await resetLiveSharePreviousColors();
   await updatePeacockColor(undefined);
   await updatePeacockRemoteColor(undefined);
   return State.extensionContext;
 }
 
-export async function saveColorToFavoritesHandler() {
+export async function saveColorToFavoritesHandler(): Promise<ExtensionContext> {
   const color = getEnvironmentAwareColor();
   if (color) {
     const name = await promptForFavoriteColorName(color);
     if (!name) {
-      return;
+      return State.extensionContext;
     }
     await addNewFavoriteColor(name, color);
   }
   return State.extensionContext;
 }
 
-export async function enterColorHandler(color?: string) {
+export async function enterColorHandler(color?: string): Promise<ExtensionContext> {
   const input = color ? color : await promptForColor();
   if (!input) {
-    return;
+    return State.extensionContext;
   }
   if (!isValidColorInput(input)) {
     throw new Error(`Invalid HEX or named color "${input}"`);
@@ -68,7 +69,7 @@ export async function enterColorHandler(color?: string) {
   return State.extensionContext;
 }
 
-export async function changeColorToRandomHandler() {
+export async function changeColorToRandomHandler(): Promise<ExtensionContext> {
   const surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
   let color = '';
 
@@ -90,18 +91,18 @@ export async function changeColorToRandomHandler() {
   return State.extensionContext;
 }
 
-export async function addRecommendedFavoritesHandler() {
+export async function addRecommendedFavoritesHandler(): Promise<ExtensionContext> {
   await writeRecommendedFavoriteColors();
   return State.extensionContext;
 }
 
-export async function changeColorToPeacockGreenHandler() {
+export async function changeColorToPeacockGreenHandler(): Promise<ExtensionContext> {
   await applyColor(peacockGreen);
   await updateColorSetting(peacockGreen);
   return State.extensionContext;
 }
 
-export async function changeColorToFavoriteHandler() {
+export async function changeColorToFavoriteHandler(): Promise<ExtensionContext> {
   // Remember the color we started with
   const startingColor = getEnvironmentAwareColor();
   const favoriteColor = await promptForFavoriteColor();
@@ -125,7 +126,7 @@ export async function changeColorToFavoriteHandler() {
   return State.extensionContext;
 }
 
-export async function darkenHandler() {
+export async function darkenHandler(): Promise<ExtensionContext> {
   const color = getEnvironmentAwareColor();
   if (color) {
     const darkenLightenPercentage = getDarkenLightenPercentage();
@@ -136,7 +137,7 @@ export async function darkenHandler() {
   return State.extensionContext;
 }
 
-export async function lightenHandler() {
+export async function lightenHandler(): Promise<ExtensionContext> {
   const color = getEnvironmentAwareColor();
   if (color) {
     const darkenLightenPercentage = getDarkenLightenPercentage();
@@ -147,10 +148,10 @@ export async function lightenHandler() {
   return State.extensionContext;
 }
 
-export async function showAndCopyCurrentColorHandler() {
+export async function showAndCopyCurrentColorHandler(): Promise<ExtensionContext> {
   const color = getEnvironmentAwareColor();
   if (!color) {
-    return;
+    return State.extensionContext;
   }
   const msg = color
     ? `Peacock's color is ${color} and has been copied to your clipboard.`

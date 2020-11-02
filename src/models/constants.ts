@@ -21,7 +21,9 @@ export const peacockMementos = {
   favoritesVersion: `${extensionShortName}.favoritesVersion`,
 };
 
-export const timeout = async (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
+export const timeout: (ms: number) => Promise<NodeJS.Timeout> = async (ms = 200) =>
+  new Promise(resolve => setTimeout(resolve, ms));
 
-export const isObjectEmpty = (o: {} | undefined) =>
-  typeof o === 'object' && Object.keys(o).length === 0;
+export const isObjectEmpty: (o: Record<string, unknown> | undefined) => boolean = (
+  o: Record<string, unknown> | undefined,
+) => typeof o === 'object' && Object.keys(o).length === 0;

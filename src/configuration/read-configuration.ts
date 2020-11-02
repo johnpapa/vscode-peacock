@@ -33,29 +33,29 @@ import { sortSettingsIndexer } from '../object-library';
 
 const { workspace } = vscode;
 
-export function getSurpriseMeFromFavoritesOnly() {
+export function getSurpriseMeFromFavoritesOnly(): boolean {
   return readConfiguration<boolean>(StandardSettings.SurpriseMeFromFavoritesOnly, false);
 }
 
-export function getDarkenLightenPercentage() {
+export function getDarkenLightenPercentage(): number {
   return readConfiguration<number>(
     StandardSettings.DarkenLightenPercentage,
     defaultAmountToDarkenLighten,
   );
 }
 
-export function getShowColorInStatusBar() {
+export function getShowColorInStatusBar(): boolean {
   return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
 }
 
-export function getColorCustomizationConfig() {
+export function getColorCustomizationConfig(): vscode.WorkspaceConfiguration {
   // This currently gets the merged color customization set.
   // If we want to get just the ones from workspace,
   // we should change functions to use getColorCustomizationConfigFromWorkspace
   return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
 }
 
-export function getColorCustomizationConfigFromWorkspace() {
+export function getColorCustomizationConfigFromWorkspace(): ISettingsIndexer {
   const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
 
   if (!inspect || typeof inspect.workspaceValue !== 'object') {
@@ -66,15 +66,15 @@ export function getColorCustomizationConfigFromWorkspace() {
   return colorCustomizations;
 }
 
-export function getPeacockWorkspace() {
+export function getPeacockWorkspace(): vscode.WorkspaceConfiguration {
   return workspace.getConfiguration(extensionShortName);
 }
 
-export function getUserConfig() {
+export function getUserConfig(): vscode.WorkspaceConfiguration {
   return workspace.getConfiguration(Sections.peacockSection);
 }
 
-export function getCurrentColorBeforeAdjustments() {
+export function getCurrentColorBeforeAdjustments(): string {
   /**
    * Useful if we don't want the
    *       peacock color but instead to calculate it from
@@ -92,18 +92,18 @@ export function getCurrentColorBeforeAdjustments() {
   return originalColor;
 }
 
-export function readConfiguration<T>(setting: AllSettings, defaultValue?: T | undefined) {
+export function readConfiguration<T>(setting: AllSettings, defaultValue?: T | undefined): T {
   const value: T | undefined = workspace
     .getConfiguration(Sections.peacockSection)
     .get<T | undefined>(setting, defaultValue);
   return value as T;
 }
 
-export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
+export function isAffectedSettingSelected(affectedSetting: AffectedSettings): boolean {
   return readConfiguration<boolean>(affectedSetting, false);
 }
 
-export function prepareColors(backgroundHex: string) {
+export function prepareColors(backgroundHex: string): ISettingsIndexer {
   const keepForegroundColor = getKeepForegroundColor();
   const keepBadgeColor = getKeepBadgeColor();
 
@@ -132,16 +132,32 @@ export function prepareColors(backgroundHex: string) {
   return newColorCustomizations;
 }
 
-export function getDarkForegroundColor() {
+export function getDarkForegroundColor(): string {
   return readConfiguration<string>(StandardSettings.DarkForegroundColor, '');
 }
 
-export function getEnvironmentAwareColor() {
+export function getEnvironmentAwareColor(): string {
   const color = vscode.env.remoteName ? getPeacockRemoteColor() : getPeacockColor();
   return color;
 }
 
-export function inspectColor() {
+export function inspectColor():
+  | {
+      colorSource: ColorSource.None;
+    }
+  | {
+      key: string;
+      defaultValue?: unknown;
+      globalValue?: unknown;
+      workspaceValue?: unknown;
+      workspaceFolderValue?: unknown;
+      defaultLanguageValue?: unknown;
+      globalLanguageValue?: unknown;
+      workspaceLanguageValue?: unknown;
+      workspaceFolderLanguageValue?: unknown;
+      languageIds?: string[] | undefined;
+      colorSource: ColorSource;
+    } {
   const setting = vscode.env.remoteName ? StandardSettings.RemoteColor : StandardSettings.Color;
   const section = `${Sections.peacockSection}.${setting}`;
   const config = workspace.getConfiguration().inspect(section);
@@ -162,41 +178,44 @@ export function inspectColor() {
   return { colorSource, ...config };
 }
 
-export function getPeacockColor() {
+export function getPeacockColor(): string {
   const color = readConfiguration<string>(StandardSettings.Color);
   return color;
 }
 
-export function getPeacockRemoteColor() {
+export function getPeacockRemoteColor(): string {
   const remoteColor = readConfiguration<string>(StandardSettings.RemoteColor);
   return remoteColor;
 }
 
-export function getLiveShareColor(liveShareSetting: LiveShareSettings) {
+export function getLiveShareColor(liveShareSetting: LiveShareSettings): string {
   return readConfiguration<string>(liveShareSetting, '');
 }
 
-export function getDarkForegroundColorOrOverride() {
+export function getDarkForegroundColorOrOverride(): string {
   return getDarkForegroundColor() || ForegroundColors.DarkForeground;
 }
 
-export function getLightForegroundColor() {
+export function getLightForegroundColor(): string {
   return readConfiguration<string>(StandardSettings.LightForegroundColor, '');
 }
 
-export function getLightForegroundColorOrOverride() {
+export function getLightForegroundColorOrOverride(): string {
   return getLightForegroundColor() || ForegroundColors.LightForeground;
 }
 
-export function getKeepForegroundColor() {
+export function getKeepForegroundColor(): boolean {
   return readConfiguration<boolean>(StandardSettings.KeepForegroundColor, false);
 }
 
-export function getKeepBadgeColor() {
+export function getKeepBadgeColor(): boolean {
   return readConfiguration<boolean>(StandardSettings.KeepBadgeColor, false);
 }
 
-export function getFavoriteColors() {
+export function getFavoriteColors(): {
+  menu: string[];
+  values: IFavoriteColors[];
+} {
   const sep = favoriteColorSeparator;
   let values = readConfiguration<IFavoriteColors[]>(StandardSettings.FavoriteColors);
   const menu = values.map(fav => `${fav.name} ${sep} ${fav.value}`);
@@ -207,7 +226,7 @@ export function getFavoriteColors() {
   };
 }
 
-export function getRandomFavoriteColor() {
+export function getRandomFavoriteColor(): IFavoriteColors {
   const { values: favoriteColors } = getFavoriteColors();
   const currentColor = getEnvironmentAwareColor();
   let newColorFromFavorites: IFavoriteColors;
@@ -220,11 +239,11 @@ export function getRandomFavoriteColor() {
   return newColorFromFavorites;
 }
 
-export function getSurpriseMeOnStartup() {
+export function getSurpriseMeOnStartup(): boolean {
   return readConfiguration<boolean>(StandardSettings.SurpriseMeOnStartup, false);
 }
 
-export function getAffectedElements() {
+export function getAffectedElements(): IPeacockAffectedElementSettings {
   return {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
@@ -236,7 +255,7 @@ export function getAffectedElements() {
   } as IPeacockAffectedElementSettings;
 }
 
-export function getElementAdjustments() {
+export function getElementAdjustments(): IPeacockElementAdjustments {
   const adjustments = readConfiguration<IPeacockElementAdjustments>(
     StandardSettings.ElementAdjustments,
   );
@@ -272,7 +291,7 @@ export function getElementStyle(backgroundHex: string, elementName?: string): IE
   return style;
 }
 
-export function getAllSettingNames() {
+export function getAllSettingNames(): string[] {
   const settings = [];
   const affectedSettings = Object.values(AffectedSettings).map(
     value => `${extensionShortName}.${value}`,
@@ -285,7 +304,7 @@ export function getAllSettingNames() {
   return settings;
 }
 
-export function checkIfPeacockSettingsChanged(e: vscode.ConfigurationChangeEvent) {
+export function checkIfPeacockSettingsChanged(e: vscode.ConfigurationChangeEvent): boolean {
   return getAllSettingNames().some(setting => e.affectsConfiguration(setting));
 }
 
@@ -405,7 +424,7 @@ function getColorAndAdjustment(elementColors: IElementColors) {
   return { color, adjustment };
 }
 
-export function getWorkspaceColorIfExists() {
+export function getWorkspaceColorIfExists(): string | undefined {
   // Get the workspace color customizations
   const config = getColorCustomizationConfigFromWorkspace();
 
@@ -449,7 +468,7 @@ export function getWorkspaceColorIfExists() {
   return color;
 }
 
-export function getOriginalColorsForAllElements() {
+export function getOriginalColorsForAllElements(): IElementColors {
   const config = getColorCustomizationConfig();
   // const config = getColorCustomizationConfigFromWorkspace(); // TODO: do we always only want workspac colors?
 
@@ -475,9 +494,9 @@ export function getOriginalColorsForAllElements() {
   return originalElementColors;
 }
 
-export function hasFavorites() {
+export function hasFavorites(): boolean {
   const s = getAllUserSettings();
-  return s.favoriteColors.values.length;
+  return !!s.favoriteColors.values.length;
 }
 
 function getAllUserSettings() {
