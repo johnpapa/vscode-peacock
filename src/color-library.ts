@@ -107,6 +107,10 @@ export function getBadgeBackgroundColorHex(backgroundColor = '') {
   return getReadableAccentColorHex(backgroundColor, ReadabilityRatios.UserInterfaceLow);
 }
 
+export function getDebuggingBackgroundColorHex(backgroundColor = '') {
+  return formatHex(tinycolor(backgroundColor).complement());
+}
+
 export function getAdjustedColorHex(color = '', adjustment: ColorAdjustment) {
   switch (adjustment) {
     case ColorAdjustmentOptions.lighten:
@@ -133,6 +137,10 @@ export function getRandomColorHex() {
 
 export function getColorBrightness(input = '') {
   return tinycolor(input).getBrightness();
+}
+
+export function getColorComplementHex(input = '') {
+  return formatHex(tinycolor(input).complement());
 }
 
 export function getReadabilityRatio(backgroundColor = '', foregroundColor = '') {

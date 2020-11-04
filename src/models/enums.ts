@@ -1,44 +1,45 @@
 import { LiveShareSettings } from '../live-share';
 
 export enum StandardSettings {
+  Color = 'color',
+  DarkenLightenPercentage = 'darkenLightenPercentage',
+  DarkForegroundColor = 'darkForegroundColor',
   ElementAdjustments = 'elementAdjustments',
   FavoriteColors = 'favoriteColors',
   KeepBadgeColor = 'keepBadgeColor',
   KeepForegroundColor = 'keepForegroundColor',
-  DarkForegroundColor = 'darkForegroundColor',
   LightForegroundColor = 'lightForegroundColor',
-  DarkenLightenPercentage = 'darkenLightenPercentage',
+  RemoteColor = 'remoteColor',
   ShowColorInStatusBar = 'showColorInStatusBar',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
-  RemoteColor = 'remoteColor',
-  Color = 'color',
 }
 
 export enum AffectedSettings {
-  ActivityBar = 'affectActivityBar',
-  StatusBar = 'affectStatusBar',
-  TitleBar = 'affectTitleBar',
   AccentBorders = 'affectAccentBorders',
+  ActivityBar = 'affectActivityBar',
+  DebuggingStatusBar = 'affectDebuggingStatusBar',
+  StatusBar = 'affectStatusBar',
   StatusAndTitleBorders = 'affectStatusAndTitleBorders',
   TabActiveBorder = 'affectTabActiveBorder',
+  TitleBar = 'affectTitleBar',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
 
 export enum Commands {
-  showDocumentation = 'peacock.docs',
-  resetWorkspaceColors = 'peacock.resetWorkspaceColors',
-  removeAllColors = 'peacock.removeAllColors',
-  saveColorToFavorites = 'peacock.saveColorToFavorites',
-  enterColor = 'peacock.enterColor',
+  addRecommendedFavorites = 'peacock.addRecommendedFavorites',
   changeColorToRandom = 'peacock.changeColorToRandom',
   changeColorToPeacockGreen = 'peacock.changeColorToPeacockGreen',
   changeColorToFavorite = 'peacock.changeColorToFavorite',
-  addRecommendedFavorites = 'peacock.addRecommendedFavorites',
   darken = 'peacock.darken',
+  enterColor = 'peacock.enterColor',
   lighten = 'peacock.lighten',
+  removeAllColors = 'peacock.removeAllColors',
+  resetWorkspaceColors = 'peacock.resetWorkspaceColors',
+  saveColorToFavorites = 'peacock.saveColorToFavorites',
   showAndCopyCurrentColor = 'peacock.showAndCopyCurrentColor',
+  showDocumentation = 'peacock.docs',
 }
 
 export enum ElementNames {
@@ -58,9 +59,12 @@ export enum ColorSettings {
   accentBorders_editorGroupBorder = 'editorGroup.border',
   accentBorders_panelBorder = 'panel.border',
   accentBorders_sideBarBorder = 'sideBar.border',
-  statusBar_background = 'statusBar.background',
   statusBar_border = 'statusBar.border',
+  statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',
+  statusBar_debuggingBorder = 'statusBar.debuggingBorder',
+  statusBar_debuggingBackground = 'statusBar.debuggingBackground',
+  statusBar_debuggingForeground = 'statusBar.debuggingForeground',
   statusBarItem_hoverBackground = 'statusBarItem.hoverBackground',
   tabActiveBorder = 'tab.activeBorder',
   titleBar_activeBackground = 'titleBar.activeBackground',

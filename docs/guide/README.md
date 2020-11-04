@@ -59,6 +59,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                |
 | peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
+| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should affect the status bar while debugging. Defaults to false.              |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
 | peacock.affectAccentBorders         | Specifies whether Peacock should affect accent borders (panel, sideBar, editorGroup) Defaults to false. |
 | peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                 |
