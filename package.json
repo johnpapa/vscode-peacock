@@ -179,30 +179,25 @@
     },
     "configuration": {
       "properties": {
+        "peacock.affectAccentBorders": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel)."
+        },
         "peacock.affectActivityBar": {
           "type": "boolean",
           "default": true,
           "description": "Specifies whether Peacock should affect the activity bar."
-        },
-        "peacock.affectStatusBar": {
-          "type": "boolean",
-          "default": true,
-          "description": "Specifies whether Peacock should affect the status bar."
         },
         "peacock.affectDebuggingStatusBar": {
           "type": "boolean",
           "default": false,
           "description": "Specifies whether Peacock should affect the status bar while debugging."
         },
-        "peacock.affectTitleBar": {
+        "peacock.affectStatusBar": {
           "type": "boolean",
           "default": true,
-          "description": "Specifies whether Peacock should affect the title bar."
-        },
-        "peacock.affectAccentBorders": {
-          "type": "boolean",
-          "default": false,
-          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel)."
+          "description": "Specifies whether Peacock should affect the status bar."
         },
         "peacock.affectStatusAndTitleBorders": {
           "type": "boolean",
@@ -213,6 +208,16 @@
           "type": "boolean",
           "default": false,
           "description": "Specifies whether Peacock should affect the active tab's border."
+        },
+        "peacock.affectTitleBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Specifies whether Peacock should affect the title bar."
+        },
+        "peacock.color": {
+          "type": "string",
+          "default": "",
+          "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
         },
         "peacock.elementAdjustments": {
           "type": "object",
@@ -299,27 +304,32 @@
           "default": false,
           "description": "Recommended to remain false. However, when set to true Peacock will not colorize badges in any of the affected elements in response to background alterations"
         },
-        "peacock.keepForegroundColor": {
-          "type": "boolean",
-          "default": false,
-          "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
-        },
-        "peacock.darkForegroundColor": {
-          "type": "string",
-          "default": "#15202b",
-          "description": "Specifies the override value for the dark foreground color"
-        },
-        "peacock.lightForegroundColor": {
-          "type": "string",
-          "default": "#e7e7e7",
-          "description": "Specifies the override value for the light foreground color"
-        },
         "peacock.darkenLightenPercentage": {
           "type": "number",
           "default": 5,
           "minimum": 1,
           "maximum": 10,
           "description": "Specifies the amount to darken or lighten the color, in percentage"
+        },
+        "peacock.darkForegroundColor": {
+          "type": "string",
+          "default": "#15202b",
+          "description": "Specifies the override value for the dark foreground color"
+        },
+        "peacock.keepForegroundColor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
+        },
+        "peacock.lightForegroundColor": {
+          "type": "string",
+          "default": "#e7e7e7",
+          "description": "Specifies the override value for the light foreground color"
+        },
+        "peacock.remoteColor": {
+          "type": "string",
+          "default": "",
+          "description": "The Peacock color that will be applied to remote workspaces."
         },
         "peacock.showColorInStatusBar": {
           "type": "boolean",
@@ -336,25 +346,15 @@
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session, only when a color isn't already set. "
         },
-        "peacock.remoteColor": {
+        "peacock.vslsJoinColor": {
           "type": "string",
           "default": "",
-          "description": "The Peacock color that will be applied to remote workspaces."
-        },
-        "peacock.color": {
-          "type": "string",
-          "default": "",
-          "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
+          "description": "Peacock color for Live Share Color when acting as a Guest "
         },
         "peacock.vslsShareColor": {
           "type": "string",
           "default": "",
           "description": "Peacock color for Live Share Color when acting as a Host "
-        },
-        "peacock.vslsJoinColor": {
-          "type": "string",
-          "default": "",
-          "description": "Peacock color for Live Share Color when acting as a Guest "
         }
       }
     }
