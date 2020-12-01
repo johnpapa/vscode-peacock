@@ -12,6 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.9.1
+
+- Updated links to resources
+
 ## 3.9.0
 
 - Added support for coloring the status bar while debugging based on the peacock color. [#271](https://github.com/johnpapa/vscode-peacock/issues/271)
