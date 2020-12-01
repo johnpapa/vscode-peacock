@@ -16,6 +16,7 @@ All notable changes to the code will be documented in this file.
 
 - Added support for coloring the status bar while debugging based on the peacock color. [#271](https://github.com/johnpapa/vscode-peacock/issues/271)
 - Added new setting **Affect Debugging Status Bar**, which defaults to **false**. [#271](https://github.com/johnpapa/vscode-peacock/issues/271)
+- Updated vscode engine to 1.49.0
 
 ## 3.8.0
 
