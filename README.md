@@ -58,7 +58,17 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 
 - Here are some great [examples for extensions](https://github.com/Microsoft/vscode-extension-samples) from the VS Code team
 
+## Code of Conduct
+
+[Code of Conduct](./CODE_OF_CONDUCT).
+
+## Problems or Suggestions
+
+[Open an issue here](https://github.com/johnpapa/vscode-peacock/issues)
+
 ## Contributors
+
+[Contribution guidelines are located here](./CONTRIBUTING)
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
