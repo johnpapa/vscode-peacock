@@ -60,7 +60,7 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 
 ## Code of Conduct
 
-[Code of Conduct](./CODE_OF_CONDUCT).
+[Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Problems or Suggestions
 
@@ -68,7 +68,7 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 
 ## Contributors
 
-[Contribution guidelines are located here](./CONTRIBUTING)
+[Contribution guidelines are located here](./CONTRIBUTING.md)
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
