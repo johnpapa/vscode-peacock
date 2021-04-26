@@ -1,6 +1,6 @@
 # Peacock for Visual Studio Code
 
-![Peacock Icon](./resources/peacock-icon-small.png 'Peacock')
+![Peacock Icon](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/peacock-icon-small.png 'Peacock')
 
 Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
@@ -40,7 +40,7 @@ Let's see Peacock in action!
 
 Now enjoy exploring the rest of the features explained in the docs!
 
-![Peacock Windows](./resources/hero.png 'Peacock Windows')
+![Peacock Windows](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/hero.png 'Peacock windows')
 
 ## Resources
 
