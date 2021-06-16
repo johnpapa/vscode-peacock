@@ -351,6 +351,7 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
     statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
       statusBarStyle.backgroundHoverHex;
+    statusBarSettings[ColorSettings.statusBarItem_remoteBackground] = statusBarStyle.backgroundHex;
 
     if (isAffectedSettingSelected(AffectedSettings.StatusAndTitleBorders)) {
       statusBarSettings[ColorSettings.statusBar_border] = statusBarStyle.backgroundHex;
@@ -358,6 +359,7 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] = statusBarStyle.foregroundHex;
+      statusBarSettings[ColorSettings.statusBarItem_remoteForeground] = statusBarStyle.foregroundHex;
     }
 
     if (isAffectedSettingSelected(AffectedSettings.DebuggingStatusBar)) {

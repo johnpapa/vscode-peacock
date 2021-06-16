@@ -191,6 +191,33 @@ suite('Affected elements', () => {
       assert.ok(getColorBrightness(backgroundHex) < getColorBrightness(hoverBackgroundHex));
     });
 
+    test('status bar remote host styles are set when status bar is affected', async () => {
+      await updateAffectedElements({
+        statusBar: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      const remoteBackground = config[ColorSettings.statusBarItem_remoteBackground];
+      const remoteForeground = config[ColorSettings.statusBarItem_remoteForeground];
+      assert.ok(remoteBackground);
+      assert.ok(remoteForeground);
+    });
+
+    test('status bar remote host styles are not set when status bar is affected', async () => {
+      await updateAffectedElements({
+        statusBar: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      assert.ok(!config[ColorSettings.statusBarItem_remoteBackground]);
+      assert.ok(!config[ColorSettings.statusBarItem_remoteForeground]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
     test('debugging styles are set when debugging status bar is affected', async () => {
       await updateAffectedElements({
         statusBar: true,
