@@ -34,7 +34,8 @@
     "ui",
     "workspace"
   ],
-  "main": "./dist/extension",
+  "main": "./dist/extension-node.js",
+  "browser": "./dist/extension-web.js",
   "contributes": {
     "commands": [
       {
@@ -387,8 +388,10 @@
     "@types/node": "12.12.16",
     "@types/sinon": "^7.5.2",
     "@types/vscode": "^1.49.0",
+    "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
+    "@vscode/test-web": "^0.0.6",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -402,13 +405,14 @@
     "mocha": "^7.2.0",
     "mocha-multi-reporters": "^1.1.7",
     "prettier": "^2.1.2",
+    "process": "^0.11.10",
     "sinon": "^9.1.0",
-    "ts-loader": "^5.3.3",
+    "ts-loader": "^9.2.2",
     "typescript": "^3.9.7",
     "vscode-test": "^1.4.0",
     "vuepress": "^1.6.0",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0"
   },
   "dependencies": {
     "@types/tinycolor2": "^1.4.1",
