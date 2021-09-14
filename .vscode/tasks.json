@@ -18,7 +18,7 @@
 		},
 		{
             "type": "npm",
-            "script": "watch-web",
+            "script": "watch",
             "group": "build",
             "isBackground": true,
             "problemMatcher": [
