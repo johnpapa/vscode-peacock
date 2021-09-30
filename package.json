@@ -376,7 +376,8 @@
     "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && npm run just-test",
     "test-all": "npm run test && npm run just-live-share-test",
-    "test:coverage": "npm run just-test -- --coverage"
+    "test:coverage": "npm run just-test -- --coverage",
+    "test-web": "npx @vscode/test-web --browserType=chromium --extensionDevelopmentPath=."
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
