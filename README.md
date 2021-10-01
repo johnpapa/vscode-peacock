@@ -73,30 +73,35 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/musicfuel"><img src="https://avatars1.githubusercontent.com/u/1085791?v=4" width="100px;" alt="James Newell"/><br /><sub><b>James Newell</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=musicfuel" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://juliangaramendy.dev"><img src="https://avatars1.githubusercontent.com/u/237818?v=4" width="100px;" alt="Julian"/><br /><sub><b>Julian</b></sub></a><br /><a href="#ideas-JulianG" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://twitter.com/legomushroom"><img src="https://avatars2.githubusercontent.com/u/1478800?v=4" width="100px;" alt="Oleg Solomka"/><br /><sub><b>Oleg Solomka</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=legomushroom" title="Code">💻</a> <a href="https://github.com/johnpapa/vscode-peacock/commits?author=legomushroom" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://josephrex.me"><img src="https://avatars3.githubusercontent.com/u/5395567?v=4" width="100px;" alt="Joseph Rex"/><br /><sub><b>Joseph Rex</b></sub></a><br /><a href="#design-josephrexme" title="Design">🎨</a></td>
-    <td align="center"><a href="http://www.samjulien.com"><img src="https://avatars1.githubusercontent.com/u/7738189?v=4" width="100px;" alt="Sam Julien"/><br /><sub><b>Sam Julien</b></sub></a><br /><a href="#ideas-samjulien" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="http://www.tattoocoder.com"><img src="https://avatars1.githubusercontent.com/u/7681382?v=4" width="100px;" alt="Shayne Boyer"/><br /><sub><b>Shayne Boyer</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=spboyer" title="Code">💻</a></td>
-    <td align="center"><a href="http://a.shinynew.me"><img src="https://avatars1.githubusercontent.com/u/686963?v=4" width="100px;" alt="Burke Holland"/><br /><sub><b>Burke Holland</b></sub></a><br /><a href="#ideas-burkeholland" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/musicfuel"><img src="https://avatars1.githubusercontent.com/u/1085791?v=4?s=100" width="100px;" alt=""/><br /><sub><b>James Newell</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=musicfuel" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://juliangaramendy.dev"><img src="https://avatars1.githubusercontent.com/u/237818?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Julian</b></sub></a><br /><a href="#ideas-JulianG" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://twitter.com/legomushroom"><img src="https://avatars2.githubusercontent.com/u/1478800?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Oleg Solomka</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=legomushroom" title="Code">💻</a> <a href="https://github.com/johnpapa/vscode-peacock/commits?author=legomushroom" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://josephrex.me"><img src="https://avatars3.githubusercontent.com/u/5395567?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joseph Rex</b></sub></a><br /><a href="#design-josephrexme" title="Design">🎨</a></td>
+    <td align="center"><a href="http://www.samjulien.com"><img src="https://avatars1.githubusercontent.com/u/7738189?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sam Julien</b></sub></a><br /><a href="#ideas-samjulien" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.tattoocoder.com"><img src="https://avatars1.githubusercontent.com/u/7681382?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shayne Boyer</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=spboyer" title="Code">💻</a></td>
+    <td align="center"><a href="http://a.shinynew.me"><img src="https://avatars1.githubusercontent.com/u/686963?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Burke Holland</b></sub></a><br /><a href="#ideas-burkeholland" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="http://www.lostintangent.com"><img src="https://avatars3.githubusercontent.com/u/116461?v=4" width="100px;" alt="Jonathan Carter"/><br /><sub><b>Jonathan Carter</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=lostintangent" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/souzara"><img src="https://avatars2.githubusercontent.com/u/11986361?v=4" width="100px;" alt="Ricardo Souza"/><br /><sub><b>Ricardo Souza</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=souzara" title="Code">💻</a></td>
-    <td align="center"><a href="https://doublslash.com"><img src="https://avatars1.githubusercontent.com/u/1748044?v=4" width="100px;" alt="Kushal Pandya"/><br /><sub><b>Kushal Pandya</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=kushalpandya" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/egamma"><img src="https://avatars1.githubusercontent.com/u/172399?v=4" width="100px;" alt="Erich Gamma"/><br /><sub><b>Erich Gamma</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=egamma" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://github.com/christiannwamba"><img src="https://avatars2.githubusercontent.com/u/8108337?v=4" width="100px;" alt="Christian Nwamba"/><br /><sub><b>Christian Nwamba</b></sub></a><br /><a href="#ideas-christiannwamba" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="http://mattbierner.com"><img src="https://avatars2.githubusercontent.com/u/12821956?v=4" width="100px;" alt="Matt Bierner"/><br /><sub><b>Matt Bierner</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=mjbvz" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.raymondcamden.com"><img src="https://avatars3.githubusercontent.com/u/393660?v=4" width="100px;" alt="Raymond Camden"/><br /><sub><b>Raymond Camden</b></sub></a><br /><a href="#ideas-cfjedimain" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.lostintangent.com"><img src="https://avatars3.githubusercontent.com/u/116461?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jonathan Carter</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=lostintangent" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/souzara"><img src="https://avatars2.githubusercontent.com/u/11986361?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ricardo Souza</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=souzara" title="Code">💻</a></td>
+    <td align="center"><a href="https://doublslash.com"><img src="https://avatars1.githubusercontent.com/u/1748044?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kushal Pandya</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=kushalpandya" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/egamma"><img src="https://avatars1.githubusercontent.com/u/172399?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Erich Gamma</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=egamma" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/christiannwamba"><img src="https://avatars2.githubusercontent.com/u/8108337?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christian Nwamba</b></sub></a><br /><a href="#ideas-christiannwamba" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://mattbierner.com"><img src="https://avatars2.githubusercontent.com/u/12821956?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matt Bierner</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=mjbvz" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.raymondcamden.com"><img src="https://avatars3.githubusercontent.com/u/393660?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Raymond Camden</b></sub></a><br /><a href="#ideas-cfjedimaster" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="http://www.aaron-powell.com"><img src="https://avatars0.githubusercontent.com/u/434140?v=4" width="100px;" alt="Aaron Powell"/><br /><sub><b>Aaron Powell</b></sub></a><br /><a href="#ideas-aaronpowell" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.aaron-powell.com"><img src="https://avatars0.githubusercontent.com/u/434140?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aaron Powell</b></sub></a><br /><a href="#ideas-aaronpowell" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/tanhakabir"><img src="https://avatars.githubusercontent.com/u/12758612?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tanhakabir</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=tanhakabir" title="Code">💻</a></td>
   </tr>
 </table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
