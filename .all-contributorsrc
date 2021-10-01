@@ -140,11 +140,21 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "tanhakabir",
+      "name": "tanhakabir",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12758612?v=4",
+      "profile": "https://github.com/tanhakabir",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "vscode-peacock",
   "projectOwner": "johnpapa",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
