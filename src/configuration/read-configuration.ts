@@ -372,9 +372,8 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
 
       if (!keepForegroundColor) {
         const debuggingForegroundColorHex = getForegroundColorHex(debuggingBackgroundColorHex);
-        statusBarSettings[
-          ColorSettings.statusBar_debuggingForeground
-        ] = debuggingForegroundColorHex;
+        statusBarSettings[ColorSettings.statusBar_debuggingForeground] =
+          debuggingForegroundColorHex;
       }
     }
   }

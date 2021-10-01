@@ -14,10 +14,13 @@ All notable changes to the code will be documented in this file.
 
 ## 3.10.0
 
--The VS Code team recently launched VS Code for the web with [github.dev](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor)! You can read the full guide for extension authors creating and migrating extensions here: [Web Extensions
-](https://code.visualstudio.com/api/extension-guides/web-extensions). Changes were made to make Peacock work on the web and these include: - Modify webpack bundling to create web and desktop friendly versions of your extension - Add the necessary dependencies for web bundling - Add the `browser` entry point to your `package.json` to link to the web-friendly compiled extension - Add some folders/files to ignore in your `.gitignore` and `.vscodeignore` - Add launch configuration for launching your extension in a web extension host
+- Added support for Peacock as a VS Code web extension
 
-- Tested with a launch configuration or `vscode-test-web`. [Learn more on the docs.](https://code.visualstudio.com/api/extension-guides/web-extensions#test-your-web-extension)
+  - The VS Code team recently launched VS Code for the web with [github.dev](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor)! You can read the full guide for extension authors creating and migrating extensions here: [Web Extensions
+    ](https://code.visualstudio.com/api/extension-guides/web-extensions). Changes were made to make Peacock work on the web and these include: - Modify webpack bundling to create web and desktop friendly versions of your extension - Add the necessary dependencies for web bundling - Add the `browser` entry point to your `package.json` to link to the web-friendly compiled extension - Add some folders/files to ignore in your `.gitignore` and `.vscodeignore` - Add launch configuration for launching your extension in a web extension host
+    - Tested with a launch configuration or `vscode-test-web`. [Learn more on the docs.](https://code.visualstudio.com/api/extension-guides/web-extensions#test-your-web-extension)
+    - Added `npm run open-in-browser` for testing
+    - Thanks to [@tanhakabir](https://github.com/tanhakabir) for the core contribution!
 
 ## 3.9.1
 

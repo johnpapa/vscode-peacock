@@ -22,9 +22,8 @@ export async function migrateFromMementoToSettingsAsNeeded() {
   }
   // Check for the v2.5 memento
   const peacockColorMementoName = `${extensionShortName}.peacockColor`;
-  const peacockColorMemento = State.extensionContext.workspaceState.get<string>(
-    peacockColorMementoName,
-  );
+  const peacockColorMemento =
+    State.extensionContext.workspaceState.get<string>(peacockColorMementoName);
   let derivedColor = undefined;
   // The v2 memento is gone, so no need to migrate.
   if (peacockColorMemento) {
