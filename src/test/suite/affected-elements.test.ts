@@ -223,6 +223,7 @@ suite('Affected elements', () => {
       await updateAffectedElements({
         statusBar: true,
         debuggingStatusBar: true,
+        statusAndTitleBorders: true,
       } as IPeacockAffectedElementSettings);
 
       await executeCommand(Commands.changeColorToPeacockGreen);
@@ -240,13 +241,17 @@ suite('Affected elements', () => {
       await updateAffectedElements({
         statusBar: true,
         debuggingStatusBar: false,
+        statusAndTitleBorders: true,
       } as IPeacockAffectedElementSettings);
 
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
-      assert.ok(!config[ColorSettings.statusBar_debuggingBackground]);
-      assert.ok(!config[ColorSettings.statusBar_debuggingForeground]);
-      assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
+      const debuggingBackground = config[ColorSettings.statusBar_debuggingBackground];
+      const debuggingForeground = config[ColorSettings.statusBar_debuggingForeground];
+      const debuggingBorder = config[ColorSettings.statusBar_debuggingBorder];
+      assert.ok(!debuggingBackground);
+      assert.ok(!debuggingForeground);
+      assert.ok(!debuggingBorder);
 
       await updateAffectedElements(allAffectedElements);
     });
