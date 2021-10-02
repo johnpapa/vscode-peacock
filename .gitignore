@@ -8,3 +8,4 @@ out-cov
 coverage
 xunit.xml
 .vscode-test-web
+docs/.vuepress/.*

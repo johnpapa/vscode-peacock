@@ -12,6 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.10.1
+
+- Updated to VuePress v2 (beta), changing for dark and light themes, fixing links
+
 ## 3.10.0
 
 - Added `sash.hoverBorder` to the Accent Borders
