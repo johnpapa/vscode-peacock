@@ -3,9 +3,13 @@ title: Guide
 # We can even add meta tags to the page! This sets the keywords meta tag.
 # <meta name="keywords" content="my SEO keywords"/>
 description: Documentation guide for the Visual Studio Code Peacock extension
-meta:
-  - name: keywords
-  - content: vscode "visual studio code" peacock theme extension documentation docs guide help "get started"
+head:
+  - - meta
+    - name: keywords
+    - content: vscode "visual studio code" peacock theme extension documentation docs guide help "get started"
+  - - script
+    - {}
+    - console.log('hello from frontmatter');
 ---
 
 # Peacock for Visual Studio Code

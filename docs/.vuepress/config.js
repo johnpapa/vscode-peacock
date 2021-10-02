@@ -1,9 +1,12 @@
 module.exports = {
   title: 'Peacock',
+  lang: 'en-US',
   description: 'Coloring your world, one Code editor at a time',
   ga: 'your-ga-id',
   markdown: {
-    lineNumbers: true,
+    code: {
+      lineNumbers: true,
+    },
   },
   plugins: [
     // require('@vuepress/plugin-google-analytics'),
@@ -15,13 +18,13 @@ module.exports = {
     search: true,
     searchMaxSuggestions: 10,
     sidebar: 'auto',
-    nav: [
+    navbar: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' },
       { text: 'ChangeLog', link: '/changelog/' },
       {
         text: 'About',
-        items: [
+        children: [
           { text: 'About', link: '/about/history.md' },
           { text: 'Code of Conduct', link: '/about/code_of_conduct.md' },
           { text: 'Contributing', link: '/about/contributing.md' },
@@ -44,10 +47,10 @@ module.exports = {
     // if your docs are not at the root of the repo:
     docsDir: 'docs',
     // if your docs are in a specific branch (defaults to 'main'):
-    docsBranch: 'feature/vuepress',
+    docsBranch: 'main',
     // defaults to false, set to true to enable
     editLinks: true,
     // custom text for edit link. Defaults to "Edit this page"
-    editLinkText: 'Help us improve this page!',
+    editLinkText: 'Help us improve this page!'
   },
 };
