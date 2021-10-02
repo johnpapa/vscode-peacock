@@ -359,7 +359,8 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
 
     if (!keepForegroundColor) {
       statusBarSettings[ColorSettings.statusBar_foreground] = statusBarStyle.foregroundHex;
-      statusBarSettings[ColorSettings.statusBarItem_remoteForeground] = statusBarStyle.foregroundHex;
+      statusBarSettings[ColorSettings.statusBarItem_remoteForeground] =
+        statusBarStyle.foregroundHex;
     }
 
     if (isAffectedSettingSelected(AffectedSettings.DebuggingStatusBar)) {
