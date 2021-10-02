@@ -146,6 +146,7 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.accentBorders_panelBorder]);
       assert.ok(!config[ColorSettings.accentBorders_sideBarBorder]);
       assert.ok(!config[ColorSettings.accentBorders_editorGroupBorder]);
+      assert.ok(!config[ColorSettings.accentBorders_sashHover]);
       assert.ok(!config[ColorSettings.tabActiveBorder]);
     });
 

@@ -182,8 +182,8 @@
       "properties": {
         "peacock.affectAccentBorders": {
           "type": "boolean",
-          "default": false,
-          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel)."
+          "default": true,
+          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel, sash border)."
         },
         "peacock.affectActivityBar": {
           "type": "boolean",
