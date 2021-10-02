@@ -393,6 +393,7 @@ function collectAccentBorderSettings(backgroundHex: string) {
     accentBorderSettings[ColorSettings.accentBorders_panelBorder] = color;
     accentBorderSettings[ColorSettings.accentBorders_sideBarBorder] = color;
     accentBorderSettings[ColorSettings.accentBorders_editorGroupBorder] = color;
+    accentBorderSettings[ColorSettings.accentBorders_sashHover] = color;
   }
   if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
     accentBorderSettings[ColorSettings.tabActiveBorder] = color;

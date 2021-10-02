@@ -59,6 +59,7 @@ export enum ColorSettings {
   accentBorders_editorGroupBorder = 'editorGroup.border',
   accentBorders_panelBorder = 'panel.border',
   accentBorders_sideBarBorder = 'sideBar.border',
+  accentBorders_sashHover = 'sash.hoverBorder',
   statusBar_border = 'statusBar.border',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',

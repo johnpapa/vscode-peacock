@@ -14,6 +14,10 @@ All notable changes to the code will be documented in this file.
 
 ## 3.10.0
 
+- Added `sash.hoverBorder` to the Accent Borders
+
+  - Changed default value for setting `affectAccentBorders` to true. Accent borders in vs code were clashing contrasts, since the introduction of [sash.hoverBorder](https://code.visualstudio.com/updates/v1_52#_sash-hover-border-color).
+
 - Added support for Peacock as a VS Code web extension [PR 461](https://github.com/johnpapa/vscode-peacock/pull/461)
 
   - The VS Code team recently launched VS Code for the web with [github.dev](https://docs.github.com/en/codespaces/developing-in-codespaces/web-based-editor)! You can read the full guide for extension authors creating and migrating extensions here: [Web Extensions
@@ -23,7 +27,7 @@ All notable changes to the code will be documented in this file.
     - Thanks to [@tanhakabir](https://github.com/tanhakabir) for the core contribution!
 
 - Set border of remote status bar [PR 451](https://github.com/johnpapa/vscode-peacock/pull/451)
-    - Thanks to [@ndrake](https://github.com/ndrake) for the core contribution!
+  - Thanks to [@ndrake](https://github.com/ndrake) for the core contribution!
 
 ## 3.9.1
 
