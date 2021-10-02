@@ -25,7 +25,10 @@
     "titleBar.inactiveForeground": "#e7e7e799",
     "editorGroup.border": "#1f6fd0",
     "panel.border": "#1f6fd0",
-    "sideBar.border": "#1f6fd0"
+    "sideBar.border": "#1f6fd0",
+    "sash.hoverBorder": "#1f6fd0",
+    "statusBarItem.remoteBackground": "#1857a4",
+    "statusBarItem.remoteForeground": "#e7e7e7"
   },
   "workbench.activityBar.visible": true,
   "workbench.statusBar.visible": true,
