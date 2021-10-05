@@ -377,7 +377,7 @@
     "test": "npm run test-compile && npm run just-test",
     "test-all": "npm run test && npm run just-live-share-test",
     "test:coverage": "npm run just-test -- --coverage",
-    "open-in-browser": "npx vscode-test-web --browserType=chromium --extensionDevelopmentPath=."
+    "open-in-browser": "npx vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
