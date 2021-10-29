@@ -120,7 +120,10 @@ suite('Affected elements', () => {
         statusBar: false,
         debuggingStatusBar: false,
         titleBar: false,
-        accentBorders: false,
+        editorGroupBorder: false,
+        panelBorder: false,
+        sideBarBorder: false,
+        sashHover: false,
         tabActiveBorder: false,
       } as IPeacockAffectedElementSettings);
     });
@@ -143,10 +146,10 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
       assert.ok(!config[ColorSettings.statusBar_debuggingBackground]);
       assert.ok(!config[ColorSettings.statusBar_debuggingForeground]);
-      assert.ok(!config[ColorSettings.accentBorders_panelBorder]);
-      assert.ok(!config[ColorSettings.accentBorders_sideBarBorder]);
-      assert.ok(!config[ColorSettings.accentBorders_editorGroupBorder]);
-      assert.ok(!config[ColorSettings.accentBorders_sashHover]);
+      assert.ok(!config[ColorSettings.panelBorder]);
+      assert.ok(!config[ColorSettings.sideBarBorder]);
+      assert.ok(!config[ColorSettings.editorGroupBorder]);
+      assert.ok(!config[ColorSettings.sashHover]);
       assert.ok(!config[ColorSettings.tabActiveBorder]);
     });
 
@@ -163,7 +166,10 @@ suite('Affected elements', () => {
         debuggingStatusBar: false,
         titleBar: true,
         tabActiveBorder: true,
-        accentBorders: true,
+        editorGroupBorder: true,
+        panelBorder: true,
+        sideBarBorder: true,
+        sashHover: true,
         statusAndTitleBorders: false,
       });
 
