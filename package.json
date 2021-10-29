@@ -180,10 +180,25 @@
     },
     "configuration": {
       "properties": {
-        "peacock.affectAccentBorders": {
+        "peacock.affectEditorGroupBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the editorGroup border."
+        },
+        "peacock.affectPanelBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the panel border."
+        },
+        "peacock.affectSideBarBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the sideBar border."
+        },
+        "peacock.affectSashHover": {
           "type": "boolean",
           "default": true,
-          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel, sash border)."
+          "description": "Specifies whether Peacock should affect the sash border."
         },
         "peacock.affectActivityBar": {
           "type": "boolean",
@@ -380,7 +395,7 @@
     "open-in-browser": "npx vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0",
+    "@types/glob": "^7.1.3",
     "@types/istanbul-lib-instrument": "^1.7.4",
     "@types/istanbul-lib-report": "^1.1.1",
     "@types/istanbul-lib-source-maps": "^1.2.2",
@@ -388,8 +403,8 @@
     "@types/mocha": "^7.0.2",
     "@types/node": "12.12.16",
     "@types/sinon": "^7.5.2",
-    "@types/vscode": "^1.61.0",
-    "@types/webpack-env": "^1.16.3",
+    "@types/vscode": "^1.49.0",
+    "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vscode/test-web": "^0.0.15",
@@ -398,11 +413,11 @@
     "eslint-plugin-prettier": "^3.1.4",
     "glob": "^7.1.6",
     "husky": "^4.3.0",
-    "istanbul-lib-coverage": "^3.2.0",
+    "istanbul-lib-coverage": "^3.0.0",
     "istanbul-lib-instrument": "^3.3.0",
     "istanbul-lib-report": "^2.0.8",
     "istanbul-lib-source-maps": "^3.0.6",
-    "istanbul-reports": "^3.0.5",
+    "istanbul-reports": "^3.0.2",
     "mocha": "^7.2.0",
     "mocha-multi-reporters": "^1.1.7",
     "prettier": "^2.1.2",
@@ -411,9 +426,9 @@
     "ts-loader": "^9.2.2",
     "typescript": "^3.9.7",
     "vscode-test": "^1.4.0",
-    "vuepress": "^2.0.0-beta.27",
-    "webpack": "^5.61.0",
-    "webpack-cli": "^4.9.1"
+    "vuepress": "^2.0.0-beta.26",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0"
   },
   "dependencies": {
     "@types/tinycolor2": "^1.4.1",
