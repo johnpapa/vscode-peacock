@@ -152,6 +152,72 @@ suite.only('Affected elements', () => {
       assert.ok(!config[ColorSettings.editorGroupBorder]);
     });
 
+    test('panelBorder is colored when enabled', async () => {
+      await updateAffectedElements({
+        panelBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.panelBorder], peacockGreen);
+    });
+
+    test('panelBorder is not colored when disabled', async () => {
+      await updateAffectedElements({
+        panelBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.panelBorder]);
+    });
+
+    test('sideBarBorder is colored when enabled', async () => {
+      await updateAffectedElements({
+        sideBarBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.sideBarBorder], peacockGreen);
+    });
+
+    test('sideBarBorder is not colored when disabled', async () => {
+      await updateAffectedElements({
+        sideBarBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.sideBarBorder]);
+    });
+
+    test('sashHover is colored when enabled', async () => {
+      await updateAffectedElements({
+        sashHover: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.sashHover], peacockGreen);
+    });
+
+    test('sashHover is not colored when disabled', async () => {
+      await updateAffectedElements({
+        sashHover: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.sashHover]);
+    });
+
     suiteTeardown(async () => {
       await updateAffectedElements(allAffectedElements);
     });
