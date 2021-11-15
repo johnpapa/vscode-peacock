@@ -26,7 +26,7 @@ import {
 } from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
-suite.only('Affected elements', () => {
+suite('Affected elements', () => {
   const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
