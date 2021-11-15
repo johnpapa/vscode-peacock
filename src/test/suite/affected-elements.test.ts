@@ -26,7 +26,7 @@ import {
 } from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
-suite('Affected elements', () => {
+suite.only('Affected elements', () => {
   const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -110,6 +110,50 @@ suite('Affected elements', () => {
 
     suiteTeardown(async () => {
       await updateKeepBadgeColor(originalValue);
+    });
+  });
+
+  suite('Affected elements', () => {
+    suiteSetup(async () => {
+      await updateAffectedElements({
+        activityBar: false,
+        statusBar: false,
+        debuggingStatusBar: false,
+        titleBar: false,
+
+        editorGroupBorder: false,
+        panelBorder: false,
+        sideBarBorder: false,
+        sashHover: false,
+
+        tabActiveBorder: false,
+      } as IPeacockAffectedElementSettings);
+    });
+
+    test('editorGroupBorder is colored when enabled', async () => {
+      await updateAffectedElements({
+        editorGroupBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.editorGroupBorder], peacockGreen);
+    });
+
+    test('editorGroupBorder is not colored when disabled', async () => {
+      await updateAffectedElements({
+        editorGroupBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.editorGroupBorder]);
+    });
+
+    suiteTeardown(async () => {
+      await updateAffectedElements(allAffectedElements);
     });
   });
 

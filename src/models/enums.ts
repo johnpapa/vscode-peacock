@@ -16,10 +16,10 @@ export enum StandardSettings {
 }
 
 export enum AffectedSettings {
-  EditorGroupBorder = 'editorGroupBorder',
-  PanelBorder = 'panelBorder',
-  SideBarBorder = 'sideBarBorder',
-  SashHover = 'sashHover',
+  EditorGroupBorder = 'affectEditorGroupBorder',
+  PanelBorder = 'affectPanelBorder',
+  SideBarBorder = 'affectSideBarBorder',
+  SashHover = 'affectSashHover',
   ActivityBar = 'affectActivityBar',
   DebuggingStatusBar = 'affectDebuggingStatusBar',
   StatusBar = 'affectStatusBar',
