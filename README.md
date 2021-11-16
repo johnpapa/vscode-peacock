@@ -4,7 +4,7 @@
 
 Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
-Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://papapeacockstorage.z13.web.core.windows.net/changelog/)
+Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
 
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
@@ -26,13 +26,13 @@ Read the extensive [documentation here](https://www.peacockcode.dev) which inclu
 
 ## Documentation
 
-Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://papapeacockstorage.z13.web.core.windows.net/changelog/)
+Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
 
 ## Quick Usage
 
 Let's see Peacock in action!
 
-1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://papapeacockstorage.z13.web.core.windows.net/guide/#peacock-commands-are-not-appearing))
+1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://www.peacockcode.dev/guide/#peacock-commands-are-not-appearing))
 1. Press `F1` to open the command palette
 1. Type `Peacock`
 1. Choose `Peacock: Change to a favorite color`
