@@ -36,7 +36,10 @@ export interface IPeacockAffectedElementSettings {
   statusBar: boolean;
   debuggingStatusBar: boolean;
   titleBar: boolean;
-  accentBorders: boolean;
+  editorGroupBorder: boolean;
+  panelBorder: boolean;
+  sideBarBorder: boolean;
+  sashHover: boolean;
   statusAndTitleBorders: boolean;
   tabActiveBorder: boolean;
 }
@@ -47,7 +50,10 @@ export interface IPeacockElementAdjustments {
 
 export interface IPeacockSettings {
   affectedElements: IPeacockAffectedElementSettings;
-  affectAccentBorders: boolean;
+  editorGroupBorder: boolean;
+  panelBorder: boolean;
+  sideBarBorder: boolean;
+  sashHover: boolean;
   affectStatusAndTitleBorders: boolean;
   elementAdjustments: IPeacockElementAdjustments;
   favoriteColors: IFavoriteColors[];

@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "3.10.1",
+  "version": "3.11.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -180,10 +180,25 @@
     },
     "configuration": {
       "properties": {
-        "peacock.affectAccentBorders": {
+        "peacock.affectEditorGroupBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the editorGroup border."
+        },
+        "peacock.affectPanelBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the panel border."
+        },
+        "peacock.affectSideBarBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the sideBar border."
+        },
+        "peacock.affectSashHover": {
           "type": "boolean",
           "default": true,
-          "description": "Specifies whether Peacock should affect the accent borders (sideBar, editorGroup, panel, sash border)."
+          "description": "Specifies whether Peacock should affect the sash border."
         },
         "peacock.affectActivityBar": {
           "type": "boolean",

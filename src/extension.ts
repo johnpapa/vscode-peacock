@@ -158,7 +158,7 @@ export async function checkSurpriseMeOnStartupLogic() {
 
     await changeColorToRandomHandler();
     const color = getEnvironmentAwareColor();
-    const message = `Peacock changed the base accent colors to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
+    const message = `Peacock changed the color to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }
 }

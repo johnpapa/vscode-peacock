@@ -16,7 +16,10 @@ export enum StandardSettings {
 }
 
 export enum AffectedSettings {
-  AccentBorders = 'affectAccentBorders',
+  EditorGroupBorder = 'affectEditorGroupBorder',
+  PanelBorder = 'affectPanelBorder',
+  SideBarBorder = 'affectSideBarBorder',
+  SashHover = 'affectSashHover',
   ActivityBar = 'affectActivityBar',
   DebuggingStatusBar = 'affectDebuggingStatusBar',
   StatusBar = 'affectStatusBar',
@@ -56,10 +59,10 @@ export enum ColorSettings {
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
   activityBar_badgeBackground = 'activityBarBadge.background',
   activityBar_badgeForeground = 'activityBarBadge.foreground',
-  accentBorders_editorGroupBorder = 'editorGroup.border',
-  accentBorders_panelBorder = 'panel.border',
-  accentBorders_sideBarBorder = 'sideBar.border',
-  accentBorders_sashHover = 'sash.hoverBorder',
+  editorGroupBorder = 'editorGroup.border',
+  panelBorder = 'panel.border',
+  sideBarBorder = 'sideBar.border',
+  sashHover = 'sash.hoverBorder',
   statusBar_border = 'statusBar.border',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',

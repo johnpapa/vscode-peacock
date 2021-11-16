@@ -12,6 +12,18 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 3.11.0
+
+- [Granular control over accent borders](https://github.com/johnpapa/vscode-peacock/issues/472#issuecomment-945950855)
+  - Thanks to [@superole](https://github.com/superole) for the issue
+  - Removed the `affectAccentBorders` setting and replaced it with 4 settings:
+    - `affectEditorGroupBorder` - Specifies whether Peacock should affect the editorGroup border - default to false
+    - `affectPanelBorder` - Specifies whether Peacock should affect the panel border - default to false
+    - `affectSideBarBorder` - Specifies whether Peacock should affect the sideBar border - default to false
+    - `affectSashHover` - Specifies whether Peacock should affect the sash border - default to true
+  - Added tests for the 4 new settings
+  - Adjusted test for old setting
+
 ## 3.10.1
 
 - Updated to VuePress v2 (beta), changing for dark and light themes, fixing links

@@ -113,6 +113,116 @@ suite('Affected elements', () => {
     });
   });
 
+  suite('Affected elements', () => {
+    suiteSetup(async () => {
+      await updateAffectedElements({
+        activityBar: false,
+        statusBar: false,
+        debuggingStatusBar: false,
+        titleBar: false,
+
+        editorGroupBorder: false,
+        panelBorder: false,
+        sideBarBorder: false,
+        sashHover: false,
+
+        tabActiveBorder: false,
+      } as IPeacockAffectedElementSettings);
+    });
+
+    test('editorGroupBorder is colored when enabled', async () => {
+      await updateAffectedElements({
+        editorGroupBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.editorGroupBorder], peacockGreen);
+    });
+
+    test('editorGroupBorder is not colored when disabled', async () => {
+      await updateAffectedElements({
+        editorGroupBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.editorGroupBorder]);
+    });
+
+    test('panelBorder is colored when enabled', async () => {
+      await updateAffectedElements({
+        panelBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.panelBorder], peacockGreen);
+    });
+
+    test('panelBorder is not colored when disabled', async () => {
+      await updateAffectedElements({
+        panelBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.panelBorder]);
+    });
+
+    test('sideBarBorder is colored when enabled', async () => {
+      await updateAffectedElements({
+        sideBarBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.sideBarBorder], peacockGreen);
+    });
+
+    test('sideBarBorder is not colored when disabled', async () => {
+      await updateAffectedElements({
+        sideBarBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.sideBarBorder]);
+    });
+
+    test('sashHover is colored when enabled', async () => {
+      await updateAffectedElements({
+        sashHover: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.sashHover], peacockGreen);
+    });
+
+    test('sashHover is not colored when disabled', async () => {
+      await updateAffectedElements({
+        sashHover: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.sashHover]);
+    });
+
+    suiteTeardown(async () => {
+      await updateAffectedElements(allAffectedElements);
+    });
+  });
+
   suite('No affected elements', () => {
     suiteSetup(async () => {
       await updateAffectedElements({
@@ -120,7 +230,10 @@ suite('Affected elements', () => {
         statusBar: false,
         debuggingStatusBar: false,
         titleBar: false,
-        accentBorders: false,
+        editorGroupBorder: false,
+        panelBorder: false,
+        sideBarBorder: false,
+        sashHover: false,
         tabActiveBorder: false,
       } as IPeacockAffectedElementSettings);
     });
@@ -143,10 +256,10 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
       assert.ok(!config[ColorSettings.statusBar_debuggingBackground]);
       assert.ok(!config[ColorSettings.statusBar_debuggingForeground]);
-      assert.ok(!config[ColorSettings.accentBorders_panelBorder]);
-      assert.ok(!config[ColorSettings.accentBorders_sideBarBorder]);
-      assert.ok(!config[ColorSettings.accentBorders_editorGroupBorder]);
-      assert.ok(!config[ColorSettings.accentBorders_sashHover]);
+      assert.ok(!config[ColorSettings.panelBorder]);
+      assert.ok(!config[ColorSettings.sideBarBorder]);
+      assert.ok(!config[ColorSettings.editorGroupBorder]);
+      assert.ok(!config[ColorSettings.sashHover]);
       assert.ok(!config[ColorSettings.tabActiveBorder]);
     });
 
@@ -163,7 +276,10 @@ suite('Affected elements', () => {
         debuggingStatusBar: false,
         titleBar: true,
         tabActiveBorder: true,
-        accentBorders: true,
+        editorGroupBorder: true,
+        panelBorder: true,
+        sideBarBorder: true,
+        sashHover: true,
         statusAndTitleBorders: false,
       });
 
