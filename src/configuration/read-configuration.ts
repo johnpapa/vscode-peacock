@@ -231,7 +231,10 @@ export function getAffectedElements() {
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     debuggingStatusBar: readConfiguration<boolean>(AffectedSettings.DebuggingStatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
-    accentBorders: readConfiguration<boolean>(AffectedSettings.AccentBorders) || false,
+    editorGroupBorder: readConfiguration<boolean>(AffectedSettings.EditorGroupBorder) || false,
+    panelBorder: readConfiguration<boolean>(AffectedSettings.PanelBorder) || false,
+    sideBarBorder: readConfiguration<boolean>(AffectedSettings.SideBarBorder) || false,
+    sashHover: readConfiguration<boolean>(AffectedSettings.SashHover) || false,
     statusAndTitleBorders:
       readConfiguration<boolean>(AffectedSettings.StatusAndTitleBorders) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
@@ -389,11 +392,17 @@ function collectAccentBorderSettings(backgroundHex: string) {
   // use same adjustments and activity bar
   const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
 
-  if (isAffectedSettingSelected(AffectedSettings.AccentBorders)) {
-    accentBorderSettings[ColorSettings.accentBorders_panelBorder] = color;
-    accentBorderSettings[ColorSettings.accentBorders_sideBarBorder] = color;
-    accentBorderSettings[ColorSettings.accentBorders_editorGroupBorder] = color;
-    accentBorderSettings[ColorSettings.accentBorders_sashHover] = color;
+  if (isAffectedSettingSelected(AffectedSettings.EditorGroupBorder)) {
+    accentBorderSettings[ColorSettings.editorGroupBorder] = color;
+  }
+  if (isAffectedSettingSelected(AffectedSettings.PanelBorder)) {
+    accentBorderSettings[ColorSettings.panelBorder] = color;
+  }
+  if (isAffectedSettingSelected(AffectedSettings.SideBarBorder)) {
+    accentBorderSettings[ColorSettings.sideBarBorder] = color;
+  }
+  if (isAffectedSettingSelected(AffectedSettings.SashHover)) {
+    accentBorderSettings[ColorSettings.sashHover] = color;
   }
   if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
     accentBorderSettings[ColorSettings.tabActiveBorder] = color;
@@ -516,7 +525,10 @@ function getAllUserSettings() {
     statusBar: affectStatusBar,
     debuggingStatusBar: affectDebuggingStatusBar,
     titleBar: affectTitleBar,
-    accentBorders: affectAccentBorders,
+    editorGroupBorder: affectEditorGroupBorder,
+    panelBorder: affectPanelBorder,
+    sideBarBorder: affectSideBarBorder,
+    sashHover: affectSashHover,
     tabActiveBorder: affectTabActiveBorder,
   } = getAffectedElements();
   return {
@@ -531,7 +543,10 @@ function getAllUserSettings() {
     affectStatusBar,
     affectDebuggingStatusBar,
     affectTitleBar,
-    affectAccentBorders,
+    affectEditorGroupBorder,
+    affectPanelBorder,
+    affectSideBarBorder,
+    affectSashHover,
     affectTabActiveBorder,
   };
 }
