@@ -12,10 +12,7 @@
   "workbench.statusBar.visible": true,
   "peacock.color": "1857a4",
   "workbench.colorCustomizations": {
-    "editorGroup.border": "#1f6fd0",
-    "panel.border": "#1f6fd0",
     "sash.hoverBorder": "#1f6fd0",
-    "sideBar.border": "#1f6fd0",
     "activityBar.activeBackground": "#1f6fd0",
     "activityBar.activeBorder": "#ee90bb",
     "activityBar.background": "#1f6fd0",
@@ -31,6 +28,9 @@
     "statusBar.foreground": "#e7e7e7",
     "statusBarItem.hoverBackground": "#1f6fd0",
     "statusBarItem.remoteBackground": "#1857a4",
-    "statusBarItem.remoteForeground": "#e7e7e7"
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "editorGroup.border": "#1f6fd0",
+    "sideBar.border": "#1f6fd0",
+    "panel.border": "#1f6fd0"
   }
 }

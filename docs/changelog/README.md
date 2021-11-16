@@ -17,10 +17,10 @@ All notable changes to the code will be documented in this file.
 - [Granular control over accent borders](https://github.com/johnpapa/vscode-peacock/issues/472#issuecomment-945950855)
   - Thanks to [@superole](https://github.com/superole) for the issue
   - Removed the `affectAccentBorders` setting and replaced it with 4 settings:
-    - `affectEditorGroupBorder` - Specifies whether Peacock should affect the editorGroup border
-    - `affectPanelBorder` - Specifies whether Peacock should affect the panel border
-    - `affectSideBarBorder` - Specifies whether Peacock should affect the sideBar border
-    - `affectSashHover` - Specifies whether Peacock should affect the sash border
+    - `affectEditorGroupBorder` - Specifies whether Peacock should affect the editorGroup border - default to false
+    - `affectPanelBorder` - Specifies whether Peacock should affect the panel border - default to false
+    - `affectSideBarBorder` - Specifies whether Peacock should affect the sideBar border - default to false
+    - `affectSashHover` - Specifies whether Peacock should affect the sash border - default to true
   - Added tests for the 4 new settings
   - Adjusted test for old setting
 
