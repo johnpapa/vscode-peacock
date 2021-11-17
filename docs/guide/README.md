@@ -111,7 +111,7 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
 
 When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
-![Animated GIF](/assets/named-colors.gif)
+![favorites](/assets/named-colors.gif)
 
 #### Save Favorite Color
 
@@ -121,9 +121,10 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 
 ### Affected Elements
 
-You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. The choices are:
+You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. These include examples such as affectEditorGroupBorder, affectPanelBorder, affectSideBarBorder, affectSashHover.
 
-![Animated GIF](/assets/affected-settings.jpg)
+![affected elements](/assets/affected-settings.png)
+
 
 ### Element Adjustments
 
@@ -146,7 +147,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
 
 This results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
-![Animated GIF](/assets/element-adjustments.png)
+![Element Adjustments](/assets/element-adjustments.png)
 
 ### Keep Foreground Color
 
@@ -199,7 +200,7 @@ Peacock integrates with other extensions, as described in this section.
 
 ### VS Live Share Integration
 
-![Animated GIF](/assets/peacock-live-share-demo.gif)
+![live share](/assets/peacock-live-share-demo.gif)
 
 Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
 
