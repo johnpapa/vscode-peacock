@@ -14,11 +14,10 @@ All notable changes to the code will be documented in this file.
 
 ## 4.0.0
 
-Breaking changes
-
-- Deprecated
+- Deprecated - minimal risk
   - Migration To Version < 4.0.0
     - Version 3+ of Peacock stores the color in the settings `peacock.color`. When migrating from version 2.5, the peacock color was in a memento. When migrating from version < 2.5, the color was not stored, but can often be derived through a calculation by grabbing the color from one of the `workbench.colorCustomizations` that Peacock uses. Once the color is determined, peacock removes the memento, and writes the color to the settings `peacock.color`. Fixes [#230](https://github.com/johnpapa/vscode-peacock/issues/230) and addresses [#258](https://github.com/johnpapa/vscode-peacock/issues/258). This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it. This logic is marked as deprecated but will not be removed until version 4.0 is released and enough time has passed reasonably for people to migrate. That time is now.
+  - If anyone has not yet migrated in the 2 years the migration existed, then Peacock will not set a color. This is easily fixed by the user using a Peacock command to set the color.
 
 ## 3.11.0
 
