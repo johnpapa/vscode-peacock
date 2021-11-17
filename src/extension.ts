@@ -37,7 +37,6 @@ import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
 import { saveFavoritesVersionGlobalMemento, getMementos } from './mementos';
-import { migrateFromMementoToSettingsAsNeeded } from './migration';
 
 const { commands, workspace } = vscode;
 
@@ -50,14 +49,6 @@ export async function activate(context: vscode.ExtensionContext) {
   await initializeTheStarterSetOfFavorites();
 
   if (workspace.workspaceFolders) {
-    /**
-     * Check if we need to migrate.
-     * If we do migrate, we write to the settings,
-     * so we need to do this after we are already
-     * listening for settings changes.
-     */
-    await migrateFromMementoToSettingsAsNeeded();
-
     Logger.info('Peacock is in a workspace, so Peacock functionality is available.');
     /**
      * We only run this logic if we are in a workspace

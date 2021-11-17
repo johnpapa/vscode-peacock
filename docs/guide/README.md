@@ -395,56 +395,6 @@ Peacock takes advantage of a memento (a value stored between sessions and not in
 | -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
 | peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
 
-## Migration
-
-Migration notes between versions are documented here.
-
-> Note: If at any time Peacock is writing colors unexpectedly, it may be due to a migration (see migration notes below). However, as always, you can run the command `Peacock: Reset Workspace Colors` and all color settings will be removed from the `.vscode/settings.json` file.
-
-### To Version 3+
-
-Version 3+ of Peacock stores the color in the settings `peacock.color`. When migrating from version 2.5, the peacock color was in a memento. When migrating from version < 2.5, the color was not stored, but can often be derived through a calculation by grabbing the color from one of the `workbench.colorCustomizations` that Peacock uses.
-
-Once the color is determined, peacock removes the memento, and writes the color to the settings `peacock.color`. Fixes [#230](https://github.com/johnpapa/vscode-peacock/issues/230) and addresses [#258](https://github.com/johnpapa/vscode-peacock/issues/258)
-
-This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it.
-
-This logic is marked as deprecated but will not be removed until version 4.0 is released and enough time has passed reasonably for people to migrate.
-
-Examples:
-
-1. If this is detected at startup with `#ff0`, then the `peacock.color` will bet set to match it.
-
-```json
-// .vscode/settings.json
-{
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#ff0"
-  }
-}
-```
-
-2. If this is detected at startup and there is a peacock memento, then the `peacock.color` will set set to match the memento color.
-
-```json
-// .vscode/settings.json
-{}
-```
-
-3. If this is detected at startup and there is no peacock memento, no migration will occur.
-
-```json
-// .vscode/settings.json
-{}
-```
-
-4. If there already is a `peacock.color`, no migration will occur.
-
-```json
-// .vscode/settings.json
-{}
-```
-
 ## Try the Code
 
 If you want to try the extension out start by cloning this repo, `cd` into the folder, and then run `npm install`.

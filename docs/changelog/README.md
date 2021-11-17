@@ -12,6 +12,14 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 4.0.0
+
+Breaking changes
+
+- Deprecated
+  - Migration To Version < 4.0.0
+    - Version 3+ of Peacock stores the color in the settings `peacock.color`. When migrating from version 2.5, the peacock color was in a memento. When migrating from version < 2.5, the color was not stored, but can often be derived through a calculation by grabbing the color from one of the `workbench.colorCustomizations` that Peacock uses. Once the color is determined, peacock removes the memento, and writes the color to the settings `peacock.color`. Fixes [#230](https://github.com/johnpapa/vscode-peacock/issues/230) and addresses [#258](https://github.com/johnpapa/vscode-peacock/issues/258). This is an aggressive approach, as it is possible to have a color customization that peacock uses, and if it sees this, it will set Peacock up to use it. This logic is marked as deprecated but will not be removed until version 4.0 is released and enough time has passed reasonably for people to migrate. That time is now.
+
 ## 3.11.0
 
 - [Granular control over accent borders](https://github.com/johnpapa/vscode-peacock/issues/472#issuecomment-945950855)
@@ -145,7 +153,7 @@ Fixes
 
 - Migration occurs when colors are in user settings but not in workspace.
   - Fixes [263](https://github.com/johnpapa/vscode-peacock/issues/263)
-  - During migration, Peacock is checking if the current workspace has a color set in the old style. This could be a `activityBar.background`, `titleBar.background`, or `statusBar.background`. PeacockVS Code's API merges default settings, users settings and workspace settings. Therefore, this migration logic was sometimes getting a migrating, and it should not. Peacock should only migrate to the new `peacock.color settings (which make sit much easier to determine what the color is definitively) if there is a color in the workspace settings. The fix for this was to write logic that gets the workspace colors only. This is done in a new function named`getWorkspaceColorIfExists`.
+  - During migration, Peacock is checking if the current workspace has a color set in the old style. This could be a `activityBar.background`, `titleBar.background`, or `statusBar.background`. VS Code's API merges default settings, users settings and workspace settings. Therefore, this migration logic was sometimes getting migrated, and it should not. Peacock should only migrate to the new `peacock.color settings (which makes it much easier to determine what the color is definitively) if there is a color in the workspace settings. The fix for this was to write logic that gets the workspace colors only. This is done in a new function named`getWorkspaceColorIfExists`.
 
 Changes
 
