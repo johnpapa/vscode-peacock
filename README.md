@@ -6,14 +6,14 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=javascript-0000-jopapa)
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=2f99fa&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
+[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=javascript-0000-jopapa)
 
-[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat-square)](#contributors)
+[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=2f99fa&style=flat)](http://opensource.org/licenses/MIT)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat)](#contributors)
 
 [![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=main)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=main&WT.mc_id=vscodepeacock-github-jopapa)
 
