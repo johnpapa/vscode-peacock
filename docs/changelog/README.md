@@ -12,6 +12,10 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 4.0.1
+
+- Badges udpates to use <https://shields.io/> in readme and docs
+
 ## 4.0.0
 
 - Deprecated - minimal risk
