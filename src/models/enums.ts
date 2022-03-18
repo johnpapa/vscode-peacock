@@ -10,6 +10,7 @@ export enum StandardSettings {
   KeepForegroundColor = 'keepForegroundColor',
   LightForegroundColor = 'lightForegroundColor',
   RemoteColor = 'remoteColor',
+  SameRemoteLocalColor = 'sameRemoteLocalColor',
   ShowColorInStatusBar = 'showColorInStatusBar',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',

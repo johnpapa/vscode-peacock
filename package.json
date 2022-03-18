@@ -347,6 +347,11 @@
           "default": "",
           "description": "The Peacock color that will be applied to remote workspaces."
         },
+        "peacock.sameRemoteLocalColor": {
+          "type": "boolean",
+          "default": false,
+          "description": "set same local color on setting remote color"
+        },
         "peacock.showColorInStatusBar": {
           "type": "boolean",
           "default": true,

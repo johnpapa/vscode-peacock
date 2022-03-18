@@ -13,7 +13,7 @@ import {
   isObjectEmpty,
 } from '../models';
 import { Logger } from '../logging';
-import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
+import { getFavoriteColors, getColorCustomizationConfigFromWorkspace,getSameRemoteLocalColor } from './read-configuration';
 import { LiveShareSettings } from '../live-share';
 
 export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {
@@ -120,16 +120,31 @@ export async function updatePeacockRemoteColorInUserSettings(color: string | und
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
   return await config.update(section, color, ConfigurationTarget.Global);
 }
-
-export async function updatePeacockColor(color: string | undefined) {
+export async function updatePeacockColorOnly(color: string | undefined ) {
   const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.Color}`;
   return await config.update(section, color, ConfigurationTarget.Workspace);
+} 
+export async function updatePeacockRemoteColorOnly(color: string | undefined) {
+  const config = vscode.workspace.getConfiguration();
+  const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
+  return await config.update(section, color, ConfigurationTarget.Workspace);
 }
+export async function updatePeacockColor(color: string | undefined ) {
+  const config = vscode.workspace.getConfiguration();
+  const section = `${extensionShortName}.${StandardSettings.Color}`;
+  if (getSameRemoteLocalColor()){
+    await updatePeacockRemoteColorOnly(color);
+  }
+  return await config.update(section, color, ConfigurationTarget.Workspace);
+} 
 
 export async function updatePeacockRemoteColor(color: string | undefined) {
   const config = vscode.workspace.getConfiguration();
   const section = `${extensionShortName}.${StandardSettings.RemoteColor}`;
+  if  (getSameRemoteLocalColor()){
+    await updatePeacockColorOnly(color);
+  }
   return await config.update(section, color, ConfigurationTarget.Workspace);
 }
 

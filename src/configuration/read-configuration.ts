@@ -225,6 +225,10 @@ export function getSurpriseMeOnStartup() {
   return readConfiguration<boolean>(StandardSettings.SurpriseMeOnStartup, false);
 }
 
+export function getSameRemoteLocalColor() {
+  return readConfiguration<boolean>(StandardSettings.SameRemoteLocalColor, false);
+}
+
 export function getAffectedElements() {
   return {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
