@@ -16,9 +16,10 @@ All notable changes to the code will be documented in this file.
 
 - Added color settings for new VS Code feature for CommandCenter
 
-  - TODO
+  - added commandCenter.border property to be set using same logic as titleBar inactiveForeground (`commandCenter.border = titleBar.inactiveForeground`)
 
 - Minor changes
+
   - Removed activityBarBorder setting from being colorful. It was matching the badge, which was no longer uniform with the activitybar. For example a bright red, on blue at times. Instead, by not setting this, it defaults to the foreground color of the badge, thus matching the color setting for the activitybar and its badge icon color.
   - Remove and ignore .DS_Store [PR 490](https://github.com/johnpapa/vscode-peacock/pull/490). Thanks to [@Etheryte](https://github.com/Etheryte) for the core contribution!
 
