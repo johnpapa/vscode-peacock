@@ -58,6 +58,7 @@ export enum ColorSettings {
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
   activityBar_badgeBackground = 'activityBarBadge.background',
   activityBar_badgeForeground = 'activityBarBadge.foreground',
+  commandCenter_border = 'commandCenter.border',
   editorGroupBorder = 'editorGroup.border',
   panelBorder = 'panel.border',
   sideBarBorder = 'sideBar.border',
