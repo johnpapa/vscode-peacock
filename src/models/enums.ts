@@ -53,7 +53,6 @@ export enum ElementNames {
 
 export enum ColorSettings {
   activityBar_activeBackground = 'activityBar.activeBackground',
-  activityBar_activeBorder = 'activityBar.activeBorder',
   activityBar_background = 'activityBar.background',
   activityBar_foreground = 'activityBar.foreground',
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
