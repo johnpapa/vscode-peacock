@@ -12,6 +12,14 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
+## 4.1.0
+
+- Added color settings for new VS Code feature for CommandCenter
+  - TODO
+
+- Minor changes
+  - Removed activityBarBorder setting from being colorful. It was matching the badge, which was no longer uniform with the activitybar. For example a bright red, on blue at times. Instead, by not setting this, it defaults to the foreground color of the badge, thus matching the color setting for the activitybar and its badge icon color.
+
 ## 4.0.1
 
 - Badges udpates to use <https://shields.io/> in readme and docs
