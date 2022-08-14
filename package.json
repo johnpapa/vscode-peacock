@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -439,5 +439,11 @@
     "hooks": {
       "pre-commit": "npm run pretty"
     }
+  },
+  "__metadata": {
+    "id": "5a7017bf-c571-4d77-b902-6e56b16f539a",
+    "publisherDisplayName": "John Papa",
+    "publisherId": "4434843a-4ebf-4f44-84f5-4176380c492d",
+    "isPreReleaseVersion": false
   }
 }
