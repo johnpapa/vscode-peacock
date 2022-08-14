@@ -328,9 +328,6 @@ function collectActivityBarSettings(
     activityBarSettings[ColorSettings.activityBar_activeBackground] =
       activityBarStyle.backgroundHex;
 
-    activityBarSettings[ColorSettings.activityBar_activeBorder] =
-      activityBarStyle.badgeBackgroundHex;
-
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBar_inactiveForeground] =

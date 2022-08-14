@@ -86,7 +86,6 @@ suite('can set color to built-in color', () => {
       assert.ok(!config[ColorSettings.statusBar_background]);
       assert.ok(!config[ColorSettings.activityBar_background]);
       assert.ok(!config[ColorSettings.activityBar_activeBackground]);
-      assert.ok(!config[ColorSettings.activityBar_activeBorder]);
 
       await removeExtraSetting(extraSettingName);
     });
@@ -98,7 +97,7 @@ suite('can set color to built-in color', () => {
       assert.ok(!config[ColorSettings.statusBar_background]);
       assert.ok(!config[ColorSettings.activityBar_background]);
       assert.ok(!config[ColorSettings.activityBar_activeBackground]);
-      assert.ok(!config[ColorSettings.activityBar_activeBorder]);
+      // assert.ok(!config[ColorSettings.activityBar_activeBorder]);
     });
 
     test('removes peacockColor', async () => {
