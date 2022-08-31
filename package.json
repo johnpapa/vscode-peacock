@@ -180,6 +180,11 @@
     },
     "configuration": {
       "properties": {
+        "peacock.squigglyBeGone": {
+          "type": "boolean",
+          "default": false,
+          "description": "Easter egg! Specifies whether Peacock should hide all red error, warning and info underlines from the editor by making their color the same as the background."
+        },
         "peacock.affectEditorGroupBorder": {
           "type": "boolean",
           "default": false,

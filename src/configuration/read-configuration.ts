@@ -116,6 +116,8 @@ export function prepareColors(backgroundHex: string) {
     keepBadgeColor,
   );
 
+  const squigglyBeGoneSettings = collectSquigglyBeGoneSettings();
+
   const accentBorderSettings = collectAccentBorderSettings(backgroundHex);
 
   const statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
@@ -126,6 +128,7 @@ export function prepareColors(backgroundHex: string) {
     ...titleBarSettings,
     ...statusBarSettings,
     ...accentBorderSettings,
+    ...squigglyBeGoneSettings,
   };
 
   const newColorCustomizations = sortSettingsIndexer(mergedSettings);
@@ -195,6 +198,10 @@ export function getKeepForegroundColor() {
 
 export function getKeepBadgeColor() {
   return readConfiguration<boolean>(StandardSettings.KeepBadgeColor, false);
+}
+
+export function getSquigglyBeGone() {
+  return readConfiguration<boolean>(StandardSettings.SquigglyBeGone, false);
 }
 
 export function getFavoriteColors() {
@@ -406,6 +413,24 @@ function collectAccentBorderSettings(backgroundHex: string) {
     accentBorderSettings[ColorSettings.tabActiveBorder] = color;
   }
   return accentBorderSettings;
+}
+
+function collectSquigglyBeGoneSettings() {
+  const squigglyBeGoneSettings = {} as ISettingsIndexer;
+
+  const squigglyBeGone = getSquigglyBeGone();
+  // Set the squigglyBeGone background color
+  // to a color with a transparency of 0 to make it invisible.
+  const squigglyColor = '#011627ff';
+
+  // const squigglyColor = squigglyBeGone ? backgroundColor : null;
+  if (squigglyBeGone) {
+    squigglyBeGoneSettings[ColorSettings.squigglyBeGone_error] = squigglyColor;
+    squigglyBeGoneSettings[ColorSettings.squigglyBeGone_warning] = squigglyColor;
+    squigglyBeGoneSettings[ColorSettings.squigglyBeGone_info] = squigglyColor;
+  }
+
+  return squigglyBeGoneSettings;
 }
 
 function getElementColors(

@@ -63,6 +63,7 @@ export interface IPeacockSettings {
   lightForegroundColor: string;
   darkenLightenPercentage: number;
   showColorInStatusBar: boolean;
+  squigglyBeGone: boolean;
   surpriseMeFromFavoritesOnly: boolean;
   surpriseMeOnStartup: boolean;
   color: string;

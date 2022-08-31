@@ -70,6 +70,10 @@ export async function updateKeepBadgeColor(value: boolean) {
   return await updateGlobalConfiguration(StandardSettings.KeepBadgeColor, value);
 }
 
+export async function updateSquigglyBeGone(value: boolean) {
+  return await updateGlobalConfiguration(StandardSettings.SquigglyBeGone, value);
+}
+
 export async function updateSurpriseMeOnStartup(value: boolean) {
   return await updateGlobalConfiguration(StandardSettings.SurpriseMeOnStartup, value);
 }
