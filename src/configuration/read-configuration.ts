@@ -420,8 +420,8 @@ function collectSquigglyBeGoneSettings() {
 
   const squigglyBeGone = getSquigglyBeGone();
   // Set the squigglyBeGone background color
-  // to a color with a transparency of 0 to make it invisible.
-  const squigglyColor = '#011627ff';
+  // to a color with a transparency of FF to make it invisible.
+  const squigglyColor = '#000000ff';
 
   // const squigglyColor = squigglyBeGone ? backgroundColor : null;
   if (squigglyBeGone) {
