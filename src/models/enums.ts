@@ -11,6 +11,7 @@ export enum StandardSettings {
   LightForegroundColor = 'lightForegroundColor',
   RemoteColor = 'remoteColor',
   ShowColorInStatusBar = 'showColorInStatusBar',
+  SquigglyBeGone = 'squigglyBeGone',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
 }
@@ -63,6 +64,9 @@ export enum ColorSettings {
   panelBorder = 'panel.border',
   sideBarBorder = 'sideBar.border',
   sashHover = 'sash.hoverBorder',
+  squigglyBeGone_error = 'editorError.foreground',
+  squigglyBeGone_warning = 'editorWarning.foreground',
+  squigglyBeGone_info = 'editorInfo.foreground',
   statusBar_border = 'statusBar.border',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',

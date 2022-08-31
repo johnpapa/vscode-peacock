@@ -59,31 +59,32 @@ Commands can be found in the command palette. Look for commands beginning with "
 
 ## Settings
 
-| Property                            | Description                                                                                             |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                |
-| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                  |
-| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should affect the status bar while debugging. Defaults to false.              |
-| peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))   |
-| peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                      |
-| peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                            |
-| peacock.affectSideBarBorder         | Specifies whether Peacock should affect the sideBar border. Defaults to false.                          |
-| peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                              |
-| peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                 |
-| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                      |
-| peacock.elementAdjustments          | fine tune coloring of affected elements                                                                 |
-| peacock.favoriteColors              | array of objects for color names and hex values                                                         |
-| peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                   |
-| peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                               |
-| peacock.darkForeground              | override for the dark foreground                                                                        |
-| peacock.lightForeground             | override for the light foreground                                                                       |
-| peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                           |
-| peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color |
-| peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                |
-| peacock.remoteColor                 | The Peacock color that will be applied to remote workspaces                                             |
-| peacock.color                       | The Peacock color that will be applied to workspaces                                                    |
-| peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                               |
-| peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                              |
+| Property                            | Description                                                                                                         |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                            |
+| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                              |
+| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should affect the status bar while debugging. Defaults to false.                          |
+| peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))               |
+| peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                                  |
+| peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                                        |
+| peacock.affectSideBarBorder         | Specifies whether Peacock should affect the sideBar border. Defaults to false.                                      |
+| peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                          |
+| peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                             |
+| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                  |
+| peacock.elementAdjustments          | fine tune coloring of affected elements                                                                             |
+| peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
+| peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                               |
+| peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                                           |
+| peacock.darkForeground              | override for the dark foreground                                                                                    |
+| peacock.lightForeground             | override for the light foreground                                                                                   |
+| peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                                       |
+| peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color             |
+| peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                            |
+| peacock.remoteColor                 | The Peacock color that will be applied to remote workspaces                                                         |
+| peacock.color                       | The Peacock color that will be applied to workspaces                                                                |
+| peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                                           |
+| peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                                          |
+| peacock.squigglyBeGone              | Easter Egg feature for FUN. Hides all error, warning, and info underlines. This setting has NO effect on your code. |
 
 ### Favorite Colors
 
@@ -124,7 +125,6 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. These include examples such as affectEditorGroupBorder, affectPanelBorder, affectSideBarBorder, affectSashHover.
 
 ![affected elements](/assets/affected-settings.png)
-
 
 ### Element Adjustments
 
