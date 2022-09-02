@@ -12,7 +12,7 @@ meta:
 
 All notable changes to the code will be documented in this file.
 
-## 4.2.0
+## 4.2.1
 
 - Added `squigglyBeGone` settings for new feature to hide all error, warning, and info underlines. This is entirely intended to be a "fun" setting with the practical use of hiding errors (red underlines) in code when there are false positives. Occasionally an extension may cause a bug where your code appears to have an error (ex: Svelte, Vue, Angular Language Services) and it is distracting when deming your code. With squigglyBeGone set to true, your underlines will take on a transparency and your distractions are gone. Credit to [Ward Bell](https://github.com/wardbell) for the fun name.
 
