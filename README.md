@@ -6,11 +6,11 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=2f99fa&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=javascript-0000-jopapa)
-[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=javascript-0000-jopapa)
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=2f99fa&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa)
 
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=2f99fa&style=flat)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat)](#contributors)
@@ -44,17 +44,17 @@ Now enjoy exploring the rest of the features explained in the docs!
 
 ## Resources
 
-- Peacock docs are hosted on Azure -> [Get a Free Azure Trial](https://azure.microsoft.com/free/?WT.mc_id=javascript-0000-jopapa)
-- [Get VS Code](https://code.visualstudio.com/?WT.mc_id=javascript-0000-jopapa)
-- [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=javascript-0000-jopapa)
-- [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?WT.mc_id=javascript-0000-jopapa)
-- [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32?WT.mc_id=javascript-0000-jopapa#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
+- Peacock docs are hosted on Azure -> [Get a Free Azure Trial](https://azure.microsoft.com/free/?WT.mc_id=academic-0000-jopapa)
+- [Get VS Code](https://code.visualstudio.com/?WT.mc_id=academic-0000-jopapa)
+- [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=academic-0000-jopapa)
+- [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?WT.mc_id=academic-0000-jopapa)
+- [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32?WT.mc_id=academic-0000-jopapa#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
 
 ## Credits
 
 Inspiration comes in many forms. These folks and teams have contributed either through ideas, issues, pull requests, or guidance. Thank you!
 
-- The VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=javascript-0000-jopapa)
+- The VS Code team and their incredibly [helpful guide for creating extensions](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=academic-0000-jopapa)
 
 - Here are some great [examples for extensions](https://github.com/Microsoft/vscode-extension-samples) from the VS Code team
 
