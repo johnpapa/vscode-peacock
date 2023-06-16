@@ -14,7 +14,7 @@ All notable changes to the code will be documented in this file.
 
 ## 4.2.3
 
-- Transparency was set incorrectly, andnow is set to match the background color using hex RGB \_\_\_\_\_\_00 pattern
+- Transparency was set incorrectly for Squiggly Be Gone feature, and now is set to match the background color using hex RGB \_\_\_\_\_\_00 pattern
 
 ## 4.2.2
 
