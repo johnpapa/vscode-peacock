@@ -238,7 +238,7 @@
         "peacock.color": {
           "type": "string",
           "default": "",
-          "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
+          "description": "The Peacock color that will be applied to workspaces. This could be used to recognize for example folder structures ( i.e: domains ). Use it on every subfolder of a workspace."
         },
         "peacock.elementAdjustments": {
           "type": "object",
