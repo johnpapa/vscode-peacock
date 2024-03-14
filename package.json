@@ -237,6 +237,7 @@
         },
         "peacock.color": {
           "type": "string",
+          "format": "color",
           "default": "",
           "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
         },
@@ -316,7 +317,16 @@
             }
           ],
           "items": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string",
+                "format": "color"
+              }
+            }
           },
           "description": "Your favorite colors"
         },
@@ -334,6 +344,7 @@
         },
         "peacock.darkForegroundColor": {
           "type": "string",
+          "format": "color",
           "default": "#15202b",
           "description": "Specifies the override value for the dark foreground color"
         },
@@ -344,11 +355,13 @@
         },
         "peacock.lightForegroundColor": {
           "type": "string",
+          "format": "color",
           "default": "#e7e7e7",
           "description": "Specifies the override value for the light foreground color"
         },
         "peacock.remoteColor": {
           "type": "string",
+          "format": "color",
           "default": "",
           "description": "The Peacock color that will be applied to remote workspaces."
         },
@@ -369,11 +382,13 @@
         },
         "peacock.vslsJoinColor": {
           "type": "string",
+          "format": "color",
           "default": "",
           "description": "Peacock color for Live Share Color when acting as a Guest "
         },
         "peacock.vslsShareColor": {
           "type": "string",
+          "format": "color",
           "default": "",
           "description": "Peacock color for Live Share Color when acting as a Host "
         }
