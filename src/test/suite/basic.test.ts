@@ -1,17 +1,17 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
+import * as vscode from 'vscode';
 import {
-  IPeacockSettings,
-  ICommand,
+  AffectedSettings,
   Commands,
+  ICommand,
   IConfiguration,
+  IPeacockSettings,
   StandardSettings,
   extensionShortName,
-  AffectedSettings,
-  getExtension,
   timeout,
 } from '../../models';
-import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import { getExtension } from '../../models/extension';
+import { setupTest, setupTestSuite, teardownTestSuite } from './lib/setup-teardown-test-suite';
 
 suite('Basic Extension Tests', () => {
   const originalValues = {} as IPeacockSettings;

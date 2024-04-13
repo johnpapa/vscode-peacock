@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getExtension } from './';
+import { getExtension } from './extension';
 
 export class State {
   private static _extContext: vscode.ExtensionContext;

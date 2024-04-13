@@ -1,20 +1,21 @@
 import * as vscode from 'vscode';
 import { ConfigurationTarget } from 'vscode';
+import { LiveShareSettings } from '../live-share';
+import { Logger } from '../logging';
 import {
-  extensionShortName,
+  AffectedSettings,
   AllSettings,
-  Sections,
-  IPeacockElementAdjustments,
-  StandardSettings,
   IFavoriteColors,
   IPeacockAffectedElementSettings,
-  AffectedSettings,
-  starterSetOfFavorites,
+  IPeacockElementAdjustments,
+  Sections,
+  StandardSettings,
+  extensionShortName,
   isObjectEmpty,
+  starterSetOfFavorites,
 } from '../models';
-import { Logger } from '../logging';
-import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
-import { LiveShareSettings } from '../live-share';
+import { getFavoriteColors } from './read-configuration';
+import { getColorCustomizationConfigFromWorkspace } from './workspace';
 
 export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {
   const config = vscode.workspace.getConfiguration();

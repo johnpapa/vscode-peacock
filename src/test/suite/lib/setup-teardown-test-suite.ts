@@ -1,36 +1,36 @@
 import {
-  IPeacockSettings,
-  Commands,
-  ForegroundColors,
-  starterSetOfFavorites,
-  getExtension,
-} from '../../../models';
-import {
   getAffectedElements,
-  getFavoriteColors,
-  updateFavoriteColors,
-  updateElementAdjustments,
-  updateKeepForegroundColor,
-  getKeepForegroundColor,
-  updateSurpriseMeOnStartup,
   getDarkForegroundColor,
+  getFavoriteColors,
+  getKeepBadgeColor,
+  getKeepForegroundColor,
   getLightForegroundColor,
-  updateDarkForegroundColor,
-  updateLightForegroundColor,
-  updateAffectedElements,
-  updateSurpriseMeFromFavoritesOnly,
-  getSurpriseMeFromFavoritesOnly,
-  getShowColorInStatusBar,
-  updateShowColorInStatusBar,
   getPeacockColor,
   getPeacockRemoteColor,
+  getShowColorInStatusBar,
+  getSurpriseMeFromFavoritesOnly,
+  updateAffectedElements,
+  updateDarkForegroundColor,
+  updateElementAdjustments,
+  updateFavoriteColors,
+  updateKeepBadgeColor,
+  updateKeepForegroundColor,
+  updateLightForegroundColor,
   updatePeacockColor,
   updatePeacockRemoteColor,
-  getKeepBadgeColor,
-  updateKeepBadgeColor,
+  updateShowColorInStatusBar,
+  updateSurpriseMeFromFavoritesOnly,
+  updateSurpriseMeOnStartup,
 } from '../../../configuration';
+import {
+  Commands,
+  ForegroundColors,
+  IPeacockSettings,
+  starterSetOfFavorites,
+} from '../../../models';
 
-import { noopElementAdjustments, executeCommand, allAffectedElements } from './constants';
+import { getExtension } from '../../../models/extension';
+import { allAffectedElements, executeCommand, noopElementAdjustments } from './constants';
 
 export async function setupTest() {
   await executeCommand(Commands.resetWorkspaceColors);
