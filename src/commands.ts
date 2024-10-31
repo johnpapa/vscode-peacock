@@ -3,6 +3,7 @@ import {
   getRandomColorHex,
   getDarkenedColorHex,
   getLightenedColorHex,
+  getSeededRandomColorHex,
 } from './color-library';
 import { applyColor, unapplyColors, updateColorSetting } from './apply-color';
 import { State, peacockGreen, docsUri } from './models';
@@ -17,6 +18,8 @@ import {
   updatePeacockRemoteColor,
   updatePeacockRemoteColorInUserSettings,
   updatePeacockColorInUserSettings,
+  getDeterministicRandomFavoriteColor,
+  getWorkingDirectory,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -68,12 +71,12 @@ export async function enterColorHandler(color?: string) {
   return State.extensionContext;
 }
 
-export async function changeColorToRandomHandler() {
+export async function changeColorToRandomHandler(deterministic = false) {
   const surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
   let color = '';
 
   if (surpriseMeFromFavoritesOnly) {
-    const o = getRandomFavoriteColor();
+    const o = deterministic ? getDeterministicRandomFavoriteColor() : getRandomFavoriteColor();
     if (!o) {
       notify(
         'No favorites exist. Add some favorites if you want to use the surprise me from favorites feature',
@@ -82,7 +85,7 @@ export async function changeColorToRandomHandler() {
     }
     color = o.value;
   } else {
-    color = getRandomColorHex();
+    color = deterministic ? getSeededRandomColorHex(getWorkingDirectory()) : getRandomColorHex();
   }
 
   await applyColor(color);

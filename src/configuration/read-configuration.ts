@@ -29,13 +29,22 @@ import {
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
 } from '../color-library';
+import { seededRandomInt } from '../random';
 import { LiveShareSettings } from '../live-share';
 import { sortSettingsIndexer } from '../object-library';
 
 const { workspace } = vscode;
 
+export function getWorkingDirectory() {
+  return vscode.workspace.workspaceFolders?.[0]?.uri.toString() || '';
+}
+
 export function getSurpriseMeFromFavoritesOnly() {
   return readConfiguration<boolean>(StandardSettings.SurpriseMeFromFavoritesOnly, false);
+}
+
+export function getDeterministicOnStartup() {
+  return readConfiguration<boolean>(StandardSettings.DeterministicOnStartup, false);
 }
 
 export function getDarkenLightenPercentage() {
@@ -218,13 +227,28 @@ export function getFavoriteColors() {
 export function getRandomFavoriteColor() {
   const { values: favoriteColors } = getFavoriteColors();
   const currentColor = getEnvironmentAwareColor();
+
   let newColorFromFavorites: IFavoriteColors;
+
   do {
     newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];
   } while (
     favoriteColors.length > 1 &&
-    newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase()
+      newColorFromFavorites.value.toLowerCase() === currentColor.toLowerCase()
   );
+  
+  return newColorFromFavorites;
+}
+
+export function getDeterministicRandomFavoriteColor() {
+  const { values: favoriteColors } = getFavoriteColors();
+
+  let newColorFromFavorites: IFavoriteColors;
+
+  do {
+    newColorFromFavorites = favoriteColors[seededRandomInt(getWorkingDirectory(), favoriteColors.length - 1)];
+  } while (favoriteColors.length > 1);
+  
   return newColorFromFavorites;
 }
 
@@ -497,6 +521,7 @@ function getAllUserSettings() {
   const keepBadgeColor = getKeepBadgeColor();
   const keepForegroundColor = getKeepForegroundColor();
   const surpriseMeOnStartup = getSurpriseMeOnStartup();
+  const deterministicOnStartup = getDeterministicOnStartup();
   const darkForegroundColor = getDarkForegroundColor();
   const lightForegroundColor = getLightForegroundColor();
   const {
@@ -516,6 +541,7 @@ function getAllUserSettings() {
     keepBadgeColor,
     keepForegroundColor,
     surpriseMeOnStartup,
+    deterministicOnStartup,
     darkForegroundColor,
     lightForegroundColor,
     affectActivityBar,

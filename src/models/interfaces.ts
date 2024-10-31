@@ -66,6 +66,7 @@ export interface IPeacockSettings {
   squigglyBeGone: boolean;
   surpriseMeFromFavoritesOnly: boolean;
   surpriseMeOnStartup: boolean;
+  deterministicOnStartup: boolean;
   color: string;
   remoteColor: string;
 }
