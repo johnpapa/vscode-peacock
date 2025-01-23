@@ -1,17 +1,25 @@
 import * as vscode from 'vscode';
 import * as dotenv from 'dotenv';
-import * as os from 'os';
+// import * as os from 'os';
 
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
-import { OpenAIEmbeddings } from '@langchain/openai';
+import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai'; // add azure stuff here to replace openAI
+// import { AzureAISearchVectorStore } from '@langchain/community/vectorstores/azure_aisearch';
+
 import { HNSWLib } from 'langchain/vectorstores/hnswlib';
+import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
+
 import { Document } from '@langchain/core/documents';
 import { getEnvironmentAwareColor, getFavoriteColors } from './configuration';
 import fetch from 'node-fetch';
-import { peacockSmallIcon, State } from './models';
+import { peacockSmallIcon } from './models';
+
+// import { VectorStore } from '@langchain/core/vectorstores';
 
 // const LANGUAGE_MODEL_ID = 'copilot-gpt-3.5-turbo'; // Use faster model. Alternative is 'copilot-gpt-4', which is slower but more powerful
 const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
@@ -21,7 +29,7 @@ const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
  * https://code.visualstudio.com/api/extension-guides/chat
  */
 
-dotenv.config({ path: os.homedir() + '/.env' });
+dotenv.config(); //{ path: os.homedir() + '/.env' });
 
 export async function participantChatHandler(extensionContext: vscode.ExtensionContext) {
   // create participant
@@ -35,9 +43,6 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
 
   createTelemetryLogger();
 
-  // const chatVariableContext = 'The Peacock Code docs URL';
-  // const name = 'peacocks-docs-url';
-
   //   id: string,
   // name: string,
   // userDescription: string,
@@ -47,23 +52,23 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
   // fullName?: string,
   // icon?: ThemeIcon,
 
-  vscode.chat.registerChatVariableResolver(
-    'peacock',
-    'peacock-for-vscode',
-    'peacock-user',
-    'peacock-docs-model',
-    true,
-    {
-      resolve: async (name, chatVariableContext /* token */) => {
-        try {
-          return await getPeacockDocs(chatVariableContext);
-        } catch (err: any) {
-          // show a notification with the error
-          vscode.window.showErrorMessage(err.message);
-        }
-      },
-    },
-  );
+  // vscode.chat.registerChatVariableResolver(
+  //   'peacock',
+  //   'peacock-for-vscode',
+  //   'peacock-user',
+  //   'peacock-docs-model',
+  //   true,
+  //   {
+  //     resolve: async (name, chatVariableContext /* token */) => {
+  //       try {
+  //         return await getPeacockDocs(chatVariableContext);
+  //       } catch (err: any) {
+  //         // show a notification with the error
+  //         vscode.window.showErrorMessage(err.message);
+  //       }
+  //     },
+  //   },
+  // );
 
   async function chatRequestHandler(
     request: vscode.ChatRequest,
@@ -112,20 +117,36 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
                     If the user asks a non-programming question, politely decline to respond.
                     `;
 
-      // const docs = await getPeacockDocs(State.extensionContext); /// not what I want, but for now
-      // const docContext = docs[0].value;
+      const vectorStore = await getPeacockDocsAsVectorStore(basePrompt);
+      // const model = new ChatOpenAI(); // q. do I need to pass openai key here?
+      const model = new ChatOpenAI({ apiKey: getOpenAIKey() });
+      const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
+        ['system', "Answer the user's question using only the sources below:\n\n{context}"],
+        ['human', '{input}'],
+      ]);
       const messages = [
         // vscode.LanguageModelChatMessage.User(docContext),
         vscode.LanguageModelChatMessage.User(basePrompt),
         vscode.LanguageModelChatMessage.User(request.prompt),
       ];
+      const ragChain = await createStuffDocumentsChain({
+        llm: model,
+        prompt: questionAnsweringPrompt,
+      });
+      const ragChainStream = await ragChain.stream({
+        input: request.prompt,
+        context: vectorStore,
+      });
 
-      const chatResponse = await request.model.sendRequest(messages, {}, token);
-
-      // Add the response from the language model to the chat
-      for await (const fragment of chatResponse.text) {
+      //const chatResponse = await request.model.sendRequest(messages, {}, token);
+      // Add the response to the chat
+      // for await (const fragment of chatResponse.text) {
+      //   stream.markdown(fragment);
+      // }
+      for await (const fragment of ragChainStream) {
         stream.markdown(fragment);
       }
+
       return;
     } catch (err) {
       console.log(err);
@@ -133,7 +154,7 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
   }
 }
 
-async function getPeacockDocs(chatVariableContext: vscode.ChatVariableContext) {
+async function getPeacockDocsAsVectorStore(prompt: string) {
   // get the content of the url
   const urlContent = (await downloadWebPage(peacockDocsUrl)) || '';
 
@@ -145,21 +166,24 @@ async function getPeacockDocs(chatVariableContext: vscode.ChatVariableContext) {
 
   // get the relevant parts of the text content based on the users prompt
   // const docs = await vectorStoreRetriever.getRelevantDocuments(context.prompt); // getRelevantDocuments Is deprecated, use Invoke Instead
-  const docs = await vectorStoreRetriever.invoke(chatVariableContext.prompt);
+  const docs = await vectorStoreRetriever.invoke(prompt);
 
-  // assemble the relevant parts of the text content into a single string
-  let pageContent = '';
-  docs.forEach(doc => {
-    pageContent += doc.pageContent;
-  });
+  return docs;
 
-  return [
-    {
-      level: vscode.ChatVariableLevel.Full,
-      value: pageContent,
-    },
-  ];
+  // // assemble the relevant parts of the text content into a single string
+  // let pageContent = '';
+  // docs.forEach(doc => {
+  //   pageContent += doc.pageContent;
+  // });
+
+  // return [
+  //   {
+  //     level: vscode.ChatVariableLevel.Full,
+  //     value: pageContent,
+  //   },
+  // ];
 }
+
 async function downloadWebPage(url: string) {
   try {
     const response = await fetch(url);
@@ -199,19 +223,35 @@ async function splitTextIntoChunks(text: string) {
 }
 
 async function createVectorStore(documents: Document<Record<string, any>>[]) {
-  const openAIApiKey = process.env.OPENAI_API_KEY;
+  const openAIApiKey = getOpenAIKey();
   if (!openAIApiKey) {
     throw new Error('OpenAI API key is not set. Please set it using setOpenAIKey function.');
   }
 
-  const vectorStore = await HNSWLib.fromDocuments(
-    documents,
-    new OpenAIEmbeddings({ openAIApiKey }),
-  );
+  const embeddings = new OpenAIEmbeddings({
+    model: 'text-embedding-3-large',
+    apiKey: openAIApiKey,
+  });
+  const vectorStore = new MemoryVectorStore(embeddings);
+  vectorStore.addDocuments(documents);
+
+  // const vectorStore = await HNSWLib.fromDocuments(
+  //   documents,
+  //   new OpenAIEmbeddings({ apiKey: openAIApiKey }),
+  // );
   // Initialize a retriever wrapper around the vector store
   const vectorStoreRetriever = vectorStore.asRetriever();
 
   return vectorStoreRetriever;
+}
+
+function setOpenAIKey(apiKey: string) {
+  process.env.OPENAI_API_KEY = apiKey;
+  //dotenv.config({ path: os.homedir() + '/.env' });
+}
+
+function getOpenAIKey(): string | undefined {
+  return process.env.OPENAI_API_KEY;
 }
 
 function createTelemetryLogger() {
