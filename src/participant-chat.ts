@@ -24,19 +24,6 @@ const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
 dotenv.config({ path: os.homedir() + '/.env' });
 
 export async function participantChatHandler(extensionContext: vscode.ExtensionContext) {
-  const chatVariableContext = 'The Peacock Code docs URL';
-  const name = 'peacocks-docs-url';
-  vscode.chat.registerChatVariableResolver(name, chatVariableContext, {
-    resolve: async (name, chatVariableContext, token) => {
-      try {
-        return await getPeacockDocs(chatVariableContext);
-      } catch (err: any) {
-        // show a notification with the error
-        vscode.window.showErrorMessage(err.message);
-      }
-    },
-  });
-
   // create participant
   const peacockTutor = vscode.chat.createChatParticipant(
     'vscode-peacock.peacock',
@@ -47,6 +34,36 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
   peacockTutor.iconPath = vscode.Uri.joinPath(extensionContext.extensionUri, peacockSmallIcon);
 
   createTelemetryLogger();
+
+  // const chatVariableContext = 'The Peacock Code docs URL';
+  // const name = 'peacocks-docs-url';
+
+  //   id: string,
+  // name: string,
+  // userDescription: string,
+  // modelDescription: string | undefined,
+  // isSlow: boolean | undefined,
+  // resolver: ChatVariableResolver,
+  // fullName?: string,
+  // icon?: ThemeIcon,
+
+  vscode.chat.registerChatVariableResolver(
+    'peacock',
+    'peacock-for-vscode',
+    'peacock-user',
+    'peacock-docs-model',
+    true,
+    {
+      resolve: async (name, chatVariableContext /* token */) => {
+        try {
+          return await getPeacockDocs(chatVariableContext);
+        } catch (err: any) {
+          // show a notification with the error
+          vscode.window.showErrorMessage(err.message);
+        }
+      },
+    },
+  );
 
   async function chatRequestHandler(
     request: vscode.ChatRequest,
@@ -195,10 +212,6 @@ async function createVectorStore(documents: Document<Record<string, any>>[]) {
   const vectorStoreRetriever = vectorStore.asRetriever();
 
   return vectorStoreRetriever;
-}
-
-function setOpenAIKey(apiKey: string) {
-  process.env.OPENAI_API_KEY = apiKey;
 }
 
 function createTelemetryLogger() {
