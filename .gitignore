@@ -10,3 +10,4 @@ xunit.xml
 .vscode-test-web
 docs/.vuepress/.*
 .DS_Store
+.env
