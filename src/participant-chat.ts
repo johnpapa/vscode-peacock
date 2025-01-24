@@ -5,14 +5,17 @@ import { getEnvironmentAwareColor, getFavoriteColors } from './configuration';
 import { peacockSmallIcon } from './models';
 
 const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
-const telemetrySender: vscode.TelemetrySender = {
-  sendEventData: (eventName: string, data: any) => {
-    console.log(`Event: ${eventName}, Data: ${data}`);
+
+const logger = vscode.env.createTelemetryLogger({
+  sendEventData(eventName, data) {
+    // Capture event telemetry
+    console.log(`Event: ${eventName}, Data: ${JSON.stringify(data)}`);
   },
-  sendErrorData: (error: any, data: any) => {
-    console.error(`Error: ${error}, Data: ${data}`);
+  sendErrorData(error, data) {
+    // Capture error telemetry
+    console.error(`Error: ${error}, Data: ${JSON.stringify(data)}`);
   },
-};
+});
 
 /**
  * Peacock Participant Chat API docs located here:
@@ -34,9 +37,19 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
     peacockSmallIcon,
   );
 
-  telemetrySender.sendEventData('peacockTutor', {
+  logger.logUsage('peacockChatParticipant', {
     message: `Created chat participant ${chatParticipantName}`,
   });
+
+  extensionContext.subscriptions.push(
+    peacockChatParticipant.onDidReceiveFeedback((feedback: vscode.ChatResultFeedback) => {
+      // Log chat result feedback to compute the success metric of the participant
+      // unhelpful / totalRequests is a good success metric
+      logger.logUsage('chatResultFeedback', {
+        kind: feedback.kind,
+      });
+    }),
+  );
 
   async function chatRequestHandler(
     request: vscode.ChatRequest,
@@ -94,11 +107,17 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
         vscode.LanguageModelChatMessage.User(basePrompt),
         vscode.LanguageModelChatMessage.User(request.prompt),
       ];
+
       const chatResponse = await request.model.sendRequest(messages, {}, token);
       // Add the response to the chat
       for await (const fragment of chatResponse.text) {
         stream.markdown(fragment);
       }
+
+      logger.logUsage('peacockChatParticipant Response', {
+        prompt: prompt,
+        response: chatResponse.text,
+      });
 
       return;
     } catch (err) {
