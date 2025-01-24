@@ -106,5 +106,3 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
     }
   }
 }
-
-\
