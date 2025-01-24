@@ -23,11 +23,16 @@ dotenv.config();
 
 export async function participantChatHandler(extensionContext: vscode.ExtensionContext) {
   const chatParticipantName = 'vscode-peacock.peacock';
-  // create participant
-  const peacockTutor = vscode.chat.createChatParticipant(chatParticipantName, chatRequestHandler);
+  const peacockChatParticipant = vscode.chat.createChatParticipant(
+    chatParticipantName,
+    chatRequestHandler,
+  );
 
   // add icon to participant
-  peacockTutor.iconPath = vscode.Uri.joinPath(extensionContext.extensionUri, peacockSmallIcon);
+  peacockChatParticipant.iconPath = vscode.Uri.joinPath(
+    extensionContext.extensionUri,
+    peacockSmallIcon,
+  );
 
   telemetrySender.sendEventData('peacockTutor', {
     message: `Created chat participant ${chatParticipantName}`,
@@ -55,15 +60,15 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
 
                     Always offer to apply the color using the Peacock Code extension for the user.
 
-                    Provide Instructions on how to apply the color.
+                    Provide instructions and when available also show a button to apply the color.
 
-                    If a user asks about the current color, tell them how to find the current color with Peacock and also tell them the current color Is ${currentColor}
+                    If a user asks about the current color, tell them how to find the current color with Peacock and also tell them the current color is ${currentColor}
 
-                    For any questions about the docs, please refer the user to the Peacock Code docs at ${peacockDocsUrl}.
+                    When the user needs more Information, include a link to the Peacock Code docs at ${peacockDocsUrl} at the end of the response.
 
-                    If the color Is In the Favorites list ${peacockColorList}, suggest that the user apply the color with the command "Peacock: Change Color to Favorite".
+                    If the color is in the Favorites list ${peacockColorList}, suggest that the user apply the color with the command "Peacock: Change Color to Favorite".
 
-                    If the color Is not In the favorites list, suggest that the user apply the color with the command "Peacock: Enter Color".
+                    If the color is not in the favorites list, suggest that the user apply the color with the command "Peacock: Enter Color".
 
                     If the users asks about saving the color to their favorites, suggest that the user apply the color with the command "Peacock: Save Color to Favorites".
 
@@ -75,9 +80,9 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
 
                     If the user asks a question that is about the color or Peacock, and not about coding, create a fun response.
 
-                    If the user asks a question that you cannot answer, make the response fun.
+                    If the user asks a question that you cannot answer, make the response fun In the context of Star Wars.
 
-                    Reference various Star Wars and quotes in all responses.
+                    Reference various Star Wars movies, Star Wars Rebels animated series, Star Wars The Bad Batch aniamted series, and Star Wars the Clone Wars animated series in all responses, using quotes and character references.
 
                     When asked about Jedi or Sith, always respond with "May the Force be with you".
 
