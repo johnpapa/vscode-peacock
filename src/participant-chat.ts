@@ -23,6 +23,14 @@ import { peacockSmallIcon } from './models';
 
 // const LANGUAGE_MODEL_ID = 'copilot-gpt-3.5-turbo'; // Use faster model. Alternative is 'copilot-gpt-4', which is slower but more powerful
 const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
+const telemetrySender: vscode.TelemetrySender = {
+  sendEventData: (eventName: string, data: any) => {
+    console.log(`Event: ${eventName}, Data: ${data}`);
+  },
+  sendErrorData: (error: any, data: any) => {
+    console.error(`Error: ${error}, Data: ${data}`);
+  },
+};
 
 /**
  * Peacock Participant Chat API docs located here:
@@ -32,16 +40,16 @@ const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
 dotenv.config(); //{ path: os.homedir() + '/.env' });
 
 export async function participantChatHandler(extensionContext: vscode.ExtensionContext) {
+  const chatParticipantName = 'vscode-peacock.peacock';
   // create participant
-  const peacockTutor = vscode.chat.createChatParticipant(
-    'vscode-peacock.peacock',
-    chatRequestHandler,
-  );
+  const peacockTutor = vscode.chat.createChatParticipant(chatParticipantName, chatRequestHandler);
 
   // add icon to participant
   peacockTutor.iconPath = vscode.Uri.joinPath(extensionContext.extensionUri, peacockSmallIcon);
 
-  createTelemetryLogger();
+  telemetrySender.sendEventData('peacockTutor', {
+    message: `Created chat participant ${chatParticipantName}`,
+  });
 
   //   id: string,
   // name: string,
@@ -117,33 +125,32 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
                     If the user asks a non-programming question, politely decline to respond.
                     `;
 
-      const vectorStore = await getPeacockDocsAsVectorStore(basePrompt);
-      // const model = new ChatOpenAI(); // q. do I need to pass openai key here?
-      const model = new ChatOpenAI({ apiKey: getOpenAIKey() });
-      const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
-        ['system', "Answer the user's question using only the sources below:\n\n{context}"],
-        ['human', '{input}'],
-      ]);
+      // const vectorStore = await getPeacockDocsAsVectorStore(basePrompt);
+      // // const model = new ChatOpenAI(); // q. do I need to pass openai key here?
+      // const model = new ChatOpenAI({ apiKey: getOpenAIKey() });
+      // const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
+      //   ['system', "Answer the user's question using only the sources below:\n\n{context}"],
+      //   ['human', '{input}'],
+      // ]);
+      // const ragChain = await createStuffDocumentsChain({
+      //   llm: model,
+      //   prompt: questionAnsweringPrompt,
+      // });
+      // const ragChainStream = await ragChain.stream({
+      //   input: request.prompt,
+      //   context: vectorStore,
+      // });
+      // for await (const fragment of ragChainStream) {
+      //   stream.markdown(fragment);
+      // }
+
       const messages = [
-        // vscode.LanguageModelChatMessage.User(docContext),
         vscode.LanguageModelChatMessage.User(basePrompt),
         vscode.LanguageModelChatMessage.User(request.prompt),
       ];
-      const ragChain = await createStuffDocumentsChain({
-        llm: model,
-        prompt: questionAnsweringPrompt,
-      });
-      const ragChainStream = await ragChain.stream({
-        input: request.prompt,
-        context: vectorStore,
-      });
-
-      //const chatResponse = await request.model.sendRequest(messages, {}, token);
+      const chatResponse = await request.model.sendRequest(messages, {}, token);
       // Add the response to the chat
-      // for await (const fragment of chatResponse.text) {
-      //   stream.markdown(fragment);
-      // }
-      for await (const fragment of ragChainStream) {
+      for await (const fragment of chatResponse.text) {
         stream.markdown(fragment);
       }
 
@@ -252,20 +259,4 @@ function setOpenAIKey(apiKey: string) {
 
 function getOpenAIKey(): string | undefined {
   return process.env.OPENAI_API_KEY;
-}
-
-function createTelemetryLogger() {
-  // TODO: create a telemetry logger
-  //const sender: vscode.TelemetrySender = {...};
-  // // GOOD - uses the logger
-  // logger.logUsage('myEvent', { myData: 'myValue' });
-  // // BAD - uses the sender directly: no data cleansing, ignores user settings, no echoing to the telemetry output channel etc
-  // sender.logEvent('myEvent', { myData: 'myValue' });
-  // const logger = vscode.env.createTelemetryLogger(sender);
-  // peacockTutor.onDidReceiveFeedback((feedback: vscode.ChatResultFeedback) => {
-  //   // Log chat result feedback to be able to compute the success metric of the participant
-  //   logger.logUsage('chatResultFeedback', {
-  //     kind: feedback.kind,
-  //   });
-  // });
 }
