@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 export const extensionShortName = 'peacock';
 export const extensionId = 'johnpapa.vscode-peacock';
 export const favoriteColorSeparator = '->';
+export const peacockSmallIcon = 'resources/peacock-icon-small.png';
 
 export const docsUri = vscode.Uri.parse('https://www.peacockcode.dev');
 
