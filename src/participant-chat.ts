@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as dotenv from 'dotenv';
 
 import { getEnvironmentAwareColor, getFavoriteColors } from './configuration';
-import { peacockSmallIcon } from './models';
+import { Commands, peacockSmallIcon } from './models';
 
 const peacockDocsUrl = 'https://www.peacockcode.dev/guide';
 
@@ -109,14 +109,66 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
       ];
 
       const chatResponse = await request.model.sendRequest(messages, {}, token);
+      let rawResponse = '';
       // Add the response to the chat
       for await (const fragment of chatResponse.text) {
         stream.markdown(fragment);
+        rawResponse += fragment;
       }
 
+      // const fullCommandCodeStart = rawResponse.indexOf('(command:peacock.');
+      // const commandCodeEnd = rawResponse.substring(fullCommandCodeStart).indexOf(')');
+      // const commandCodeStart = fullCommandCodeStart + `(command:`.length;
+      // const buttonStart = rawResponse.substring(0, fullCommandCodeStart - 1).indexOf('[');
+      // const buttonEnd = rawResponse.indexOf(')', buttonStart) + 1;
+      // let color = '';
+      // let commandType: Commands;
+      // let commandExists = false;
+      // if (fullCommandCodeStart > -1) {
+      //   // check If rawResponse contains any of a set of strings In an array
+      //   const checkStrings = [Commands.enterColor, Commands.changeColorToFavorite];
+      //   const containsString = checkStrings.some(str =>
+      //     rawResponse.toLowerCase().includes(str.toLowerCase()),
+      //   );
+
+      //   if (containsString) {
+      //     commandExists = true;
+      //     commandType = Commands.enterColor;
+      //     const fullCommand = decodeURI(
+      //       rawResponse.substring(fullCommandCodeStart + 1, fullCommandCodeStart + commandCodeEnd),
+      //     );
+      //     const colorPosition = rawResponse.indexOf('#') + 1;
+      //     color = rawResponse.substring(colorPosition, colorPosition + 6);
+      //   }
+      // }
+
+      //   const buttonText = rawResponse.substring(buttonStart + 1, fullCommandCodeStart - 1);
+      //   let command = rawResponse.substring(
+      //     commandCodeStart,
+      //     fullCommandCodeStart + commandCodeEnd,
+      //   );
+      //   let args = [];
+      //   const commandArgsStart = command.indexOf('?');
+      //   if (commandArgsStart > -1) {
+      //     let arg = command.substring(commandArgsStart + 1);
+      //     arg = decodeURI(decodeURI(arg));
+      //     args.push(arg);
+      //     command = command.substring(0, commandArgsStart);
+      //   }
+      // if (commandExists && commandType! === Commands.enterColor) {
+      //   const title = `Change Color to ${color}`;
+      //   const button = {
+      //     title,
+      //     command: Commands.enterColor,
+      //     tooltip: title,
+      //     arguments: [color],
+      //   };
+      //   console.log(button);
+      //   stream.button(button);
+      // }
       logger.logUsage('peacockChatParticipant Response', {
-        prompt: prompt,
-        response: chatResponse.text,
+        prompt: request.prompt,
+        response: rawResponse,
       });
 
       return;
