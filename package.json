@@ -367,6 +367,11 @@
           "default": false,
           "description": "Specifies that Peacock should surprise you at the start of every editing session, only when a color isn't already set. "
         },
+        "peacock.deterministicOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies that Peacock should surprise you with a deterministic random color (based on workspace folder) at the start of every editing session, only when a color isn't already set. The same color will be chosen for the same workspace folder regardless of the number of times the workspace is opened."
+        },
         "peacock.vslsJoinColor": {
           "type": "string",
           "default": "",
@@ -406,7 +411,7 @@
     "@types/istanbul-lib-source-maps": "^1.2.2",
     "@types/istanbul-reports": "^1.1.2",
     "@types/mocha": "^7.0.2",
-    "@types/node": "12.12.16",
+    "@types/node": "^14.18.63",
     "@types/sinon": "^7.5.2",
     "@types/vscode": "^1.49.0",
     "@types/webpack-env": "^1.16.0",

@@ -14,6 +14,7 @@ export enum StandardSettings {
   SquigglyBeGone = 'squigglyBeGone',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
+  DeterministicOnStartup = 'deterministicOnStartup',
 }
 
 export enum AffectedSettings {

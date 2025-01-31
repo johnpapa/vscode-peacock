@@ -78,6 +78,10 @@ export async function updateSurpriseMeOnStartup(value: boolean) {
   return await updateGlobalConfiguration(StandardSettings.SurpriseMeOnStartup, value);
 }
 
+export async function updateDeterministicOnStartup(value: boolean) {
+  return await updateGlobalConfiguration(StandardSettings.DeterministicOnStartup, value);
+}
+
 export async function updateDarkForegroundColor(value: string) {
   return await updateGlobalConfiguration(StandardSettings.DarkForegroundColor, value);
 }
