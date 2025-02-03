@@ -1,36 +1,36 @@
 import * as vscode from 'vscode';
 import {
-  ColorSettings,
-  Sections,
-  StandardSettings,
-  extensionShortName,
-  IFavoriteColors,
-  favoriteColorSeparator,
-  IPeacockElementAdjustments,
-  IElementStyle,
-  ColorAdjustment,
-  AllSettings,
-  AffectedSettings,
-  IPeacockAffectedElementSettings,
-  ISettingsIndexer,
-  ElementNames,
-  ColorAdjustmentOptions,
-  IElementColors,
-  ForegroundColors,
-  defaultAmountToDarkenLighten,
-  ColorSource,
-} from '../models';
-import {
   getAdjustedColorHex,
-  getBadgeBackgroundColorHex,
   getBackgroundHoverColorHex,
+  getBadgeBackgroundColorHex,
   getDebuggingBackgroundColorHex,
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
 } from '../color-library';
 import { LiveShareSettings } from '../live-share';
+import {
+  AffectedSettings,
+  ColorAdjustment,
+  ColorAdjustmentOptions,
+  ColorSettings,
+  ColorSource,
+  ElementNames,
+  IElementColors,
+  IElementStyle,
+  IFavoriteColors,
+  IPeacockAffectedElementSettings,
+  IPeacockElementAdjustments,
+  ISettingsIndexer,
+  Sections,
+  StandardSettings,
+  defaultAmountToDarkenLighten,
+  extensionShortName,
+  favoriteColorSeparator,
+} from '../models';
 import { sortSettingsIndexer } from '../object-library';
+import { getDarkForegroundColor, getLightForegroundColor } from './foreground-color';
+import { readConfiguration } from './utils';
 
 const { workspace } = vscode;
 
@@ -54,17 +54,6 @@ export function getColorCustomizationConfig() {
   // If we want to get just the ones from workspace,
   // we should change functions to use getColorCustomizationConfigFromWorkspace
   return workspace.getConfiguration(Sections.peacockColorCustomizationSection);
-}
-
-export function getColorCustomizationConfigFromWorkspace() {
-  const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
-
-  if (!inspect || typeof inspect.workspaceValue !== 'object') {
-    return {};
-  }
-
-  const colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
-  return colorCustomizations;
 }
 
 export function getPeacockWorkspace() {
@@ -91,13 +80,6 @@ export function getCurrentColorBeforeAdjustments() {
     originalColor = getOriginalColor(color, adjustment);
   }
   return originalColor;
-}
-
-export function readConfiguration<T>(setting: AllSettings, defaultValue?: T | undefined) {
-  const value: T | undefined = workspace
-    .getConfiguration(Sections.peacockSection)
-    .get<T | undefined>(setting, defaultValue);
-  return value as T;
 }
 
 export function isAffectedSettingSelected(affectedSetting: AffectedSettings) {
@@ -134,10 +116,6 @@ export function prepareColors(backgroundHex: string) {
   const newColorCustomizations = sortSettingsIndexer(mergedSettings);
 
   return newColorCustomizations;
-}
-
-export function getDarkForegroundColor() {
-  return readConfiguration<string>(StandardSettings.DarkForegroundColor, '');
 }
 
 export function getEnvironmentAwareColor() {
@@ -178,18 +156,6 @@ export function getPeacockRemoteColor() {
 
 export function getLiveShareColor(liveShareSetting: LiveShareSettings) {
   return readConfiguration<string>(liveShareSetting, '');
-}
-
-export function getDarkForegroundColorOrOverride() {
-  return getDarkForegroundColor() || ForegroundColors.DarkForeground;
-}
-
-export function getLightForegroundColor() {
-  return readConfiguration<string>(StandardSettings.LightForegroundColor, '');
-}
-
-export function getLightForegroundColorOrOverride() {
-  return getLightForegroundColor() || ForegroundColors.LightForeground;
 }
 
 export function getKeepForegroundColor() {
@@ -285,7 +251,7 @@ export function getElementStyle(backgroundHex: string, elementName?: string): IE
 }
 
 export function getAllSettingNames() {
-  const settings = [];
+  const settings: string[] = [];
   const affectedSettings = Object.values(AffectedSettings).map(
     value => `${extensionShortName}.${value}`,
   );

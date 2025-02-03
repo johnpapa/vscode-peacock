@@ -1,8 +1,9 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { IPeacockSettings, Commands, getExtension, peacockGreen } from '../../models';
-import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import * as vscode from 'vscode';
+import { Commands, IPeacockSettings, peacockGreen } from '../../models';
+import { getExtension } from '../../models/extension';
 import { getStatusBarItem } from '../../statusbar';
+import { setupTest, setupTestSuite, teardownTestSuite } from './lib/setup-teardown-test-suite';
 
 suite.skip('StatusBar Tests', () => {
   const originalValues = {} as IPeacockSettings;
