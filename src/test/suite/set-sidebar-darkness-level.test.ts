@@ -3,7 +3,6 @@ import * as sinon from 'sinon';
 import * as assert from 'assert';
 import { Commands } from '../../models';
 import { executeCommand } from './lib/constants';
-// import { afterEach } from 'mocha';
 
 suite('Set SideBar Darkness Level Command', () => {
   let quickPickStub: sinon.SinonStub;
@@ -16,15 +15,6 @@ suite('Set SideBar Darkness Level Command', () => {
   teardown(() => {
     quickPickStub.restore();
   });
-  // afterEach(async () => {
-  //   await vscode.workspace
-  //     .getConfiguration('workbench')
-  //     .update('colorCustomizations', {}, vscode.ConfigurationTarget.Workspace);
-  //   await vscode.workspace
-  //     .getConfiguration('peacock')
-  //     .update('color', undefined, vscode.ConfigurationTarget.Workspace);
-  // });
-
   test('sets sidebar background to Dark', async () => {
     quickPickStub.returns(Promise.resolve('Dark'));
     await executeCommand(Commands.affectSideBarBackground);
@@ -54,8 +44,6 @@ suite('Set SideBar Darkness Level Command', () => {
     colorCustomizations =
       vscode.workspace.getConfiguration('workbench').get<any>('colorCustomizations') || {};
     const darker = colorCustomizations['sideBar.background'];
-
-    // Test "Darkest"
     quickPickStub.returns(Promise.resolve('Darkest'));
     await executeCommand(Commands.affectSideBarBackground);
     colorCustomizations =
