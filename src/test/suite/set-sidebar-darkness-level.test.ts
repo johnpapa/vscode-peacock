@@ -37,13 +37,13 @@ suite('Set SideBar Darkness Level Command', () => {
     let colorCustomizations =
       vscode.workspace.getConfiguration('workbench').get<any>('colorCustomizations') || {};
     const dark = colorCustomizations['sideBar.background'];
-
     // Test "Darker"
     quickPickStub.returns(Promise.resolve('Darker'));
     await executeCommand(Commands.affectSideBarBackground);
     colorCustomizations =
       vscode.workspace.getConfiguration('workbench').get<any>('colorCustomizations') || {};
     const darker = colorCustomizations['sideBar.background'];
+    // Test "Darker"
     quickPickStub.returns(Promise.resolve('Darkest'));
     await executeCommand(Commands.affectSideBarBackground);
     colorCustomizations =
