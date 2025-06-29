@@ -23,6 +23,7 @@ import {
   removeAllPeacockColorsHandler,
   showDocumentationHandler,
 } from './commands';
+import { participantChatHandler } from './participant-chat';
 import {
   checkIfPeacockSettingsChanged,
   getSurpriseMeOnStartup,
@@ -47,6 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   await initializeTheStarterSetOfFavorites();
+  participantChatHandler(context);
 
   if (workspace.workspaceFolders) {
     Logger.info('Peacock is in a workspace, so Peacock functionality is available.');

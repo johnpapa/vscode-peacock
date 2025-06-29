@@ -2,7 +2,7 @@
   "name": "vscode-peacock",
   "displayName": "Peacock",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "4.2.3",
+  "version": "4.3.0",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -16,7 +16,7 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.49.0"
+    "vscode": "^1.95.0"
   },
   "categories": [
     "Other"
@@ -378,7 +378,16 @@
           "description": "Peacock color for Live Share Color when acting as a Host "
         }
       }
-    }
+    },
+    "chatParticipants": [
+      {
+        "id": "vscode-peacock.peacock",
+        "name": "peacock",
+        "fullName": "Peacock",
+        "description": "Talk with Peacock in VS Code",
+        "isSticky": true
+      }
+    ]
   },
   "scripts": {
     "docs:dev": "vuepress dev docs",
@@ -408,7 +417,7 @@
     "@types/mocha": "^7.0.2",
     "@types/node": "12.12.16",
     "@types/sinon": "^7.5.2",
-    "@types/vscode": "^1.49.0",
+    "@types/vscode": "^1.95.0",
     "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
@@ -436,7 +445,15 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
+    "@langchain/community": "^0.2.33",
+    "@langchain/core": "^0.3.33",
+    "@mozilla/readability": "^0.5.0",
+    "@types/jsdom": "^21.1.6",
     "@types/tinycolor2": "^1.4.1",
+    "@vscode/chat-extension-utils": "^0.0.0-alpha.5",
+    "dotenv": "^16.4.5",
+    "jsdom": "^24.0.0",
+    "langchain": "^0.1.25",
     "tinycolor2": "^1.4.2",
     "vsls": "^1.0.2594"
   },
