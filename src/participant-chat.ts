@@ -98,8 +98,6 @@ export async function participantChatHandler(extensionContext: vscode.ExtensionC
                     When first starting a new conversation, respond with "Hello there!", which is a popular Star Wars quote from Obi Wan Kenobi.
                     Always be polite and respectful, and do not use any words that could offend or misrepresent the user.
 
-                    Do not refer to the user as "Darling" or other terms of endearment.
-
                     If the user asks a non-programming question, politely decline to respond.
                     `;
 
