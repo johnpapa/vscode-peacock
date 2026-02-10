@@ -152,12 +152,14 @@ export function isValidColorInput(input: string) {
   return isValid;
 }
 
-export function deletePeacocksColorCustomizations() {
+export function deletePeacocksColorCustomizations(excludedSettings: string[] = []) {
   const newColorCustomizations = getColorCustomizationConfigFromWorkspace();
 
-  Object.values(ColorSettings).forEach(setting => {
-    delete newColorCustomizations[setting];
-  });
+  Object.values(ColorSettings)
+    .filter(setting => !excludedSettings.includes(setting))
+    .forEach(setting => {
+      delete newColorCustomizations[setting];
+    });
   return newColorCustomizations;
 }
 

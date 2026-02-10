@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 
-import { ColorSettings, extensionShortName, ISettingsIndexer } from './models';
+import { ColorSettings, extensionShortName, ISettingsIndexer, StandardSettings } from './models';
 import {
   getColorCustomizationConfigFromWorkspace,
   prepareColors,
   updateWorkspaceConfiguration,
   updatePeacockColor,
   updatePeacockRemoteColor,
+  readConfiguration,
 } from './configuration';
 import { Logger } from './logging';
 import { updateStatusBar } from './statusbar';
@@ -25,7 +26,8 @@ export async function unapplyColors() {
 
   // Overwite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
-  const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations();
+  const excludedSettings = readConfiguration<string[]>(StandardSettings.ExcludedSettings, []);
+  const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations(excludedSettings);
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
   updateStatusBar();
 }
@@ -45,16 +47,29 @@ function mergeColorCustomizations(
    * If any existing color settings are not in the set
    * that Peacock manages, remove them.
    */
+  const excludedSettings = readConfiguration<string[]>(StandardSettings.ExcludedSettings, []);
   Object.values(ColorSettings)
     .filter(c => !(c in updatedColors))
+    .filter(c => !excludedSettings.includes(c))
     .forEach(c => delete existingColorsClone[c]);
+
+  /**
+   * Filter out any settings that the user has specifically excluded.
+   * This prevents Peacock from overwriting these settings with new values.
+   */
+  const filteredUpdatedColors: ISettingsIndexer = {};
+  Object.keys(updatedColors).forEach(key => {
+    if (!excludedSettings.includes(key)) {
+      filteredUpdatedColors[key] = updatedColors[key];
+    }
+  });
 
   /**
    * Merge the updated colors on top of the existing colors.
    */
   const mergedCustomizations: ISettingsIndexer = {
     ...existingColorsClone,
-    ...updatedColors,
+    ...filteredUpdatedColors,
   };
 
   return mergedCustomizations;

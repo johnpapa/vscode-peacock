@@ -240,6 +240,11 @@
           "default": "",
           "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
         },
+        "peacock.excludedSettings": {
+          "type": "array",
+          "default": [],
+          "description": "An array of VS Code color keys (e.g. 'activityBar.background') that Peacock should never modify or delete."
+        },
         "peacock.elementAdjustments": {
           "type": "object",
           "properties": {

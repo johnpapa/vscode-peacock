@@ -5,6 +5,7 @@ export enum StandardSettings {
   DarkenLightenPercentage = 'darkenLightenPercentage',
   DarkForegroundColor = 'darkForegroundColor',
   ElementAdjustments = 'elementAdjustments',
+  ExcludedSettings = 'excludedSettings',
   FavoriteColors = 'favoriteColors',
   KeepBadgeColor = 'keepBadgeColor',
   KeepForegroundColor = 'keepForegroundColor',
