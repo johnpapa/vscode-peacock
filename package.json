@@ -243,7 +243,7 @@
         "peacock.excludedSettings": {
           "type": "array",
           "default": [],
-          "description": "An array of VS Code color keys (e.g. 'activityBar.background') that Peacock should never modify or delete."
+          "description": "An array of VS Code color keys (e.g. 'activityBar.background') that Peacock should never modify or delete.  This will prevent Peacock from even resetting their values."
         },
         "peacock.elementAdjustments": {
           "type": "object",
