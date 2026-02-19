@@ -1,13 +1,3 @@
----
-title: About
-# We can even add meta tags to the page! This sets the keywords meta tag.
-# <meta name="keywords" content="my SEO keywords"/>
-description: About the Visual Studio Code and the Peacock Extension
-meta:
-  - name: keywords
-  - content: vscode "visual studio code" peacock theme extension
----
-
 # About Peacock
 
 Subtly change the color of your Visual Studio (VS) Code workspace. Ideal when you have multiple VS Code instances, use Visual Studio Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.

@@ -1,17 +1,3 @@
----
-title: Guide
-# We can even add meta tags to the page! This sets the keywords meta tag.
-# <meta name="keywords" content="my SEO keywords"/>
-description: Documentation guide for the Visual Studio Code Peacock extension
-head:
-  - - meta
-    - name: keywords
-    - content: vscode "visual studio code" peacock theme extension documentation docs guide help "get started"
-  - - script
-    - {}
-    - console.log('hello from frontmatter');
----
-
 # Peacock for Visual Studio Code
 
 ## Overview
@@ -41,7 +27,7 @@ Let's see Peacock in action!
 
 Now enjoy exploring the rest of the features explained in the docs, here!
 
-![Peacock Windows](/assets/peacock-windows.png 'Peacock Windows')
+![Peacock Windows](../assets/peacock-windows.png 'Peacock Windows')
 
 ## Features
 
@@ -112,7 +98,7 @@ Favorite colors require a user-defined name (`name`) and a value ( `value` ), as
 
 When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
-![favorites](/assets/named-colors.gif)
+![favorites](../assets/named-colors.gif)
 
 #### Save Favorite Color
 
@@ -124,7 +110,7 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. These include examples such as affectEditorGroupBorder, affectPanelBorder, affectSideBarBorder, affectSashHover.
 
-![affected elements](/assets/affected-settings.png)
+![affected elements](../assets/affected-settings.png)
 
 ### Element Adjustments
 
@@ -147,7 +133,7 @@ An example of using this might be to make the Activity Bar slightly lighter than
 
 This results in the Activity Bar being slightly lighter than the Status Bar and Title Bar (see below).
 
-![Element Adjustments](/assets/element-adjustments.png)
+![Element Adjustments](../assets/element-adjustments.png)
 
 ### Keep Foreground Color
 
@@ -200,7 +186,7 @@ Peacock integrates with other extensions, as described in this section.
 
 ### VS Live Share Integration
 
-![live share](/assets/peacock-live-share-demo.gif)
+![live share](../assets/peacock-live-share-demo.gif)
 
 Peacock detects when the [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare&wt.mc_id=vscodepeacock-github-jopapa) extension is installed and automatically adds two commands that allow the user to change color of their Live Share sessions as a Host or a Guest, depending on their role.
 
@@ -226,7 +212,7 @@ Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/i
 
 When a workspace is opened in a remote context, if a `peacock.remoteColor` is set, it will be applied. Otherwise, the regular `peacock.color` is applied.
 
-![Remote Integration with Peacock](/assets/peacock-remote.gif)
+![Remote Integration with Peacock](../assets/peacock-remote.gif)
 
 VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Peacock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
 
@@ -338,7 +324,7 @@ On macOS there are additional settings that can impact the Title Bar style and f
 
 A successful and recommended settings configuration to colorize the Title Bar is:
 
-![Title Bar Settings](/assets/title-bar-coloring-settings.png)
+![Title Bar Settings](../assets/title-bar-coloring-settings.png)
 
 ### How are foreground colors calculated
 
@@ -404,9 +390,9 @@ Then you can run the debugger for the launch configuration `Run Extension`. Set 
 
 ## Badges
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs-short/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
-[![Rating](https://vsmarketplacebadge.apphb.com/rating/johnpapa.vscode-peacock.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://img.shields.io/visual-studio-marketplace/v/johnpapa.vscode-peacock?color=blue&style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa)
 [![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=vscodepeacock-github-jopapa)
 
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
@@ -422,4 +408,4 @@ Then you can run the debugger for the launch configuration `Run Extension`. Set 
 - [Learn how to add WebPack bundles to your favorite extensions](https://code.visualstudio.com/updates/v1_32#_bundling-extensions-with-webpack?wt.mc_id=peacock-github-jopapa)
 - [Try Azure Free](https://azure.microsoft.com/free?wt.mc_id=peacock-github-jopapa)
 
-![Sketchnote](/assets/peacock-sketchnote.png)
+![Sketchnote](../assets/peacock-sketchnote.png)
