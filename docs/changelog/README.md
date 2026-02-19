@@ -1,13 +1,3 @@
----
-title: Changelog
-# We can even add meta tags to the page! This sets the keywords meta tag.
-# <meta name="keywords" content="my SEO keywords"/>
-description: Changelog for the Visual Studio Code Peacock extension
-meta:
-  - name: keywords
-  - content: vscode "visual studio code" peacock theme extension changelog
----
-
 # Change Log
 
 All notable changes to the code will be documented in this file.

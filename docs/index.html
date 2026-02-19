@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Peacock - Subtly change the color of your VS Code workspace" />
+    <title>Peacock for VS Code</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/peacock-icon-small.png" />
+
+    <!-- Docsify Theme Base -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css" />
+
+    <!-- Prism Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css" />
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+      /* ============================================================
+         Peacock Docs — Custom Theme
+         Primary:   #42b883 (green-teal)
+         Secondary: #7c4dff (purple)
+         Accent:    #0097A7 (peacock blue)
+         ============================================================ */
+
+      :root {
+        /* Brand */
+        --peacock-green: #42b883;
+        --peacock-purple: #7c4dff;
+        --peacock-blue: #0097A7;
+
+        /* Surfaces */
+        --sidebar-bg: #f8f9fa;
+        --content-bg: #ffffff;
+        --code-bg: #1e1e2e;
+
+        /* Text */
+        --text-primary: #1a1a2e;
+        --text-secondary: #555770;
+        --text-muted: #8b8da3;
+
+        /* Docsify-themeable overrides */
+        --theme-color: var(--peacock-green);
+        --base-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        --base-font-size: 16px;
+        --base-line-height: 1.7;
+        --base-color: var(--text-primary);
+
+        --sidebar-width: 280px;
+        --sidebar-background: var(--sidebar-bg);
+        --sidebar-nav-link-color: var(--text-secondary);
+        --sidebar-nav-link-color--active: var(--peacock-green);
+        --sidebar-nav-link-font-weight--active: 600;
+        --sidebar-name-color: var(--peacock-green);
+        --sidebar-name-font-size: 1.4rem;
+
+        --link-color: var(--peacock-green);
+        --link-text-decoration: none;
+        --link-text-decoration--hover: underline;
+
+        --heading-color: var(--text-primary);
+        --heading-font-weight: 700;
+
+        --code-font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+        --code-font-size: 0.875em;
+        --code-inline-background: #f0f2f5;
+        --code-inline-color: var(--peacock-purple);
+        --code-inline-padding: 0.15em 0.4em;
+        --code-inline-border-radius: 4px;
+
+        --copycode-background: rgba(255, 255, 255, 0.12);
+        --copycode-color: #ccc;
+
+        --search-background: var(--content-bg);
+        --search-result-keyword-color: var(--peacock-green);
+      }
+
+      /* ── Top accent gradient bar ─────────────────────────────── */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--peacock-green) 0%,
+          var(--peacock-blue) 50%,
+          var(--peacock-purple) 100%
+        );
+        z-index: 9999;
+      }
+
+      body {
+        background: var(--content-bg);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* ── Sidebar ─────────────────────────────────────────────── */
+      .sidebar {
+        border-right: 1px solid #e8eaed;
+        padding-top: 1.5rem;
+      }
+
+      .sidebar .app-name-link img {
+        max-width: 42px;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+      }
+
+      .sidebar ul li a {
+        font-size: 0.925rem;
+        padding: 6px 16px;
+        border-radius: 6px;
+        margin: 1px 8px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .sidebar ul li a:hover {
+        background: rgba(66, 184, 131, 0.08);
+        color: var(--peacock-green);
+      }
+
+      .sidebar li.active > a {
+        background: rgba(66, 184, 131, 0.1);
+        color: var(--peacock-green) !important;
+        font-weight: 600;
+      }
+
+      .sidebar .search .input-wrap {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #e0e3e8;
+      }
+
+      .sidebar .search .input-wrap input {
+        font-family: var(--base-font-family);
+        font-size: 0.875rem;
+        padding: 8px 12px;
+        outline: none;
+        background: var(--content-bg);
+      }
+
+      .sidebar .search .input-wrap input:focus {
+        border-color: var(--peacock-green);
+        box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.15);
+      }
+
+      /* ── Content area ────────────────────────────────────────── */
+      .markdown-section {
+        max-width: 820px;
+        padding: 2.5rem 3rem 4rem;
+      }
+
+      /* Headings */
+      .markdown-section h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        border-bottom: 3px solid var(--peacock-green);
+        padding-bottom: 0.5rem;
+        margin-top: 2.5rem;
+      }
+
+      .markdown-section h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        border-bottom: 2px solid #e8eaed;
+        padding-bottom: 0.4rem;
+        margin-top: 2rem;
+      }
+
+      .markdown-section h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--peacock-blue);
+        margin-top: 1.5rem;
+      }
+
+      .markdown-section h4 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+
+      /* Paragraphs */
+      .markdown-section p {
+        color: var(--text-secondary);
+        margin: 1em 0;
+      }
+
+      /* Links */
+      .markdown-section a {
+        color: var(--peacock-green);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .markdown-section a:hover {
+        color: var(--peacock-blue);
+        text-decoration: underline;
+      }
+
+      /* Code blocks */
+      .markdown-section pre {
+        background: var(--code-bg) !important;
+        border-radius: 10px;
+        padding: 1.25em 1.5em;
+        margin: 1.5em 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        overflow-x: auto;
+        position: relative;
+      }
+
+      .markdown-section pre > code {
+        font-size: 0.875em;
+        line-height: 1.6;
+      }
+
+      .markdown-section code {
+        font-family: var(--code-font-family);
+      }
+
+      /* Inline code */
+      .markdown-section p > code,
+      .markdown-section li > code,
+      .markdown-section td > code {
+        background: var(--code-inline-background);
+        color: var(--peacock-purple);
+        padding: 0.15em 0.45em;
+        border-radius: 4px;
+        font-size: 0.875em;
+      }
+
+      /* Tables */
+      .markdown-section table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #e8eaed;
+        margin: 1.5em 0;
+      }
+
+      .markdown-section table thead {
+        background: linear-gradient(135deg, #f8f9fa, #f0f2f5);
+      }
+
+      .markdown-section table th {
+        font-weight: 600;
+        color: var(--text-primary);
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 2px solid #e8eaed;
+        font-size: 0.9rem;
+      }
+
+      .markdown-section table td {
+        padding: 10px 16px;
+        color: var(--text-secondary);
+        border-bottom: 1px solid #f0f2f5;
+        font-size: 0.9rem;
+      }
+
+      .markdown-section table tbody tr:nth-child(even) {
+        background: #fafbfc;
+      }
+
+      .markdown-section table tbody tr:hover {
+        background: rgba(66, 184, 131, 0.04);
+      }
+
+      .markdown-section table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Blockquotes */
+      .markdown-section blockquote {
+        border-left: 4px solid var(--peacock-green);
+        background: rgba(66, 184, 131, 0.04);
+        padding: 1em 1.25em;
+        border-radius: 0 8px 8px 0;
+        margin: 1.5em 0;
+        color: var(--text-secondary);
+      }
+
+      .markdown-section blockquote p {
+        margin: 0.3em 0;
+      }
+
+      /* Lists */
+      .markdown-section ul li,
+      .markdown-section ol li {
+        color: var(--text-secondary);
+        margin: 0.4em 0;
+      }
+
+      /* Horizontal rules */
+      .markdown-section hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          #e8eaed 20%,
+          #e8eaed 80%,
+          transparent
+        );
+        margin: 2.5em 0;
+      }
+
+      /* Images */
+      .markdown-section img {
+        border-radius: 8px;
+        max-width: 100%;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      }
+
+      /* ── Custom scrollbar ────────────────────────────────────── */
+      ::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #c4c8cf;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a0a4ab;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: #d4d8de;
+      }
+
+      /* ── Navbar ───────────────────────────────────────────────── */
+      .app-nav {
+        right: 30px;
+      }
+
+      .app-nav a {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .app-nav a:hover {
+        color: var(--peacock-green);
+      }
+
+      /* ── Search results ──────────────────────────────────────── */
+      .search .matching-post {
+        border-radius: 8px;
+        padding: 12px;
+        margin: 4px 0;
+        border: none;
+        transition: background 0.2s ease;
+      }
+
+      .search .matching-post:hover {
+        background: rgba(66, 184, 131, 0.06);
+      }
+
+      /* ── Copy code button ────────────────────────────────────── */
+      .docsify-copy-code-button {
+        font-size: 0.75rem;
+        border-radius: 6px;
+        transition: opacity 0.2s ease;
+      }
+
+      /* ── Responsive ──────────────────────────────────────────── */
+      @media screen and (max-width: 768px) {
+        .markdown-section {
+          padding: 1.5rem 1.25rem 3rem;
+        }
+
+        .markdown-section h1 {
+          font-size: 1.6rem;
+        }
+
+        .markdown-section h2 {
+          font-size: 1.3rem;
+        }
+      }
+
+      /* ── Smooth transitions ──────────────────────────────────── */
+      a,
+      .sidebar ul li a,
+      .app-nav a,
+      button {
+        transition: all 0.2s ease;
+      }
+
+      /* ── GitHub corner ───────────────────────────────────────── */
+      .github-corner svg {
+        fill: var(--peacock-green);
+        color: var(--content-bg);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">Loading…</div>
+
+    <script>
+      window.$docsify = {
+        name: '<img src="assets/peacock-icon-small.png" alt="Peacock" /> Peacock',
+        repo: 'johnpapa/vscode-peacock',
+        loadSidebar: true,
+        loadNavbar: true,
+        auto2top: true,
+        coverpage: false,
+        maxLevel: 3,
+        subMaxLevel: 2,
+        search: {
+          placeholder: 'Search docs…',
+          noData: 'No results found.',
+          depth: 3,
+        },
+      };
+    </script>
+
+    <!-- Docsify Core -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+
+    <!-- Prism Syntax Highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  </body>
+</html>

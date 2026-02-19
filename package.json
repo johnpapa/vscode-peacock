@@ -381,8 +381,6 @@
     }
   },
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
     "package": "npx vsce package",
     "publish": "npx vsce publish",
     "vscode:prepublish": "webpack --mode production",
@@ -431,7 +429,6 @@
     "ts-loader": "^9.2.2",
     "typescript": "^3.9.7",
     "vscode-test": "^1.4.0",
-    "vuepress": "^2.0.0-beta.26",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0"
   },
