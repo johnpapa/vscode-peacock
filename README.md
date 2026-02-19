@@ -4,7 +4,7 @@
 
 Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
-Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
+Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=2f99fa&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
@@ -26,13 +26,13 @@ Read the extensive [documentation here](https://www.peacockcode.dev) which inclu
 
 ## Documentation
 
-Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
+Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
 ## Quick Usage
 
 Let's see Peacock in action!
 
-1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://www.peacockcode.dev/guide/#peacock-commands-are-not-appearing))
+1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://johnpapa.github.io/vscode-peacock/#/guide/?id=peacock-commands-are-not-appearing))
 1. Press `F1` to open the command palette
 1. Type `Peacock`
 1. Choose `Peacock: Change to a favorite color`
