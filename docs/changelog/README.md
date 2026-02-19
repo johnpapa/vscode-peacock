@@ -2,6 +2,19 @@
 
 All notable changes to the code will be documented in this file.
 
+## 4.2.4
+
+- Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages
+- New docs URL: https://johnpapa.github.io/vscode-peacock/
+- Modern Peacock-branded design with responsive layout, client-side search, and syntax highlighting
+- Removed all VuePress configuration, Azure Static Web Apps, and Azure Pipelines
+- Added GitHub Actions workflow for automated docs deployment
+- Fixed image path resolution for all documentation pages
+- Fixed license page rendering (was displayed as unreadable code block)
+- Replaced dead vsmarketplacebadge.apphb.com badges with img.shields.io equivalents
+- Updated all documentation links in README, CHANGELOG, and extension source
+- Added 69 Playwright e2e tests covering pages, navigation, images, links, styling, and search
+
 ## 4.2.3
 
 - Transparency was set incorrectly for Squiggly Be Gone feature, and now is set to match the background color using hex RGB \_\_\_\_\_\_00 pattern
