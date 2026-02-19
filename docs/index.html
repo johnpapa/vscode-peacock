@@ -468,6 +468,23 @@
               }
             });
           },
+          function fixImagePaths(hook) {
+            // Docsify prepends the route path to relative image src, breaking
+            // resolution on both localhost and GitHub Pages. This plugin
+            // normalizes all local image src to "assets/<file>" so the browser
+            // resolves them relative to the page URL (the docs root).
+            hook.doneEach(function () {
+              document.querySelectorAll('.markdown-section img').forEach(function (img) {
+                var src = img.getAttribute('src');
+                if (src && !src.startsWith('http') && !src.startsWith('data:') && !src.startsWith('//')) {
+                  var match = src.match(/(assets\/.+)/);
+                  if (match) {
+                    img.setAttribute('src', match[1]);
+                  }
+                }
+              });
+            });
+          },
         ],
       };
     </script>
