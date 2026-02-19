@@ -83,4 +83,26 @@ test.describe('About Pages', () => {
 
     await expect(page.locator('.markdown-section')).toContainText('MIT License');
   });
+
+  test('license page renders as readable text, not a code block', async ({ page }) => {
+    await page.goto('/#/about/license', { waitUntil: 'domcontentloaded' });
+    await page.locator('.markdown-section').waitFor({ state: 'visible', timeout: 15000 });
+
+    // License text should NOT be inside a <code> or <pre> element
+    const codeBlocks = page.locator('.markdown-section pre code');
+    await expect(codeBlocks).toHaveCount(0);
+
+    // License text should render as normal paragraphs
+    const paragraphs = page.locator('.markdown-section p');
+    const count = await paragraphs.count();
+    expect(count).toBeGreaterThanOrEqual(3);
+
+    // Text color should be dark (readable), not near-black-on-black
+    const textColor = await paragraphs.first().evaluate((el) => getComputedStyle(el).color);
+    // Parse rgb values — text should have reasonable luminance for reading
+    const match = textColor.match(/rgba?\(\s*(\d+)/);
+    expect(match).not.toBeNull();
+    // Dark text on light bg means R channel < 150 (not washed-out grey like 180+)
+    expect(Number(match![1])).toBeLessThan(150);
+  });
 });
