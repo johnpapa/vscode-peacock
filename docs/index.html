@@ -147,11 +147,26 @@
         padding: 8px 12px;
         outline: none;
         background: var(--content-bg);
+        -webkit-appearance: textfield;
+        appearance: textfield;
+      }
+
+      .sidebar .search .input-wrap input::-webkit-search-decoration,
+      .sidebar .search .input-wrap input::-webkit-search-cancel-button,
+      .sidebar .search .input-wrap input::-webkit-search-results-button,
+      .sidebar .search .input-wrap input::-webkit-search-results-decoration {
+        -webkit-appearance: none;
+        appearance: none;
+        display: none !important;
       }
 
       .sidebar .search .input-wrap input:focus {
         border-color: var(--peacock-green);
         box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.15);
+      }
+
+      .sidebar .search .clear-button {
+        cursor: pointer;
       }
 
       /* ── Content area ────────────────────────────────────────── */
@@ -352,7 +367,7 @@
 
       /* ── Navbar ───────────────────────────────────────────────── */
       .app-nav {
-        right: 30px;
+        right: 80px;
       }
 
       .app-nav a {
@@ -410,9 +425,15 @@
       }
 
       /* ── GitHub corner ───────────────────────────────────────── */
+      .github-corner {
+        z-index: 1;
+      }
+
       .github-corner svg {
         fill: var(--peacock-green);
         color: var(--content-bg);
+        width: 60px;
+        height: 60px;
       }
     </style>
   </head>
@@ -435,6 +456,19 @@
           noData: 'No results found.',
           depth: 3,
         },
+        plugins: [
+          function fixSearchInput(hook) {
+            hook.ready(function () {
+              // Convert type="search" to type="text" to prevent browser
+              // rendering native search decorations (magnifying glass icons)
+              var input = document.querySelector('.search input[type="search"]');
+              if (input) {
+                input.type = 'text';
+                input.placeholder = 'Search docs…';
+              }
+            });
+          },
+        ],
       };
     </script>
 

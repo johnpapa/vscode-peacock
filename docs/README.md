@@ -1,4 +1,4 @@
-# Peacock <small>for Visual Studio Code</small>
+# Peacock *for Visual Studio Code*
 
 > Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use Visual Studio Live Share, or use VS Code's Remote features.
 
