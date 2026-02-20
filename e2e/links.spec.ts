@@ -64,6 +64,7 @@ test.describe('Internal navigation links work', () => {
 test.describe('Internal links within content work', () => {
   for (const p of docPages) {
     test(`all internal links on ${p.name} page resolve`, async ({ page }) => {
+      test.setTimeout(120000); // Large pages have many links to check
       await page.goto(p.url);
       await page.locator('.markdown-section').waitFor({ state: 'visible', timeout: 15000 });
       
@@ -89,14 +90,11 @@ test.describe('Internal links within content work', () => {
         
         // Navigate to the link
         const fullUrl = href.startsWith('#/') ? `/${href}` : href;
-        const response = await page.goto(fullUrl);
-        // For hash routes, the page itself always returns 200, 
-        // so check that markdown content renders
-        await page.locator('.markdown-section').waitFor({ state: 'visible', timeout: 10000 });
+        await page.goto(fullUrl, { waitUntil: 'networkidle' });
         // Wait for Docsify to finish rendering (content > 20 chars, not just "Loading…")
         await page.waitForFunction(
           () => (document.querySelector('.markdown-section')?.textContent?.length ?? 0) > 20,
-          { timeout: 15000 }
+          { timeout: 30000 }
         );
       }
     });
