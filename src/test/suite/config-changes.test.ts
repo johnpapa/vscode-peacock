@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
+import * as fs from 'fs';
+import * as path from 'path';
 import {
   Commands,
   IPeacockSettings,
@@ -11,6 +13,7 @@ import {
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
+import { applyColor } from '../../apply-color';
 import {
   getColorCustomizationConfigFromWorkspace,
   getOriginalColorsForAllElements,
@@ -148,6 +151,24 @@ suite('changes to configuration', () => {
         Object.keys(updatedCustomizations),
         keptKeys.concat(removedKeys),
         'existing setting order was not preserved',
+      );
+    });
+
+    test('will not rewrite settings when reapplying the same color', async () => {
+      const workspaceFolders = vscode.workspace.workspaceFolders;
+      assert.ok(workspaceFolders && workspaceFolders.length > 0, 'workspace was not available');
+      const workspaceRoot = workspaceFolders![0].uri.fsPath;
+      const settingsPath = path.join(workspaceRoot, '.vscode', 'settings.json');
+
+      const before = await fs.promises.stat(settingsPath);
+      await timeout(1100);
+      await applyColor('#42b883');
+      const after = await fs.promises.stat(settingsPath);
+
+      assert.strictEqual(
+        before.mtimeMs,
+        after.mtimeMs,
+        'settings.json should not be rewritten when there is no color delta',
       );
     });
   });

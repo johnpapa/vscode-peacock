@@ -11,10 +11,12 @@ import {
   AffectedSettings,
   starterSetOfFavorites,
   isObjectEmpty,
+  ISettingsIndexer,
 } from '../models';
 import { Logger } from '../logging';
 import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
 import { LiveShareSettings } from '../live-share';
+import { sortSettingsIndexer } from '../object-library';
 
 export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {
   const config = vscode.workspace.getConfiguration();
@@ -29,6 +31,8 @@ export async function updateGlobalConfiguration(setting: AllSettings, value?: an
 }
 
 export async function updateWorkspaceConfiguration(colorCustomizations: {} | undefined) {
+  const existingWorkspace = getColorCustomizationConfigFromWorkspace();
+
   if (isObjectEmpty(colorCustomizations)) {
     // We are receiving an empty object, so let's make it undefined.
     // This means we can skip writing the workbench.colorCustomizations section
@@ -39,10 +43,13 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
   if (!colorCustomizations) {
     // If it is undefined and the file doesn't exist, let's just get out.
     // Otherwise, we risk writing an empty file, which is annoying.
-    const existingWorkspace = getColorCustomizationConfigFromWorkspace();
     if (isObjectEmpty(existingWorkspace)) {
       return;
     }
+  }
+
+  if (isColorCustomizationEquivalent(existingWorkspace, colorCustomizations)) {
+    return;
   }
 
   Logger.info(
@@ -56,6 +63,19 @@ export async function updateWorkspaceConfiguration(colorCustomizations: {} | und
       colorCustomizations,
       ConfigurationTarget.Workspace,
     );
+}
+
+function isColorCustomizationEquivalent(
+  existingWorkspace: ISettingsIndexer,
+  nextWorkspace: {} | undefined,
+): boolean {
+  if (!nextWorkspace || typeof nextWorkspace !== 'object') {
+    return false;
+  }
+
+  const orderedExisting = sortSettingsIndexer(existingWorkspace || {});
+  const orderedNext = sortSettingsIndexer(nextWorkspace as ISettingsIndexer);
+  return JSON.stringify(orderedExisting) === JSON.stringify(orderedNext);
 }
 
 export async function updateElementAdjustments(adjustments: IPeacockElementAdjustments) {
