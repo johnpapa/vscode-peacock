@@ -368,6 +368,8 @@
       /* ── Navbar ───────────────────────────────────────────────── */
       .app-nav {
         right: 80px;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .app-nav a {
@@ -413,6 +415,11 @@
 
         .markdown-section h2 {
           font-size: 1.3rem;
+        }
+
+        /* Hide the last navbar item (John Papa) on small screens */
+        .app-nav li:last-child {
+          display: none;
         }
       }
 
