@@ -93,8 +93,11 @@ test.describe('Internal links within content work', () => {
         // For hash routes, the page itself always returns 200, 
         // so check that markdown content renders
         await page.locator('.markdown-section').waitFor({ state: 'visible', timeout: 10000 });
-        const textContent = await page.locator('.markdown-section').textContent();
-        expect(textContent!.length, `Link ${href} from ${p.name} should load content`).toBeGreaterThan(20);
+        // Wait for Docsify to finish rendering (content > 20 chars, not just "Loading…")
+        await page.waitForFunction(
+          () => (document.querySelector('.markdown-section')?.textContent?.length ?? 0) > 20,
+          { timeout: 15000 }
+        );
       }
     });
   }
