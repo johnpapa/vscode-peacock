@@ -7,12 +7,14 @@ on:
       - 'docs/**'
       - 'e2e/**'
       - 'playwright.config.ts'
+      - '.github/workflows/docs.yml'
   pull_request:
     branches: [main]
     paths:
       - 'docs/**'
       - 'e2e/**'
       - 'playwright.config.ts'
+      - '.github/workflows/docs.yml'
   workflow_dispatch:
 
 permissions:
