@@ -55,6 +55,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                          |
 | peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                             |
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                  |
+| peacock.excludedSettings            | Specify VS Code color keys that Peacock should never modify or delete, even to reset their values.                  |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                             |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
 | peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                               |
@@ -109,6 +110,27 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. These include examples such as affectEditorGroupBorder, affectPanelBorder, affectSideBarBorder, affectSashHover.
 
 ![affected elements](../assets/affected-settings.png)
+
+### Excluded Settings
+
+Even if you tell Peacock to not "affect" a given element, E.G., `"peacock.affectStatusBar": false`,
+the related settings in the workspace's settings.json can still be deleted, as a part of cleaning
+up or reseting "dirty" state in the settings.  This can be problematic if a user has workspace
+specific settings of their own that he or she doesn't want Peacock to touch.  This setting can be
+set before installing Peacock to avoid the extension interacting with those settings at all.  For example, this:
+```javascript
+"peacock.excludedSettings": [
+    "statusBar.background",
+    "statusBar.foreground"
+],
+```
+Will prevent Peacock from modifying or deleting these values in the workspace's settings.json:
+```javascript
+"workbench.colorCustomizations": {
+    "statusBar.background": "#f3dcb6",
+    "statusBar.foreground": "#004572"
+}
+```
 
 ### Element Adjustments
 
