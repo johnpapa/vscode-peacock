@@ -9,6 +9,7 @@ import {
   defaultAmountToDarkenLighten,
   defaultSaturation,
 } from './models';
+import { seededRandom } from './random';
 import {
   getColorCustomizationConfigFromWorkspace,
   getDarkForegroundColorOrOverride,
@@ -133,6 +134,14 @@ export function getDarkenedColorHex(color: string, amount = defaultAmountToDarke
 
 export function getRandomColorHex() {
   return formatHex(tinycolor.random());
+}
+
+export function getSeededRandomColorHex(seed: string) {
+  return formatHex(tinycolor.fromRatio({
+    r: seededRandom(`${seed}-r`),
+    g: seededRandom(`${seed}-g`),
+    b: seededRandom(`${seed}-b`),
+  }));
 }
 
 export function getColorBrightness(input = '') {

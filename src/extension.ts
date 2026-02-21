@@ -31,6 +31,7 @@ import {
   inspectColor,
   getCurrentColorBeforeAdjustments,
   getFavoriteColors,
+  getDeterministicOnStartup,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
@@ -140,14 +141,15 @@ export async function checkSurpriseMeOnStartupLogic() {
    * workspace and see it changed to the "surprise" color
    */
   const peacockColor = getEnvironmentAwareColor();
-  if (getSurpriseMeOnStartup()) {
+  const deterministic = getDeterministicOnStartup();
+  if (getSurpriseMeOnStartup() || deterministic) {
     if (peacockColor) {
       const message = `Peacock did not change the color using "surprise me on startup" because the color ${peacockColor} was already set.`;
       Logger.info(message);
       return;
     }
 
-    await changeColorToRandomHandler();
+    await changeColorToRandomHandler(deterministic);
     const color = getEnvironmentAwareColor();
     const message = `Peacock changed the color to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);

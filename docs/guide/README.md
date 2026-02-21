@@ -59,6 +59,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
 | peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                               |
 | peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                                           |
+| peacock.deterministicOnStartup      | Specifies whether Peacock apply a deterministic random color on startup (based on workspace folder)                 |
 | peacock.darkForeground              | override for the dark foreground                                                                                    |
 | peacock.lightForeground             | override for the light foreground                                                                                   |
 | peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                                       |
@@ -144,6 +145,14 @@ When set to true Peacock will not colorize the foreground of any of the affected
 Recommended to remain `false` (the default value).
 
 When set to true Peacock will automatically apply a random color when opening a workspace that does not define color customizations. This can be useful if you frequently open many instances of VS Code and you are interested in identifying them, but are not overly committed to the specific color applied.
+
+If this setting is `true` and there is no peacock color set, then Peacock will choose a new color. If there is already a color set, Peacock will not choose a random color as this would prevent users from choosing a specific color for some workspaces and surprise in others.
+
+### Deterministic on Startup
+
+Recommended to remain `false` (the default value).
+
+When set to true Peacock will automatically apply a deterministic random color (based on a hash of the workspace folder path) when opening a workspace that does not define color customizations. This can be useful if you frequently open many instances of VS Code and you are interested in identifying them, and you want the same color to be chosen for the same workspace folder regardless of the number of times the workspace is opened.
 
 If this setting is `true` and there is no peacock color set, then Peacock will choose a new color. If there is already a color set, Peacock will not choose a random color as this would prevent users from choosing a specific color for some workspaces and surprise in others.
 
