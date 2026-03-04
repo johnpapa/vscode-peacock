@@ -1,0 +1,199 @@
+name: Issue Triage Report
+
+on:
+  schedule:
+    # 9am ET on weekdays (UTC 13:00, or 14:00 during EST)
+    - cron: '0 13 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  triage-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate triage report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          REPORT_DATE=$(date -u +"%Y-%m-%d")
+          NINETY_DAYS_AGO=$(date -u -d "90 days ago" +"%Y-%m-%dT%H:%M:%SZ")
+          FOURTEEN_DAYS_AGO=$(date -u -d "14 days ago" +"%Y-%m-%dT%H:%M:%SZ")
+
+          # Fetch all open issues (excluding pull requests)
+          echo "Fetching open issues..."
+          gh issue list --repo "$GH_REPO" --state open --limit 500 --json \
+            number,title,labels,createdAt,updatedAt,comments,reactionGroups,author,url \
+            > /tmp/issues.json
+
+          TOTAL_OPEN=$(jq length /tmp/issues.json)
+          echo "Total open issues: $TOTAL_OPEN"
+
+          if [ "$TOTAL_OPEN" -eq 0 ]; then
+            echo "No open issues found. Skipping report."
+            exit 0
+          fi
+
+          # ── Categorize issues ──────────────────────────────────────────
+
+          # Stale: no activity in 90+ days
+          jq --arg cutoff "$NINETY_DAYS_AGO" \
+            '[ .[] | select(.updatedAt < $cutoff) ]' \
+            /tmp/issues.json > /tmp/stale.json
+
+          # Needs Response: last update by maintainer 14+ days ago with no recent reply
+          # Heuristic: issues with comments, updated 14–90 days ago, not stale
+          jq --arg stale "$NINETY_DAYS_AGO" --arg cutoff "$FOURTEEN_DAYS_AGO" \
+            '[ .[] | select(.updatedAt < $cutoff and .updatedAt >= $stale and (.comments | length) > 0) ]' \
+            /tmp/issues.json > /tmp/needs_response.json
+
+          # Popular: 3+ total reactions or 5+ comments
+          jq '[ .[] | select(
+            ([ .reactionGroups[]?.count // 0 ] | add) >= 3
+            or (.comments | length) >= 5
+          ) ]' /tmp/issues.json > /tmp/popular.json
+
+          # Bug Reports: label or title/body mentions
+          jq '[ .[] | select(
+            (.labels | map(.name) | any(test("bug"; "i")))
+            or (.title | test("\\bbug\\b"; "i"))
+          ) ]' /tmp/issues.json > /tmp/bugs.json
+
+          # Feature Requests
+          jq '[ .[] | select(
+            (.labels | map(.name) | any(test("feature|enhancement"; "i")))
+            or (.title | test("feature request"; "i"))
+          ) ]' /tmp/issues.json > /tmp/features.json
+
+          # Quick Wins: labelled "good first issue" or similar
+          jq '[ .[] | select(
+            .labels | map(.name) | any(test("good first issue|quick win|easy|help wanted"; "i"))
+          ) ]' /tmp/issues.json > /tmp/quick_wins.json
+
+          # ── Helper: render an issue list ───────────────────────────────
+
+          render_list() {
+            local file=$1
+            local count
+            count=$(jq length "$file")
+            if [ "$count" -eq 0 ]; then
+              echo "_None found._"
+              echo ""
+              return
+            fi
+            jq -r '.[] | "- [#\(.number)](\(.url)) — \(.title) _(updated \(.updatedAt | split("T")[0]))_"' "$file"
+            echo ""
+          }
+
+          # ── Counts ─────────────────────────────────────────────────────
+
+          COUNT_STALE=$(jq length /tmp/stale.json)
+          COUNT_NEEDS_RESP=$(jq length /tmp/needs_response.json)
+          COUNT_POPULAR=$(jq length /tmp/popular.json)
+          COUNT_BUGS=$(jq length /tmp/bugs.json)
+          COUNT_FEATURES=$(jq length /tmp/features.json)
+          COUNT_QUICK=$(jq length /tmp/quick_wins.json)
+
+          # ── Build markdown report ──────────────────────────────────────
+
+          cat > /tmp/report.md << HEADER
+          ## 📊 Issue Triage Report — ${REPORT_DATE}
+
+          | Metric | Count |
+          |--------|------:|
+          | **Total open issues** | ${TOTAL_OPEN} |
+          | 🕸️ Stale (90+ days inactive) | ${COUNT_STALE} |
+          | 💬 Needs Response (14+ days) | ${COUNT_NEEDS_RESP} |
+          | 🔥 Popular (3+ reactions / 5+ comments) | ${COUNT_POPULAR} |
+          | 🐛 Bug Reports | ${COUNT_BUGS} |
+          | ✨ Feature Requests | ${COUNT_FEATURES} |
+          | 🎯 Quick Wins | ${COUNT_QUICK} |
+
+          ---
+
+          HEADER
+
+          {
+            echo "### 🕸️ Stale Issues (no activity in 90+ days)"
+            echo ""
+            render_list /tmp/stale.json
+
+            echo "### 💬 Needs Response (awaiting reply for 14+ days)"
+            echo ""
+            render_list /tmp/needs_response.json
+
+            echo "### 🔥 Popular Issues"
+            echo ""
+            render_list /tmp/popular.json
+
+            echo "### 🐛 Bug Reports"
+            echo ""
+            render_list /tmp/bugs.json
+
+            echo "### ✨ Feature Requests"
+            echo ""
+            render_list /tmp/features.json
+
+            echo "### 🎯 Quick Wins"
+            echo ""
+            render_list /tmp/quick_wins.json
+
+            echo "---"
+            echo ""
+            echo "### 📋 Recommended Actions"
+            echo ""
+            if [ "$COUNT_STALE" -gt 0 ]; then
+              echo "- **Close or comment on ${COUNT_STALE} stale issue(s)** — they have had no activity in over 90 days."
+            fi
+            if [ "$COUNT_NEEDS_RESP" -gt 0 ]; then
+              echo "- **Follow up on ${COUNT_NEEDS_RESP} issue(s) needing a response** — awaiting reply for 14+ days."
+            fi
+            if [ "$COUNT_POPULAR" -gt 0 ]; then
+              echo "- **Prioritize ${COUNT_POPULAR} popular issue(s)** — high community interest."
+            fi
+            if [ "$COUNT_QUICK" -gt 0 ]; then
+              echo "- **Tackle ${COUNT_QUICK} quick win(s)** — low-effort issues ready for contribution."
+            fi
+            if [ "$COUNT_STALE" -eq 0 ] && [ "$COUNT_NEEDS_RESP" -eq 0 ] && [ "$COUNT_POPULAR" -eq 0 ] && [ "$COUNT_QUICK" -eq 0 ]; then
+              echo "- 🎉 Everything looks well-maintained! No urgent triage actions needed."
+            fi
+            echo ""
+            echo "---"
+            echo "_This report was auto-generated by the [Issue Triage Report workflow](https://github.com/${GH_REPO}/actions/workflows/issue-triage-report.yml)._"
+          } >> /tmp/report.md
+
+          # Strip leading whitespace from heredoc indentation
+          sed -i 's/^          //' /tmp/report.md
+
+          BODY=$(cat /tmp/report.md)
+
+          # ── Close previous triage-report issues ────────────────────────
+
+          echo "Closing previous triage-report issues..."
+          gh issue list --repo "$GH_REPO" --state open --label "triage-report" --json number -q '.[].number' | \
+            while read -r issue_num; do
+              echo "Closing previous report #${issue_num}"
+              gh issue close "$issue_num" --repo "$GH_REPO" --reason "not planned" \
+                --comment "Superseded by new triage report." || true
+            done
+
+          # ── Create the triage-report label if it doesn't exist ─────────
+
+          gh label create "triage-report" \
+            --repo "$GH_REPO" \
+            --description "Auto-generated issue triage report" \
+            --color "0E8A16" 2>/dev/null || true
+
+          # ── Create the new report issue ────────────────────────────────
+
+          echo "Creating new triage report issue..."
+          gh issue create --repo "$GH_REPO" \
+            --title "📊 Issue Triage Report — ${REPORT_DATE}" \
+            --body "$BODY" \
+            --label "triage-report"
+
+          echo "✅ Triage report created successfully."
