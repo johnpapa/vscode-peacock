@@ -501,6 +501,11 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
     config[ColorSettings.titleBar_inactiveForeground],
   );
 
+  assert.equal(
+    config[ColorSettings.commandCenter_foreground],
+    config[ColorSettings.titleBar_activeForeground],
+  );
+
   // All others should not exist
   assert.ok(!config[ColorSettings.activityBar_background]);
   assert.ok(!config[ColorSettings.activityBar_foreground]);

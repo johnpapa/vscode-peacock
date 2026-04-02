@@ -318,6 +318,7 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
       titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
         titleBarStyle.inactiveForegroundHex;
       titleBarSettings[ColorSettings.commandCenter_border] = titleBarStyle.inactiveForegroundHex;
+      titleBarSettings[ColorSettings.commandCenter_foreground] = titleBarStyle.foregroundHex;
     }
   }
   return titleBarSettings;
