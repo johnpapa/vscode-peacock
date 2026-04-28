@@ -62,6 +62,16 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 
 [Code of Conduct](./CODE_OF_CONDUCT.md).
 
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide. Quick version:
+
+1. Fork this repo and create a branch
+2. `npm install` → make your changes → `npm test`
+3. Open a PR
+
+See [AGENTS.md](AGENTS.md) for the full project guide including architecture, patterns, and how to add commands/settings.
+
 ## Problems or Suggestions
 
 [Open an issue here](https://github.com/johnpapa/vscode-peacock/issues)
