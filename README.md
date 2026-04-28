@@ -64,7 +64,13 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide. Quick version:
+The fastest way to contribute is with [Copilot CLI](https://github.com/features/copilot/cli/) — it knows this repo's conventions automatically:
+
+```
+copilot "Add a new command called 'Change to a Seasonal Color' that picks a color based on the current season"
+```
+
+Or contribute manually — see [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide:
 
 1. Fork this repo and create a branch
 2. `npm install` → make your changes → `npm test`
