@@ -105,7 +105,7 @@ npm run test-all                # Run unit + Live Share tests
 5. Register the command in `src/extension.ts` using `vscode.commands.registerCommand`
 6. Add a unit test in `src/test/`
 7. Update docs in `docs/guide/` if the command is user-facing
-8. Update `CHANGELOG.md`
+8. Update `docs/changelog/README.md`
 
 ## Adding a New Setting
 
@@ -115,7 +115,7 @@ npm run test-all                # Run unit + Live Share tests
 4. If the setting affects color application, update `src/apply-color.ts`
 5. Add unit tests
 6. Update docs in `docs/guide/`
-7. Update `CHANGELOG.md`
+7. Update `docs/changelog/README.md`
 
 ## Common Pitfalls
 
@@ -124,3 +124,4 @@ npm run test-all                # Run unit + Live Share tests
 - **Husky pre-commit runs Prettier** — your code will be auto-formatted on commit. Don't fight it.
 - **Tests need a workspace** — Mocha tests use `testworkspace/` as the VS Code workspace. Make sure it exists.
 - **Version is in package.json only** — unlike multi-file version bumps in some projects, the extension version lives solely in `package.json`.
+- **The root `CHANGELOG.md` is a pointer file** — the real changelog lives at `docs/changelog/README.md`. Always edit the docs version, not the root file.
