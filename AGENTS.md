@@ -5,8 +5,8 @@
 Peacock is a Visual Studio Code extension that subtly changes the color of your workspace. It's ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features and want to quickly identify which editor is which.
 
 - **Publisher:** johnpapa
-- **Version:** 4.2.3
 - **VS Code Marketplace:** [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
+- **Version:** See `package.json` for the current version
 
 ## Repository Structure
 
@@ -100,20 +100,22 @@ npm run test-all                # Run unit + Live Share tests
 
 1. Define the command in `package.json` under `contributes.commands` with a `command` ID and `title` (category: "Peacock")
 2. Add menu visibility rules in `contributes.menus.commandPalette` if needed
-3. Implement the command handler in `src/commands.ts`
-4. Register the command in `src/extension.ts` using `vscode.commands.registerCommand`
-5. Add a unit test in `src/test/`
-6. Update docs in `docs/guide/` if the command is user-facing
-7. Update `CHANGELOG.md`
+3. Add the command ID to the `Commands` enum in `src/models/enums.ts`
+4. Implement the command handler in `src/commands.ts`
+5. Register the command in `src/extension.ts` using `vscode.commands.registerCommand`
+6. Add a unit test in `src/test/`
+7. Update docs in `docs/guide/` if the command is user-facing
+8. Update `CHANGELOG.md`
 
 ## Adding a New Setting
 
 1. Define the setting in `package.json` under `contributes.configuration.properties` with type, default, and description
-2. Add a reader in `src/configuration/read-configuration.ts`
-3. If the setting affects color application, update `src/apply-color.ts`
-4. Add unit tests
-5. Update docs in `docs/guide/`
-6. Update `CHANGELOG.md`
+2. Add the setting name to the appropriate enum in `src/models/enums.ts` (`StandardSettings` or `AffectedSettings`)
+3. Add a reader in `src/configuration/read-configuration.ts`
+4. If the setting affects color application, update `src/apply-color.ts`
+5. Add unit tests
+6. Update docs in `docs/guide/`
+7. Update `CHANGELOG.md`
 
 ## Common Pitfalls
 

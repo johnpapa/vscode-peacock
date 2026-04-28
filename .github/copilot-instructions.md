@@ -44,10 +44,10 @@ VS Code extension written in TypeScript, bundled with Webpack, published to the 
 
 | When this changes... | Also update... |
 |---|---|
-| New command added | `package.json` (contributes.commands + menus), `src/commands.ts`, `src/extension.ts` (register), `src/test/`, `docs/guide/`, `CHANGELOG.md` |
-| New setting added | `package.json` (contributes.configuration), `src/configuration/read-configuration.ts`, `src/test/`, `docs/guide/`, `CHANGELOG.md` |
+| New command added | `package.json` (contributes.commands + menus), `src/models/enums.ts` (Commands enum), `src/commands.ts`, `src/extension.ts` (register), `src/test/`, `docs/guide/`, `CHANGELOG.md` |
+| New setting added | `package.json` (contributes.configuration), `src/models/enums.ts` (StandardSettings or AffectedSettings enum), `src/configuration/read-configuration.ts`, `src/test/`, `docs/guide/`, `CHANGELOG.md` |
 | Color application logic | `src/apply-color.ts`, `src/color-library.ts`, related unit tests |
-| Live Share integration | `src/live-share/`, `package.json` (vsls dependency), related tests |
+| Live Share integration | `src/live-share/`, `src/live-share/liveshare-commands.ts`, `package.json` (vsls dependency), related tests, run `npm run test-all` |
 | Remote features | `src/remote/`, related tests |
 | Docs content | `docs/` (update pages), `docs/_sidebar.md` (if new page), `e2e/` (if screenshots change) |
 | Dependencies updated | `package.json`, `package-lock.json`, verify webpack build, run full test suite |

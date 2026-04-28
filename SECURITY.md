@@ -11,7 +11,7 @@ If you discover a security vulnerability in Peacock, please report it responsibl
 Peacock is a VS Code extension that modifies workspace color settings. The primary security concerns are:
 
 - Extension code that could access or modify files beyond VS Code color settings
-- Dependencies with known vulnerabilities (tinycolor2, vsls)
+- Dependencies with disclosed vulnerabilities (monitor via `npm audit`)
 - Webpack build output integrity
 
 ## Supported Versions
