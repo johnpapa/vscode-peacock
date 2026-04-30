@@ -2,7 +2,7 @@
 
 All notable changes to the code will be documented in this file.
 
-## 4.2.4
+## Unreleased
 
 - Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages
 - New docs URL: https://johnpapa.github.io/vscode-peacock/
