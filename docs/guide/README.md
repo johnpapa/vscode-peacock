@@ -108,6 +108,8 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. These include examples such as affectEditorGroupBorder, affectPanelBorder, affectSideBarBorder, affectSashHover.
 
+Peacock also automatically colorizes the Command Center foreground and border to match the title bar when title bar coloring is enabled.
+
 ![affected elements](../assets/affected-settings.png)
 
 ### Element Adjustments

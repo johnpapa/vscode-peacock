@@ -2,18 +2,32 @@
 
 All notable changes to the code will be documented in this file.
 
-## Unreleased
+## 4.2.4
+
+### Features
+
+- Added `commandCenter.foreground` and `commandCenter.border` coloring to title bar handling (#583)
+- Added color picker support in `settings.json` for all Peacock color settings (#531)
+- Skip redundant workspace settings writes on activation — prevents races in multi-host editors like Cursor (#601)
+
+### Docs & Infrastructure
 
 - Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages
 - New docs URL: https://johnpapa.github.io/vscode-peacock/
 - Modern Peacock-branded design with responsive layout, client-side search, and syntax highlighting
-- Removed all VuePress configuration, Azure Static Web Apps, and Azure Pipelines
-- Added GitHub Actions workflow for automated docs deployment
-- Fixed image path resolution for all documentation pages
-- Fixed license page rendering (was displayed as unreadable code block)
-- Replaced dead vsmarketplacebadge.apphb.com badges with img.shields.io equivalents
-- Updated all documentation links in README, CHANGELOG, and extension source
 - Added 69 Playwright e2e tests covering pages, navigation, images, links, styling, and search
+- Added CI workflow with lint, build, and tests on all PRs
+- Added AI-Ready badge, AGENTS.md, copilot-instructions.md, and copilot-setup-steps.yml
+- Upgraded issue templates from markdown to YAML issue forms
+- Added Dependabot for npm and GitHub Actions dependencies
+- Added CODEOWNERS and SECURITY.md
+
+### Dependencies
+
+- Bumped webpack (5.61→5.106), ts-loader (9.2→9.5), lodash (4.17→4.18), Playwright, and other dev dependencies
+- Bumped GitHub Actions (checkout v6, setup-node v6, upload-artifact v7, configure-pages v6, upload-pages-artifact v5)
+- Security patches for serialize-javascript, picomatch, minimatch, braces, js-yaml, @babel/traverse
+- Added `skipLibCheck` to tsconfig.json for TS 3.9 compatibility with newer dependency type definitions
 
 ## 4.2.3
 
