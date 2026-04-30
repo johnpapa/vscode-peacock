@@ -447,7 +447,7 @@
     "ts-loader": "^9.2.2",
     "typescript": "^3.9.7",
     "vscode-test": "^1.4.0",
-    "webpack": "^5.38.1",
+    "webpack": "^5.106.2",
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
