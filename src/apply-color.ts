@@ -15,6 +15,7 @@ import {
   getBackgroundColorHex,
   deletePeacocksColorCustomizations,
 } from './color-library';
+import { settingsIndexersAreEqual } from './object-library';
 // import { ConfigurationTarget } from 'vscode';
 
 export async function unapplyColors() {
@@ -25,7 +26,15 @@ export async function unapplyColors() {
 
   // Overwite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
+  const existing = getColorCustomizationConfigFromWorkspace();
   const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations();
+  if (settingsIndexersAreEqual(existing, colorCustomizationsWithPeacock)) {
+    // Nothing to remove — avoid a redundant write that would dirty
+    // .vscode/settings.json on every activation (and race other extension
+    // hosts in editors like Cursor that load extensions in multiple hosts).
+    updateStatusBar();
+    return;
+  }
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
   updateStatusBar();
 }
@@ -85,6 +94,18 @@ export async function applyColor(input: string) {
   const updatedColors = prepareColors(color);
 
   const colorCustomizations = mergeColorCustomizations(existingColors, updatedColors);
+
+  if (settingsIndexersAreEqual(existingColors, colorCustomizations)) {
+    // The existing workspace customizations already match what Peacock would
+    // write — skip the no-op write so we don't dirty .vscode/settings.json on
+    // every activation. This also prevents races in editors like Cursor that
+    // load the extension in multiple parallel extension hosts (user,
+    // retrieval, agent-exec, ...), each of which would otherwise write the
+    // same value back at startup.
+    updateStatusBar();
+    Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
+    return color;
+  }
 
   await updateWorkspaceConfiguration(colorCustomizations);
   updateStatusBar();
