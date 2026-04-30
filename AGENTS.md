@@ -54,7 +54,7 @@ vscode-peacock/
 - **Bundler:** Webpack (dual target: `extension-node.js` and `extension-web.js`)
 - **Color library:** tinycolor2 — all color manipulation goes through this
 - **VS Live Share:** `vsls` package for Live Share integration
-- **Linting:** ESLint + Prettier (enforced via husky pre-commit hook)
+- **Linting:** ESLint + Prettier (husky pre-commit hook runs Prettier automatically)
 - **Testing:** Mocha (unit tests in `src/test/`) + Playwright (e2e docs tests in `e2e/`)
 - **Docs:** Docsify (static site in `docs/`, deployed to GitHub Pages)
 

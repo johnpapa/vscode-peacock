@@ -12,10 +12,11 @@ Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacoc
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
 [![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa)
 
+[![AI Ready](https://img.shields.io/badge/AI--Ready-yes-brightgreen?style=flat)](https://github.com/johnpapa/ai-ready)
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=2f99fa&style=flat)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat)](#contributors)
 
-[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=main)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=main&WT.mc_id=vscodepeacock-github-jopapa)
+[![CI](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml/badge.svg)](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
 
 ## Install
 
@@ -44,7 +45,7 @@ Now enjoy exploring the rest of the features explained in the docs!
 
 ## Resources
 
-- Peacock docs are hosted on Azure -> [Get a Free Azure Trial](https://azure.microsoft.com/free/?WT.mc_id=academic-0000-jopapa)
+- [Peacock docs on GitHub Pages](https://johnpapa.github.io/vscode-peacock/)
 - [Get VS Code](https://code.visualstudio.com/?WT.mc_id=academic-0000-jopapa)
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=academic-0000-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?WT.mc_id=academic-0000-jopapa)
