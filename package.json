@@ -74,6 +74,11 @@
         "category": "Peacock"
       },
       {
+        "command": "peacock.affectSideBarBackground",
+        "title": "Set SideBar Darkness Level",
+        "category": "Peacock"
+      },
+      {
         "command": "peacock.changeColorToRandom",
         "title": "Surprise Me with a Random Color",
         "category": "Peacock"

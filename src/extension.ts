@@ -22,6 +22,7 @@ import {
   showAndCopyCurrentColorHandler,
   removeAllPeacockColorsHandler,
   showDocumentationHandler,
+  setSideBarDarknessLevelHandler,
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -110,6 +111,7 @@ function registerCommands() {
   commands.registerCommand(Commands.darken, darkenHandler);
   commands.registerCommand(Commands.lighten, lightenHandler);
   commands.registerCommand(Commands.showAndCopyCurrentColor, showAndCopyCurrentColorHandler);
+  commands.registerCommand(Commands.affectSideBarBackground, setSideBarDarknessLevelHandler);
 }
 
 export function deactivate() {

@@ -159,3 +159,73 @@ export async function showAndCopyCurrentColorHandler() {
   notify(msg, true);
   return State.extensionContext;
 }
+
+export async function setSideBarDarknessLevelHandler() {
+  try {
+    const color = getEnvironmentAwareColor();
+    if (!color) {
+      return;
+    }
+
+    const config = vscode.workspace.getConfiguration('workbench');
+    const originalColorCustomizations = config.get<any>('colorCustomizations') || {};
+    const colorCustomizations = { ...originalColorCustomizations };
+    const existingSideBarColor = colorCustomizations['sideBar.background'];
+
+    const options = [
+      { label: 'Dark', factor: 1 },
+      { label: 'Darker', factor: 2 },
+      { label: 'Darkest', factor: 3 },
+    ];
+
+    if (existingSideBarColor) {
+      options.unshift({ label: 'Remove Side Bar Color', factor: 0 });
+    }
+
+    const selection = await vscode.window.showQuickPick(
+      options.map(o => o.label),
+      {
+        placeHolder: 'Select SideBar darkness level',
+      },
+    );
+
+    if (!selection) {
+      return;
+    }
+
+    if (selection === 'Remove Side Bar Color') {
+      delete colorCustomizations['sideBar.background'];
+      await config.update(
+        'colorCustomizations',
+        colorCustomizations,
+        vscode.ConfigurationTarget.Workspace,
+      );
+      const msg = 'SideBar background color has been removed.';
+      notify(msg, true);
+      return;
+    }
+
+    const selected = options.find(o => o.label === selection);
+    if (!selected) {
+      return;
+    }
+
+    let newColor = color;
+    for (let i = 0; i < selected.factor; i++) {
+      newColor = getDarkenedColorHex(newColor, 10);
+    }
+
+    colorCustomizations['sideBar.background'] = newColor;
+    await config.update(
+      'colorCustomizations',
+      colorCustomizations,
+      vscode.ConfigurationTarget.Workspace,
+    );
+
+    const msg = `SideBar background set to ${selection} (${newColor})`;
+    notify(msg, true);
+  } catch (err) {
+    const msg = `Failed to set SideBar darkness: ${err}`;
+    notify(msg, true);
+  }
+}
