@@ -360,7 +360,8 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
     statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
       statusBarStyle.backgroundHoverHex;
-    statusBarSettings[ColorSettings.statusBarItem_remoteBackground] = statusBarStyle.backgroundHex;
+    statusBarSettings[ColorSettings.statusBarItem_remoteBackground] =
+      statusBarStyle.badgeBackgroundHex;
 
     if (isAffectedSettingSelected(AffectedSettings.StatusAndTitleBorders)) {
       statusBarSettings[ColorSettings.statusBar_border] = statusBarStyle.backgroundHex;
