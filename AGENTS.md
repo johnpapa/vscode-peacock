@@ -83,6 +83,11 @@ npm run test-all                # Run unit + Live Share tests
 - E2e tests live in `e2e/` and use Playwright to capture docs screenshots
 - The `testworkspace/` directory is used as a VS Code workspace during tests
 
+**Test requirements:**
+- Every bug fix must include a regression test that fails without the fix and passes with it
+- Every new feature must include unit tests covering the happy path and relevant edge cases
+- Never merge code that reduces the passing test count
+
 ## Key Patterns and Conventions
 
 - **Commands** are registered in `extension.ts` and implemented in `commands.ts`
