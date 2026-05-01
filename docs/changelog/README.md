@@ -10,6 +10,10 @@ All notable changes to the code will be documented in this file.
 - Added color picker support in `settings.json` for all Peacock color settings (#531)
 - Skip redundant workspace settings writes on activation — prevents races in multi-host editors like Cursor (#601)
 
+### Bug Fixes
+
+- Fixed remote color fallback: `peacock.color` is now used when `peacock.remoteColor` is not set in remote contexts (devcontainers, SSH, WSL) (#522, #459)
+
 ### Docs & Infrastructure
 
 - Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages

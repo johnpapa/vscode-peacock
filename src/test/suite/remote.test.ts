@@ -9,6 +9,7 @@ import {
   peacockGreen,
   azureBlue,
   StandardSettings,
+  State,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { isValidColorInput } from '../../color-library';
@@ -222,5 +223,37 @@ suite('Remote Integration', () => {
     assert.ok(isValidColorInput(value));
     assert.ok(value !== azureBlue);
     assert.equal(value, peacockGreen);
+  });
+
+  test('when in remote and remoteColor is not set, peacock.color is used as fallback', async () => {
+    await updatePeacockColor(peacockGreen);
+    await updatePeacockRemoteColor(undefined);
+
+    const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.devContainer);
+    const { addRemoteIntegration } = await import('../../remote/integration');
+    await addRemoteIntegration(State.extensionContext);
+    remoteNameStub.restore();
+
+    const config = getColorCustomizationConfig();
+    const value = config[ColorSettings.titleBar_activeBackground];
+
+    assert.ok(isValidColorInput(value), 'Color should be valid when falling back to peacock.color');
+    assert.equal(value, peacockGreen, 'Should fall back to peacock.color when remoteColor is not set');
+  });
+
+  test('when in remote and remoteColor is set, remoteColor takes priority over peacock.color', async () => {
+    await updatePeacockColor(peacockGreen);
+    await updatePeacockRemoteColor(azureBlue);
+
+    const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.devContainer);
+    const { addRemoteIntegration } = await import('../../remote/integration');
+    await addRemoteIntegration(State.extensionContext);
+    remoteNameStub.restore();
+
+    const config = getColorCustomizationConfig();
+    const value = config[ColorSettings.titleBar_activeBackground];
+
+    assert.ok(isValidColorInput(value), 'Color should be valid');
+    assert.equal(value, azureBlue, 'Should use remoteColor when it is set');
   });
 });

@@ -20,7 +20,7 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   // await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);
 
   if (vscode.env.remoteName) {
-    const remoteColor = getPeacockRemoteColor();
+    const remoteColor = getPeacockRemoteColor() || getPeacockColor();
     await applyColor(remoteColor);
   } else {
     const peacockColor = getPeacockColor();
