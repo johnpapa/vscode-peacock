@@ -17,6 +17,7 @@ All notable changes to the code will be documented in this file.
 - Modern Peacock-branded design with responsive layout, client-side search, and syntax highlighting
 - Added 69 Playwright e2e tests covering pages, navigation, images, links, styling, and search
 - Added CI workflow with lint, build, and tests on all PRs
+- Added unit tests for `object-library` (sortSettingsIndexer, settingsIndexersAreEqual)
 - Added AI-Ready badge, AGENTS.md, copilot-instructions.md, and copilot-setup-steps.yml
 - Upgraded issue templates from markdown to YAML issue forms
 - Added Dependabot for npm and GitHub Actions dependencies
