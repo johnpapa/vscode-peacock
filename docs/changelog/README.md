@@ -10,6 +10,10 @@ All notable changes to the code will be documented in this file.
 - Added color picker support in `settings.json` for all Peacock color settings (#531)
 - Skip redundant workspace settings writes on activation — prevents races in multi-host editors like Cursor (#601)
 
+### Bug Fixes
+
+- Fixed remote indicator badge blending into status bar: badge now uses a contrasting accent color instead of the same color as the status bar (#473)
+
 ### Docs & Infrastructure
 
 - Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages

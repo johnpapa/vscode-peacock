@@ -322,6 +322,25 @@ suite('Affected elements', () => {
       assert.ok(remoteForeground);
     });
 
+    test('remote badge background differs from status bar background for contrast', async () => {
+      await updateAffectedElements({
+        statusBar: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      const statusBarBg = config[ColorSettings.statusBar_background];
+      const remoteBadgeBg = config[ColorSettings.statusBarItem_remoteBackground];
+      assert.ok(statusBarBg, 'statusBar.background should be set');
+      assert.ok(remoteBadgeBg, 'statusBarItem.remoteBackground should be set');
+      assert.notEqual(
+        remoteBadgeBg,
+        statusBarBg,
+        'Remote badge should differ from status bar for visibility',
+      );
+    });
+
     test('status bar remote host styles are not set when status bar is affected', async () => {
       await updateAffectedElements({
         statusBar: false,
