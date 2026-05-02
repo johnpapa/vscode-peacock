@@ -12,6 +12,7 @@ All notable changes to the code will be documented in this file.
 ### Bug Fixes
 
 - Fixed remote indicator badge blending into status bar: badge now uses a contrasting accent color instead of the same color as the status bar (#473)
+- Fixed "Reset Workspace Colors" not clearing colors when `peacock.color` was already undefined — reset now directly removes color customizations instead of relying on a configuration change event (#554)
 
 ### Bug Fixes
 
