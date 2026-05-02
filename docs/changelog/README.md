@@ -8,7 +8,6 @@ All notable changes to the code will be documented in this file.
 
 - Added `commandCenter.foreground` and `commandCenter.border` coloring to title bar handling (#583)
 - Added color picker support in `settings.json` for all Peacock color settings (#531)
-- Skip redundant workspace settings writes on activation — prevents races in multi-host editors like Cursor (#601)
 
 ### Bug Fixes
 
@@ -22,6 +21,7 @@ All notable changes to the code will be documented in this file.
 - Added 69 Playwright e2e tests covering pages, navigation, images, links, styling, and search
 - Added CI workflow with lint, build, and tests on all PRs
 - Added unit tests for `object-library` (sortSettingsIndexer, settingsIndexersAreEqual)
+- Added test requirement convention: every bug fix must include a regression test, every feature must include unit tests
 - Added AI-Ready badge, AGENTS.md, copilot-instructions.md, and copilot-setup-steps.yml
 - Upgraded issue templates from markdown to YAML issue forms
 - Added Dependabot for npm and GitHub Actions dependencies
