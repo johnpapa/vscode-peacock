@@ -1,19 +1,19 @@
 import * as tinycolor from 'tinycolor2';
 
 import {
-  ColorAdjustment,
-  ReadabilityRatios,
-  inactiveElementAlpha,
-  ColorSettings,
-  ColorAdjustmentOptions,
-  defaultAmountToDarkenLighten,
-  defaultSaturation,
-} from './models';
-import {
-  getColorCustomizationConfigFromWorkspace,
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
-} from './configuration';
+} from './configuration/foreground-color';
+import { getColorCustomizationConfigFromWorkspace } from './configuration/workspace';
+import {
+  ColorAdjustment,
+  ColorAdjustmentOptions,
+  ColorSettings,
+  ReadabilityRatios,
+  defaultAmountToDarkenLighten,
+  defaultSaturation,
+  inactiveElementAlpha,
+} from './models';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
