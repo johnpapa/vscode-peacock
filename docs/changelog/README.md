@@ -13,6 +13,10 @@ All notable changes to the code will be documented in this file.
 
 - Fixed remote indicator badge blending into status bar: badge now uses a contrasting accent color instead of the same color as the status bar (#473)
 
+### Bug Fixes
+
+- Fixed remote color fallback: `peacock.color` is now used when `peacock.remoteColor` is not set in remote contexts (devcontainers, SSH, WSL) (#522, #459)
+
 ### Docs & Infrastructure
 
 - Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages
