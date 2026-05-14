@@ -440,7 +440,7 @@
     "istanbul-reports": "^3.0.2",
     "mocha": "^11.7.5",
     "mocha-multi-reporters": "^1.1.7",
-    "prettier": "^2.1.2",
+    "prettier": "^3.8.3",
     "process": "^0.11.10",
     "serve": "^14.2.6",
     "sinon": "^9.1.0",
