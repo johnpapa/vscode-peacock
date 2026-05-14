@@ -445,7 +445,7 @@
     "serve": "^14.2.6",
     "sinon": "^9.1.0",
     "ts-loader": "^9.5.7",
-    "typescript": "^3.9.7",
+    "typescript": "^6.0.3",
     "vscode-test": "^1.4.0",
     "webpack": "^5.106.2",
     "webpack-cli": "^4.7.0"
