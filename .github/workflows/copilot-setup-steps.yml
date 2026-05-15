@@ -1,4 +1,4 @@
-name: Copilot Setup Steps
+name: "Copilot Setup Steps"
 
 on: workflow_dispatch
 
@@ -16,6 +16,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
 
       - name: Build
         run: npm run test-compile
