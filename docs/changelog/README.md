@@ -1,16 +1,58 @@
----
-title: Changelog
-# We can even add meta tags to the page! This sets the keywords meta tag.
-# <meta name="keywords" content="my SEO keywords"/>
-description: Changelog for the Visual Studio Code Peacock extension
-meta:
-  - name: keywords
-  - content: vscode "visual studio code" peacock theme extension changelog
----
-
 # Change Log
 
 All notable changes to the code will be documented in this file.
+
+## 4.2.5
+
+### Docs & Infrastructure
+
+- Added `copilot-setup-steps.yml` for Copilot coding agent environment setup (mirrors CI: Node 20, npm ci, test-compile)
+- Added `paths-ignore` to CI workflow to skip builds for docs-only changes (markdown, images, issue templates)
+- Improved `CHANGELOG.md` pointer to reference authoritative changelog location at `docs/changelog/README.md`
+
+### Dependencies
+
+- Bumped fast-uri from 3.1.0 to 3.1.2
+- Bumped @types/webpack-env from 1.16.3 to 1.18.8
+- Bumped tinycolor2 and @types/tinycolor2
+- Reverted @types/mocha to 7.x (v10 removed ITestCallbackContext/MochaDone — requires TypeScript upgrade first)
+
+## 4.2.4
+
+### Features
+
+- Added `commandCenter.foreground` and `commandCenter.border` coloring to title bar handling (#583)
+- Added color picker support in `settings.json` for all Peacock color settings (#531)
+
+### Bug Fixes
+
+- Fixed remote indicator badge blending into status bar: badge now uses a contrasting accent color instead of the same color as the status bar (#473)
+- Fixed "Reset Workspace Colors" not clearing colors when `peacock.color` was already undefined — reset now directly removes color customizations instead of relying on a configuration change event (#554)
+
+### Bug Fixes
+
+- Fixed remote color fallback: `peacock.color` is now used when `peacock.remoteColor` is not set in remote contexts (devcontainers, SSH, WSL) (#522, #459)
+
+### Docs & Infrastructure
+
+- Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages
+- New docs URL: https://johnpapa.github.io/vscode-peacock/
+- Modern Peacock-branded design with responsive layout, client-side search, and syntax highlighting
+- Added 69 Playwright e2e tests covering pages, navigation, images, links, styling, and search
+- Added CI workflow with lint, build, and tests on all PRs
+- Added unit tests for `object-library` (sortSettingsIndexer, settingsIndexersAreEqual)
+- Added test requirement convention: every bug fix must include a regression test, every feature must include unit tests
+- Added AI-Ready badge, AGENTS.md, copilot-instructions.md, and copilot-setup-steps.yml
+- Upgraded issue templates from markdown to YAML issue forms
+- Added Dependabot for npm and GitHub Actions dependencies
+- Added CODEOWNERS and SECURITY.md
+
+### Dependencies
+
+- Bumped webpack (5.61→5.106), ts-loader (9.2→9.5), lodash (4.17→4.18), Playwright, and other dev dependencies
+- Bumped GitHub Actions (checkout v6, setup-node v6, upload-artifact v7, configure-pages v6, upload-pages-artifact v5)
+- Security patches for serialize-javascript, picomatch, minimatch, braces, js-yaml, @babel/traverse
+- Added `skipLibCheck` to tsconfig.json for TS 3.9 compatibility with newer dependency type definitions
 
 ## 4.2.3
 

@@ -63,4 +63,25 @@ suite('Reset Tests', () => {
     assert.ok(!color, 'Color should be undefined since there are no peacock.color in any settings');
     assert.ok(!appliedColors[ElementNames.statusBar], 'No colors should be applied');
   });
+
+  test('reset clears workspace colors even when peacock.color is already undefined', async () => {
+    // Simulate the case where colors were applied externally or peacock.color
+    // was already cleared but workbench.colorCustomizations still has entries
+    await updatePeacockColorInUserSettings(undefined);
+    await updatePeacockColor(undefined);
+
+    // Apply colors directly without setting peacock.color
+    const { applyColor } = await import('../../apply-color');
+    await applyColor(azureBlue);
+
+    // Verify colors are applied
+    const appliedBefore = getOriginalColorsForAllElements();
+    assert.ok(appliedBefore[ElementNames.statusBar], 'Colors should be applied before reset');
+
+    // Reset should still clear them even though peacock.color is already undefined
+    await executeCommand(Commands.resetWorkspaceColors);
+
+    const appliedAfter = getOriginalColorsForAllElements();
+    assert.ok(!appliedAfter[ElementNames.statusBar], 'Colors should be cleared after reset');
+  });
 });

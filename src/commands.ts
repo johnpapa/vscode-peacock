@@ -38,6 +38,7 @@ export async function showDocumentationHandler() {
 
 export async function resetWorkspaceColorsHandler() {
   await resetLiveSharePreviousColors();
+  await unapplyColors();
   await updatePeacockColor(undefined);
   await updatePeacockRemoteColor(undefined);
   return State.extensionContext;

@@ -1,0 +1,8 @@
+- [Home](/)
+- [Guide](guide/)
+- [Changelog](changelog/)
+- **About**
+  - [About Peacock](about/history.md)
+  - [Contributing](about/contributing.md)
+  - [Code of Conduct](about/code_of_conduct.md)
+  - [License](about/license.md)

@@ -1,9 +1,0 @@
-steps:
-  - task: AzureCLI@1
-    displayName: 'Upload the files to Azure Storage'
-    inputs:
-      azureSubscription: 'john.papa(cfd12dd7-4872-4b83-8cd8-2ed6083047d7)'
-      scriptLocation: 'scriptPath'
-      scriptPath: '.azure-pipelines/upload-docs.sh'
-      arguments: '$(Build.SourcesDirectory)/docs/.vuepress/dist'
-    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))

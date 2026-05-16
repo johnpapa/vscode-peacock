@@ -4,7 +4,7 @@
 
 Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
-Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
+Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
 [![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadge.apphb.com/version/johnpapa.vscode-peacock.svg?color=2f99fa&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
@@ -12,10 +12,11 @@ Read the extensive [documentation here](https://www.peacockcode.dev) which inclu
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
 [![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa)
 
+[![AI Ready](https://img.shields.io/badge/AI--Ready-yes-brightgreen?style=flat)](https://github.com/johnpapa/ai-ready)
 [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=2f99fa&style=flat)](http://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat)](#contributors)
 
-[![Build Status](https://johnpapa.visualstudio.com/vscode-peacock/_apis/build/status/VS%20Code%20Peacock%20Extension?branchName=main)](https://johnpapa.visualstudio.com/vscode-peacock/_build/latest?definitionId=3&branchName=main&WT.mc_id=vscodepeacock-github-jopapa)
+[![CI](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml/badge.svg)](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
 
 ## Install
 
@@ -26,13 +27,13 @@ Read the extensive [documentation here](https://www.peacockcode.dev) which inclu
 
 ## Documentation
 
-Read the extensive [documentation here](https://www.peacockcode.dev) which includes a guide on how to use Peacock and a [changelog](https://www.peacockcode.dev/changelog/)
+Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
 ## Quick Usage
 
 Let's see Peacock in action!
 
-1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://www.peacockcode.dev/guide/#peacock-commands-are-not-appearing))
+1. Create/Open a VSCode Workspace ([Peacock only works in a Workspace](https://johnpapa.github.io/vscode-peacock/#/guide/?id=peacock-commands-are-not-appearing))
 1. Press `F1` to open the command palette
 1. Type `Peacock`
 1. Choose `Peacock: Change to a favorite color`
@@ -44,7 +45,7 @@ Now enjoy exploring the rest of the features explained in the docs!
 
 ## Resources
 
-- Peacock docs are hosted on Azure -> [Get a Free Azure Trial](https://azure.microsoft.com/free/?WT.mc_id=academic-0000-jopapa)
+- [Peacock docs on GitHub Pages](https://johnpapa.github.io/vscode-peacock/)
 - [Get VS Code](https://code.visualstudio.com/?WT.mc_id=academic-0000-jopapa)
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=academic-0000-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?WT.mc_id=academic-0000-jopapa)
@@ -61,6 +62,22 @@ Inspiration comes in many forms. These folks and teams have contributed either t
 ## Code of Conduct
 
 [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+## Contributing
+
+The fastest way to contribute is with [Copilot CLI](https://github.com/features/copilot/cli/) — it knows this repo's conventions automatically:
+
+```
+copilot "Add a new command called 'Change to a Seasonal Color' that picks a color based on the current season"
+```
+
+Or contribute manually — see [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide:
+
+1. Fork this repo and create a branch
+2. `npm install` → make your changes → `npm test`
+3. Open a PR
+
+See [AGENTS.md](AGENTS.md) for the full project guide including architecture, patterns, and how to add commands/settings.
 
 ## Problems or Suggestions
 
