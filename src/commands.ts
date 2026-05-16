@@ -17,6 +17,8 @@ import {
   updatePeacockRemoteColor,
   updatePeacockRemoteColorInUserSettings,
   updatePeacockColorInUserSettings,
+  updateWorkspaceConfiguration,
+  getColorCustomizationConfigFromWorkspace,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -168,10 +170,9 @@ export async function setSideBarDarknessLevelHandler() {
       return;
     }
 
-    const config = vscode.workspace.getConfiguration('workbench');
-    const originalColorCustomizations = config.get<any>('colorCustomizations') || {};
-    const colorCustomizations = { ...originalColorCustomizations };
-    const existingSideBarColor = colorCustomizations['sideBar.background'];
+    const sideBarBackgroundKey = 'sideBar.background';
+    const colorCustomizations = { ...getColorCustomizationConfigFromWorkspace() };
+    const existingSideBarColor = colorCustomizations[sideBarBackgroundKey];
 
     const options = [
       { label: 'Dark', factor: 1 },
@@ -195,14 +196,9 @@ export async function setSideBarDarknessLevelHandler() {
     }
 
     if (selection === 'Remove Side Bar Color') {
-      delete colorCustomizations['sideBar.background'];
-      await config.update(
-        'colorCustomizations',
-        colorCustomizations,
-        vscode.ConfigurationTarget.Workspace,
-      );
-      const msg = 'SideBar background color has been removed.';
-      notify(msg, true);
+      delete colorCustomizations[sideBarBackgroundKey];
+      await updateWorkspaceConfiguration(colorCustomizations);
+      notify('SideBar background color has been removed.', true);
       return;
     }
 
@@ -216,17 +212,10 @@ export async function setSideBarDarknessLevelHandler() {
       newColor = getDarkenedColorHex(newColor, 10);
     }
 
-    colorCustomizations['sideBar.background'] = newColor;
-    await config.update(
-      'colorCustomizations',
-      colorCustomizations,
-      vscode.ConfigurationTarget.Workspace,
-    );
-
-    const msg = `SideBar background set to ${selection} (${newColor})`;
-    notify(msg, true);
+    colorCustomizations[sideBarBackgroundKey] = newColor;
+    await updateWorkspaceConfiguration(colorCustomizations);
+    notify(`SideBar background set to ${selection} (${newColor})`, true);
   } catch (err) {
-    const msg = `Failed to set SideBar darkness: ${err}`;
-    notify(msg, true);
+    notify(`Failed to set SideBar darkness: ${err}`, true);
   }
 }

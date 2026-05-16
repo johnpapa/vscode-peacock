@@ -1,54 +1,45 @@
-import * as vscode from 'vscode';
-import * as sinon from 'sinon';
 import * as assert from 'assert';
-import { Commands } from '../../models';
-import { executeCommand } from './lib/constants';
+import { Commands, IPeacockSettings } from '../../models';
+import { executeCommand, stubQuickPick } from './lib/constants';
+import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import { getColorCustomizationConfig } from '../../configuration';
+
+const SIDEBAR_BACKGROUND_KEY = 'sideBar.background';
 
 suite('Set SideBar Darkness Level Command', () => {
-  let quickPickStub: sinon.SinonStub;
+  const originalValues = {} as IPeacockSettings;
 
-  setup(() => {
-    // Stub showQuickPick to simulate user selection
-    quickPickStub = sinon.stub(vscode.window, 'showQuickPick');
+  suiteSetup(async () => await setupTestSuite(originalValues));
+  suiteTeardown(async () => await teardownTestSuite(originalValues));
+  setup(async () => {
+    await setupTest();
+    await executeCommand(Commands.changeColorToPeacockGreen);
   });
 
-  teardown(() => {
-    quickPickStub.restore();
-  });
   test('sets sidebar background to Dark', async () => {
-    quickPickStub.returns(Promise.resolve('Dark'));
+    const stub = await stubQuickPick('Dark');
     await executeCommand(Commands.affectSideBarBackground);
+    stub.restore();
 
-    const config = vscode.workspace.getConfiguration('workbench');
-    const colorCustomizations = config.get<any>('colorCustomizations') || {};
-    assert.ok(colorCustomizations['sideBar.background'], 'sideBar.background should be set');
+    const config = getColorCustomizationConfig();
+    assert.ok(config[SIDEBAR_BACKGROUND_KEY], 'sideBar.background should be set');
   });
 
-  test('sets sidebar background to Dark, Darker, and Darkest', async () => {
-    // Set a known Peacock color first
-    const peacockColor = '#00aaff';
-    await vscode.workspace
-      .getConfiguration('peacock')
-      .update('color', peacockColor, vscode.ConfigurationTarget.Workspace);
+  test('sets sidebar background to Dark, Darker, and Darkest with increasing darkness', async () => {
+    let stub = await stubQuickPick('Dark');
+    await executeCommand(Commands.affectSideBarBackground);
+    stub.restore();
+    const dark = getColorCustomizationConfig()[SIDEBAR_BACKGROUND_KEY];
 
-    // Test "Dark"
-    quickPickStub.returns(Promise.resolve('Dark'));
+    stub = await stubQuickPick('Darker');
     await executeCommand(Commands.affectSideBarBackground);
-    let colorCustomizations =
-      vscode.workspace.getConfiguration('workbench').get<any>('colorCustomizations') || {};
-    const dark = colorCustomizations['sideBar.background'];
-    // Test "Darker"
-    quickPickStub.returns(Promise.resolve('Darker'));
+    stub.restore();
+    const darker = getColorCustomizationConfig()[SIDEBAR_BACKGROUND_KEY];
+
+    stub = await stubQuickPick('Darkest');
     await executeCommand(Commands.affectSideBarBackground);
-    colorCustomizations =
-      vscode.workspace.getConfiguration('workbench').get<any>('colorCustomizations') || {};
-    const darker = colorCustomizations['sideBar.background'];
-    // Test "Darker"
-    quickPickStub.returns(Promise.resolve('Darkest'));
-    await executeCommand(Commands.affectSideBarBackground);
-    colorCustomizations =
-      vscode.workspace.getConfiguration('workbench').get<any>('colorCustomizations') || {};
-    const darkest = colorCustomizations['sideBar.background'];
+    stub.restore();
+    const darkest = getColorCustomizationConfig()[SIDEBAR_BACKGROUND_KEY];
 
     assert.ok(dark, 'Dark should set a color');
     assert.ok(darker, 'Darker should set a color');
@@ -59,15 +50,15 @@ suite('Set SideBar Darkness Level Command', () => {
   });
 
   test('removes sidebar background color', async () => {
-    // First set a color so we can remove it
-    quickPickStub.returns(Promise.resolve('Dark'));
+    let stub = await stubQuickPick('Dark');
     await executeCommand(Commands.affectSideBarBackground);
+    stub.restore();
 
-    quickPickStub.returns(Promise.resolve('Remove Side Bar Color'));
+    stub = await stubQuickPick('Remove Side Bar Color');
     await executeCommand(Commands.affectSideBarBackground);
+    stub.restore();
 
-    const config = vscode.workspace.getConfiguration('workbench');
-    const colorCustomizations = config.get<any>('colorCustomizations') || {};
-    assert.ok(!colorCustomizations['sideBar.background'], 'sideBar.background should be removed');
+    const config = getColorCustomizationConfig();
+    assert.ok(!config[SIDEBAR_BACKGROUND_KEY], 'sideBar.background should be removed');
   });
 });

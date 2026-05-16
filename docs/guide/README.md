@@ -169,6 +169,7 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
 | Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
 | Peacock: Lighten                                | Lightens the current color by `darkenLightenPercentage`                                                                            |
+| Peacock: Set SideBar Darkness Level             | Sets the SideBar background to a darker shade of the current color (Dark, Darker, or Darkest)                                      |
 | Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
 | Peacock: Show the Documentation                 | Opens the Peacock documentation web site in a browser                                                                              |
 
