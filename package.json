@@ -426,7 +426,7 @@
     "@types/vscode": "^1.49.0",
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
+    "@typescript-eslint/parser": "^8.59.4",
     "@vscode/test-web": "^0.0.80",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.12.0",
