@@ -1,8 +1,8 @@
 {
   "name": "vscode-peacock",
-  "displayName": "Peacock",
+  "displayName": "Peacock (Cursor Fix)",
   "description": "Subtly change the workspace color of your workspace. Ideal when you have multiple VS Code instances and you want to quickly identify which is which.",
-  "version": "4.2.5",
+  "version": "4.2.6-cursor-fix.1",
   "publisher": "johnpapa",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -352,6 +352,12 @@
           "type": "boolean",
           "default": false,
           "description": "Recommended to remain false. However, when set to true Peacock will not colorize the foreground of any of the affected elements and will only alter the background"
+        },
+        "peacock.cursorFriendlyTitleBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "When enabled (default), uses a medium gray (#595959) for the title bar foreground color instead of the computed dark/light color. This works around a Cursor IDE CSS bug where titleBar.activeForeground leaks into editor toolbar action icons, making them invisible on dark backgrounds. Disable if you use VS Code (not Cursor) and prefer the original behavior.",
+          "scope": "window"
         },
         "peacock.lightForegroundColor": {
           "type": "string",

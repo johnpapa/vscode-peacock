@@ -196,6 +196,10 @@ export function getKeepForegroundColor() {
   return readConfiguration<boolean>(StandardSettings.KeepForegroundColor, false);
 }
 
+export function getCursorFriendlyTitleBar() {
+  return readConfiguration<boolean>(StandardSettings.CursorFriendlyTitleBar, true);
+}
+
 export function getKeepBadgeColor() {
   return readConfiguration<boolean>(StandardSettings.KeepBadgeColor, false);
 }
@@ -314,11 +318,33 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
       titleBarStyle.inactiveBackgroundHex;
 
     if (!keepForegroundColor) {
-      titleBarSettings[ColorSettings.titleBar_activeForeground] = titleBarStyle.foregroundHex;
+      /**
+       * Cursor IDE has a CSS bug where editor toolbar action icons use
+       * `var(--vscode-titleBar-activeForeground)` instead of
+       * `var(--vscode-icon-foreground)`. This causes the titleBar foreground
+       * color to leak into editor toolbar icons (split editor, more actions, etc.)
+       * which sit on a dark background.
+       *
+       * When `cursorFriendlyTitleBar` is enabled (default: true), we use a
+       * medium gray (#595959) for the titleBar foreground instead of the
+       * computed dark/light foreground. This ensures icons remain visible on
+       * both light Peacock backgrounds AND dark editor toolbars.
+       *
+       * activityBar and statusBar do NOT have this leak, so they keep using
+       * the normal computed foreground (dark on light, light on dark).
+       *
+       * See: https://github.com/johnpapa/vscode-peacock/issues/647
+       */
+      const cursorFriendly = getCursorFriendlyTitleBar();
+      const titleBarForeground = cursorFriendly
+        ? ForegroundColors.CursorTitleBarForeground
+        : titleBarStyle.foregroundHex;
+
+      titleBarSettings[ColorSettings.titleBar_activeForeground] = titleBarForeground;
       titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
         titleBarStyle.inactiveForegroundHex;
       titleBarSettings[ColorSettings.commandCenter_border] = titleBarStyle.inactiveForegroundHex;
-      titleBarSettings[ColorSettings.commandCenter_foreground] = titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.commandCenter_foreground] = titleBarForeground;
     }
   }
   return titleBarSettings;

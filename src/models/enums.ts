@@ -14,6 +14,7 @@ export enum StandardSettings {
   SquigglyBeGone = 'squigglyBeGone',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
+  CursorFriendlyTitleBar = 'cursorFriendlyTitleBar',
 }
 
 export enum AffectedSettings {
@@ -101,6 +102,22 @@ export enum Sections {
 export enum ForegroundColors {
   DarkForeground = '#15202b',
   LightForeground = '#e7e7e7',
+  /**
+   * Medium gray used for titleBar foreground in Cursor IDE.
+   *
+   * Cursor has a CSS bug where editor toolbar action icons use
+   * `var(--vscode-titleBar-activeForeground)` instead of
+   * `var(--vscode-icon-foreground)`. This means the titleBar foreground
+   * color leaks into editor toolbar icons, which sit on a dark background.
+   *
+   * DarkForeground (#15202b) is invisible on dark editor toolbars (1.2:1 contrast).
+   * This medium gray (#595959) is visible on both light Peacock backgrounds
+   * (e.g. 4.48:1 on #fdc579) and dark editor toolbars (1.96:1 on #2d2d30).
+   *
+   * See: https://github.com/johnpapa/vscode-peacock/issues/647
+   * See: https://forum.cursor.com/t/action-icons-use-the-wrong-color/162119
+   */
+  CursorTitleBarForeground = '#595959',
 }
 
 // See WebAIM contrast guidelines: https://webaim.org/articles/contrast/
