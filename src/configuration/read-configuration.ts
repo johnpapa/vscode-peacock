@@ -384,8 +384,7 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
     // (#572: status bar disappears during launch script scenarios)
     statusBarSettings[ColorSettings.statusBar_debuggingBackground] = statusBarStyle.backgroundHex;
     if (!keepForegroundColor) {
-      statusBarSettings[ColorSettings.statusBar_debuggingForeground] =
-        statusBarStyle.foregroundHex;
+      statusBarSettings[ColorSettings.statusBar_debuggingForeground] = statusBarStyle.foregroundHex;
     }
 
     if (isAffectedSettingSelected(AffectedSettings.DebuggingStatusBar)) {

@@ -392,13 +392,30 @@ suite('Affected elements', () => {
       const debuggingBorder = config[ColorSettings.statusBar_debuggingBorder];
 
       // debugging colors should be set to preserve Peacock's color during debug
-      assert.ok(debuggingBackground, 'debuggingBackground should be set to preserve color during debug');
-      assert.ok(debuggingForeground, 'debuggingForeground should be set to preserve color during debug');
+      assert.ok(
+        debuggingBackground,
+        'debuggingBackground should be set to preserve color during debug',
+      );
+      assert.ok(
+        debuggingForeground,
+        'debuggingForeground should be set to preserve color during debug',
+      );
       // debugging colors should match the regular status bar colors
-      assert.equal(debuggingBackground, statusBarBackground, 'debuggingBackground should match statusBar.background');
-      assert.equal(debuggingForeground, statusBarForeground, 'debuggingForeground should match statusBar.foreground');
+      assert.equal(
+        debuggingBackground,
+        statusBarBackground,
+        'debuggingBackground should match statusBar.background',
+      );
+      assert.equal(
+        debuggingForeground,
+        statusBarForeground,
+        'debuggingForeground should match statusBar.foreground',
+      );
       // border should NOT be set when affectDebuggingStatusBar is false
-      assert.ok(!debuggingBorder, 'debuggingBorder should not be set when affectDebuggingStatusBar is false');
+      assert.ok(
+        !debuggingBorder,
+        'debuggingBorder should not be set when affectDebuggingStatusBar is false',
+      );
 
       await updateAffectedElements(allAffectedElements);
     });
