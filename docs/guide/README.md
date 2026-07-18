@@ -66,6 +66,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.lightForeground             | override for the light foreground                                                                                   |
 | peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                                       |
 | peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color             |
+| peacock.surpriseMeInFavoritesOrder  | When true, and startup surprise uses favorites, Peacock cycles through favorites in list order instead of random   |
 | peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                            |
 | peacock.remoteColor                 | The Peacock color that will be applied to remote workspaces                                                         |
 | peacock.color                       | The Peacock color that will be applied to workspaces                                                                |
@@ -84,6 +85,8 @@ Azure Blue -> #007fff
 ```
 
 Favorite colors require a user-defined name (`name`) and a value ( `value` ), as shown in the example below.
+
+When `peacock.surpriseMeOnStartup` and `peacock.surpriseMeFromFavoritesOnly` are enabled, turning on `peacock.surpriseMeInFavoritesOrder` makes startup surprises reuse favorites in deterministic list order.
 
 ```javascript
   "peacock.favoriteColors": [
@@ -446,6 +449,8 @@ Peacock takes advantage of a memento (a value stored between sessions and not in
 | Name                             | Type   | Description                                                                                                |
 | -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
 | peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
+| peacockMementos.surpriseMeFavoritesOrderIndex | Global | Last used favorite index for deterministic startup surprise ordering when cycling favorites                 |
+| peacockMementos.surpriseMeFavoritesOrderKey | Global | Snapshot key for the current favorites list order, used to reset deterministic cycling when favorites change |
 
 ## Try the Code
 

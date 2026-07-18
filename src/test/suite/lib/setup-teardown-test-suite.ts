@@ -20,6 +20,8 @@ import {
   updateAffectedElements,
   updateSurpriseMeFromFavoritesOnly,
   getSurpriseMeFromFavoritesOnly,
+  updateSurpriseMeInFavoritesOrder,
+  getSurpriseMeInFavoritesOrder,
   getShowColorInStatusBar,
   updateShowColorInStatusBar,
   getPeacockColor,
@@ -53,6 +55,7 @@ export async function setupTestSuite(
   originalValues.lightForegroundColor = getLightForegroundColor();
   originalValues.keepBadgeColor = getKeepBadgeColor();
   originalValues.surpriseMeFromFavoritesOnly = getSurpriseMeFromFavoritesOnly();
+  originalValues.surpriseMeInFavoritesOrder = getSurpriseMeInFavoritesOrder();
   originalValues.showColorInStatusBar = getShowColorInStatusBar();
   originalValues.color = getPeacockColor();
   originalValues.remoteColor = getPeacockRemoteColor();
@@ -68,6 +71,7 @@ export async function setupTestSuite(
   await updateLightForegroundColor(ForegroundColors.LightForeground);
   await updateKeepBadgeColor(false);
   await updateSurpriseMeFromFavoritesOnly(false);
+  await updateSurpriseMeInFavoritesOrder(false);
   await updateShowColorInStatusBar(true);
   await updatePeacockColor(undefined);
   await updatePeacockRemoteColor(undefined);
@@ -88,6 +92,7 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateLightForegroundColor(originalValues.lightForegroundColor);
   await updateKeepBadgeColor(originalValues.keepBadgeColor);
   await updateSurpriseMeFromFavoritesOnly(originalValues.surpriseMeFromFavoritesOnly);
+  await updateSurpriseMeInFavoritesOrder(originalValues.surpriseMeInFavoritesOrder);
   await updateSurpriseMeOnStartup(originalValues.surpriseMeOnStartup);
   await updateShowColorInStatusBar(originalValues.showColorInStatusBar);
   await updatePeacockColor(originalValues.color);

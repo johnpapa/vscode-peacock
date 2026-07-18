@@ -20,8 +20,27 @@ export async function saveFavoritesVersionGlobalMemento(version: string) {
   saveGlobalMemento(peacockMementos.favoritesVersion, version);
 }
 
+export async function saveSurpriseMeFavoritesOrderGlobalMemento(index: number, key: string) {
+  await saveGlobalMemento(peacockMementos.surpriseMeFavoritesOrderIndex, index);
+  await saveGlobalMemento(peacockMementos.surpriseMeFavoritesOrderKey, key);
+}
+
 export function getFavoritesVersionGlobalMemento() {
   return State.extensionContext.globalState.get<string>(peacockMementos.favoritesVersion, '');
+}
+
+export function getSurpriseMeFavoritesOrderIndexGlobalMemento() {
+  return State.extensionContext.globalState.get<number>(
+    peacockMementos.surpriseMeFavoritesOrderIndex,
+    -1,
+  );
+}
+
+export function getSurpriseMeFavoritesOrderKeyGlobalMemento() {
+  return State.extensionContext.globalState.get<string>(
+    peacockMementos.surpriseMeFavoritesOrderKey,
+    '',
+  );
 }
 
 export async function resetFavoritesVersionMemento() {
@@ -33,6 +52,8 @@ export async function resetFavoritesVersionMemento() {
 
   // Global
   await ec.globalState.update(peacockMementos.favoritesVersion, undefined);
+  await ec.globalState.update(peacockMementos.surpriseMeFavoritesOrderIndex, undefined);
+  await ec.globalState.update(peacockMementos.surpriseMeFavoritesOrderKey, undefined);
 }
 
 export function getMementos() {
@@ -44,6 +65,16 @@ export function getMementos() {
     name: peacockMementos.favoritesVersion,
     type: 'globalState',
     value: ec.globalState.get(peacockMementos.favoritesVersion),
+  });
+  mementos.push({
+    name: peacockMementos.surpriseMeFavoritesOrderIndex,
+    type: 'globalState',
+    value: ec.globalState.get(peacockMementos.surpriseMeFavoritesOrderIndex),
+  });
+  mementos.push({
+    name: peacockMementos.surpriseMeFavoritesOrderKey,
+    type: 'globalState',
+    value: ec.globalState.get(peacockMementos.surpriseMeFavoritesOrderKey),
   });
 
   return mementos;

@@ -68,6 +68,7 @@ export interface IPeacockSettings {
   showColorInStatusBar: boolean;
   squigglyBeGone: boolean;
   surpriseMeFromFavoritesOnly: boolean;
+  surpriseMeInFavoritesOrder: boolean;
   surpriseMeOnStartup: boolean;
   color: string;
   remoteColor: string;
