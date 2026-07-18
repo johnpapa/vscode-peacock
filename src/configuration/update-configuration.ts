@@ -62,6 +62,10 @@ export async function updateElementAdjustments(adjustments: IPeacockElementAdjus
   return await updateGlobalConfiguration(StandardSettings.ElementAdjustments, adjustments);
 }
 
+export async function updateExcludedSettings(excludedSettings: string[]) {
+  return await updateGlobalConfiguration(StandardSettings.ExcludedSettings, excludedSettings);
+}
+
 export async function updateKeepForegroundColor(value: boolean) {
   return await updateGlobalConfiguration(StandardSettings.KeepForegroundColor, value);
 }
