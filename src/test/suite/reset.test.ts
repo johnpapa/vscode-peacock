@@ -1,11 +1,21 @@
 import * as assert from 'assert';
-import { IPeacockSettings, ElementNames, peacockGreen, azureBlue, Commands } from '../../models';
+import * as vscode from 'vscode';
+import {
+  IPeacockSettings,
+  ElementNames,
+  peacockGreen,
+  azureBlue,
+  Commands,
+  ColorSettings,
+  Sections,
+} from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
   getOriginalColorsForAllElements,
   updatePeacockColorInUserSettings,
   updatePeacockColor,
   getPeacockColor,
+  getColorCustomizationConfig,
 } from '../../configuration';
 import { executeCommand } from './lib/constants';
 
@@ -83,5 +93,52 @@ suite('Reset Tests', () => {
 
     const appliedAfter = getOriginalColorsForAllElements();
     assert.ok(!appliedAfter[ElementNames.statusBar], 'Colors should be cleared after reset');
+  });
+
+  test('reset removes Peacock keys from workspace-folder customizations while preserving non-Peacock keys', async () => {
+    await updatePeacockColorInUserSettings(undefined);
+    await updatePeacockColor(undefined);
+
+    const nonPeacockKey = 'editor.lineHighlightBackground';
+    const nonPeacockValue = '#010203';
+
+    await vscode.workspace.getConfiguration().update(
+      Sections.peacockColorCustomizationSection,
+      {
+        [ColorSettings.statusBar_background]: azureBlue,
+        [ColorSettings.titleBar_activeBackground]: azureBlue,
+        [nonPeacockKey]: nonPeacockValue,
+      },
+      vscode.ConfigurationTarget.WorkspaceFolder,
+    );
+
+    const beforeReset = getColorCustomizationConfig();
+    assert.equal(
+      beforeReset[ColorSettings.statusBar_background],
+      azureBlue,
+      'Peacock status bar key should be present before reset',
+    );
+    assert.equal(
+      beforeReset[nonPeacockKey],
+      nonPeacockValue,
+      'Non-Peacock key should be present before reset',
+    );
+
+    await executeCommand(Commands.resetWorkspaceColors);
+
+    const afterReset = getColorCustomizationConfig();
+    assert.ok(
+      !afterReset[ColorSettings.statusBar_background],
+      'Peacock status bar key should be removed by reset',
+    );
+    assert.ok(
+      !afterReset[ColorSettings.titleBar_activeBackground],
+      'Peacock title bar key should be removed by reset',
+    );
+    assert.equal(
+      afterReset[nonPeacockKey],
+      nonPeacockValue,
+      'Non-Peacock key should be preserved after reset',
+    );
   });
 });
