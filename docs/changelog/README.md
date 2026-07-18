@@ -6,6 +6,7 @@ All notable changes to the code will be documented in this file.
 
 ### Features
 
+- Added `peacock.excludedSettings` — an array of VS Code color customization keys (e.g. `statusBar.background`) that Peacock will never modify or delete, protecting your own workspace color settings when applying a color or resetting ([#575](https://github.com/johnpapa/vscode-peacock/issues/575)). Completes and supersedes community PR [#574](https://github.com/johnpapa/vscode-peacock/pull/574). Thanks to [@josh-tepper](https://github.com/josh-tepper)!
 - Added `Peacock: Set SideBar Darkness Level` command — sets the SideBar background to a darker shade of the current Peacock color (Dark, Darker, or Darkest). Useful for maintaining color visibility when the activity bar is hidden ([#560](https://github.com/johnpapa/vscode-peacock/issues/560))
 
 ### Docs & Infrastructure

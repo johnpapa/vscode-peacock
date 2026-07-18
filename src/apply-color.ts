@@ -7,6 +7,7 @@ import {
   updateWorkspaceConfiguration,
   updatePeacockColor,
   updatePeacockRemoteColor,
+  getExcludedSettings,
 } from './configuration';
 import { Logger } from './logging';
 import { updateStatusBar } from './statusbar';
@@ -25,7 +26,8 @@ export async function unapplyColors() {
 
   // Overwite color customizations, without the peacock ones.
   // This preserves any extra ones someone might have.
-  const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations();
+  const excludedSettings = getExcludedSettings();
+  const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations(excludedSettings);
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
   updateStatusBar();
 }
@@ -41,20 +43,35 @@ function mergeColorCustomizations(
    */
   const existingColorsClone: ISettingsIndexer = { ...existingColors };
 
+  const excludedSettings = getExcludedSettings();
+
   /**
    * If any existing color settings are not in the set
    * that Peacock manages, remove them.
+   * Excluded settings are never stripped.
    */
   Object.values(ColorSettings)
     .filter(c => !(c in updatedColors))
+    .filter(c => !excludedSettings.includes(c))
     .forEach(c => delete existingColorsClone[c]);
+
+  /**
+   * Filter out any settings that the user has specifically excluded so
+   * Peacock does not overwrite them with new values.
+   */
+  const filteredUpdatedColors: ISettingsIndexer = {};
+  Object.keys(updatedColors).forEach(key => {
+    if (!excludedSettings.includes(key)) {
+      filteredUpdatedColors[key] = updatedColors[key];
+    }
+  });
 
   /**
    * Merge the updated colors on top of the existing colors.
    */
   const mergedCustomizations: ISettingsIndexer = {
     ...existingColorsClone,
-    ...updatedColors,
+    ...filteredUpdatedColors,
   };
 
   return mergedCustomizations;

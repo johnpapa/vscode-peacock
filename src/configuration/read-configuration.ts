@@ -255,6 +255,10 @@ export function getElementAdjustments() {
   return adjustments || {};
 }
 
+export function getExcludedSettings() {
+  return readConfiguration<string[]>(StandardSettings.ExcludedSettings, []);
+}
+
 export function getElementAdjustment(elementName: string): ColorAdjustment {
   const elementAdjustments = getElementAdjustments();
   return elementAdjustments[elementName];

@@ -55,6 +55,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                          |
 | peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                             |
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                  |
+| peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)        |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                             |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
 | peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                               |
@@ -111,6 +112,30 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 Peacock also automatically colorizes the Command Center foreground and border to match the title bar when title bar coloring is enabled.
 
 ![affected elements](../assets/affected-settings.png)
+
+### Excluded Settings
+
+Even if you tell Peacock not to "affect" a given element (e.g. `"peacock.affectStatusBar": false`), the related keys in the workspace's `settings.json` can still be deleted when Peacock cleans up or resets "dirty" state. This is a problem if you have your own workspace color customizations that you don't want Peacock to touch.
+
+Use `peacock.excludedSettings` to list the color customization keys that Peacock must never modify or delete — not when applying a color, and not when resetting.
+
+For example, given this setting:
+
+```javascript
+"peacock.excludedSettings": [
+    "statusBar.background",
+    "statusBar.foreground"
+]
+```
+
+Peacock will leave the following values in `workbench.colorCustomizations` untouched, even when you apply a new Peacock color or reset the workspace:
+
+```javascript
+"workbench.colorCustomizations": {
+    "statusBar.background": "#f3dcb6",
+    "statusBar.foreground": "#004572"
+}
+```
 
 ### Element Adjustments
 

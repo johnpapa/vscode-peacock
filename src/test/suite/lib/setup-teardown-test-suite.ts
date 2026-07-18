@@ -28,6 +28,8 @@ import {
   updatePeacockRemoteColor,
   getKeepBadgeColor,
   updateKeepBadgeColor,
+  getExcludedSettings,
+  updateExcludedSettings,
 } from '../../../configuration';
 
 import { noopElementAdjustments, executeCommand, allAffectedElements } from './constants';
@@ -54,6 +56,7 @@ export async function setupTestSuite(
   originalValues.showColorInStatusBar = getShowColorInStatusBar();
   originalValues.color = getPeacockColor();
   originalValues.remoteColor = getPeacockRemoteColor();
+  originalValues.excludedSettings = getExcludedSettings();
 
   // Set the test values
   await updateAffectedElements(allAffectedElements);
@@ -68,6 +71,7 @@ export async function setupTestSuite(
   await updateShowColorInStatusBar(true);
   await updatePeacockColor(undefined);
   await updatePeacockRemoteColor(undefined);
+  await updateExcludedSettings([]);
   return extension;
 }
 
@@ -88,4 +92,5 @@ export async function teardownTestSuite(originalValues: IPeacockSettings) {
   await updateShowColorInStatusBar(originalValues.showColorInStatusBar);
   await updatePeacockColor(originalValues.color);
   await updatePeacockRemoteColor(originalValues.remoteColor);
+  await updateExcludedSettings(originalValues.excludedSettings);
 }
