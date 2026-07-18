@@ -119,6 +119,33 @@ Even if you tell Peacock not to "affect" a given element (e.g. `"peacock.affectS
 
 Use `peacock.excludedSettings` to list the color customization keys that Peacock must never modify or delete — not when applying a color, and not when resetting.
 
+#### How to use it
+
+1. Open your workspace `settings.json` (or User settings).
+2. Add `peacock.excludedSettings` and list the color keys you want to protect.
+3. Save. From now on, Peacock leaves those keys alone when you apply a color or reset.
+
+```javascript
+"peacock.excludedSettings": [
+    "statusBar.background",
+    "statusBar.foreground"
+]
+```
+
+#### How it works
+
+Peacock stores its colors in the workspace's `workbench.colorCustomizations`. Two operations normally touch those keys:
+
+- **When you apply a color**, Peacock writes (and overwrites) the color keys for the elements it affects.
+- **When you reset or Peacock cleans up "dirty" state**, Peacock deletes the keys it manages.
+
+Any key you add to `peacock.excludedSettings` is honored in both operations:
+
+- On apply, Peacock **skips** the key, so your own value is never overwritten.
+- On reset, Peacock **filters the key out** before deleting, so your value survives.
+
+In other words, excluded keys are invisible to Peacock, while every other key continues to behave normally.
+
 For example, given this setting:
 
 ```javascript
