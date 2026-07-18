@@ -8,6 +8,11 @@ All notable changes to the code will be documented in this file.
 
 - Added `Peacock: Set SideBar Darkness Level` command — sets the SideBar background to a darker shade of the current Peacock color (Dark, Darker, or Darkest). Useful for maintaining color visibility when the activity bar is hidden ([#560](https://github.com/johnpapa/vscode-peacock/issues/560))
 
+### Fixes
+
+- Fixed Cursor IDE editor-toolbar action icons becoming invisible when Peacock colors the title bar. Cursor mis-uses `var(--vscode-titleBar-activeForeground)` for editor toolbar action icons (a Cursor CSS bug; VS Code is unaffected), so a dark Peacock title bar foreground made those icons disappear. Peacock now auto-detects Cursor via `vscode.env.appName` and uses a visible mid-gray title bar foreground only there — VS Code behavior is unchanged ([#647](https://github.com/johnpapa/vscode-peacock/issues/647)). Thanks to [@Prontsevich](https://github.com/Prontsevich) for the root-cause analysis.
+
+
 ### Docs & Infrastructure
 
 - Added `copilot-setup-steps.yml` for Copilot coding agent environment setup (mirrors CI: Node 20, npm ci, test-compile)
