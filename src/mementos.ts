@@ -7,12 +7,23 @@ export interface IMementoLog {
   value: any;
 }
 
+const fallbackGlobalMementos = new Map<string, any>();
+
+function getGlobalState() {
+  return State.extensionContext?.globalState;
+}
+
 async function saveGlobalMemento(mementoName: string, value: any) {
   if (mementoName) {
     Logger.info(
       `${extensionShortName}: Saving the globalState ${mementoName} memento with value ${value}`,
     );
-    await State.extensionContext.globalState.update(mementoName, value);
+    const globalState = getGlobalState();
+    if (globalState) {
+      await globalState.update(mementoName, value);
+      return;
+    }
+    fallbackGlobalMementos.set(mementoName, value);
   }
 }
 
@@ -26,26 +37,35 @@ export async function saveSurpriseMeFavoritesOrderGlobalMemento(index: number, k
 }
 
 export function getFavoritesVersionGlobalMemento() {
-  return State.extensionContext.globalState.get<string>(peacockMementos.favoritesVersion, '');
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<string>(peacockMementos.favoritesVersion, '');
+  }
+  return fallbackGlobalMementos.get(peacockMementos.favoritesVersion) ?? '';
 }
 
 export function getSurpriseMeFavoritesOrderIndexGlobalMemento() {
-  return State.extensionContext.globalState.get<number>(
-    peacockMementos.surpriseMeFavoritesOrderIndex,
-    -1,
-  );
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<number>(peacockMementos.surpriseMeFavoritesOrderIndex, -1);
+  }
+  return fallbackGlobalMementos.get(peacockMementos.surpriseMeFavoritesOrderIndex) ?? -1;
 }
 
 export function getSurpriseMeFavoritesOrderKeyGlobalMemento() {
-  return State.extensionContext.globalState.get<string>(
-    peacockMementos.surpriseMeFavoritesOrderKey,
-    '',
-  );
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<string>(peacockMementos.surpriseMeFavoritesOrderKey, '');
+  }
+  return fallbackGlobalMementos.get(peacockMementos.surpriseMeFavoritesOrderKey) ?? '';
 }
 
 export async function resetFavoritesVersionMemento() {
   const ec = State.extensionContext;
   if (!ec?.globalState) {
+    fallbackGlobalMementos.delete(peacockMementos.favoritesVersion);
+    fallbackGlobalMementos.delete(peacockMementos.surpriseMeFavoritesOrderIndex);
+    fallbackGlobalMementos.delete(peacockMementos.surpriseMeFavoritesOrderKey);
     Logger.info(
       `${extensionShortName}: Skipping memento reset because extension context is not initialized yet`,
     );
@@ -63,24 +83,23 @@ export async function resetFavoritesVersionMemento() {
 }
 
 export function getMementos() {
-  const ec = State.extensionContext;
   const mementos: IMementoLog[] = [];
 
   // Globals
   mementos.push({
     name: peacockMementos.favoritesVersion,
     type: 'globalState',
-    value: ec.globalState.get(peacockMementos.favoritesVersion),
+    value: getFavoritesVersionGlobalMemento(),
   });
   mementos.push({
     name: peacockMementos.surpriseMeFavoritesOrderIndex,
     type: 'globalState',
-    value: ec.globalState.get(peacockMementos.surpriseMeFavoritesOrderIndex),
+    value: getSurpriseMeFavoritesOrderIndexGlobalMemento(),
   });
   mementos.push({
     name: peacockMementos.surpriseMeFavoritesOrderKey,
     type: 'globalState',
-    value: ec.globalState.get(peacockMementos.surpriseMeFavoritesOrderKey),
+    value: getSurpriseMeFavoritesOrderKeyGlobalMemento(),
   });
 
   return mementos;
