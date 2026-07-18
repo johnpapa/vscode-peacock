@@ -347,13 +347,25 @@ function collectActivityBarSettings(
 
   if (isAffectedSettingSelected(AffectedSettings.ActivityBar)) {
     const activityBarStyle = getElementStyle(backgroundHex, ElementNames.activityBar);
+
+    // Classic (side) layout tokens
     activityBarSettings[ColorSettings.activityBar_background] = activityBarStyle.backgroundHex;
     activityBarSettings[ColorSettings.activityBar_activeBackground] =
+      activityBarStyle.backgroundHex;
+
+    // "On top" layout tokens (VS Code 1.84+) — mirror classic layout values
+    activityBarSettings[ColorSettings.activityBarTop_background] = activityBarStyle.backgroundHex;
+    activityBarSettings[ColorSettings.activityBarTop_activeBackground] =
       activityBarStyle.backgroundHex;
 
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
+        activityBarStyle.inactiveForegroundHex;
+
+      activityBarSettings[ColorSettings.activityBarTop_foreground] =
+        activityBarStyle.foregroundHex;
+      activityBarSettings[ColorSettings.activityBarTop_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
     }
 

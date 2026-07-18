@@ -62,6 +62,11 @@ export enum ColorSettings {
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
   activityBar_badgeBackground = 'activityBarBadge.background',
   activityBar_badgeForeground = 'activityBarBadge.foreground',
+  // Activity Bar "on top" layout tokens (VS Code 1.84+)
+  activityBarTop_background = 'activityBarTop.background',
+  activityBarTop_activeBackground = 'activityBarTop.activeBackground',
+  activityBarTop_foreground = 'activityBarTop.foreground',
+  activityBarTop_inactiveForeground = 'activityBarTop.inactiveForeground',
   commandCenter_border = 'commandCenter.border',
   commandCenter_foreground = 'commandCenter.foreground',
   editorGroupBorder = 'editorGroup.border',

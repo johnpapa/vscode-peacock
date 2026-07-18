@@ -276,6 +276,10 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.activityBar_activeBackground]);
       assert.ok(!config[ColorSettings.activityBar_foreground]);
       assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+      assert.ok(!config[ColorSettings.activityBarTop_background]);
+      assert.ok(!config[ColorSettings.activityBarTop_activeBackground]);
+      assert.ok(!config[ColorSettings.activityBarTop_foreground]);
+      assert.ok(!config[ColorSettings.activityBarTop_inactiveForeground]);
       // assert.ok(!config[ColorSettings.activityBar_activeBorder]);
       assert.ok(!config[ColorSettings.statusBar_foreground]);
       assert.ok(!config[ColorSettings.statusBar_background]);
@@ -587,9 +591,14 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   assert.ok(!config[ColorSettings.activityBar_background]);
   assert.ok(!config[ColorSettings.activityBar_foreground]);
   assert.ok(!config[ColorSettings.activityBar_inactiveForeground]);
+  assert.ok(!config[ColorSettings.activityBar_activeBackground]);
+  // "On top" tokens should also be absent when activity bar is not affected
+  assert.ok(!config[ColorSettings.activityBarTop_background]);
+  assert.ok(!config[ColorSettings.activityBarTop_foreground]);
+  assert.ok(!config[ColorSettings.activityBarTop_inactiveForeground]);
+  assert.ok(!config[ColorSettings.activityBarTop_activeBackground]);
   assert.ok(!config[ColorSettings.statusBar_foreground]);
   assert.ok(!config[ColorSettings.statusBar_background]);
-  assert.ok(!config[ColorSettings.activityBar_activeBackground]);
   // assert.ok(!config[ColorSettings.activityBar_activeBorder]);
 
   // reset
@@ -634,6 +643,12 @@ async function testsSetsColorCustomizationsForAffectedElements() {
   const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
   assert.equal(activityBarStyle.backgroundHex, config[ColorSettings.activityBar_background]);
   assert.equal(activityBarStyle.backgroundHex, config[ColorSettings.activityBar_activeBackground]);
+  // "On top" layout tokens should mirror classic layout values
+  assert.equal(activityBarStyle.backgroundHex, config[ColorSettings.activityBarTop_background]);
+  assert.equal(
+    activityBarStyle.backgroundHex,
+    config[ColorSettings.activityBarTop_activeBackground],
+  );
 
   assert.ok(
     shouldKeepColorTest(
@@ -647,6 +662,22 @@ async function testsSetsColorCustomizationsForAffectedElements() {
     shouldKeepColorTest(
       activityBarStyle.inactiveForegroundHex,
       ColorSettings.activityBar_inactiveForeground,
+      keepForegroundColor,
+    ),
+  );
+
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.foregroundHex,
+      ColorSettings.activityBarTop_foreground,
+      keepForegroundColor,
+    ),
+  );
+
+  assert.ok(
+    shouldKeepColorTest(
+      activityBarStyle.inactiveForegroundHex,
+      ColorSettings.activityBarTop_inactiveForeground,
       keepForegroundColor,
     ),
   );
