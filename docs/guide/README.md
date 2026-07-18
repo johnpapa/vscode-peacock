@@ -111,6 +111,14 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 Peacock also automatically colorizes the Command Center foreground and border to match the title bar when title bar coloring is enabled.
 
+#### Window Border (VS Code 1.104+ on Windows)
+
+To color the outer window border, enable `peacock.affectWindowBorder`. When enabled, Peacock sets both `window.activeBorder` and `window.inactiveBorder` to your Peacock color.
+
+```javascript
+  "peacock.affectWindowBorder": true
+```
+
 ![affected elements](../assets/affected-settings.png)
 
 ### Element Adjustments
