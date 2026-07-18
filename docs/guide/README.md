@@ -214,6 +214,8 @@ When set to true Peacock will automatically apply a random color when opening a 
 
 If this setting is `true` and there is no peacock color set, then Peacock will choose a new color. If there is already a color set, Peacock will not choose a random color as this would prevent users from choosing a specific color for some workspaces and surprise in others.
 
+Peacock now also remembers the startup-surprise selection per workspace in a global memento. If a workspace has no saved Peacock color at startup, Peacock first restores the last startup-surprise selection for that same workspace before choosing a new random/favorite color.
+
 ### Lighten and Darken
 
 You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `darkenLightenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
@@ -469,6 +471,7 @@ Peacock takes advantage of a memento (a value stored between sessions and not in
 | peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
 | peacockMementos.surpriseMeFavoritesOrderIndex | Global | Last used favorite index for deterministic startup surprise ordering when cycling favorites                 |
 | peacockMementos.surpriseMeFavoritesOrderKey | Global | Snapshot key for the current favorites list order, used to reset deterministic cycling when favorites change |
+| peacockMementos.surpriseMeStartupSelections | Global | Per-workspace record of the last startup-surprise color so startup behavior can be restored consistently |
 
 ## Try the Code
 

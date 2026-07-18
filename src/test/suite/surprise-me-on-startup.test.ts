@@ -21,7 +21,10 @@ import {
   updateSurpriseMeOnStartup,
 } from '../../configuration';
 import { checkSurpriseMeOnStartupLogic } from '../../extension';
-import { resetFavoritesVersionMemento } from '../../mementos';
+import {
+  resetFavoritesVersionMemento,
+  saveSurpriseMeStartupSelectionGlobalMemento,
+} from '../../mementos';
 
 suite('Surprise me on startup', () => {
   const originalValues = {} as IPeacockSettings;
@@ -100,6 +103,38 @@ suite('Surprise me on startup', () => {
 
         await assertStartupColor('#333333');
         await assertStartupColor('#111111');
+      } finally {
+        randomStub.restore();
+      }
+    });
+
+    test('restores the last startup surprise selection for the same workspace', async () => {
+      await updateSurpriseMeInFavoritesOrder(false);
+      const randomStub = sinon.stub(Math, 'random');
+      try {
+        randomStub.onCall(0).returns(0.99);
+        randomStub.onCall(1).returns(0.01);
+
+        await assertStartupColor('#333333');
+        await assertStartupColor('#333333');
+
+        assert.equal(randomStub.callCount, 1);
+      } finally {
+        randomStub.restore();
+      }
+    });
+
+    test('does not restore startup selections from other workspaces', async () => {
+      await updateSurpriseMeInFavoritesOrder(false);
+      await saveSurpriseMeStartupSelectionGlobalMemento(
+        'workspaceFolder:file:///different-workspace',
+        '#111111',
+      );
+
+      const randomStub = sinon.stub(Math, 'random');
+      try {
+        randomStub.onCall(0).returns(0.99);
+        await assertStartupColor('#333333');
       } finally {
         randomStub.restore();
       }
