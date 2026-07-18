@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## 4.2.5
 
+### Features
+
+- Added `Peacock: Set SideBar Darkness Level` command — sets the SideBar background to a darker shade of the current Peacock color (Dark, Darker, or Darkest). Useful for maintaining color visibility when the activity bar is hidden ([#560](https://github.com/johnpapa/vscode-peacock/issues/560))
+
 ### Docs & Infrastructure
 
 - Added `copilot-setup-steps.yml` for Copilot coding agent environment setup (mirrors CI: Node 20, npm ci, test-compile)

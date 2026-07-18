@@ -17,6 +17,8 @@ import {
   updatePeacockRemoteColor,
   updatePeacockRemoteColorInUserSettings,
   updatePeacockColorInUserSettings,
+  updateWorkspaceConfiguration,
+  getColorCustomizationConfigFromWorkspace,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -159,4 +161,61 @@ export async function showAndCopyCurrentColorHandler() {
   vscode.env.clipboard.writeText(color);
   notify(msg, true);
   return State.extensionContext;
+}
+
+export async function setSideBarDarknessLevelHandler() {
+  try {
+    const color = getEnvironmentAwareColor();
+    if (!color) {
+      return;
+    }
+
+    const sideBarBackgroundKey = 'sideBar.background';
+    const colorCustomizations = { ...getColorCustomizationConfigFromWorkspace() };
+    const existingSideBarColor = colorCustomizations[sideBarBackgroundKey];
+
+    const options = [
+      { label: 'Dark', factor: 1 },
+      { label: 'Darker', factor: 2 },
+      { label: 'Darkest', factor: 3 },
+    ];
+
+    if (existingSideBarColor) {
+      options.unshift({ label: 'Remove Side Bar Color', factor: 0 });
+    }
+
+    const selection = await vscode.window.showQuickPick(
+      options.map(o => o.label),
+      {
+        placeHolder: 'Select SideBar darkness level',
+      },
+    );
+
+    if (!selection) {
+      return;
+    }
+
+    if (selection === 'Remove Side Bar Color') {
+      delete colorCustomizations[sideBarBackgroundKey];
+      await updateWorkspaceConfiguration(colorCustomizations);
+      notify('SideBar background color has been removed.', true);
+      return;
+    }
+
+    const selected = options.find(o => o.label === selection);
+    if (!selected) {
+      return;
+    }
+
+    let newColor = color;
+    for (let i = 0; i < selected.factor; i++) {
+      newColor = getDarkenedColorHex(newColor, 10);
+    }
+
+    colorCustomizations[sideBarBackgroundKey] = newColor;
+    await updateWorkspaceConfiguration(colorCustomizations);
+    notify(`SideBar background set to ${selection} (${newColor})`, true);
+  } catch (err) {
+    notify(`Failed to set SideBar darkness: ${err}`, true);
+  }
 }
