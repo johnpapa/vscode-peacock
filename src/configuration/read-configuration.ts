@@ -363,8 +363,7 @@ function collectActivityBarSettings(
       activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
 
-      activityBarSettings[ColorSettings.activityBarTop_foreground] =
-        activityBarStyle.foregroundHex;
+      activityBarSettings[ColorSettings.activityBarTop_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBarTop_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
     }

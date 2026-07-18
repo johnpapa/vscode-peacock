@@ -36,7 +36,10 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(config[ColorSettings.activityBarTop_background], 'activityBarTop.background should be set');
+      assert.ok(
+        config[ColorSettings.activityBarTop_background],
+        'activityBarTop.background should be set',
+      );
       assert.equal(
         config[ColorSettings.activityBarTop_background],
         config[ColorSettings.activityBar_background],
@@ -48,7 +51,10 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(config[ColorSettings.activityBarTop_activeBackground], 'activityBarTop.activeBackground should be set');
+      assert.ok(
+        config[ColorSettings.activityBarTop_activeBackground],
+        'activityBarTop.activeBackground should be set',
+      );
       assert.equal(
         config[ColorSettings.activityBarTop_activeBackground],
         config[ColorSettings.activityBar_activeBackground],
@@ -63,7 +69,10 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
 
       const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
 
-      assert.ok(config[ColorSettings.activityBarTop_foreground], 'activityBarTop.foreground should be set');
+      assert.ok(
+        config[ColorSettings.activityBarTop_foreground],
+        'activityBarTop.foreground should be set',
+      );
       assert.equal(
         config[ColorSettings.activityBarTop_foreground],
         activityBarStyle.foregroundHex,
@@ -78,7 +87,10 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
 
       const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
 
-      assert.ok(config[ColorSettings.activityBarTop_inactiveForeground], 'activityBarTop.inactiveForeground should be set');
+      assert.ok(
+        config[ColorSettings.activityBarTop_inactiveForeground],
+        'activityBarTop.inactiveForeground should be set',
+      );
       assert.equal(
         config[ColorSettings.activityBarTop_inactiveForeground],
         activityBarStyle.inactiveForegroundHex,
@@ -91,8 +103,14 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(!config[ColorSettings.activityBarTop_foreground], 'activityBarTop.foreground should not be set when keepForegroundColor is true');
-      assert.ok(!config[ColorSettings.activityBarTop_inactiveForeground], 'activityBarTop.inactiveForeground should not be set when keepForegroundColor is true');
+      assert.ok(
+        !config[ColorSettings.activityBarTop_foreground],
+        'activityBarTop.foreground should not be set when keepForegroundColor is true',
+      );
+      assert.ok(
+        !config[ColorSettings.activityBarTop_inactiveForeground],
+        'activityBarTop.inactiveForeground should not be set when keepForegroundColor is true',
+      );
     });
 
     test('activityBarTop.background matches expected color value for peacock green', async () => {
@@ -126,21 +144,30 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(!config[ColorSettings.activityBarTop_background], 'activityBarTop.background should not be set when activity bar is not affected');
+      assert.ok(
+        !config[ColorSettings.activityBarTop_background],
+        'activityBarTop.background should not be set when activity bar is not affected',
+      );
     });
 
     test('does not set activityBarTop.foreground when activity bar is not affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(!config[ColorSettings.activityBarTop_foreground], 'activityBarTop.foreground should not be set when activity bar is not affected');
+      assert.ok(
+        !config[ColorSettings.activityBarTop_foreground],
+        'activityBarTop.foreground should not be set when activity bar is not affected',
+      );
     });
 
     test('does not set activityBarTop.inactiveForeground when activity bar is not affected', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(!config[ColorSettings.activityBarTop_inactiveForeground], 'activityBarTop.inactiveForeground should not be set when activity bar is not affected');
+      assert.ok(
+        !config[ColorSettings.activityBarTop_inactiveForeground],
+        'activityBarTop.inactiveForeground should not be set when activity bar is not affected',
+      );
     });
 
     suiteTeardown(async () => {
