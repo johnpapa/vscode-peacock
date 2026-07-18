@@ -314,11 +314,17 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
       titleBarStyle.inactiveBackgroundHex;
 
     if (!keepForegroundColor) {
-      titleBarSettings[ColorSettings.titleBar_activeForeground] = titleBarStyle.foregroundHex;
+      // Cursor mis-uses titleBar.activeForeground for editor toolbar icons on dark
+      // backgrounds; VS Code does not. Only compensate when running in Cursor.
+      const isCursor = !!vscode.env.appName && vscode.env.appName.includes('Cursor');
+      const foregroundHex = isCursor
+        ? ForegroundColors.CursorTitleBarForeground
+        : titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.titleBar_activeForeground] = foregroundHex;
       titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
         titleBarStyle.inactiveForegroundHex;
       titleBarSettings[ColorSettings.commandCenter_border] = titleBarStyle.inactiveForegroundHex;
-      titleBarSettings[ColorSettings.commandCenter_foreground] = titleBarStyle.foregroundHex;
+      titleBarSettings[ColorSettings.commandCenter_foreground] = foregroundHex;
     }
   }
   return titleBarSettings;

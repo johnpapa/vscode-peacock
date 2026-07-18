@@ -327,6 +327,8 @@ A successful and recommended settings configuration to colorize the Title Bar is
 
 ![Title Bar Settings](../assets/title-bar-coloring-settings.png)
 
+> **Cursor IDE note:** Cursor mis-uses the title bar foreground color for its editor toolbar action icons (a Cursor-specific CSS bug that VS Code does not have), which can make those icons hard to see on a dark title bar. Peacock automatically detects when it is running inside Cursor and applies a visible mid-gray title bar foreground so the toolbar icons stay legible. VS Code is unaffected. See [#647](https://github.com/johnpapa/vscode-peacock/issues/647).
+
 ### How are foreground colors calculated
 
 Peacock is using tinycolor which provides some basic color theory mechanisms to determine whether or not to show a light or dark foreground color based on the perceived brightness of the background. More or less, if it thinks the background is darker than 50% then Peacock uses the light foreground. If it thinks the background is greater than 50% then Peacock uses the dark foreground.

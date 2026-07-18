@@ -102,6 +102,15 @@ export enum Sections {
 export enum ForegroundColors {
   DarkForeground = '#15202b',
   LightForeground = '#e7e7e7',
+  /**
+   * Medium gray used ONLY in Cursor IDE for the title bar foreground.
+   * Cursor mis-uses var(--vscode-titleBar-activeForeground) for editor toolbar
+   * action icons (a Cursor CSS bug; VS Code is unaffected). DarkForeground
+   * (#15202b) is invisible on Cursor's dark editor toolbar (~1.2:1). This gray
+   * stays visible on both light Peacock title bars and dark editor toolbars.
+   * See https://github.com/johnpapa/vscode-peacock/issues/647
+   */
+  CursorTitleBarForeground = '#595959',
 }
 
 // See WebAIM contrast guidelines: https://webaim.org/articles/contrast/
