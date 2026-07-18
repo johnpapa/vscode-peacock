@@ -42,6 +42,7 @@ export interface IPeacockAffectedElementSettings {
   sashHover: boolean;
   statusAndTitleBorders: boolean;
   tabActiveBorder: boolean;
+  tabActiveBackground: boolean;
   windowBorder: boolean;
 }
 

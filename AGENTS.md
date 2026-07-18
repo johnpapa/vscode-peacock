@@ -99,6 +99,7 @@ npm run test-all                # Run unit + Live Share tests
 
 ## CI/CD
 
+- **CI** (`ci.yml`): Triggered on `pull_request` and `push` to `main` (ignores docs/markdown). Runs lint → build (`test-compile`) → unit tests (`xvfb-run npm run just-test`).
 - **Docs + E2E** (`docs.yml`): Triggered on push to `main` and PRs when `docs/`, `e2e/`, `playwright.config.ts`, or the workflow itself changes. Runs Playwright e2e tests, then deploys `docs/` to GitHub Pages.
 
 ## Adding a New Command
@@ -114,13 +115,26 @@ npm run test-all                # Run unit + Live Share tests
 
 ## Adding a New Setting
 
+### StandardSettings (scalar values, not color tokens)
+
 1. Define the setting in `package.json` under `contributes.configuration.properties` with type, default, and description
-2. Add the setting name to the appropriate enum in `src/models/enums.ts` (`StandardSettings` or `AffectedSettings`)
+2. Add the setting name to `StandardSettings` enum in `src/models/enums.ts`
 3. Add a reader in `src/configuration/read-configuration.ts`
-4. If the setting affects color application, update `src/apply-color.ts`
-5. Add unit tests
-6. Update docs in `docs/guide/`
-7. Update `docs/changelog/README.md`
+4. Add unit tests in `src/test/`
+5. Update docs in `docs/guide/`
+6. Update `docs/changelog/README.md`
+
+### AffectedSettings (toggle whether a VS Code color token is colored)
+
+1. Define the setting in `package.json` under `contributes.configuration.properties` (boolean, default false)
+2. Add to `AffectedSettings` enum in `src/models/enums.ts` — and add the VS Code color token to `ColorSettings` enum
+3. Add the property to `IPeacockAffectedElementSettings` in `src/models/interfaces.ts`
+4. Wire into `getAffectedElements()` in `src/configuration/read-configuration.ts`
+5. Wire into the appropriate `collect*Settings()` function in `src/configuration/read-configuration.ts`
+6. Wire into `updateAffectedElements()` in `src/configuration/update-configuration.ts`
+7. Add unit tests in `src/test/suite/affected-elements.test.ts`
+8. Update docs in `docs/guide/`
+9. Update `docs/changelog/README.md`
 
 ## Common Pitfalls
 
