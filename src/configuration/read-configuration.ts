@@ -248,6 +248,7 @@ export function getAffectedElements() {
     statusAndTitleBorders:
       readConfiguration<boolean>(AffectedSettings.StatusAndTitleBorders) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
+    tabActiveBackground: readConfiguration<boolean>(AffectedSettings.TabActiveBackground) || false,
     windowBorder: readConfiguration<boolean>(AffectedSettings.WindowBorder) || false,
   } as IPeacockAffectedElementSettings;
 }
@@ -448,6 +449,9 @@ function collectAccentBorderSettings(backgroundHex: string) {
   if (isAffectedSettingSelected(AffectedSettings.TabActiveBorder)) {
     accentBorderSettings[ColorSettings.tabActiveBorder] = color;
   }
+  if (isAffectedSettingSelected(AffectedSettings.TabActiveBackground)) {
+    accentBorderSettings[ColorSettings.tabActiveBackground] = color;
+  }
   return accentBorderSettings;
 }
 
@@ -556,6 +560,7 @@ function getAllUserSettings() {
     sideBarBorder: affectSideBarBorder,
     sashHover: affectSashHover,
     tabActiveBorder: affectTabActiveBorder,
+    tabActiveBackground: affectTabActiveBackground,
   } = getAffectedElements();
   return {
     favoriteColors,
@@ -574,6 +579,7 @@ function getAllUserSettings() {
     affectSideBarBorder,
     affectSashHover,
     affectTabActiveBorder,
+    affectTabActiveBackground,
   };
 }
 

@@ -243,6 +243,41 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
     });
 
+    test('tabActiveBackground is colored when enabled', async () => {
+      await updateAffectedElements({
+        tabActiveBackground: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.tabActiveBackground], peacockGreen);
+    });
+
+    test('tabActiveBackground is not colored when disabled', async () => {
+      await updateAffectedElements({
+        tabActiveBackground: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.tabActiveBackground]);
+    });
+
+    test('tabActiveBorder and tabActiveBackground can be enabled independently', async () => {
+      await updateAffectedElements({
+        tabActiveBorder: true,
+        tabActiveBackground: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.tabActiveBorder], peacockGreen);
+      assert.ok(!config[ColorSettings.tabActiveBackground]);
+    });
+
     suiteTeardown(async () => {
       await updateAffectedElements(allAffectedElements);
     });
@@ -260,6 +295,7 @@ suite('Affected elements', () => {
         sideBarBorder: false,
         sashHover: false,
         tabActiveBorder: false,
+        tabActiveBackground: false,
         windowBorder: false,
       } as IPeacockAffectedElementSettings);
     });
@@ -291,6 +327,7 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.editorGroupBorder]);
       assert.ok(!config[ColorSettings.sashHover]);
       assert.ok(!config[ColorSettings.tabActiveBorder]);
+      assert.ok(!config[ColorSettings.tabActiveBackground]);
       assert.ok(!config[ColorSettings.window_activeBorder]);
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
     });
@@ -308,6 +345,7 @@ suite('Affected elements', () => {
         debuggingStatusBar: false,
         titleBar: true,
         tabActiveBorder: true,
+        tabActiveBackground: false,
         editorGroupBorder: true,
         panelBorder: true,
         sideBarBorder: true,
