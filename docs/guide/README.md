@@ -47,7 +47,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                            |
 | peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                              |
-| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should affect the status bar while debugging. Defaults to false.                          |
+| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should use a distinct Peacock debugging status bar color while debugging. Defaults to false. When false, Peacock still preserves the normal status bar colors during launch/debug sessions. |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))               |
 | peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                                  |
 | peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                                        |

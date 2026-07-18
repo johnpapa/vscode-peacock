@@ -17,6 +17,8 @@ All notable changes to the code will be documented in this file.
 
 ### Fixes
 
+- Fixed status bar disappearing (overridden by VS Code's default orange debugging color) during launch/debug sessions when `affectDebuggingStatusBar` is `false` (the default). Peacock now always writes `statusBar.debuggingBackground` and `statusBar.debuggingForeground` to match the regular status bar whenever the status bar is affected, preventing VS Code from overriding those tokens at debug start. The `affectDebuggingStatusBar` setting still works as before — enabling it produces a complementary distinctive color during debugging ([#572](https://github.com/johnpapa/vscode-peacock/issues/572)).
+
 - Fixed Cursor IDE editor-toolbar action icons becoming invisible when Peacock colors the title bar. Cursor mis-uses `var(--vscode-titleBar-activeForeground)` for editor toolbar action icons (a Cursor CSS bug; VS Code is unaffected), so a dark Peacock title bar foreground made those icons disappear. Peacock now auto-detects Cursor via `vscode.env.appName` and uses a visible mid-gray title bar foreground only there — VS Code behavior is unchanged ([#647](https://github.com/johnpapa/vscode-peacock/issues/647)). Thanks to [@Prontsevich](https://github.com/Prontsevich) for the root-cause analysis.
 
 
