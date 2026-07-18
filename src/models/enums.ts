@@ -27,6 +27,7 @@ export enum AffectedSettings {
   StatusAndTitleBorders = 'affectStatusAndTitleBorders',
   TabActiveBorder = 'affectTabActiveBorder',
   TitleBar = 'affectTitleBar',
+  WindowBorder = 'affectWindowBorder',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
@@ -80,6 +81,8 @@ export enum ColorSettings {
   statusBarItem_remoteForeground = 'statusBarItem.remoteForeground',
   tabActiveBorder = 'tab.activeBorder',
   titleBar_activeBackground = 'titleBar.activeBackground',
+  window_activeBorder = 'window.activeBorder',
+  window_inactiveBorder = 'window.inactiveBorder',
   titleBar_activeForeground = 'titleBar.activeForeground',
   titleBar_border = 'titleBar.border',
   titleBar_inactiveBackground = 'titleBar.inactiveBackground',

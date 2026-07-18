@@ -55,6 +55,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                          |
 | peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                             |
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                  |
+| peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+. |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                             |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
 | peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                               |

@@ -235,6 +235,11 @@
           "default": false,
           "description": "Specifies whether Peacock should affect the active tab's border."
         },
+        "peacock.affectWindowBorder": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the window border (window.activeBorder and window.inactiveBorder). Available on Windows in VS Code 1.104+."
+        },
         "peacock.affectTitleBar": {
           "type": "boolean",
           "default": true,
