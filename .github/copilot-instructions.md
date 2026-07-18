@@ -47,7 +47,8 @@ VS Code extension written in TypeScript, bundled with Webpack, published to the 
 | When this changes... | Also update... |
 |---|---|
 | New command added | `package.json` (contributes.commands + menus), `src/models/enums.ts` (Commands enum), `src/commands.ts`, `src/extension.ts` (register), `src/test/`, `docs/guide/`, `docs/changelog/README.md` |
-| New setting added | `package.json` (contributes.configuration), `src/models/enums.ts` (StandardSettings or AffectedSettings enum), `src/configuration/read-configuration.ts`, `src/test/`, `docs/guide/`, `docs/changelog/README.md` |
+| New `StandardSettings` setting added | `package.json` (contributes.configuration), `src/models/enums.ts` (StandardSettings enum), `src/configuration/read-configuration.ts` (add reader), `src/test/`, `docs/guide/`, `docs/changelog/README.md` |
+| New `AffectedSettings` setting added | `package.json` (contributes.configuration), `src/models/enums.ts` (AffectedSettings + ColorSettings enums), `src/models/interfaces.ts` (IPeacockAffectedElementSettings), `src/configuration/read-configuration.ts` (getAffectedElements + collect* function), `src/configuration/update-configuration.ts` (updateAffectedElements), `src/test/suite/affected-elements.test.ts`, `docs/guide/`, `docs/changelog/README.md` |
 | Bug fix | `src/test/` (add a regression test that fails without the fix), `docs/changelog/README.md` |
 | Color application logic | `src/apply-color.ts`, `src/color-library.ts`, related unit tests |
 | Live Share integration | `src/live-share/`, `src/live-share/liveshare-commands.ts`, `package.json` (vsls dependency), related tests, run `npm run test-all` |
