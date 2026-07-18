@@ -30,6 +30,7 @@ All notable changes to the code will be documented in this file.
 - Added `copilot-setup-steps.yml` for Copilot coding agent environment setup (mirrors CI: Node 20, npm ci, test-compile)
 - Added `paths-ignore` to CI workflow to skip builds for docs-only changes (markdown, images, issue templates)
 - Improved `CHANGELOG.md` pointer to reference authoritative changelog location at `docs/changelog/README.md`
+- Clarified Marketplace release visibility and propagation expectations in docs, including stable vs pre-release guidance and troubleshooting steps ([#649](https://github.com/johnpapa/vscode-peacock/issues/649))
 
 ### Dependencies
 

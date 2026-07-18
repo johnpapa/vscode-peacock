@@ -338,6 +338,24 @@ See the [CHANGELOG](/changelog) latest changes.
 
 Peacock only works if a workspace is open in Visual Studio Code because it needs the settings.json file to work. When it is not in a workspace, all commands are hidden and disabled except for the "Peacock: Open Documentation" command.
 
+### Why don't I see the latest Peacock version in the Marketplace immediately?
+
+After a Peacock release is published, the Visual Studio Marketplace can take time to propagate across regions and caches. During that window, the Marketplace page or Extensions view may temporarily show the previous version.
+
+Peacock currently publishes stable releases only (no separate pre-release channel). If VS Code is set to pre-release updates for an extension, there may not be a newer pre-release build to install for Peacock.
+
+To verify the latest released version:
+
+- Check the [Peacock changelog](/changelog) for the newest published notes
+- Check the [Peacock Marketplace listing](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&wt.mc_id=vscodepeacock-github-jopapa) version
+
+If your editor still does not show the latest version, try:
+
+1. Run **Developer: Reload Window**
+1. Run **Extensions: Check for Extension Updates**
+1. Confirm Peacock is using the stable channel in the Extensions details view
+1. Wait a few minutes and check again (Marketplace propagation is not always immediate)
+
 ### What does Peacock affect
 
 Peacock affects:
