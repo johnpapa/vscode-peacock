@@ -127,6 +127,7 @@ suite('Affected elements', () => {
         sashHover: false,
 
         tabActiveBorder: false,
+        windowBorder: false,
       } as IPeacockAffectedElementSettings);
     });
 
@@ -218,6 +219,30 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.sashHover]);
     });
 
+    test('windowBorder sets activeBorder and inactiveBorder when enabled', async () => {
+      await updateAffectedElements({
+        windowBorder: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(config[ColorSettings.window_activeBorder], peacockGreen);
+      assert.equal(config[ColorSettings.window_inactiveBorder], peacockGreen);
+    });
+
+    test('windowBorder does not set activeBorder and inactiveBorder when disabled', async () => {
+      await updateAffectedElements({
+        windowBorder: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.window_activeBorder]);
+      assert.ok(!config[ColorSettings.window_inactiveBorder]);
+    });
+
     suiteTeardown(async () => {
       await updateAffectedElements(allAffectedElements);
     });
@@ -235,6 +260,7 @@ suite('Affected elements', () => {
         sideBarBorder: false,
         sashHover: false,
         tabActiveBorder: false,
+        windowBorder: false,
       } as IPeacockAffectedElementSettings);
     });
 
@@ -261,6 +287,8 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.editorGroupBorder]);
       assert.ok(!config[ColorSettings.sashHover]);
       assert.ok(!config[ColorSettings.tabActiveBorder]);
+      assert.ok(!config[ColorSettings.window_activeBorder]);
+      assert.ok(!config[ColorSettings.window_inactiveBorder]);
     });
 
     suiteTeardown(async () => {
@@ -281,6 +309,7 @@ suite('Affected elements', () => {
         sideBarBorder: true,
         sashHover: true,
         statusAndTitleBorders: false,
+        windowBorder: false,
       });
 
       const value = await getColorSettingAfterEnterColor(

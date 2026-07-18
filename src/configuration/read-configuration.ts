@@ -120,6 +120,8 @@ export function prepareColors(backgroundHex: string) {
 
   const accentBorderSettings = collectAccentBorderSettings(backgroundHex);
 
+  const windowBorderSettings = collectWindowBorderSettings(backgroundHex);
+
   const statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
   // Merge all color settings
@@ -128,6 +130,7 @@ export function prepareColors(backgroundHex: string) {
     ...titleBarSettings,
     ...statusBarSettings,
     ...accentBorderSettings,
+    ...windowBorderSettings,
     ...squigglyBeGoneSettings,
   };
 
@@ -245,6 +248,7 @@ export function getAffectedElements() {
     statusAndTitleBorders:
       readConfiguration<boolean>(AffectedSettings.StatusAndTitleBorders) || false,
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
+    windowBorder: readConfiguration<boolean>(AffectedSettings.WindowBorder) || false,
   } as IPeacockAffectedElementSettings;
 }
 
@@ -425,6 +429,17 @@ function collectAccentBorderSettings(backgroundHex: string) {
     accentBorderSettings[ColorSettings.tabActiveBorder] = color;
   }
   return accentBorderSettings;
+}
+
+function collectWindowBorderSettings(backgroundHex: string) {
+  const windowBorderSettings = {} as ISettingsIndexer;
+
+  if (isAffectedSettingSelected(AffectedSettings.WindowBorder)) {
+    const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
+    windowBorderSettings[ColorSettings.window_activeBorder] = color;
+    windowBorderSettings[ColorSettings.window_inactiveBorder] = color;
+  }
+  return windowBorderSettings;
 }
 
 function collectSquigglyBeGoneSettings() {

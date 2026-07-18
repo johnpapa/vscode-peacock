@@ -55,6 +55,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                          |
 | peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                             |
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                  |
+| peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+. |
 | peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)        |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                             |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
@@ -110,6 +111,14 @@ The `Peacock: Save Current Color as Favorite Color` feature allows you to save t
 You can tell peacock which parts of VS Code will be affected by when you select a color. You can do this by checking the appropriate setting that applies to the elements you want to be colored. These include examples such as affectEditorGroupBorder, affectPanelBorder, affectSideBarBorder, affectSashHover.
 
 Peacock also automatically colorizes the Command Center foreground and border to match the title bar when title bar coloring is enabled.
+
+#### Window Border (VS Code 1.104+ on Windows)
+
+To color the outer window border, enable `peacock.affectWindowBorder`. When enabled, Peacock sets both `window.activeBorder` and `window.inactiveBorder` to your Peacock color.
+
+```javascript
+  "peacock.affectWindowBorder": true
+```
 
 ![affected elements](../assets/affected-settings.png)
 

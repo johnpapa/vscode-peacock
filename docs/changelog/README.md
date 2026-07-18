@@ -2,6 +2,12 @@
 
 All notable changes to the code will be documented in this file.
 
+## 4.2.6
+
+### Features
+
+- Added `peacock.affectWindowBorder` setting — when enabled, Peacock colorizes `window.activeBorder` and `window.inactiveBorder` to match the Peacock color. Window border support is available on Windows in VS Code 1.104+ ([#569](https://github.com/johnpapa/vscode-peacock/issues/569))
+
 ## 4.2.5
 
 ### Features
