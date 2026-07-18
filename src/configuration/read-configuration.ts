@@ -379,7 +379,17 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
         statusBarStyle.foregroundHex;
     }
 
+    // Always set debugging colors to match the regular status bar so VS Code does
+    // not override them with its default debugging color during launch/debug sessions.
+    // (#572: status bar disappears during launch script scenarios)
+    statusBarSettings[ColorSettings.statusBar_debuggingBackground] = statusBarStyle.backgroundHex;
+    if (!keepForegroundColor) {
+      statusBarSettings[ColorSettings.statusBar_debuggingForeground] =
+        statusBarStyle.foregroundHex;
+    }
+
     if (isAffectedSettingSelected(AffectedSettings.DebuggingStatusBar)) {
+      // When the user has opted in, override with a distinctive complementary color.
       const debuggingBackgroundColorHex = getDebuggingBackgroundColorHex(
         statusBarStyle.backgroundHex,
       );

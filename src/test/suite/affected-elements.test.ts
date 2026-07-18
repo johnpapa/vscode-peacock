@@ -372,7 +372,11 @@ suite('Affected elements', () => {
       assert.ok(debuggingBorder);
     });
 
-    test('debugging styles are not set when debugging status bar is not affected', async () => {
+    test('debugging background and foreground match status bar when affectDebuggingStatusBar is false', async () => {
+      // Regression test for #572: status bar should not disappear during launch/debug
+      // when affectDebuggingStatusBar is false (the default). Peacock must always write
+      // statusBar.debuggingBackground/Foreground so VS Code cannot override with its default
+      // orange debugging color.
       await updateAffectedElements({
         statusBar: true,
         debuggingStatusBar: false,
@@ -381,12 +385,20 @@ suite('Affected elements', () => {
 
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
+      const statusBarBackground = config[ColorSettings.statusBar_background];
+      const statusBarForeground = config[ColorSettings.statusBar_foreground];
       const debuggingBackground = config[ColorSettings.statusBar_debuggingBackground];
       const debuggingForeground = config[ColorSettings.statusBar_debuggingForeground];
       const debuggingBorder = config[ColorSettings.statusBar_debuggingBorder];
-      assert.ok(!debuggingBackground);
-      assert.ok(!debuggingForeground);
-      assert.ok(!debuggingBorder);
+
+      // debugging colors should be set to preserve Peacock's color during debug
+      assert.ok(debuggingBackground, 'debuggingBackground should be set to preserve color during debug');
+      assert.ok(debuggingForeground, 'debuggingForeground should be set to preserve color during debug');
+      // debugging colors should match the regular status bar colors
+      assert.equal(debuggingBackground, statusBarBackground, 'debuggingBackground should match statusBar.background');
+      assert.equal(debuggingForeground, statusBarForeground, 'debuggingForeground should match statusBar.foreground');
+      // border should NOT be set when affectDebuggingStatusBar is false
+      assert.ok(!debuggingBorder, 'debuggingBorder should not be set when affectDebuggingStatusBar is false');
 
       await updateAffectedElements(allAffectedElements);
     });
