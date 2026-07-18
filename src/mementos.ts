@@ -45,6 +45,12 @@ export function getSurpriseMeFavoritesOrderKeyGlobalMemento() {
 
 export async function resetFavoritesVersionMemento() {
   const ec = State.extensionContext;
+  if (!ec?.globalState) {
+    Logger.info(
+      `${extensionShortName}: Skipping memento reset because extension context is not initialized yet`,
+    );
+    return;
+  }
 
   Logger.info(
     `${extensionShortName}: Setting all workspaceState and globalState mementos to undefined`,
