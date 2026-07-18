@@ -26,6 +26,8 @@ import {
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
+  getSurpriseMeInFavoritesOrder,
+  getSurpriseMeFromFavoritesOnly,
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
   getEnvironmentAwareColor,
@@ -37,7 +39,14 @@ import { applyColor, updateColorSetting } from './apply-color';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
-import { saveFavoritesVersionGlobalMemento, getMementos } from './mementos';
+import {
+  saveFavoritesVersionGlobalMemento,
+  getMementos,
+  getSurpriseMeFavoritesOrderIndexGlobalMemento,
+  getSurpriseMeFavoritesOrderKeyGlobalMemento,
+  saveSurpriseMeFavoritesOrderGlobalMemento,
+} from './mementos';
+import type { IFavoriteColors } from './models';
 
 const { commands, workspace } = vscode;
 
@@ -149,9 +158,52 @@ export async function checkSurpriseMeOnStartupLogic() {
       return;
     }
 
-    await changeColorToRandomHandler();
+    const deterministicColorApplied = await applyDeterministicStartupFavoriteColor();
+    if (!deterministicColorApplied) {
+      await changeColorToRandomHandler();
+    }
     const color = getEnvironmentAwareColor();
     const message = `Peacock changed the color to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }
+}
+
+async function applyDeterministicStartupFavoriteColor() {
+  if (!getSurpriseMeFromFavoritesOnly() || !getSurpriseMeInFavoritesOrder()) {
+    return false;
+  }
+
+  const nextFavorite = await getNextFavoriteColorInOrder();
+  if (!nextFavorite) {
+    return false;
+  }
+
+  await applyColor(nextFavorite.value);
+  await updateColorSetting(nextFavorite.value);
+  return true;
+}
+
+async function getNextFavoriteColorInOrder() {
+  const { values: favoriteColors } = getFavoriteColors();
+  if (!favoriteColors.length) {
+    return undefined;
+  }
+
+  const currentKey = getFavoriteColorsKey(favoriteColors);
+  const previousKey = getSurpriseMeFavoritesOrderKeyGlobalMemento();
+  const previousIndex = getSurpriseMeFavoritesOrderIndexGlobalMemento();
+
+  const resetToStart =
+    previousKey !== currentKey || previousIndex < 0 || previousIndex >= favoriteColors.length;
+  const lastIndex = resetToStart ? -1 : previousIndex;
+  const nextIndex = (lastIndex + 1) % favoriteColors.length;
+
+  await saveSurpriseMeFavoritesOrderGlobalMemento(nextIndex, currentKey);
+  return favoriteColors[nextIndex];
+}
+
+function getFavoriteColorsKey(favoriteColors: IFavoriteColors[]) {
+  return favoriteColors
+    .map(favoriteColor => `${favoriteColor.name}:${favoriteColor.value.toLowerCase()}`)
+    .join('|');
 }

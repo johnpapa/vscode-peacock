@@ -7,6 +7,7 @@ All notable changes to the code will be documented in this file.
 ### Features
 
 - Added `peacock.affectWindowBorder` setting — when enabled, Peacock colorizes `window.activeBorder` and `window.inactiveBorder` to match the Peacock color. Window border support is available on Windows in VS Code 1.104+ ([#569](https://github.com/johnpapa/vscode-peacock/issues/569))
+- Added `peacock.surpriseMeInFavoritesOrder` setting — when enabled (with startup surprise + favorites-only), Peacock now cycles favorite colors in deterministic list order across startups instead of choosing favorites randomly ([#487](https://github.com/johnpapa/vscode-peacock/issues/487))
 
 ## 4.2.5
 

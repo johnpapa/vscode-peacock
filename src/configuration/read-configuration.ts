@@ -235,6 +235,10 @@ export function getSurpriseMeOnStartup() {
   return readConfiguration<boolean>(StandardSettings.SurpriseMeOnStartup, false);
 }
 
+export function getSurpriseMeInFavoritesOrder() {
+  return readConfiguration<boolean>(StandardSettings.SurpriseMeInFavoritesOrder, false);
+}
+
 export function getAffectedElements() {
   return {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
@@ -548,6 +552,7 @@ function getAllUserSettings() {
   const keepBadgeColor = getKeepBadgeColor();
   const keepForegroundColor = getKeepForegroundColor();
   const surpriseMeOnStartup = getSurpriseMeOnStartup();
+  const surpriseMeInFavoritesOrder = getSurpriseMeInFavoritesOrder();
   const darkForegroundColor = getDarkForegroundColor();
   const lightForegroundColor = getLightForegroundColor();
   const {
@@ -568,6 +573,7 @@ function getAllUserSettings() {
     keepBadgeColor,
     keepForegroundColor,
     surpriseMeOnStartup,
+    surpriseMeInFavoritesOrder,
     darkForegroundColor,
     lightForegroundColor,
     affectActivityBar,

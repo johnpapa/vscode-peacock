@@ -14,6 +14,7 @@ export enum StandardSettings {
   ShowColorInStatusBar = 'showColorInStatusBar',
   SquigglyBeGone = 'squigglyBeGone',
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
+  SurpriseMeInFavoritesOrder = 'surpriseMeInFavoritesOrder',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
 }
 
