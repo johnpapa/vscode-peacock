@@ -57,6 +57,7 @@ export interface IPeacockSettings {
   sashHover: boolean;
   affectStatusAndTitleBorders: boolean;
   elementAdjustments: IPeacockElementAdjustments;
+  excludedSettings: string[];
   favoriteColors: IFavoriteColors[];
   keepBadgeColor: boolean;
   keepForegroundColor: boolean;
