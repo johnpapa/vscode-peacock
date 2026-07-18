@@ -38,7 +38,10 @@ export async function saveSurpriseMeFavoritesOrderGlobalMemento(index: number, k
   await saveGlobalMemento(peacockMementos.surpriseMeFavoritesOrderKey, key);
 }
 
-export async function saveSurpriseMeStartupSelectionGlobalMemento(workspaceKey: string, color: string) {
+export async function saveSurpriseMeStartupSelectionGlobalMemento(
+  workspaceKey: string,
+  color: string,
+) {
   if (!workspaceKey || !color) {
     return;
   }
@@ -77,7 +80,10 @@ export function getSurpriseMeFavoritesOrderKeyGlobalMemento() {
 export function getSurpriseMeStartupSelectionsGlobalMemento(): SurpriseStartupSelections {
   const globalState = getGlobalState();
   if (globalState) {
-    return globalState.get<SurpriseStartupSelections>(peacockMementos.surpriseMeStartupSelections, {});
+    return globalState.get<SurpriseStartupSelections>(
+      peacockMementos.surpriseMeStartupSelections,
+      {},
+    );
   }
   return fallbackGlobalMementos.get(peacockMementos.surpriseMeStartupSelections) ?? {};
 }
