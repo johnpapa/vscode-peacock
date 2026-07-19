@@ -75,6 +75,8 @@ See [AGENTS.md](AGENTS.md) for the full project guide including architecture, pa
 
 [Open an issue here](https://github.com/johnpapa/vscode-peacock/issues)
 
+For `workbench.experimental.modernUI` compatibility status, follow the primary tracking issue: [#652](https://github.com/johnpapa/vscode-peacock/issues/652).
+
 ## Contributors
 
 [Contribution guidelines are located here](./CONTRIBUTING.md)

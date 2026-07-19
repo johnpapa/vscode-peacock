@@ -361,7 +361,16 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 ### Peacock colors are written but not visually applied (`modernUI` enabled)
 
-If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this can be caused when `workbench.experimental.modernUI` is enabled. We have observed this in Insiders and can also reproduce it in Stable if `modernUI` is turned on.
+If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this happens when `workbench.experimental.modernUI` is enabled. modernUI overrides the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), so Peacock is effectively non-functional while it is on. We have observed this in Insiders (where modernUI is enabled by default) and can also reproduce it in Stable if `modernUI` is turned on. Peacock will show a one-time notice when it detects this situation.
+
+Primary Peacock tracking issue:
+
+- [Tracking: modernUI compatibility (#652)](https://github.com/johnpapa/vscode-peacock/issues/652)
+
+Upstream VS Code tracking:
+
+- [microsoft/vscode#325250](https://github.com/microsoft/vscode/issues/325250)
+- [microsoft/vscode#326126](https://github.com/microsoft/vscode/issues/326126)
 
 Temporary workaround:
 
@@ -369,7 +378,18 @@ Temporary workaround:
 2. Run **Developer: Reload Window**
 3. Run a Peacock command again (for example, **Peacock: Surprise Me**)
 
-This is tracked upstream in VS Code: [microsoft/vscode#326445](https://github.com/microsoft/vscode/issues/326445).
+Current known impact areas under `modernUI` (research snapshot):
+
+- Often ignored/remapped: `titleBar.*`, `statusBar.*`, `activityBar.*`, `tab.activeBorder`, `commandCenter.border`
+- Better reliability today: editor/background-adjacent tokens and selective tab styling once upstream fixes land
+
+Near-term compatibility research focus:
+
+| Area | Current behavior (modernUI on) | Near-term Peacock direction |
+| --- | --- | --- |
+| `titleBar.*`, `statusBar.*`, `activityBar.*` | Frequently blended/overridden by modernUI shell/floating panel styles | Keep warning users and avoid relying on these for strong visual separation |
+| `tab.activeBorder` and related tab cues | Known upstream bug/regression in active tracking | Re-test and adopt as soon as upstream fix ships |
+| Workspace identity signaling | Some classic tokens no longer produce distinct shell colors | Shift toward best-effort token set and clear compatibility guidance per VS Code version |
 
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 
