@@ -6,21 +6,6 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
-## Marketplace and project status
-
-| Item | Status |
-|---|---|
-| Marketplace version | [4.3.3](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
-| Installs | [4,362,293](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
-| Downloads | [6,553,538](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
-| Rating | [4.58/5 from 174 ratings](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
-| CI | [Passing](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml) |
-| Docs workflow | [Passing](https://github.com/johnpapa/vscode-peacock/actions/workflows/docs.yml) |
-| Live Share | [Enabled](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa) |
-| AI Ready | [Yes](https://github.com/johnpapa/ai-ready) |
-| License | [MIT](http://opensource.org/licenses/MIT) |
-| Contributors | [15 contributors](#contributors) |
-
 ## Install
 
 1. Open **Extensions** sideBar panel in Visual Studio Code and choose the menu options for **View → Extensions**
@@ -49,6 +34,10 @@ Now enjoy exploring the rest of the features explained in the docs!
 ## Resources
 
 - [Peacock docs on GitHub Pages](https://johnpapa.github.io/vscode-peacock/)
+- [Peacock on the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+- [CI workflow (GitHub Actions)](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
+- [Docs workflow (GitHub Actions)](https://github.com/johnpapa/vscode-peacock/actions/workflows/docs.yml)
+- [MIT License](http://opensource.org/licenses/MIT)
 - [Get VS Code](https://code.visualstudio.com/?WT.mc_id=academic-0000-jopapa)
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=academic-0000-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?WT.mc_id=academic-0000-jopapa)
