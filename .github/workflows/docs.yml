@@ -23,7 +23,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -41,6 +41,23 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Check docs links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --verbose
+            --accept 200,206,429
+            --max-retries 2
+            --retry-wait-time 2
+            --timeout 20
+            --exclude-mail
+            --exclude-path docs/changelog/README.md
+            docs/**/*.md
+            docs/index.html
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
