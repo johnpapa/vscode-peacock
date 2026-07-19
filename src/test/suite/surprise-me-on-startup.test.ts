@@ -1,5 +1,12 @@
 import * as assert from 'assert';
-import { Commands, IFavoriteColors, IPeacockSettings, IPeacockAffectedElementSettings, IElementColors, ElementNames } from '../../models';
+import {
+  Commands,
+  IFavoriteColors,
+  IPeacockSettings,
+  IPeacockAffectedElementSettings,
+  IElementColors,
+  ElementNames,
+} from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import {

@@ -77,8 +77,14 @@ suite('Affected elements', () => {
 
     await executeCommand(Commands.changeColorToPeacockGreen);
     const config = getColorCustomizationConfig();
-    assert.equal(config[ColorSettings.statusBar_debuggingBackground], config[ColorSettings.statusBar_background]);
-    assert.equal(config[ColorSettings.statusBar_debuggingForeground], config[ColorSettings.statusBar_foreground]);
+    assert.equal(
+      config[ColorSettings.statusBar_debuggingBackground],
+      config[ColorSettings.statusBar_background],
+    );
+    assert.equal(
+      config[ColorSettings.statusBar_debuggingForeground],
+      config[ColorSettings.statusBar_foreground],
+    );
     assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
     await updateAffectedElements(allAffectedElements);
   });

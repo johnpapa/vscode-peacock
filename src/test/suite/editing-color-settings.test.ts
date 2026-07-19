@@ -9,7 +9,11 @@ import {
   extensionShortName,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
-import { getCurrentColorBeforeAdjustments, getPeacockColor, getPeacockRemoteColor } from '../../configuration';
+import {
+  getCurrentColorBeforeAdjustments,
+  getPeacockColor,
+  getPeacockRemoteColor,
+} from '../../configuration';
 import { RemoteNames } from '../../remote';
 import { applyColor } from '../../apply-color';
 import { ConfigurationTarget } from 'vscode';
