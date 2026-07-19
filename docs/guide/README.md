@@ -43,36 +43,36 @@ Commands can be found in the command palette. Look for commands beginning with "
 
 ## Settings
 
-| Property                            | Description                                                                                                         |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                            |
-| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                              |
+| Property                            | Description                                                                                                                                                                                                           |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                                                                                                                              |
+| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                                                                                                                                |
 | peacock.affectDebuggingStatusBar    | Specifies whether Peacock should use a distinct Peacock debugging status bar color while debugging. Defaults to false. When false, Peacock still preserves the normal status bar colors during launch/debug sessions. |
-| peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))               |
-| peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                                  |
-| peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                                        |
-| peacock.affectSideBarBorder         | Specifies whether Peacock should affect the sideBar border. Defaults to false.                                      |
-| peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                          |
-| peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                             |
-| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                  |
-| peacock.affectTabActiveBackground   | Specifies whether Peacock should affect the active tab's background color. Defaults to false                        |
-| peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+. |
-| peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)        |
-| peacock.elementAdjustments          | fine tune coloring of affected elements                                                                             |
-| peacock.favoriteColors              | array of objects for color names and hex values                                                                     |
-| peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                               |
-| peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                                           |
-| peacock.darkForeground              | override for the dark foreground                                                                                    |
-| peacock.lightForeground             | override for the light foreground                                                                                   |
-| peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                                       |
-| peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color             |
-| peacock.surpriseMeInFavoritesOrder  | When true, and startup surprise uses favorites, Peacock cycles through favorites in list order instead of random   |
-| peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                            |
-| peacock.remoteColor                 | The Peacock color that will be applied to remote workspaces                                                         |
-| peacock.color                       | The Peacock color that will be applied to workspaces                                                                |
-| peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                                           |
-| peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                                          |
-| peacock.squigglyBeGone              | Easter Egg feature for FUN. Hides all error, warning, and info underlines. This setting has NO effect on your code. |
+| peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))                                                                                                                 |
+| peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                                                                                                                                    |
+| peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                                                                                                                                          |
+| peacock.affectSideBarBorder         | Specifies whether Peacock should affect the sideBar border. Defaults to false.                                                                                                                                        |
+| peacock.affectSashHover             | Specifies whether Peacock should affect the sash border. Defaults to true.                                                                                                                                            |
+| peacock.affectStatusAndTitleBorders | Specifies whether Peacock should affect the status or title borders. Defaults to false.                                                                                                                               |
+| peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                                                                                                                    |
+| peacock.affectTabActiveBackground   | Specifies whether Peacock should affect the active tab's background color. Defaults to false                                                                                                                          |
+| peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+.                                             |
+| peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)                                                                                                          |
+| peacock.elementAdjustments          | fine tune coloring of affected elements                                                                                                                                                                               |
+| peacock.favoriteColors              | array of objects for color names and hex values                                                                                                                                                                       |
+| peacock.keepForegroundColor         | Specifies whether Peacock should change affect colors                                                                                                                                                                 |
+| peacock.surpriseMeOnStartup         | Specifies whether Peacock apply a random color on startup                                                                                                                                                             |
+| peacock.darkForeground              | override for the dark foreground                                                                                                                                                                                      |
+| peacock.lightForeground             | override for the light foreground                                                                                                                                                                                     |
+| peacock.darkenLightenPercentage     | the percentage to darken or lighten the color                                                                                                                                                                         |
+| peacock.surpriseMeFromFavoritesOnly | Specifies whether Peacock should choose a random color from the favorites list or a purely random color                                                                                                               |
+| peacock.surpriseMeInFavoritesOrder  | When true, and startup surprise uses favorites, Peacock cycles through favorites in list order instead of random                                                                                                      |
+| peacock.showColorInStatusBar        | Show the Peacock color in the status bar                                                                                                                                                                              |
+| peacock.remoteColor                 | The Peacock color that will be applied to remote workspaces                                                                                                                                                           |
+| peacock.color                       | The Peacock color that will be applied to workspaces                                                                                                                                                                  |
+| peacock.vslsShareColor              | Peacock color for Live Share Color when acting as a Guest                                                                                                                                                             |
+| peacock.vslsJoinColor               | Peacock color for Live Share color when acting as the Host                                                                                                                                                            |
+| peacock.squigglyBeGone              | Easter Egg feature for FUN. Hides all error, warning, and info underlines. This setting has NO effect on your code.                                                                                                   |
 
 ### Favorite Colors
 
@@ -176,6 +176,27 @@ Peacock will leave the following values in `workbench.colorCustomizations` untou
     "statusBar.foreground": "#004572"
 }
 ```
+
+#### Keep custom secondary/accent keys
+
+By default, Peacock manages the color keys it owns in `workbench.colorCustomizations` so changing Peacock colors can overwrite derived secondary/accent keys (for example badge and active-border tokens).
+
+If you want Peacock's main automation but need specific manual tweaks to persist, add those keys to `peacock.excludedSettings`.
+
+```javascript
+"peacock.excludedSettings": [
+    "activityBarBadge.background",
+    "activityBar.activeBorder"
+],
+"workbench.colorCustomizations": {
+    "activityBarBadge.background": "#3a86ff",
+    "activityBar.activeBorder": "#ff80fb"
+}
+```
+
+With this setup, Peacock still manages all other supported keys, while leaving these explicit overrides untouched across apply/reset operations.
+
+> Thanks to community reports from [@presto2116](https://github.com/presto2116) and [@imbwaldo](https://github.com/imbwaldo) for surfacing this workflow.
 
 ### Element Adjustments
 
@@ -342,6 +363,23 @@ See the [CHANGELOG](/changelog) latest changes.
 
 Peacock only works if a workspace is open in Visual Studio Code because it needs the settings.json file to work. When it is not in a workspace, all commands are hidden and disabled except for the "Peacock: Open Documentation" command.
 
+### Peacock commands appear but do nothing
+
+If Peacock commands are visible in the command palette but selecting one closes the palette with no effect, there are two common causes:
+
+**Live Share conflict**
+
+A known conflict exists between Peacock's Live Share integration and certain states of the VS Live Share extension. If you have Live Share installed:
+
+1. Disable Live Share and try a Peacock command again
+2. If that fixes it, try reinstalling Live Share (uninstall → **Developer: Reload Window** → re-install)
+
+**No workspace open**
+
+Peacock needs an open workspace folder to write to `.vscode/settings.json`. If you opened VS Code without a folder or workspace, commands will silently do nothing. Make sure a folder or workspace is open, then run **Developer: Reload Window** to re-trigger activation.
+
+> Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the Live Share conflict workaround ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)).
+
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 
 After a Peacock release is published, the Visual Studio Marketplace can take time to propagate across regions and caches. During that window, the Marketplace page or Extensions view may temporarily show the previous version.
@@ -468,12 +506,12 @@ This list may change from version to version depending on the Peacock authoring 
 
 Peacock takes advantage of a memento (a value stored between sessions and not in settings).
 
-| Name                             | Type   | Description                                                                                                |
-| -------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
-| peacockMementos.favoritesVersion | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings |
-| peacockMementos.surpriseMeFavoritesOrderIndex | Global | Last used favorite index for deterministic startup surprise ordering when cycling favorites                 |
-| peacockMementos.surpriseMeFavoritesOrderKey | Global | Snapshot key for the current favorites list order, used to reset deterministic cycling when favorites change |
-| peacockMementos.surpriseMeStartupSelections | Global | Per-workspace record of the last startup-surprise color so startup behavior can be restored consistently |
+| Name                                          | Type   | Description                                                                                                  |
+| --------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------ |
+| peacockMementos.favoritesVersion              | Global | The version of Peacock. Helps identify when the list of favorites should be written to the user's settings   |
+| peacockMementos.surpriseMeFavoritesOrderIndex | Global | Last used favorite index for deterministic startup surprise ordering when cycling favorites                  |
+| peacockMementos.surpriseMeFavoritesOrderKey   | Global | Snapshot key for the current favorites list order, used to reset deterministic cycling when favorites change |
+| peacockMementos.surpriseMeStartupSelections   | Global | Per-workspace record of the last startup-surprise color so startup behavior can be restored consistently     |
 
 For example, if `workspaceFolder:file:///repo-a` maps to `#333333`, reopening that same workspace restores `#333333`; `workspaceFolder:file:///repo-b` can map to a different color.
 

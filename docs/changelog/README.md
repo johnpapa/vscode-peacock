@@ -29,13 +29,14 @@ All notable changes to the code will be documented in this file.
 
 - Fixed Cursor IDE editor-toolbar action icons becoming invisible when Peacock colors the title bar. Cursor mis-uses `var(--vscode-titleBar-activeForeground)` for editor toolbar action icons (a Cursor CSS bug; VS Code is unaffected), so a dark Peacock title bar foreground made those icons disappear. Peacock now auto-detects Cursor via `vscode.env.appName` and uses a visible mid-gray title bar foreground only there — VS Code behavior is unchanged ([#647](https://github.com/johnpapa/vscode-peacock/issues/647)). Thanks to [@Prontsevich](https://github.com/Prontsevich) for the root-cause analysis.
 
-
 ### Docs & Infrastructure
 
 - Added `copilot-setup-steps.yml` for Copilot coding agent environment setup (mirrors CI: Node 20, npm ci, test-compile)
 - Added `paths-ignore` to CI workflow to skip builds for docs-only changes (markdown, images, issue templates)
 - Improved `CHANGELOG.md` pointer to reference authoritative changelog location at `docs/changelog/README.md`
 - Clarified Marketplace release visibility and propagation expectations in docs, including stable vs pre-release guidance and troubleshooting steps ([#649](https://github.com/johnpapa/vscode-peacock/issues/649))
+- Added explicit docs guidance showing how `peacock.excludedSettings` preserves manual secondary/accent overrides (for example `activityBarBadge.background` and `activityBar.activeBorder`) while still using Peacock automation ([#343](https://github.com/johnpapa/vscode-peacock/issues/343)). Thanks to [@presto2116](https://github.com/presto2116) and [@imbwaldo](https://github.com/imbwaldo) for the community reports.
+- Added FAQ entry explaining why Peacock commands can appear in the palette but silently do nothing — covers the Live Share conflict workaround and workspace requirement ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)). Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the root cause.
 
 ### Dependencies
 
