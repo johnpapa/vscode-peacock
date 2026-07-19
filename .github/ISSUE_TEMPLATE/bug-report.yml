@@ -13,7 +13,7 @@ body:
     attributes:
       label: Peacock Version
       description: Which version of Peacock are you using?
-      placeholder: e.g., 4.2.3
+      placeholder: e.g., 4.3.0
     validations:
       required: true
 
