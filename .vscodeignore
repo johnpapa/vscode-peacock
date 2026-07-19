@@ -33,3 +33,7 @@ webpack.config.js
 .prettierrc.js
 # Exclude e2e assets from VSIX
 extension/e2e/**
+
+extension/**/screenshots/**
+
+extension/e2e/screenshots/**
