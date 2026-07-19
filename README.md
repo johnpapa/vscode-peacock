@@ -10,8 +10,7 @@ Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacoc
 
 | Item | Status |
 |---|---|
-| Upcoming release | **4.3.0** |
-| Marketplace version | [4.2.3](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
+| Marketplace version | [4.3.3](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
 | Installs | [4,362,293](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
 | Downloads | [6,553,538](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
 | Rating | [4.58/5 from 174 ratings](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |

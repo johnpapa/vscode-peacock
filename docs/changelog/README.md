@@ -2,6 +2,15 @@
 
 All notable changes to the code will be documented in this file.
 
+## 4.3.3
+
+### Release update
+
+- Re-published the full 4.3.x feature set as a clean patch release after Marketplace validation checks.
+- Added validation-safe Marketplace badge URLs in `README.md` to avoid blocked SVG badge providers.
+- Confirmed Peacock color customization behavior when `workbench.experimental.modernUI` is disabled; this workaround applies in Insiders and can also apply in Stable when `modernUI` is manually enabled.
+- Added a guide FAQ entry documenting the temporary `workbench.experimental.modernUI` workaround and upstream tracking issue.
+
 ## 4.3.0
 
 > This release consolidates the previously unpublished 4.2.3-4.2.6 changelog drafts into the next Marketplace release after 4.2.2.
