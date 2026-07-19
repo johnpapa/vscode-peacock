@@ -53,7 +53,8 @@ jobs:
             --retry-wait-time 2
             --timeout 20
             --root-dir docs
-            --exclude-path docs/changelog/README.md
+            --exclude-path changelog/README.md
+            --exclude https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
             docs/**/*.md
             docs/index.html
         env:
