@@ -52,6 +52,7 @@ jobs:
             --max-retries 2
             --retry-wait-time 2
             --timeout 20
+            --root-dir docs
             --exclude-path docs/changelog/README.md
             docs/**/*.md
             docs/index.html
