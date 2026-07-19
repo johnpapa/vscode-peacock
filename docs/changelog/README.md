@@ -10,6 +10,10 @@ All notable changes to the code will be documented in this file.
 - Added `peacock.surpriseMeInFavoritesOrder` setting — when enabled (with startup surprise + favorites-only), Peacock now cycles favorite colors in deterministic list order across startups instead of choosing favorites randomly ([#487](https://github.com/johnpapa/vscode-peacock/issues/487))
 - Startup surprise now persists and restores the last startup-selected color per workspace via mementos, so reopening workspaces (including large worktree setups) keeps expected startup surprise behavior ([#582](https://github.com/johnpapa/vscode-peacock/issues/582))
 
+### Fixes
+
+- Improved reset/remove-all cleanup for uninstall scenarios by correctly reading workspace-folder `workbench.colorCustomizations` entries before deleting Peacock-managed keys, while preserving non-Peacock customization keys ([#656](https://github.com/johnpapa/vscode-peacock/issues/656))
+
 ## 4.2.5
 
 ### Features

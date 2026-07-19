@@ -59,12 +59,16 @@ export function getColorCustomizationConfig() {
 export function getColorCustomizationConfigFromWorkspace() {
   const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
 
-  if (!inspect || typeof inspect.workspaceValue !== 'object') {
+  if (!inspect) {
     return {};
   }
 
-  const colorCustomizations: ISettingsIndexer = inspect.workspaceValue as ISettingsIndexer;
-  return colorCustomizations;
+  const colorCustomizations = inspect.workspaceValue || inspect.workspaceFolderValue;
+  if (!colorCustomizations || typeof colorCustomizations !== 'object') {
+    return {};
+  }
+
+  return colorCustomizations as ISettingsIndexer;
 }
 
 export function getPeacockWorkspace() {
