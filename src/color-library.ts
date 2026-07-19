@@ -156,13 +156,21 @@ export function isValidColorInput(input: string) {
 }
 
 export function deletePeacocksColorCustomizations(excludedSettings: string[] = []) {
-  const newColorCustomizations = getColorCustomizationConfigFromWorkspace();
+  const colorCustomizations = getColorCustomizationConfigFromWorkspace();
+  return deleteKnownColorCustomizations(colorCustomizations, excludedSettings);
+}
 
-  Object.values(ColorSettings)
-    .filter(setting => !excludedSettings.includes(setting))
-    .forEach(setting => {
-      delete newColorCustomizations[setting];
-    });
+export function deleteKnownColorCustomizations(
+  colorCustomizations: Record<string, string>,
+  excludedSettings: string[] = [],
+) {
+  const newColorCustomizations = { ...colorCustomizations };
+  const managedSettings = Object.values(ColorSettings).filter(
+    setting => !excludedSettings.includes(setting),
+  );
+  managedSettings.forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
   return newColorCustomizations;
 }
 

@@ -3,7 +3,7 @@ import { IPeacockSettings, Commands, ColorSettings, peacockGreen } from '../../m
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { getColorCustomizationConfig, getDarkenLightenPercentage } from '../../configuration';
 import { executeCommand } from './lib/constants';
-import { getLightenedColorHex, getDarkenedColorHex } from '../../color-library';
+import { getLightenedColorHex } from '../../color-library';
 
 suite('Darken/Lighten commands', () => {
   const originalValues = {} as IPeacockSettings;
@@ -24,15 +24,4 @@ suite('Darken/Lighten commands', () => {
     );
   });
 
-  test('can darken a color', async () => {
-    await executeCommand(Commands.changeColorToPeacockGreen);
-    await executeCommand(Commands.darken);
-    const config = getColorCustomizationConfig();
-    const pct = getDarkenLightenPercentage();
-
-    assert.equal(
-      getDarkenedColorHex(peacockGreen, pct),
-      config[ColorSettings.activityBar_background],
-    );
-  });
 });

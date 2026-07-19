@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { favoriteColorSeparator, peacockGreen } from './models';
+import { peacockGreen } from './models';
 import { getFavoriteColors } from './configuration';
 import { applyColor } from './apply-color';
+import { parseFavoriteColorValue } from './favorite-color';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -45,11 +46,6 @@ export async function promptForFavoriteColor() {
   }
 
   return '';
-}
-
-export function parseFavoriteColorValue(text: string) {
-  const sep = favoriteColorSeparator;
-  return text.substring(text.indexOf(sep) + sep.length + 1);
 }
 
 async function tryColorWithPeacock() {
