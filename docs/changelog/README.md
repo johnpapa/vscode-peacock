@@ -36,6 +36,7 @@ All notable changes to the code will be documented in this file.
 - Added `paths-ignore` to CI workflow to skip builds for docs-only changes (markdown, images, issue templates)
 - Improved `CHANGELOG.md` pointer to reference authoritative changelog location at `docs/changelog/README.md`
 - Clarified Marketplace release visibility and propagation expectations in docs, including stable vs pre-release guidance and troubleshooting steps ([#649](https://github.com/johnpapa/vscode-peacock/issues/649))
+- Added FAQ entry explaining why Peacock commands can appear in the palette but silently do nothing — covers the Live Share conflict workaround and workspace requirement ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)). Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the root cause.
 
 ### Dependencies
 

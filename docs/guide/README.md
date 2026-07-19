@@ -342,6 +342,23 @@ See the [CHANGELOG](/changelog) latest changes.
 
 Peacock only works if a workspace is open in Visual Studio Code because it needs the settings.json file to work. When it is not in a workspace, all commands are hidden and disabled except for the "Peacock: Open Documentation" command.
 
+### Peacock commands appear but do nothing
+
+If Peacock commands are visible in the command palette but selecting one closes the palette with no effect, there are two common causes:
+
+**Live Share conflict**
+
+A known conflict exists between Peacock's Live Share integration and certain states of the VS Live Share extension. If you have Live Share installed:
+
+1. Disable Live Share and try a Peacock command again
+2. If that fixes it, try reinstalling Live Share (uninstall → **Developer: Reload Window** → re-install)
+
+**No workspace open**
+
+Peacock needs an open workspace folder to write to `.vscode/settings.json`. If you opened VS Code without a folder or workspace, commands will silently do nothing. Make sure a folder or workspace is open, then run **Developer: Reload Window** to re-trigger activation.
+
+> Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the Live Share conflict workaround ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)).
+
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 
 After a Peacock release is published, the Visual Studio Marketplace can take time to propagate across regions and caches. During that window, the Marketplace page or Extensions view may temporarily show the previous version.
