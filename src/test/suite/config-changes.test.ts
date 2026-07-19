@@ -145,6 +145,7 @@ suite('changes to configuration', () => {
       const updatedCustomizations = getColorCustomizationConfigFromWorkspace();
       const expectedOrder = keptKeys.concat(removedKeys);
       const updatedKeys = Object.keys(updatedCustomizations);
+      // Compare only keys that exist on both sides; optional tokens can be added/removed.
       const sharedExpectedKeys = expectedOrder.filter(key => updatedKeys.includes(key));
       const sharedUpdatedKeys = updatedKeys.filter(key => expectedOrder.includes(key));
 
