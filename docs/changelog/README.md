@@ -30,6 +30,8 @@ All notable changes to the code will be documented in this file.
 
 ### Docs & Infrastructure
 
+- **Post-4.3.0:** Started test modernization by adding a dedicated Vitest unit lane (`test:unit`) and an explicit VS Code host lane (`test:host`), then moving pure suites (`object-library`, `notification`, `foreground`) to unit tests and beginning split coverage for Cursor title bar behavior ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
+- **Post-4.3.0:** Continued the modernization split by extracting pure command/configuration helpers and migrating additional suite coverage to unit tests (`darken-lighten`, `excluded-settings`, `favorite-colors`, `save-favorite-color`, `save-starter-favorite-colors`, `set-sidebar-darkness-level`) while retaining slim host contract tests and preserving overall executed test-count parity ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
 - Added `copilot-setup-steps.yml` for Copilot coding agent environment setup (mirrors CI: Node 20, npm ci, test-compile)
 - Added `paths-ignore` to CI workflow to skip builds for docs-only changes (markdown, images, issue templates)
 - Improved `CHANGELOG.md` pointer to reference authoritative changelog location at `docs/changelog/README.md`
