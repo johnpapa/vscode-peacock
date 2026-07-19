@@ -217,6 +217,10 @@ function getFavoriteColorsKey(favoriteColors: IFavoriteColors[]) {
 }
 
 async function applySavedStartupSelectionForCurrentWorkspace() {
+  if (getSurpriseMeFromFavoritesOnly() && getSurpriseMeInFavoritesOrder()) {
+    return false;
+  }
+
   const workspaceKey = getStartupWorkspaceKey();
   if (!workspaceKey) {
     return false;
