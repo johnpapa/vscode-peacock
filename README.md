@@ -6,17 +6,12 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
-[![Badge for version for Visual Studio Code extension johnpapa.vscode-peacock](https://vsmarketplacebadges.dev/version-short/johnpapa.vscode-peacock.svg)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Installs](https://vsmarketplacebadges.dev/installs-short/johnpapa.vscode-peacock.svg)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Downloads](https://vsmarketplacebadges.dev/downloads-short/johnpapa.vscode-peacock.svg)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Rating](https://vsmarketplacebadges.dev/rating-short/johnpapa.vscode-peacock.svg)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa)
-
-[![AI Ready](https://img.shields.io/badge/AI--Ready-yes-brightgreen?style=flat)](https://github.com/johnpapa/ai-ready)
-[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=2f99fa&style=flat)](http://opensource.org/licenses/MIT)
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.svg?style=flat)](#contributors)
-
-[![CI](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml/badge.svg)](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) ·
+[Live Share](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa) ·
+[AI Ready](https://github.com/johnpapa/ai-ready) ·
+[MIT License](http://opensource.org/licenses/MIT) ·
+[All Contributors](#contributors) ·
+[CI](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
 
 ## Install
 
