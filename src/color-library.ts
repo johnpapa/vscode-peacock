@@ -14,6 +14,7 @@ import {
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
 } from './configuration';
+import { selectForegroundColor } from './foreground-color';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -37,9 +38,11 @@ export function getBackgroundHoverColorHex(backgroundColor = '') {
 
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  const foreground = background.isLight()
-    ? getDarkForegroundColorOrOverride()
-    : getLightForegroundColorOrOverride();
+  const foreground = selectForegroundColor(
+    background.isLight(),
+    getDarkForegroundColorOrOverride(),
+    getLightForegroundColorOrOverride(),
+  );
   return formatHex(tinycolor(foreground));
 }
 
@@ -153,13 +156,21 @@ export function isValidColorInput(input: string) {
 }
 
 export function deletePeacocksColorCustomizations(excludedSettings: string[] = []) {
-  const newColorCustomizations = getColorCustomizationConfigFromWorkspace();
+  const colorCustomizations = getColorCustomizationConfigFromWorkspace();
+  return deleteKnownColorCustomizations(colorCustomizations, excludedSettings);
+}
 
-  Object.values(ColorSettings)
-    .filter(setting => !excludedSettings.includes(setting))
-    .forEach(setting => {
-      delete newColorCustomizations[setting];
-    });
+export function deleteKnownColorCustomizations(
+  colorCustomizations: Record<string, string>,
+  excludedSettings: string[] = [],
+) {
+  const newColorCustomizations = { ...colorCustomizations };
+  const managedSettings = Object.values(ColorSettings).filter(
+    setting => !excludedSettings.includes(setting),
+  );
+  managedSettings.forEach(setting => {
+    delete newColorCustomizations[setting];
+  });
   return newColorCustomizations;
 }
 

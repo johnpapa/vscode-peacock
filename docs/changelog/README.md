@@ -2,6 +2,13 @@
 
 All notable changes to the code will be documented in this file.
 
+## 4.4.0 (Unreleased)
+
+### Docs & Infrastructure
+
+- Started test modernization by adding a dedicated Vitest unit lane (`test:unit`) and an explicit VS Code host lane (`test:host`), then moving pure suites (`object-library`, `notification`, `foreground`) to unit tests and beginning split coverage for Cursor title bar behavior ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
+- Continued the modernization split by extracting pure command/configuration helpers and migrating additional suite coverage to unit tests (`darken-lighten`, `excluded-settings`, `favorite-colors`, `save-favorite-color`, `save-starter-favorite-colors`, `set-sidebar-darkness-level`) while retaining slim host contract tests and preserving overall executed test-count parity ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
+
 ## 4.3.0
 
 > This release consolidates the previously unpublished 4.2.3-4.2.6 changelog drafts into the next Marketplace release after 4.2.2.

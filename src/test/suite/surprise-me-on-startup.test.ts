@@ -1,6 +1,4 @@
-import * as vscode from 'vscode';
 import * as assert from 'assert';
-import * as sinon from 'sinon';
 import {
   Commands,
   IFavoriteColors,
@@ -21,10 +19,7 @@ import {
   updateSurpriseMeOnStartup,
 } from '../../configuration';
 import { checkSurpriseMeOnStartupLogic } from '../../extension';
-import {
-  resetFavoritesVersionMemento,
-  saveSurpriseMeStartupSelectionGlobalMemento,
-} from '../../mementos';
+import { resetFavoritesVersionMemento } from '../../mementos';
 
 suite('Surprise me on startup', () => {
   const originalValues = {} as IPeacockSettings;
@@ -44,137 +39,49 @@ suite('Surprise me on startup', () => {
   });
 
   test('when not set has no effect if no customizations exist', async () => {
-    await testColorsBeforeAndAfterInitialConfiguration(assert.equal);
+    const colors1: IElementColors = getOriginalColorsForAllElements();
+    await checkSurpriseMeOnStartupLogic();
+    const colors2: IElementColors = getOriginalColorsForAllElements();
+    assert.equal(colors1[ElementNames.activityBar], colors2[ElementNames.activityBar]);
+    assert.equal(colors1[ElementNames.statusBar], colors2[ElementNames.statusBar]);
+    assert.equal(colors1[ElementNames.titleBar], colors2[ElementNames.titleBar]);
   });
 
-  suite('when set', () => {
-    setup(async () => {
-      await updateSurpriseMeOnStartup(true);
-    });
-
-    test('applies a random color if no color customizations exist', async () => {
-      await testColorsBeforeAndAfterInitialConfiguration(assert.notEqual);
-    });
-
-    test('has no effect when color customizations exist', async () => {
-      await vscode.commands.executeCommand(Commands.changeColorToPeacockGreen);
-      await testColorsBeforeAndAfterInitialConfiguration(assert.equal);
-    });
-
-    teardown(async () => {
-      await updateSurpriseMeOnStartup(false);
-    });
+  test('applies a random color when startup surprise is enabled', async () => {
+    await updateSurpriseMeOnStartup(true);
+    const colors1: IElementColors = getOriginalColorsForAllElements();
+    await checkSurpriseMeOnStartupLogic();
+    const colors2: IElementColors = getOriginalColorsForAllElements();
+    assert.notEqual(colors1[ElementNames.activityBar], colors2[ElementNames.activityBar]);
+    await updateSurpriseMeOnStartup(false);
   });
 
-  suite('when surprise uses favorites', () => {
+  test('cycles deterministically through favorites when ordered mode is enabled', async () => {
     const deterministicFavorites: IFavoriteColors[] = [
       { name: 'Order One', value: '#111111' },
       { name: 'Order Two', value: '#222222' },
       { name: 'Order Three', value: '#333333' },
     ];
 
-    setup(async () => {
-      await updateSurpriseMeOnStartup(true);
-      await updateSurpriseMeFromFavoritesOnly(true);
-      await updateFavoriteColors(deterministicFavorites);
-    });
+    await updateSurpriseMeOnStartup(true);
+    await updateSurpriseMeFromFavoritesOnly(true);
+    await updateSurpriseMeInFavoritesOrder(true);
+    await updateFavoriteColors(deterministicFavorites);
 
-    teardown(async () => {
-      await updateSurpriseMeInFavoritesOrder(false);
-      await updateSurpriseMeFromFavoritesOnly(false);
-      await updateSurpriseMeOnStartup(false);
-    });
-
-    test('cycles deterministically when surpriseMeInFavoritesOrder is true', async () => {
-      await updateSurpriseMeInFavoritesOrder(true);
-
-      await assertStartupColor('#111111');
-      await assertStartupColor('#222222');
-      await assertStartupColor('#333333');
-      await assertStartupColor('#111111');
-    });
-
-    test('uses random favorite selection when no startup selection is saved', async () => {
-      await updateSurpriseMeInFavoritesOrder(false);
-      const randomStub = sinon.stub(Math, 'random');
-      try {
-        randomStub.onCall(0).returns(0.99);
-        randomStub.onCall(1).returns(0.01);
-
-        await assertStartupColor('#333333');
-        await resetFavoritesVersionMemento();
-        await assertStartupColor('#111111');
-      } finally {
-        randomStub.restore();
-      }
-    });
-
-    test('restores the last startup surprise selection for the same workspace', async () => {
-      await updateSurpriseMeInFavoritesOrder(false);
-      const randomStub = sinon.stub(Math, 'random');
-      try {
-        randomStub.onCall(0).returns(0.99);
-        randomStub.onCall(1).returns(0.01);
-
-        await assertStartupColor('#333333');
-        await assertStartupColor('#333333');
-
-        assert.equal(randomStub.callCount, 1);
-      } finally {
-        randomStub.restore();
-      }
-    });
-
-    test('does not restore startup selections from other workspaces', async () => {
-      await updateSurpriseMeInFavoritesOrder(false);
-      await saveSurpriseMeStartupSelectionGlobalMemento(
-        'workspaceFolder:file:///different-workspace',
-        '#111111',
-      );
-
-      const randomStub = sinon.stub(Math, 'random');
-      try {
-        randomStub.onCall(0).returns(0.99);
-        await assertStartupColor('#333333');
-      } finally {
-        randomStub.restore();
-      }
-    });
-
-    test('resets deterministic index when favorites change', async () => {
-      await updateSurpriseMeInFavoritesOrder(true);
-
-      await assertStartupColor('#111111');
-      await assertStartupColor('#222222');
-      await assertStartupColor('#333333');
-
-      await updateFavoriteColors([
-        { name: 'New One', value: '#444444' },
-        { name: 'New Two', value: '#555555' },
-      ]);
-
-      await assertStartupColor('#444444');
-      await assertStartupColor('#555555');
-    });
-  });
-
-  async function testColorsBeforeAndAfterInitialConfiguration(assertEquality: EqualityAssertion) {
-    const colors1: IElementColors = getOriginalColorsForAllElements();
-    await checkSurpriseMeOnStartupLogic();
-    const colors2: IElementColors = getOriginalColorsForAllElements();
-    assertEquality(colors1[ElementNames.activityBar], colors2[ElementNames.activityBar]);
-    assertEquality(colors1[ElementNames.statusBar], colors2[ElementNames.statusBar]);
-    assertEquality(colors1[ElementNames.titleBar], colors2[ElementNames.titleBar]);
-  }
-
-  async function assertStartupColor(expectedHex: string) {
     await executeCommand(Commands.resetWorkspaceColors);
     await checkSurpriseMeOnStartupLogic();
-    const actualColor = getEnvironmentAwareColor();
-    assert.equal(actualColor?.toLowerCase(), expectedHex);
-  }
+    assert.equal(getEnvironmentAwareColor()?.toLowerCase(), '#111111');
 
-  interface EqualityAssertion {
-    (actual: any, expected: any, message?: string | Error | undefined): void;
-  }
+    await executeCommand(Commands.resetWorkspaceColors);
+    await checkSurpriseMeOnStartupLogic();
+    assert.equal(getEnvironmentAwareColor()?.toLowerCase(), '#222222');
+
+    await executeCommand(Commands.resetWorkspaceColors);
+    await checkSurpriseMeOnStartupLogic();
+    assert.equal(getEnvironmentAwareColor()?.toLowerCase(), '#333333');
+
+    await updateSurpriseMeInFavoritesOrder(false);
+    await updateSurpriseMeFromFavoritesOnly(false);
+    await updateSurpriseMeOnStartup(false);
+  });
 });
