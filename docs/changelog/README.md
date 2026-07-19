@@ -2,6 +2,14 @@
 
 All notable changes to the code will be documented in this file.
 
+## 4.3.3
+
+### Release update
+
+- Re-published the full 4.3.x feature set as a clean patch release after Marketplace validation checks.
+- Added validation-safe Marketplace badge URLs in `README.md` to avoid blocked SVG badge providers.
+- Confirmed Peacock color customization behavior in VS Code Stable; VS Code Insiders users may need to disable `workbench.experimental.modernUI` until the upstream Insiders regression is fixed.
+
 ## 4.3.0
 
 > This release consolidates the previously unpublished 4.2.3-4.2.6 changelog drafts into the next Marketplace release after 4.2.2.
