@@ -31,3 +31,5 @@ docs
 testworkspace
 webpack.config.js
 .prettierrc.js
+# Exclude e2e assets from VSIX
+extension/e2e/**
