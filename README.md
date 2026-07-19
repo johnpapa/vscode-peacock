@@ -118,6 +118,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://www.aaron-powell.com"><img src="https://avatars0.githubusercontent.com/u/434140?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aaron Powell</b></sub></a><br /><a href="#ideas-aaronpowell" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/tanhakabir"><img src="https://avatars.githubusercontent.com/u/12758612?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tanhakabir</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=tanhakabir" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ndrake"><img src="https://avatars.githubusercontent.com/u/73789?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nate Drake</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=ndrake" title="Code">💻</a></td>
+    <td align="center" valign="top" width="14.28%"><a href="https://github.com/Prateek-Wayne"><img src="https://avatars.githubusercontent.com/u/114328592?v=4?s=100" width="100px;" alt="Prateek Verma"/><br /><sub><b>Prateek Verma</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=Prateek-Wayne" title="Code">💻</a></td>
   </tr>
 </table>
 
