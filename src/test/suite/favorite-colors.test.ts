@@ -31,5 +31,4 @@ suite('Favorite colors', () => {
     assert.ok(isValidColorInput(color));
     assert.ok(color === parsedResponse);
   });
-
 });

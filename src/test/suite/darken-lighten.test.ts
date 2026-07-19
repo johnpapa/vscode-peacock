@@ -23,5 +23,4 @@ suite('Darken/Lighten commands', () => {
       config[ColorSettings.activityBar_background],
     );
   });
-
 });

@@ -39,5 +39,4 @@ suite('Set SideBar Darkness Level Command', () => {
     assert.notStrictEqual(darker, darkest, 'Darker and Darkest should be different');
     assert.notStrictEqual(dark, darkest, 'Dark and Darkest should be different');
   });
-
 });

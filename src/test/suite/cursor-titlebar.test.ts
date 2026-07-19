@@ -1,12 +1,7 @@
 import * as vscode from 'vscode';
 import * as sinon from 'sinon';
 import * as assert from 'assert';
-import {
-  IPeacockSettings,
-  Commands,
-  ColorSettings,
-  ForegroundColors,
-} from '../../models';
+import { IPeacockSettings, Commands, ColorSettings, ForegroundColors } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { getColorCustomizationConfig } from '../../configuration';

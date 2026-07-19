@@ -17,9 +17,9 @@ describe('Favorite configuration helpers', () => {
       ...starterSetOfFavorites,
       nightBlue,
     ]);
-    expect(merged.some(item => item.name === nightBlue.name && item.value === nightBlue.value)).toBe(
-      true,
-    );
+    expect(
+      merged.some(item => item.name === nightBlue.name && item.value === nightBlue.value),
+    ).toBe(true);
   });
 
   it('parses quick pick favorite values', () => {

@@ -39,5 +39,4 @@ suite('Excluded Settings Tests', () => {
     // A non-excluded key should still be colored by Peacock.
     assert.ok(config[nonExcludedKey], 'Non-excluded key should be applied by Peacock');
   });
-
 });

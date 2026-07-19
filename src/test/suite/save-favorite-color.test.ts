@@ -32,5 +32,4 @@ suite('Save favorite color', () => {
 
     assert.ok(favoriteColors.some(f => f.name === faveName));
   });
-
 });
