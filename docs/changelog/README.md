@@ -8,8 +8,8 @@ All notable changes to the code will be documented in this file.
 
 - Re-published the full 4.3.x feature set as a clean patch release after Marketplace validation checks.
 - Added validation-safe Marketplace badge URLs in `README.md` to avoid blocked SVG badge providers.
-- Confirmed Peacock color customization behavior in VS Code Stable; VS Code Insiders users may need to disable `workbench.experimental.modernUI` until the upstream Insiders regression is fixed.
-- Added a guide FAQ entry documenting the temporary VS Code Insiders `workbench.experimental.modernUI` workaround and upstream tracking issue.
+- Confirmed Peacock color customization behavior when `workbench.experimental.modernUI` is disabled; this workaround applies in Insiders and can also apply in Stable when `modernUI` is manually enabled.
+- Added a guide FAQ entry documenting the temporary `workbench.experimental.modernUI` workaround and upstream tracking issue.
 
 ## 4.3.0
 

@@ -359,9 +359,9 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 > Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the Live Share conflict workaround ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)).
 
-### Peacock colors are written but not visually applied (VS Code Insiders)
+### Peacock colors are written but not visually applied (`modernUI` enabled)
 
-If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this can be caused by a current VS Code Insiders regression when `workbench.experimental.modernUI` is enabled.
+If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this can be caused when `workbench.experimental.modernUI` is enabled. We have observed this in Insiders and can also reproduce it in Stable if `modernUI` is turned on.
 
 Temporary workaround:
 
