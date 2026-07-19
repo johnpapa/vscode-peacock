@@ -2,32 +2,31 @@
 
 All notable changes to the code will be documented in this file.
 
-## 4.2.6
+## 4.3.0
+
+> This release consolidates the previously unpublished 4.2.3-4.2.6 changelog drafts into the next Marketplace release after 4.2.2.
 
 ### Features
 
 - Added `peacock.affectWindowBorder` setting — when enabled, Peacock colorizes `window.activeBorder` and `window.inactiveBorder` to match the Peacock color. Window border support is available on Windows in VS Code 1.104+ ([#569](https://github.com/johnpapa/vscode-peacock/issues/569))
 - Added `peacock.surpriseMeInFavoritesOrder` setting — when enabled (with startup surprise + favorites-only), Peacock now cycles favorite colors in deterministic list order across startups instead of choosing favorites randomly ([#487](https://github.com/johnpapa/vscode-peacock/issues/487))
 - Startup surprise now persists and restores the last startup-selected color per workspace via mementos, so reopening workspaces (including large worktree setups) keeps expected startup surprise behavior ([#582](https://github.com/johnpapa/vscode-peacock/issues/582))
+- Added `peacock.affectTabActiveBackground` setting — optionally colors the active tab's background with the Peacock color. Defaults to `false` to preserve existing behavior ([#565](https://github.com/johnpapa/vscode-peacock/issues/565))
+- Added `peacock.excludedSettings` — an array of VS Code color customization keys (e.g. `statusBar.background`) that Peacock will never modify or delete, protecting your own workspace color settings when applying a color or resetting ([#575](https://github.com/johnpapa/vscode-peacock/issues/575)). Completes and supersedes community PR [#574](https://github.com/johnpapa/vscode-peacock/pull/574). Thanks to [@josh-tepper](https://github.com/josh-tepper)!
+- Added `Peacock: Set SideBar Darkness Level` command — sets the SideBar background to a darker shade of the current Peacock color (Dark, Darker, or Darkest). Useful for maintaining color visibility when the activity bar is hidden ([#560](https://github.com/johnpapa/vscode-peacock/issues/560))
+- Added `commandCenter.foreground` and `commandCenter.border` coloring to title bar handling (#583)
+- Added color picker support in `settings.json` for all Peacock color settings (#531)
 
 ### Fixes
 
 - Improved reset/remove-all cleanup for uninstall scenarios by correctly reading workspace-folder `workbench.colorCustomizations` entries before deleting Peacock-managed keys, while preserving non-Peacock customization keys ([#656](https://github.com/johnpapa/vscode-peacock/issues/656))
-
-## 4.2.5
-
-### Features
-
-- Added `peacock.affectTabActiveBackground` setting — optionally colors the active tab's background with the Peacock color. Defaults to `false` to preserve existing behavior ([#565](https://github.com/johnpapa/vscode-peacock/issues/565))
-- Added `peacock.excludedSettings` — an array of VS Code color customization keys (e.g. `statusBar.background`) that Peacock will never modify or delete, protecting your own workspace color settings when applying a color or resetting ([#575](https://github.com/johnpapa/vscode-peacock/issues/575)). Completes and supersedes community PR [#574](https://github.com/johnpapa/vscode-peacock/pull/574). Thanks to [@josh-tepper](https://github.com/josh-tepper)!
-- Added `Peacock: Set SideBar Darkness Level` command — sets the SideBar background to a darker shade of the current Peacock color (Dark, Darker, or Darkest). Useful for maintaining color visibility when the activity bar is hidden ([#560](https://github.com/johnpapa/vscode-peacock/issues/560))
-
-### Fixes
-
 - Fixed status bar disappearing (overridden by VS Code's default orange debugging color) during launch/debug sessions when `affectDebuggingStatusBar` is `false` (the default). Peacock now always writes `statusBar.debuggingBackground` and `statusBar.debuggingForeground` to match the regular status bar whenever the status bar is affected, preventing VS Code from overriding those tokens at debug start. The `affectDebuggingStatusBar` setting still works as before — enabling it produces a complementary distinctive color during debugging ([#572](https://github.com/johnpapa/vscode-peacock/issues/572)).
 - Fixed activity bar highlight not applying when the activity bar is in the "on top" layout (VS Code 1.84+, `workbench.activityBar.location: top`). Peacock now sets `activityBarTop.*` tokens in addition to the classic `activityBar.*` tokens so the highlight is visible in both classic (side) and top layouts ([#538](https://github.com/johnpapa/vscode-peacock/issues/538)).
-
 - Fixed Cursor IDE editor-toolbar action icons becoming invisible when Peacock colors the title bar. Cursor mis-uses `var(--vscode-titleBar-activeForeground)` for editor toolbar action icons (a Cursor CSS bug; VS Code is unaffected), so a dark Peacock title bar foreground made those icons disappear. Peacock now auto-detects Cursor via `vscode.env.appName` and uses a visible mid-gray title bar foreground only there — VS Code behavior is unchanged ([#647](https://github.com/johnpapa/vscode-peacock/issues/647)). Thanks to [@Prontsevich](https://github.com/Prontsevich) for the root-cause analysis.
+- Fixed remote indicator badge blending into status bar: badge now uses a contrasting accent color instead of the same color as the status bar (#473)
+- Fixed "Reset Workspace Colors" not clearing colors when `peacock.color` was already undefined — reset now directly removes color customizations instead of relying on a configuration change event (#554)
+- Fixed remote color fallback: `peacock.color` is now used when `peacock.remoteColor` is not set in remote contexts (devcontainers, SSH, WSL) (#522, #459)
+- Fixed Squiggly Be Gone transparency so Peacock now matches the background color with a `00` alpha channel instead of applying the incorrect transparency value
 
 ### Docs & Infrastructure
 
@@ -37,32 +36,6 @@ All notable changes to the code will be documented in this file.
 - Clarified Marketplace release visibility and propagation expectations in docs, including stable vs pre-release guidance and troubleshooting steps ([#649](https://github.com/johnpapa/vscode-peacock/issues/649))
 - Added FAQ entry explaining why Peacock commands can appear in the palette but silently do nothing — covers the Live Share conflict workaround and workspace requirement ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)). Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the root cause.
 - Hardened docs delivery by pinning Docsify/Prism CDN versions, extracting docs site CSS to `docs/assets/docs.css`, and adding link-checking to docs CI ([#671](https://github.com/johnpapa/vscode-peacock/issues/671))
-
-### Dependencies
-
-- Bumped fast-uri from 3.1.0 to 3.1.2
-- Bumped @types/webpack-env from 1.16.3 to 1.18.8
-- Bumped tinycolor2 and @types/tinycolor2
-- Reverted @types/mocha to 7.x (v10 removed ITestCallbackContext/MochaDone — requires TypeScript upgrade first)
-
-## 4.2.4
-
-### Features
-
-- Added `commandCenter.foreground` and `commandCenter.border` coloring to title bar handling (#583)
-- Added color picker support in `settings.json` for all Peacock color settings (#531)
-
-### Bug Fixes
-
-- Fixed remote indicator badge blending into status bar: badge now uses a contrasting accent color instead of the same color as the status bar (#473)
-- Fixed "Reset Workspace Colors" not clearing colors when `peacock.color` was already undefined — reset now directly removes color customizations instead of relying on a configuration change event (#554)
-
-### Bug Fixes
-
-- Fixed remote color fallback: `peacock.color` is now used when `peacock.remoteColor` is not set in remote contexts (devcontainers, SSH, WSL) (#522, #459)
-
-### Docs & Infrastructure
-
 - Migrated documentation site from VuePress to Docsify, deployed via GitHub Pages
 - New docs URL: https://johnpapa.github.io/vscode-peacock/
 - Modern Peacock-branded design with responsive layout, client-side search, and syntax highlighting
@@ -75,16 +48,19 @@ All notable changes to the code will be documented in this file.
 - Added Dependabot for npm and GitHub Actions dependencies
 - Added CODEOWNERS and SECURITY.md
 
+### Contributors
+
+- Thanks to [@Prateek-Wayne](https://github.com/Prateek-Wayne) for the SideBar darkness contribution behind `Peacock: Set SideBar Darkness Level` ([#566](https://github.com/johnpapa/vscode-peacock/pull/566)).
+- Thanks to [@crewsd](https://github.com/crewsd) for the command center foreground contribution that shipped with the title bar command center support ([#583](https://github.com/johnpapa/vscode-peacock/pull/583)).
+- Thanks to [@dembeck](https://github.com/dembeck) for the color picker support contribution for Peacock color settings ([#531](https://github.com/johnpapa/vscode-peacock/pull/531)).
+- Thanks to [@dependabot](https://github.com/apps/dependabot) for the automated dependency update PRs included in this release.
+
 ### Dependencies
 
 - Bumped webpack (5.61→5.106), ts-loader (9.2→9.5), lodash (4.17→4.18), Playwright, and other dev dependencies
 - Bumped GitHub Actions (checkout v6, setup-node v6, upload-artifact v7, configure-pages v6, upload-pages-artifact v5)
 - Security patches for serialize-javascript, picomatch, minimatch, braces, js-yaml, @babel/traverse
 - Added `skipLibCheck` to tsconfig.json for TS 3.9 compatibility with newer dependency type definitions
-
-## 4.2.3
-
-- Transparency was set incorrectly for Squiggly Be Gone feature, and now is set to match the background color using hex RGB \_\_\_\_\_\_00 pattern
 
 ## 4.2.2
 
