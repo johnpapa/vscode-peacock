@@ -36,6 +36,7 @@ import {
   getFavoriteColors,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
+import { isValidColorInput } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
 import { addRemoteIntegration } from './remote';
@@ -45,6 +46,8 @@ import {
   getSurpriseMeFavoritesOrderIndexGlobalMemento,
   getSurpriseMeFavoritesOrderKeyGlobalMemento,
   saveSurpriseMeFavoritesOrderGlobalMemento,
+  getSurpriseMeStartupSelectionsGlobalMemento,
+  saveSurpriseMeStartupSelectionGlobalMemento,
 } from './mementos';
 import type { IFavoriteColors } from './models';
 
@@ -153,16 +156,21 @@ export async function checkSurpriseMeOnStartupLogic() {
   const peacockColor = getEnvironmentAwareColor();
   if (getSurpriseMeOnStartup()) {
     if (peacockColor) {
+      await saveCurrentWorkspaceStartupSelection(peacockColor);
       const message = `Peacock did not change the color using "surprise me on startup" because the color ${peacockColor} was already set.`;
       Logger.info(message);
       return;
     }
 
-    const deterministicColorApplied = await applyDeterministicStartupFavoriteColor();
-    if (!deterministicColorApplied) {
-      await changeColorToRandomHandler();
+    const restoredSelectionApplied = await applySavedStartupSelectionForCurrentWorkspace();
+    if (!restoredSelectionApplied) {
+      const deterministicColorApplied = await applyDeterministicStartupFavoriteColor();
+      if (!deterministicColorApplied) {
+        await changeColorToRandomHandler();
+      }
     }
     const color = getEnvironmentAwareColor();
+    await saveCurrentWorkspaceStartupSelection(color);
     const message = `Peacock changed the color to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);
   }
@@ -206,4 +214,55 @@ function getFavoriteColorsKey(favoriteColors: IFavoriteColors[]) {
   return favoriteColors
     .map(favoriteColor => `${favoriteColor.name}:${favoriteColor.value.toLowerCase()}`)
     .join('|');
+}
+
+async function applySavedStartupSelectionForCurrentWorkspace() {
+  if (getSurpriseMeFromFavoritesOnly() && getSurpriseMeInFavoritesOrder()) {
+    return false;
+  }
+
+  const workspaceKey = getStartupWorkspaceKey();
+  if (!workspaceKey) {
+    return false;
+  }
+
+  const startupSelections = getSurpriseMeStartupSelectionsGlobalMemento();
+  const startupSelection = startupSelections[workspaceKey];
+
+  if (!startupSelection || !isValidColorInput(startupSelection)) {
+    return false;
+  }
+
+  await applyColor(startupSelection);
+  await updateColorSetting(startupSelection);
+  return true;
+}
+
+async function saveCurrentWorkspaceStartupSelection(color: string | undefined) {
+  const workspaceKey = getStartupWorkspaceKey();
+  if (!workspaceKey || !color || !isValidColorInput(color)) {
+    return;
+  }
+
+  await saveSurpriseMeStartupSelectionGlobalMemento(workspaceKey, color);
+}
+
+function getStartupWorkspaceKey() {
+  if (workspace.workspaceFile) {
+    return `workspaceFile:${workspace.workspaceFile.toString().toLowerCase()}`;
+  }
+
+  if (!workspace.workspaceFolders?.length) {
+    return '';
+  }
+
+  const sortedWorkspaceFolderUris = workspace.workspaceFolders
+    .map(folder => folder.uri.toString().toLowerCase())
+    .sort();
+
+  if (sortedWorkspaceFolderUris.length === 1) {
+    return `workspaceFolder:${sortedWorkspaceFolderUris[0]}`;
+  }
+
+  return `workspaceFolders:${sortedWorkspaceFolderUris.join('|')}`;
 }

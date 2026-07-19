@@ -21,6 +21,7 @@ export const peacockMementos = {
   favoritesVersion: `${extensionShortName}.favoritesVersion`,
   surpriseMeFavoritesOrderIndex: `${extensionShortName}.surpriseMeFavoritesOrderIndex`,
   surpriseMeFavoritesOrderKey: `${extensionShortName}.surpriseMeFavoritesOrderKey`,
+  surpriseMeStartupSelections: `${extensionShortName}.surpriseMeStartupSelections`,
 };
 
 export const timeout = async (ms = 200) => new Promise(resolve => setTimeout(resolve, ms));
