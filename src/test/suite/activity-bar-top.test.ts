@@ -15,9 +15,13 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
+  teardown(async () => await updateAffectedElements(allAffectedElements));
 
   test('sets activityBarTop token values when activity bar is affected', async () => {
-    await updateAffectedElements({ activityBar: true } as IPeacockAffectedElementSettings);
+    await updateAffectedElements({
+      ...allAffectedElements,
+      activityBar: true,
+    } as IPeacockAffectedElementSettings);
     await executeCommand(Commands.changeColorToPeacockGreen);
     const config = getColorCustomizationConfig();
 
@@ -33,6 +37,7 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
 
   test('does not set activityBarTop tokens when activity bar is not affected', async () => {
     await updateAffectedElements({
+      ...allAffectedElements,
       activityBar: false,
       statusBar: true,
       titleBar: true,
@@ -42,6 +47,5 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
 
     assert.ok(!config[ColorSettings.activityBarTop_background]);
     assert.ok(!config[ColorSettings.activityBarTop_foreground]);
-    await updateAffectedElements(allAffectedElements);
   });
 });

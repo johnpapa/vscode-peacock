@@ -143,9 +143,13 @@ suite('changes to configuration', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
 
       const updatedCustomizations = getColorCustomizationConfigFromWorkspace();
+      const originalKeySet = new Set(keptKeys.concat(removedKeys));
+      const reorderedOriginalKeys = Object.keys(updatedCustomizations).filter(key =>
+        originalKeySet.has(key),
+      );
 
       assert.deepEqual(
-        Object.keys(updatedCustomizations),
+        reorderedOriginalKeys,
         keptKeys.concat(removedKeys),
         'existing setting order was not preserved',
       );

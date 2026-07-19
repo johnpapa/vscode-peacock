@@ -23,6 +23,7 @@ suite('Affected elements', () => {
   suiteSetup(async () => await setupTestSuite(originalValues));
   suiteTeardown(async () => await teardownTestSuite(originalValues));
   setup(async () => await setupTest());
+  teardown(async () => await updateAffectedElements(allAffectedElements));
 
   test('sets color customizations for affected elements', async () => {
     await executeCommand(Commands.changeColorToPeacockGreen);
@@ -47,6 +48,7 @@ suite('Affected elements', () => {
 
   test('does not set main customization tokens when no elements are affected', async () => {
     await updateAffectedElements({
+      ...allAffectedElements,
       activityBar: false,
       statusBar: false,
       debuggingStatusBar: false,
@@ -65,11 +67,11 @@ suite('Affected elements', () => {
     assert.ok(!config[ColorSettings.titleBar_activeBackground]);
     assert.ok(!config[ColorSettings.activityBar_background]);
     assert.ok(!config[ColorSettings.statusBar_background]);
-    await updateAffectedElements(allAffectedElements);
   });
 
   test('debugging background matches status bar when affectDebuggingStatusBar is false', async () => {
     await updateAffectedElements({
+      ...allAffectedElements,
       statusBar: true,
       debuggingStatusBar: false,
       statusAndTitleBorders: true,
@@ -86,11 +88,13 @@ suite('Affected elements', () => {
       config[ColorSettings.statusBar_foreground],
     );
     assert.ok(!config[ColorSettings.statusBar_debuggingBorder]);
-    await updateAffectedElements(allAffectedElements);
   });
 
   test('debugging background uses complement when debugging status bar is enabled', async () => {
-    await updateAffectedElements({ debuggingStatusBar: true } as IPeacockAffectedElementSettings);
+    await updateAffectedElements({
+      ...allAffectedElements,
+      debuggingStatusBar: true,
+    } as IPeacockAffectedElementSettings);
     await executeCommand(Commands.changeColorToPeacockGreen);
     const config = getColorCustomizationConfig();
     assert.equal(
