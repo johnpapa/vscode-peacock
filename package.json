@@ -434,7 +434,7 @@
     "test:unit": "vitest run",
     "test:host": "npm run test-compile && npm run just-test && npm run just-live-share-test",
     "test-compile": "tsc -p ./ && npm run webpack",
-    "test": "npm run test-compile && npm run just-test",
+    "test": "npm run test-compile && npm run just-test && npm run test:unit",
     "test-all": "npm run test && npm run just-live-share-test",
     "test:coverage": "npm run just-test -- --coverage",
     "open-in-browser": "npx vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",

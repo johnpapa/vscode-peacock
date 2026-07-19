@@ -38,5 +38,8 @@ jobs:
       - name: Build
         run: npm run test-compile
 
-      - name: Test
+      - name: Test (Host)
         run: xvfb-run -a npm run just-test
+
+      - name: Test (Unit)
+        run: npm run test:unit
