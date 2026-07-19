@@ -1,25 +1,32 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "peacock.cacheBust": "827478",
-  "peacock.color": "#f9e64f",
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#fbed80",
     "activityBar.activeBorder": "#06b9a5",
+    "activityBar.activeBackground": "#fbed80",
     "activityBar.background": "#fbed80",
     "activityBar.foreground": "#15202b",
     "activityBar.inactiveForeground": "#15202b99",
     "activityBarBadge.background": "#06b9a5",
     "activityBarBadge.foreground": "#15202b",
+    "activityBarTop.activeBackground": "#fbed80",
+    "activityBarTop.background": "#fbed80",
+    "activityBarTop.foreground": "#15202b",
+    "activityBarTop.inactiveForeground": "#15202b99",
+    "commandCenter.border": "#15202b99",
+    "commandCenter.foreground": "#15202b",
     "sash.hoverBorder": "#fbed80",
     "statusBar.background": "#f9e64f",
+    "statusBar.debuggingBackground": "#f9e64f",
+    "statusBar.debuggingForeground": "#15202b",
     "statusBar.foreground": "#15202b",
     "statusBarItem.hoverBackground": "#f7df1e",
-    "statusBarItem.remoteBackground": "#f9e64f",
+    "statusBarItem.remoteBackground": "#059a89",
     "statusBarItem.remoteForeground": "#15202b",
     "titleBar.activeBackground": "#f9e64f",
     "titleBar.activeForeground": "#15202b",
     "titleBar.inactiveBackground": "#f9e64f99",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.remoteColor": ""
+  "peacock.color": "#f9e64f"
 }

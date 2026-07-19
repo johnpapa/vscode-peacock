@@ -361,7 +361,7 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 ### Peacock colors are written but not visually applied (`modernUI` enabled)
 
-If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this can be caused when `workbench.experimental.modernUI` is enabled. We have observed this in Insiders and can also reproduce it in Stable if `modernUI` is turned on.
+If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this happens when `workbench.experimental.modernUI` is enabled. modernUI overrides the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), so Peacock is effectively non-functional while it is on. We have observed this in Insiders (where modernUI is enabled by default) and can also reproduce it in Stable if `modernUI` is turned on. Peacock will show a one-time notice when it detects this situation.
 
 Primary Peacock tracking issue:
 

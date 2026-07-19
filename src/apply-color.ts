@@ -20,7 +20,7 @@ import { notify } from './notification';
 // import { ConfigurationTarget } from 'vscode';
 
 const modernUICompatibilityNotice =
-  "Modern UI compatibility note: VS Code's experimental workbench.experimental.modernUI may override or remap some Peacock color customizations. Tracking issue: https://github.com/johnpapa/vscode-peacock/issues/652";
+  "Peacock colors are not visible because VS Code's experimental workbench.experimental.modernUI overrides workbench color customizations. Disable that setting to restore Peacock colors. Tracking issue: https://github.com/johnpapa/vscode-peacock/issues/652";
 let modernUICompatibilityNoticeShown = false;
 
 function showModernUICompatibilityNoticeIfNeeded() {
