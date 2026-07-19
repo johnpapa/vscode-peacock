@@ -6,19 +6,21 @@ Subtly change the color of your Visual Studio Code workspace. Ideal when you hav
 
 Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
 
-**Marketplace stats and project links**
+## Marketplace and project status
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/johnpapa.vscode-peacock.png?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/johnpapa.vscode-peacock.png?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/johnpapa.vscode-peacock.png?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/johnpapa.vscode-peacock.png?color=2f99fa&style=flat&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
-[![Live Share](https://img.shields.io/badge/Live_Share-enabled.png?color=2f99fa&style=flat&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa)
-
-[![AI Ready](https://img.shields.io/badge/AI--Ready-yes-brightgreen.png?style=flat)](https://github.com/johnpapa/ai-ready)
-[![MIT License](https://img.shields.io/badge/license-MIT-orange.png?color=2f99fa&style=flat)](http://opensource.org/licenses/MIT)
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-blue.png?style=flat)](#contributors)
-
-[![CI](https://img.shields.io/github/actions/workflow/status/johnpapa/vscode-peacock/ci.yml.png?branch=main&label=CI)](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
+| Item | Status |
+|---|---|
+| Upcoming release | **4.3.0** |
+| Marketplace version | [4.2.3](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
+| Installs | [4,362,293](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
+| Downloads | [6,553,538](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
+| Rating | [4.58/5 from 174 ratings](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) |
+| CI | [Passing](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml) |
+| Docs workflow | [Passing](https://github.com/johnpapa/vscode-peacock/actions/workflows/docs.yml) |
+| Live Share | [Enabled](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa) |
+| AI Ready | [Yes](https://github.com/johnpapa/ai-ready) |
+| License | [MIT](http://opensource.org/licenses/MIT) |
+| Contributors | [15 contributors](#contributors) |
 
 ## Install
 
