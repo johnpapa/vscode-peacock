@@ -359,6 +359,18 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 > Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the Live Share conflict workaround ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)).
 
+### Peacock colors are written but not visually applied (VS Code Insiders)
+
+If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this can be caused by a current VS Code Insiders regression when `workbench.experimental.modernUI` is enabled.
+
+Temporary workaround:
+
+1. Open Settings and set `"workbench.experimental.modernUI": false`
+2. Run **Developer: Reload Window**
+3. Run a Peacock command again (for example, **Peacock: Surprise Me**)
+
+This is tracked upstream in VS Code: [microsoft/vscode#326445](https://github.com/microsoft/vscode/issues/326445).
+
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 
 After a Peacock release is published, the Visual Studio Marketplace can take time to propagate across regions and caches. During that window, the Marketplace page or Extensions view may temporarily show the previous version.
