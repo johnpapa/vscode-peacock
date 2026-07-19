@@ -42,9 +42,7 @@ suite('Modern UI Compatibility Tests', () => {
     await applyColor(peacockGreen);
 
     assert.ok(notificationStub.calledOnce);
-    assert.ok(
-      notificationStub.firstCall.args[0].includes('workbench.experimental.modernUI'),
-    );
+    assert.ok(notificationStub.firstCall.args[0].includes('workbench.experimental.modernUI'));
     assert.ok(notificationStub.firstCall.args[0].includes('/issues/652'));
 
     notificationStub.restore();
