@@ -16,7 +16,33 @@ import {
   getBackgroundColorHex,
   deletePeacocksColorCustomizations,
 } from './color-library';
+import { notify } from './notification';
 // import { ConfigurationTarget } from 'vscode';
+
+const modernUICompatibilityNotice =
+  "Modern UI compatibility note: VS Code's experimental workbench.experimental.modernUI may override or remap some Peacock color customizations. Tracking issue: https://github.com/johnpapa/vscode-peacock/issues/652";
+let modernUICompatibilityNoticeShown = false;
+
+function showModernUICompatibilityNoticeIfNeeded() {
+  if (modernUICompatibilityNoticeShown) {
+    return;
+  }
+
+  const modernUIEnabled = vscode.workspace
+    .getConfiguration('workbench')
+    .get<boolean>('experimental.modernUI', false);
+
+  if (!modernUIEnabled) {
+    return;
+  }
+
+  modernUICompatibilityNoticeShown = true;
+  notify(modernUICompatibilityNotice, true);
+}
+
+export function resetModernUICompatibilityNoticeForTests() {
+  modernUICompatibilityNoticeShown = false;
+}
 
 export async function unapplyColors() {
   if (!vscode.workspace.workspaceFolders) {
@@ -105,6 +131,7 @@ export async function applyColor(input: string) {
 
   await updateWorkspaceConfiguration(colorCustomizations);
   updateStatusBar();
+  showModernUICompatibilityNoticeIfNeeded();
 
   Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
 
