@@ -102,7 +102,10 @@ suite('Reset Tests', () => {
     const nonPeacockKey = 'editor.lineHighlightBackground';
     const nonPeacockValue = '#010203';
 
-    await vscode.workspace.getConfiguration().update(
+    const workspaceFolderUri = vscode.workspace.workspaceFolders?.[0]?.uri;
+    assert.ok(workspaceFolderUri, 'Expected a workspace folder for workspace-folder scoped test');
+
+    await vscode.workspace.getConfiguration(undefined, workspaceFolderUri).update(
       Sections.peacockColorCustomizationSection,
       {
         [ColorSettings.statusBar_background]: azureBlue,
