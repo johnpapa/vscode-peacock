@@ -37,3 +37,6 @@ extension/e2e/**
 extension/**/screenshots/**
 
 extension/e2e/screenshots/**
+
+# Exclude e2e directory from VSIX
+e2e/**
