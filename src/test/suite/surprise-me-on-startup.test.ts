@@ -94,7 +94,7 @@ suite('Surprise me on startup', () => {
       await assertStartupColor('#111111');
     });
 
-    test('keeps random behavior when surpriseMeInFavoritesOrder is false', async () => {
+    test('uses random favorite selection when no startup selection is saved', async () => {
       await updateSurpriseMeInFavoritesOrder(false);
       const randomStub = sinon.stub(Math, 'random');
       try {
@@ -102,6 +102,7 @@ suite('Surprise me on startup', () => {
         randomStub.onCall(1).returns(0.01);
 
         await assertStartupColor('#333333');
+        await resetFavoritesVersionMemento();
         await assertStartupColor('#111111');
       } finally {
         randomStub.restore();
