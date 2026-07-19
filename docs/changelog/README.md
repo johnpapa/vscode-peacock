@@ -48,6 +48,13 @@ All notable changes to the code will be documented in this file.
 - Added Dependabot for npm and GitHub Actions dependencies
 - Added CODEOWNERS and SECURITY.md
 
+### Contributors
+
+- Thanks to [@Prateek-Wayne](https://github.com/Prateek-Wayne) for the SideBar darkness contribution behind `Peacock: Set SideBar Darkness Level` ([#566](https://github.com/johnpapa/vscode-peacock/pull/566)).
+- Thanks to [@crewsd](https://github.com/crewsd) for the command center foreground contribution that shipped with the title bar command center support ([#583](https://github.com/johnpapa/vscode-peacock/pull/583)).
+- Thanks to [@dembeck](https://github.com/dembeck) for the color picker support contribution for Peacock color settings ([#531](https://github.com/johnpapa/vscode-peacock/pull/531)).
+- Thanks to [@dependabot](https://github.com/apps/dependabot) for the automated dependency update PRs included in this release.
+
 ### Dependencies
 
 - Bumped webpack (5.61→5.106), ts-loader (9.2→9.5), lodash (4.17→4.18), Playwright, and other dev dependencies
