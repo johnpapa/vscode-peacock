@@ -326,7 +326,7 @@ Please refer to the [issues list and feel free to grab one and contribute](https
 
 ### Contributions
 
-See these pages for details on [contributions](/about/contributing) and our [code of conduct](/about/code_of_conduct).
+See these pages for details on [contributions](/about/contributing.md) and our [code of conduct](/about/code_of_conduct.md).
 
 ### Logging
 
