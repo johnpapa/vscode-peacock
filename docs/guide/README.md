@@ -177,27 +177,6 @@ Peacock will leave the following values in `workbench.colorCustomizations` untou
 }
 ```
 
-#### Keep custom secondary/accent keys
-
-By default, Peacock manages the color keys it owns in `workbench.colorCustomizations` so changing Peacock colors can overwrite derived secondary/accent keys (for example badge and active-border tokens).
-
-If you want Peacock's main automation but need specific manual tweaks to persist, add those keys to `peacock.excludedSettings`.
-
-```javascript
-"peacock.excludedSettings": [
-    "activityBarBadge.background",
-    "activityBar.activeBorder"
-],
-"workbench.colorCustomizations": {
-    "activityBarBadge.background": "#3a86ff",
-    "activityBar.activeBorder": "#ff80fb"
-}
-```
-
-With this setup, Peacock still manages all other supported keys, while leaving these explicit overrides untouched across apply/reset operations.
-
-> Thanks to community reports from [@presto2116](https://github.com/presto2116) and [@imbwaldo](https://github.com/imbwaldo) for surfacing this workflow.
-
 ### Element Adjustments
 
 You can fine tune the coloring of affected elements by making them slightly darker or lighter to provide a subtle visual contrast between them. Options for adjusting elements are:
