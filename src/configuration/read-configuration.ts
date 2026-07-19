@@ -31,6 +31,7 @@ import {
 } from '../color-library';
 import { LiveShareSettings } from '../live-share';
 import { sortSettingsIndexer } from '../object-library';
+import { getTitleBarForegroundForApp } from '../title-bar-foreground';
 
 const { workspace } = vscode;
 
@@ -333,10 +334,10 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
     if (!keepForegroundColor) {
       // Cursor mis-uses titleBar.activeForeground for editor toolbar icons on dark
       // backgrounds; VS Code does not. Only compensate when running in Cursor.
-      const isCursor = !!vscode.env.appName && vscode.env.appName.includes('Cursor');
-      const foregroundHex = isCursor
-        ? ForegroundColors.CursorTitleBarForeground
-        : titleBarStyle.foregroundHex;
+      const foregroundHex = getTitleBarForegroundForApp(
+        vscode.env.appName,
+        titleBarStyle.foregroundHex,
+      );
       titleBarSettings[ColorSettings.titleBar_activeForeground] = foregroundHex;
       titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
         titleBarStyle.inactiveForegroundHex;

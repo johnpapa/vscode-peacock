@@ -431,6 +431,8 @@
     "pretty": "npx prettier@2 src/. --write",
     "just-test": "node ./out/test/runTest.js",
     "just-live-share-test": "node out/live-share/test/runTest.js",
+    "test:unit": "vitest run",
+    "test:host": "npm run test-compile && npm run just-test && npm run just-live-share-test",
     "test-compile": "tsc -p ./ && npm run webpack",
     "test": "npm run test-compile && npm run just-test",
     "test-all": "npm run test && npm run just-live-share-test",
@@ -472,6 +474,7 @@
     "ts-loader": "^9.5.7",
     "typescript": "^3.9.7",
     "vscode-test": "^1.4.0",
+    "vitest": "^0.34.6",
     "webpack": "^5.106.2",
     "webpack-cli": "^4.7.0"
   },

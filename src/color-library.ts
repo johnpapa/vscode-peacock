@@ -14,6 +14,7 @@ import {
   getDarkForegroundColorOrOverride,
   getLightForegroundColorOrOverride,
 } from './configuration';
+import { selectForegroundColor } from './foreground-color';
 
 export function getColorHex(color = '') {
   return formatHex(tinycolor(color));
@@ -37,9 +38,11 @@ export function getBackgroundHoverColorHex(backgroundColor = '') {
 
 export function getForegroundColorHex(backgroundColor = '') {
   const background = tinycolor(backgroundColor);
-  const foreground = background.isLight()
-    ? getDarkForegroundColorOrOverride()
-    : getLightForegroundColorOrOverride();
+  const foreground = selectForegroundColor(
+    background.isLight(),
+    getDarkForegroundColorOrOverride(),
+    getLightForegroundColorOrOverride(),
+  );
   return formatHex(tinycolor(foreground));
 }
 
