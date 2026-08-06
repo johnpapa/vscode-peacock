@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as tinycolor from 'tinycolor2';
 import * as sinon from 'sinon';
 import * as assert from 'assert';
 import {
@@ -7,11 +8,13 @@ import {
   ColorSettings,
   ForegroundColors,
   peacockGreen,
+  ReadabilityRatios,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { getColorCustomizationConfig } from '../../configuration';
 import { getForegroundColorHex } from '../../color-library';
+import { applyColor } from '../../apply-color';
 
 suite('Cursor title bar foreground workaround', () => {
   const originalValues = {} as IPeacockSettings;
@@ -61,5 +64,21 @@ suite('Cursor title bar foreground workaround', () => {
     );
     assert.equal(config[ColorSettings.titleBar_activeForeground], expectedForeground);
     assert.equal(config[ColorSettings.commandCenter_foreground], expectedForeground);
+  });
+
+  test('keeps readable title bar contrast in Cursor on dark schemes', async () => {
+    stubAppName('Cursor');
+
+    await applyColor('#1857a4'); // Mandalorian Blue, a dark favourite
+    const config = getColorCustomizationConfig();
+
+    const bg = config[ColorSettings.titleBar_activeBackground];
+    const fg = config[ColorSettings.titleBar_activeForeground];
+
+    const ratio = tinycolor.readability(bg, fg);
+    assert.ok(
+      ratio >= ReadabilityRatios.Text,
+      `title bar contrast ${ratio.toFixed(2)}:1 is below AA (${ReadabilityRatios.Text}:1)`,
+    );
   });
 });
