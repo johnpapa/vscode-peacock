@@ -112,6 +112,18 @@ export async function resetFavoritesVersionMemento() {
   await ec.globalState.update(peacockMementos.surpriseMeStartupSelections, undefined);
 }
 
+export function getColorCustomizationsBackupDoneMemento(): boolean {
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<boolean>(peacockMementos.colorCustomizationsBackupDone, false);
+  }
+  return fallbackGlobalMementos.get(peacockMementos.colorCustomizationsBackupDone) ?? false;
+}
+
+export async function saveColorCustomizationsBackupDoneMemento(): Promise<void> {
+  return saveGlobalMemento(peacockMementos.colorCustomizationsBackupDone, true);
+}
+
 export function getMementos() {
   const mementos: IMementoLog[] = [];
 
