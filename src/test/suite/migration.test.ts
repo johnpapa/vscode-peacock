@@ -1,8 +1,8 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { backupExistingColorCustomizationsIfNeeded, getBackedUpColorCustomizations } from '../configuration/migration';
-import { saveColorCustomizationsBackupDoneMemento } from '../mementos';
+import { backupExistingColorCustomizationsIfNeeded } from '../../configuration/migration';
+import { saveColorCustomizationsBackupDoneMemento } from '../../mementos';
 
 suite('Migration Tests', () => {
   suite('Backup Existing Color Customizations', () => {
@@ -44,7 +44,7 @@ suite('Migration Tests', () => {
       getConfigStub.returns(configMock as any);
 
       // Mock getColorCustomizationConfigFromWorkspace to return empty
-      const configModule = await import('../configuration/read-configuration');
+      const configModule = await import('../../configuration/read-configuration');
       sandbox.stub(configModule, 'getColorCustomizationConfigFromWorkspace').returns({});
 
       await backupExistingColorCustomizationsIfNeeded();
