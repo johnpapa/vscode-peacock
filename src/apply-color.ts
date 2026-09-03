@@ -17,7 +17,20 @@ import {
   deletePeacocksColorCustomizations,
 } from './color-library';
 import { notify } from './notification';
-// import { ConfigurationTarget } from 'vscode';
+
+export interface IColorRenderer {
+  apply(color: string): Promise<string | undefined>;
+  unapply(): Promise<void>;
+  capture(): Promise<unknown>;
+  restore(state: unknown): Promise<void>;
+  getSideBarBackground(): string | undefined;
+  updateSideBarBackground(color: string | undefined): Promise<void>;
+}
+
+export interface IColorPersistence {
+  save(color: string): Promise<void>;
+  clearWorkspace(): Promise<void>;
+}
 
 const modernUICompatibilityNotice =
   "Peacock colors are not visible because VS Code's experimental workbench.experimental.modernUI overrides workbench color customizations. Disable that setting to restore Peacock colors. Tracking issue: https://github.com/johnpapa/vscode-peacock/issues/652";
@@ -44,7 +57,7 @@ export function resetModernUICompatibilityNoticeForTests() {
   modernUICompatibilityNoticeShown = false;
 }
 
-export async function unapplyColors() {
+async function unapplyWorkspaceSettingsColors() {
   if (!vscode.workspace.workspaceFolders) {
     // If we are not in a workspace, don't allow Peacock to apply colors or write to settings.
     return;
@@ -103,7 +116,7 @@ function mergeColorCustomizations(
   return mergedCustomizations;
 }
 
-export async function applyColor(input: string) {
+async function applyWorkspaceSettingsColor(input: string) {
   /**************************************************************
    * This is the heart of Peacock logic to apply the colors.
    *
@@ -115,7 +128,7 @@ export async function applyColor(input: string) {
   }
 
   if (!isValidColorInput(input)) {
-    await unapplyColors();
+    await unapplyWorkspaceSettingsColors();
     return;
   }
 
@@ -133,9 +146,88 @@ export async function applyColor(input: string) {
   updateStatusBar();
   showModernUICompatibilityNoticeIfNeeded();
 
-  Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
-
   return color;
+}
+
+const workspaceSettingsRenderer: IColorRenderer = {
+  apply: applyWorkspaceSettingsColor,
+  unapply: unapplyWorkspaceSettingsColors,
+
+  async capture() {
+    return { ...getColorCustomizationConfigFromWorkspace() };
+  },
+
+  async restore(state: unknown) {
+    await updateWorkspaceConfiguration(state as ISettingsIndexer | undefined);
+    updateStatusBar();
+  },
+
+  getSideBarBackground() {
+    return getColorCustomizationConfigFromWorkspace()['sideBar.background'];
+  },
+
+  async updateSideBarBackground(color: string | undefined) {
+    const colorCustomizations = { ...getColorCustomizationConfigFromWorkspace() };
+    if (color) {
+      colorCustomizations['sideBar.background'] = color;
+    } else {
+      delete colorCustomizations['sideBar.background'];
+    }
+    await updateWorkspaceConfiguration(colorCustomizations);
+  },
+};
+
+const workspaceSettingsPersistence: IColorPersistence = {
+  async save(color: string) {
+    if (vscode.env.remoteName) {
+      await updatePeacockRemoteColor(color);
+    } else {
+      await updatePeacockColor(color);
+    }
+  },
+
+  async clearWorkspace() {
+    await updatePeacockColor(undefined);
+    await updatePeacockRemoteColor(undefined);
+  },
+};
+
+let activeRenderer = workspaceSettingsRenderer;
+let activePersistence = workspaceSettingsPersistence;
+
+export function configureColorApplication(
+  renderer: IColorRenderer = workspaceSettingsRenderer,
+  persistence: IColorPersistence = workspaceSettingsPersistence,
+) {
+  activeRenderer = renderer;
+  activePersistence = persistence;
+}
+
+export function resetColorApplicationForTests() {
+  configureColorApplication();
+}
+
+export async function unapplyColors() {
+  if (!vscode.workspace.workspaceFolders) {
+    return;
+  }
+  await activeRenderer.unapply();
+}
+
+export async function applyColor(input: string) {
+  if (!vscode.workspace.workspaceFolders) {
+    return;
+  }
+
+  if (!isValidColorInput(input)) {
+    await unapplyColors();
+    return;
+  }
+
+  const color = getBackgroundColorHex(input);
+  const appliedColor = await activeRenderer.apply(color);
+  Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
+  return appliedColor;
 }
 
 export async function updateColorSetting(color: string) {
@@ -148,9 +240,28 @@ export async function updateColorSetting(color: string) {
     return;
   }
 
-  if (vscode.env.remoteName) {
-    await updatePeacockRemoteColor(color);
-  } else {
-    await updatePeacockColor(color);
+  await activePersistence.save(color);
+}
+
+export async function clearWorkspaceColorSettings() {
+  if (!vscode.workspace.workspaceFolders) {
+    return;
   }
+  await activePersistence.clearWorkspace();
+}
+
+export async function captureColorRenderState() {
+  return await activeRenderer.capture();
+}
+
+export async function restoreColorRenderState(state: unknown) {
+  await activeRenderer.restore(state);
+}
+
+export function getRenderedSideBarBackground() {
+  return activeRenderer.getSideBarBackground();
+}
+
+export async function updateRenderedSideBarBackground(color: string | undefined) {
+  await activeRenderer.updateSideBarBackground(color);
 }

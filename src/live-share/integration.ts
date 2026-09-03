@@ -2,23 +2,18 @@
 import * as vsls from 'vsls';
 import * as vscode from 'vscode';
 
-import { applyColor } from '../apply-color';
+import { applyColor, captureColorRenderState, restoreColorRenderState } from '../apply-color';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
 import { State } from '../models';
 import { notify } from '../notification';
 import { LiveShareSettings } from './enums';
-import {
-  getLiveShareColor,
-  getColorCustomizationConfigFromWorkspace,
-  updateWorkspaceConfiguration,
-} from '../configuration';
+import { getLiveShareColor } from '../configuration';
 
-let peacockColorCustomizations: any;
+let previousColorRenderState: unknown;
 
 export async function revertLiveShareWorkspaceColors() {
-  await updateWorkspaceConfiguration(peacockColorCustomizations);
-
-  peacockColorCustomizations = null;
+  await restoreColorRenderState(previousColorRenderState);
+  previousColorRenderState = undefined;
 }
 
 async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
@@ -70,9 +65,11 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
       return await revertLiveShareWorkspaceColors();
     }
 
-    // we need to update `peacockColorCustomizations` only when it is `undefined`
-    // to prevent the case of multiple color changes during live share session
-    peacockColorCustomizations = await getColorCustomizationConfigFromWorkspace();
+    // Capture once so multiple changes in one session still restore the color
+    // from before the session.
+    if (previousColorRenderState === undefined) {
+      previousColorRenderState = await captureColorRenderState();
+    }
 
     const isHost = e.session.role === vsls.Role.Host;
     return await setLiveShareSessionWorkspaceColors(isHost);

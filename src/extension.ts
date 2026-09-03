@@ -34,6 +34,7 @@ import {
   inspectColor,
   getCurrentColorBeforeAdjustments,
   getFavoriteColors,
+  getCurrentWorkspaceIdentity,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
 import { isValidColorInput } from './color-library';
@@ -248,21 +249,5 @@ async function saveCurrentWorkspaceStartupSelection(color: string | undefined) {
 }
 
 function getStartupWorkspaceKey() {
-  if (workspace.workspaceFile) {
-    return `workspaceFile:${workspace.workspaceFile.toString().toLowerCase()}`;
-  }
-
-  if (!workspace.workspaceFolders?.length) {
-    return '';
-  }
-
-  const sortedWorkspaceFolderUris = workspace.workspaceFolders
-    .map(folder => folder.uri.toString().toLowerCase())
-    .sort();
-
-  if (sortedWorkspaceFolderUris.length === 1) {
-    return `workspaceFolder:${sortedWorkspaceFolderUris[0]}`;
-  }
-
-  return `workspaceFolders:${sortedWorkspaceFolderUris.join('|')}`;
+  return getCurrentWorkspaceIdentity()?.key || '';
 }

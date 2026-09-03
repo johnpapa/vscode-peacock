@@ -4,7 +4,14 @@ import {
   getDarkenedColorHex,
   getLightenedColorHex,
 } from './color-library';
-import { applyColor, unapplyColors, updateColorSetting } from './apply-color';
+import {
+  applyColor,
+  clearWorkspaceColorSettings,
+  getRenderedSideBarBackground,
+  unapplyColors,
+  updateColorSetting,
+  updateRenderedSideBarBackground,
+} from './apply-color';
 import { State, peacockGreen, docsUri } from './models';
 import {
   getDarkenLightenPercentage,
@@ -12,13 +19,9 @@ import {
   getSurpriseMeFromFavoritesOnly,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
-  updatePeacockColor,
   getEnvironmentAwareColor,
-  updatePeacockRemoteColor,
   updatePeacockRemoteColorInUserSettings,
   updatePeacockColorInUserSettings,
-  updateWorkspaceConfiguration,
-  getColorCustomizationConfigFromWorkspace,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
 
@@ -41,8 +44,7 @@ export async function showDocumentationHandler() {
 export async function resetWorkspaceColorsHandler() {
   await resetLiveSharePreviousColors();
   await unapplyColors();
-  await updatePeacockColor(undefined);
-  await updatePeacockRemoteColor(undefined);
+  await clearWorkspaceColorSettings();
   return State.extensionContext;
 }
 
@@ -170,9 +172,7 @@ export async function setSideBarDarknessLevelHandler() {
       return;
     }
 
-    const sideBarBackgroundKey = 'sideBar.background';
-    const colorCustomizations = { ...getColorCustomizationConfigFromWorkspace() };
-    const existingSideBarColor = colorCustomizations[sideBarBackgroundKey];
+    const existingSideBarColor = getRenderedSideBarBackground();
 
     const options = [
       { label: 'Dark', factor: 1 },
@@ -196,8 +196,7 @@ export async function setSideBarDarknessLevelHandler() {
     }
 
     if (selection === 'Remove Side Bar Color') {
-      delete colorCustomizations[sideBarBackgroundKey];
-      await updateWorkspaceConfiguration(colorCustomizations);
+      await updateRenderedSideBarBackground(undefined);
       notify('SideBar background color has been removed.', true);
       return;
     }
@@ -212,8 +211,7 @@ export async function setSideBarDarknessLevelHandler() {
       newColor = getDarkenedColorHex(newColor, 10);
     }
 
-    colorCustomizations[sideBarBackgroundKey] = newColor;
-    await updateWorkspaceConfiguration(colorCustomizations);
+    await updateRenderedSideBarBackground(newColor);
     notify(`SideBar background set to ${selection} (${newColor})`, true);
   } catch (err) {
     notify(`Failed to set SideBar darkness: ${err}`, true);
