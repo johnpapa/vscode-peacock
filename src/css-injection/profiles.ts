@@ -1,5 +1,5 @@
 import { getExcludedSettings, prepareColors } from '../configuration/read-configuration';
-import { getBackgroundColorHex, isValidColorInput } from '../color-library';
+import { getBackgroundColorHex } from '../color-library';
 import { ISettingsIndexer } from '../models';
 
 export const cssProfileLimit = 128;
@@ -20,10 +20,6 @@ export function createCurrentCssProfile(
   lastUsed = Date.now(),
   overrides: ISettingsIndexer = {},
 ) {
-  if (!isValidColorInput(color)) {
-    return undefined;
-  }
-
   const normalizedColor = getBackgroundColorHex(color);
   return createCssProfile(
     normalizedColor,
@@ -98,13 +94,6 @@ export function generateCssProfileRule(profile: ICssProfile) {
   const surfaceRules = generateSurfaceRules(profile, rootSelector);
 
   return `${cssProfileStartPrefix}${profile.id}__*/${rootSelector}{${declarations}}${surfaceRules}${cssProfileEndPrefix}${profile.id}__*/`;
-}
-
-export function generateCssProfileRules(registry: CssProfileRegistry) {
-  return Object.values(registry)
-    .sort((left, right) => left.id.localeCompare(right.id))
-    .map(generateCssProfileRule)
-    .join('');
 }
 
 function toCssVariableName(setting: string) {

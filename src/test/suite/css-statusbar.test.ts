@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import { createCssProfile, createCssProfileMarkerLabel } from '../../css-injection';
+import { createCssProfile, createCssProfileMarkerLabel } from '../../css-injection/profiles';
 import { getStatusBarItem, setCssProfileStatusBar } from '../../statusbar';
 
 suite('CSS status bar profile marker', () => {

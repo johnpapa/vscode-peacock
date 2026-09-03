@@ -8,7 +8,6 @@ import {
 
 export const cssPatchStart = '/*__PEACOCK_CSS_OVERRIDE_START__*/';
 export const cssPatchEnd = '/*__PEACOCK_CSS_OVERRIDE_END__*/';
-export const cssPatchVersion = 1;
 
 export class CssPatchError extends Error {
   constructor(message: string) {
@@ -26,27 +25,32 @@ export interface IStylesheetParts {
 export interface IStylesheetChange {
   content: string;
   changed: boolean;
-  profileIds: string[];
 }
 
 export function parseStylesheet(content: string): IStylesheetParts {
-  const starts = findAll(content, cssPatchStart);
-  const ends = findAll(content, cssPatchEnd);
+  const start = content.indexOf(cssPatchStart);
+  const end = content.indexOf(cssPatchEnd);
 
-  if (!starts.length && !ends.length) {
+  if (start === -1 && end === -1) {
     return { before: content, after: '' };
   }
 
-  if (starts.length !== 1 || ends.length !== 1 || ends[0] < starts[0]) {
+  if (
+    start === -1 ||
+    end === -1 ||
+    start !== content.lastIndexOf(cssPatchStart) ||
+    end !== content.lastIndexOf(cssPatchEnd) ||
+    end < start
+  ) {
     throw new CssPatchError(
       'The Peacock CSS override block is malformed or appears more than once. No changes were made.',
     );
   }
 
-  const blockEnd = ends[0] + cssPatchEnd.length;
+  const blockEnd = end + cssPatchEnd.length;
   return {
-    before: content.slice(0, starts[0]),
-    block: content.slice(starts[0], blockEnd),
+    before: content.slice(0, start),
+    block: content.slice(start, blockEnd),
     after: content.slice(blockEnd),
   };
 }
@@ -57,49 +61,33 @@ export function extractCssProfileRules(block: string | undefined) {
     return rules;
   }
 
-  let cursor = block.indexOf(cssPatchStart) + cssPatchStart.length;
-  const blockEnd = block.indexOf(cssPatchEnd, cursor);
-  while (cursor < blockEnd) {
-    const start = block.indexOf(cssProfileStartPrefix, cursor);
-    if (start === -1 || start >= blockEnd) {
-      break;
+  const profilePattern = new RegExp(
+    `${escapeRegExp(cssProfileStartPrefix)}([a-f\\d]{16})__\\*/[\\s\\S]*?${escapeRegExp(
+      cssProfileEndPrefix,
+    )}\\1__\\*/`,
+    'g',
+  );
+  let match: RegExpExecArray | null;
+  while ((match = profilePattern.exec(block))) {
+    const id = match[1];
+    if (rules[id]) {
+      throw new CssPatchError('A Peacock CSS profile is duplicated. No changes were made.');
     }
-
-    const idStart = start + cssProfileStartPrefix.length;
-    const idEnd = block.indexOf('__*/', idStart);
-    if (idEnd === -1 || idEnd >= blockEnd) {
-      throw new CssPatchError(
-        'A Peacock CSS profile start marker is malformed. No changes were made.',
-      );
-    }
-
-    const id = block.slice(idStart, idEnd);
-    if (!/^[a-f\d]{16}$/.test(id) || rules[id]) {
-      throw new CssPatchError(
-        'A Peacock CSS profile identifier is invalid or duplicated. No changes were made.',
-      );
-    }
-
-    const endMarker = `${cssProfileEndPrefix}${id}__*/`;
-    const end = block.indexOf(endMarker, idEnd + 4);
-    if (end === -1 || end >= blockEnd) {
-      throw new CssPatchError(
-        `Peacock CSS profile ${id} has no matching end marker. No changes were made.`,
-      );
-    }
-
-    const ruleEnd = end + endMarker.length;
-    rules[id] = block.slice(start, ruleEnd);
-    cursor = ruleEnd;
+    rules[id] = match[0];
   }
 
-  const profileStarts = findAll(block, cssProfileStartPrefix).length;
-  const profileEnds = findAll(block, cssProfileEndPrefix).length;
-  if (profileStarts !== Object.keys(rules).length || profileEnds !== Object.keys(rules).length) {
+  const profileCount = Object.keys(rules).length;
+  const profileStarts = block.split(cssProfileStartPrefix).length - 1;
+  const profileEnds = block.split(cssProfileEndPrefix).length - 1;
+  if (profileStarts !== profileCount || profileEnds !== profileCount) {
     throw new CssPatchError('The Peacock CSS profile list is malformed. No changes were made.');
   }
 
   return rules;
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 export function installCssProfiles(
@@ -115,27 +103,25 @@ export function installCssProfiles(
   }, {});
   const profileIds = selectProfileIds(existingRules, incomingRules, limit);
   const rules = profileIds.map(id => incomingRules[id] || existingRules[id]).join('');
-  const block = `${cssPatchStart}/*${cssPatchVersion}*/${rules}${cssPatchEnd}`;
+  const block = `${cssPatchStart}${rules}${cssPatchEnd}`;
   const updatedContent = `${parts.before}${block}${parts.after}`;
 
   return {
     content: updatedContent,
     changed: updatedContent !== content,
-    profileIds,
   };
 }
 
 export function removeCssPatch(content: string): IStylesheetChange {
   const parts = parseStylesheet(content);
   if (!parts.block) {
-    return { content, changed: false, profileIds: [] };
+    return { content, changed: false };
   }
   extractCssProfileRules(parts.block);
 
   return {
     content: `${parts.before}${parts.after}`,
     changed: true,
-    profileIds: [],
   };
 }
 
@@ -151,18 +137,4 @@ function selectProfileIds(
     .sort();
   const existingIds = remaining ? candidates.slice(-remaining) : [];
   return [...existingIds, ...incomingIds].slice(-Math.max(1, limit)).sort();
-}
-
-function findAll(content: string, token: string) {
-  const indexes: number[] = [];
-  let cursor = 0;
-  while (cursor < content.length) {
-    const index = content.indexOf(token, cursor);
-    if (index === -1) {
-      break;
-    }
-    indexes.push(index);
-    cursor = index + token.length;
-  }
-  return indexes;
 }

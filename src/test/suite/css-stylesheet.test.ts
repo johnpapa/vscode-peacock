@@ -71,6 +71,8 @@ suite('CSS stylesheet patching', () => {
     const first = installCssProfiles(original, { [blue.id]: blue });
     const second = installCssProfiles(first.content, { [green.id]: green }, 1);
 
-    assert.deepEqual(second.profileIds, [green.id]);
+    assert.deepEqual(Object.keys(extractCssProfileRules(parseStylesheet(second.content).block)), [
+      green.id,
+    ]);
   });
 });

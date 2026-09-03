@@ -1,16 +1,10 @@
 import { CssProfileRegistry } from './profiles';
 
-export interface ICssPatchOperationResult {
-  changed: boolean;
-  path: string;
-  profileIds: string[];
-}
-
 export interface ICssPatcher {
   locate(cachedPath?: string): Promise<string | undefined>;
   validate(cssPath: string): Promise<boolean>;
-  install(cssPath: string, registry: CssProfileRegistry): Promise<ICssPatchOperationResult>;
-  remove(cssPath: string): Promise<ICssPatchOperationResult>;
+  install(cssPath: string, registry: CssProfileRegistry): Promise<boolean>;
+  remove(cssPath: string): Promise<boolean>;
 }
 
 export class CssInjectionUnsupportedError extends Error {

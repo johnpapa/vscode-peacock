@@ -132,18 +132,11 @@ async function applyWorkspaceSettingsColor(input: string) {
     return;
   }
 
-  if (!isValidColorInput(input)) {
-    await unapplyWorkspaceSettingsColors();
-    return;
-  }
-
-  const color = getBackgroundColorHex(input);
-
   // Get existing color customizations.
   const existingColors = getColorCustomizationConfigFromWorkspace();
 
   // Get updated Peacock colors.
-  const updatedColors = prepareColors(color);
+  const updatedColors = prepareColors(input);
 
   const colorCustomizations = mergeColorCustomizations(existingColors, updatedColors);
 
@@ -151,7 +144,7 @@ async function applyWorkspaceSettingsColor(input: string) {
   updateStatusBar();
   showModernUICompatibilityNoticeIfNeeded();
 
-  return color;
+  return input;
 }
 
 const workspaceSettingsRenderer: IColorRenderer = {
@@ -228,11 +221,11 @@ export async function unapplyColors() {
 }
 
 export async function applyColor(input: string) {
-  return await applyColorWithOptions(input);
+  return applyColorWithOptions(input);
 }
 
 export async function applyTransientColor(input: string) {
-  return await applyColorWithOptions(input, { transient: true });
+  return applyColorWithOptions(input, { transient: true });
 }
 
 async function applyColorWithOptions(input: string, options?: { transient?: boolean }) {

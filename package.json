@@ -145,15 +145,6 @@
           "command": "peacock.docs"
         },
         {
-          "command": "peacock.cssInjection.install"
-        },
-        {
-          "command": "peacock.cssInjection.remove"
-        },
-        {
-          "command": "peacock.cssInjection.setStylesheetPath"
-        },
-        {
           "command": "peacock.changeColorOfLiveShareHost",
           "when": "workspaceFolderCount != 0 && peacock:liveshare == true"
         },

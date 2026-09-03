@@ -4,9 +4,8 @@ import {
   createCssProfile,
   createCssProfileMarkerLabel,
   generateCssProfileRule,
-  generateCssProfileRules,
   mergeCssProfiles,
-} from '../../css-injection';
+} from '../../css-injection/profiles';
 
 suite('CSS profiles', () => {
   test('converts sorted Peacock tokens into high-priority VS Code variables', () => {
@@ -85,16 +84,6 @@ suite('CSS profiles', () => {
     assert.equal(
       createCssProfileMarkerLabel(first),
       `Peacock CSS profile ${first.id}; color #007fff`,
-    );
-  });
-
-  test('generates deterministic rules regardless of registry insertion order', () => {
-    const first = createCssProfile('#ff0000', { 'statusBar.background': '#ff0000' }, [], 1);
-    const second = createCssProfile('#00ff00', { 'statusBar.background': '#00ff00' }, [], 2);
-
-    assert.equal(
-      generateCssProfileRules({ [first.id]: first, [second.id]: second }),
-      generateCssProfileRules({ [second.id]: second, [first.id]: first }),
     );
   });
 

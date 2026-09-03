@@ -46,11 +46,11 @@ const restartPrompts = new Set<string>();
 
 export function initializeColorApplicationMode(mode = vscode.ExtensionMode.Production) {
   extensionMode = mode;
-  return enqueueModeRefresh(false, false);
+  return enqueueModeRefresh();
 }
 
-export function refreshColorApplicationMode(forceRepair = false) {
-  return enqueueModeRefresh(forceRepair, false);
+export function refreshColorApplicationMode() {
+  return enqueueModeRefresh();
 }
 
 export function isCssColorApplicationActive() {
@@ -63,8 +63,9 @@ export function canUseCssInjection(mode: vscode.ExtensionMode) {
 
 export async function installOrRepairCssOverridesHandler() {
   try {
+    Logger.info('Peacock is installing or repairing its CSS override block.');
     await updateCssInjectionEnabled(true);
-    await enqueueModeRefresh(true, false);
+    await enqueueModeRefresh();
   } catch (error) {
     reportCssFailure(error);
   }
@@ -73,7 +74,7 @@ export async function installOrRepairCssOverridesHandler() {
 export async function removeCssOverridesHandler() {
   try {
     await updateCssInjectionEnabled(false);
-    await enqueueModeRefresh(false, true);
+    await enqueueModeRefresh(true);
   } catch (error) {
     reportCssFailure(error);
   }
@@ -81,12 +82,14 @@ export async function removeCssOverridesHandler() {
 
 export async function setStylesheetPathHandler() {
   const cacheKey = getStylesheetCacheKey();
-  const existingPath = getCssStylesheetPathsGlobalMemento()[cacheKey] || activeStylesheetPath;
-  const selectedPath = await vscode.window.showInputBox({
-    prompt: 'Enter the full path to workbench.desktop.main.css',
-    value: existingPath,
-    ignoreFocusOut: true,
-  });
+  const existingPath = activeStylesheetPath || getCssStylesheetPathsGlobalMemento()[cacheKey];
+  const selectedPath = (
+    await vscode.window.showInputBox({
+      prompt: 'Enter the full path to workbench.desktop.main.css',
+      value: existingPath,
+      ignoreFocusOut: true,
+    })
+  )?.trim();
   if (!selectedPath) {
     return;
   }
@@ -101,7 +104,7 @@ export async function setStylesheetPathHandler() {
   activeStylesheetPath = selectedPath;
   await saveCssStylesheetPathGlobalMemento(cacheKey, selectedPath);
   if (getCssInjectionEnabled()) {
-    await enqueueModeRefresh(true, false);
+    await enqueueModeRefresh();
   }
 }
 
@@ -110,7 +113,7 @@ export async function clearAllPrivateCssColors() {
   transientColor = undefined;
   sessionSideBarBackground = undefined;
   if (cssModeActive) {
-    await safelyRenderResolvedCssColor();
+    await safelyRenderCssColor();
   }
 }
 
@@ -125,20 +128,21 @@ export function resetCssManagerForTests() {
   transientColor = undefined;
   sessionSideBarBackground = undefined;
   modeQueue = Promise.resolve();
+  extensionMode = vscode.ExtensionMode.Production;
   reportedDiagnostics.clear();
   warnedLegacySettings.clear();
   restartPrompts.clear();
-  setCssProfileStatusBar(undefined);
+  clearCssProfile();
   configureColorApplication();
 }
 
-function enqueueModeRefresh(forceRepair: boolean, forceRemove: boolean) {
+function enqueueModeRefresh(forceRemove = false) {
   const operation = async () => {
     if (!canUseCssInjection(extensionMode)) {
       cssModeActive = false;
       configureColorApplication();
     } else if (getCssInjectionEnabled()) {
-      await enableCssMode(forceRepair);
+      await enableCssMode();
     } else if (cssModeActive || forceRemove) {
       await disableCssMode(forceRemove);
     } else {
@@ -149,14 +153,10 @@ function enqueueModeRefresh(forceRepair: boolean, forceRemove: boolean) {
   return modeQueue;
 }
 
-async function enableCssMode(forceRepair: boolean) {
+async function enableCssMode() {
   cssModeActive = true;
   configureColorApplication(cssRenderer, cssPersistence);
-  setCssProfileStatusBar(undefined);
-  if (forceRepair) {
-    Logger.info('Peacock is installing or repairing its CSS override block.');
-  }
-
+  clearCssProfile();
   try {
     if (!(await ensureConsent())) {
       cssModeActive = false;
@@ -166,19 +166,17 @@ async function enableCssMode(forceRepair: boolean) {
 
     activeStylesheetPath = await locateStylesheet();
     warnAboutWorkspaceLegacyColor();
-    reportWorkspaceMapDiagnostics();
 
     const resolved = resolveCurrentCssColor();
+    reportWorkspaceMapDiagnostics(resolved);
     if (resolved.color) {
       await renderCssColor(resolved.color);
     } else {
-      currentAppliedColor = undefined;
-      setCssProfileStatusBar(undefined);
+      clearCssProfile();
       await installRegistry(getCssProfilesGlobalMemento());
     }
   } catch (error) {
-    currentAppliedColor = undefined;
-    setCssProfileStatusBar(undefined);
+    clearCssProfile();
     reportCssFailure(error);
   }
 }
@@ -186,14 +184,12 @@ async function enableCssMode(forceRepair: boolean) {
 async function disableCssMode(forceRemove: boolean) {
   transientColor = undefined;
   sessionSideBarBackground = undefined;
-  currentAppliedColor = undefined;
-  setCssProfileStatusBar(undefined);
+  clearCssProfile();
 
   try {
     const cssPath = activeStylesheetPath || (forceRemove ? await locateStylesheet() : undefined);
     if (cssPath) {
-      const result = await cssPatcher.remove(cssPath);
-      if (result.changed) {
+      if (await cssPatcher.remove(cssPath)) {
         promptForRestart(cssPath);
       }
     }
@@ -249,10 +245,7 @@ function getPrivateWorkspaceOverride() {
 }
 
 function getLegacyFallbackColor() {
-  if (vscode.env.remoteName) {
-    return getPeacockRemoteColor() || getPeacockColor();
-  }
-  return getPeacockColor();
+  return vscode.env.remoteName ? getPeacockRemoteColor() || getPeacockColor() : getPeacockColor();
 }
 
 function resolveCurrentCssColor() {
@@ -268,32 +261,24 @@ function resolveCurrentCssColor() {
 
 async function renderResolvedCssColor() {
   const resolved = resolveCurrentCssColor();
-  reportWorkspaceMapDiagnostics();
+  reportWorkspaceMapDiagnostics(resolved);
   if (resolved.color) {
     return await renderCssColor(resolved.color);
   }
-  currentAppliedColor = undefined;
-  setCssProfileStatusBar(undefined);
+  clearCssProfile();
   return undefined;
 }
 
-async function safelyRenderResolvedCssColor() {
-  try {
-    return await renderResolvedCssColor();
-  } catch (error) {
-    currentAppliedColor = undefined;
-    setCssProfileStatusBar(undefined);
-    reportCssFailure(error);
-    return undefined;
-  }
+function clearCssProfile() {
+  currentAppliedColor = undefined;
+  setCssProfileStatusBar(undefined);
 }
 
-async function safelyRenderCssColor(color: string) {
+async function safelyRenderCssColor(color?: string) {
   try {
-    return await renderCssColor(color);
+    return color ? await renderCssColor(color) : await renderResolvedCssColor();
   } catch (error) {
-    currentAppliedColor = undefined;
-    setCssProfileStatusBar(undefined);
+    clearCssProfile();
     reportCssFailure(error);
     return undefined;
   }
@@ -308,12 +293,6 @@ async function renderCssColor(color: string) {
     getPrivateWorkspaceOverride()?.sideBarBackground || sessionSideBarBackground;
   const overrides = sideBarBackground ? { 'sideBar.background': sideBarBackground } : {};
   const profile = createCurrentCssProfile(color, Date.now(), overrides);
-  if (!profile) {
-    currentAppliedColor = undefined;
-    setCssProfileStatusBar(undefined);
-    return undefined;
-  }
-
   const registry = mergeCssProfiles(getCssProfilesGlobalMemento(), [profile]);
   await saveCssProfilesGlobalMemento(registry);
   await installRegistry(registry);
@@ -326,9 +305,8 @@ async function installRegistry(registry: ReturnType<typeof getCssProfilesGlobalM
   if (!activeStylesheetPath) {
     activeStylesheetPath = await locateStylesheet();
   }
-  const result = await cssPatcher.install(activeStylesheetPath, registry);
-  if (result.changed) {
-    promptForRestart(result.path);
+  if (await cssPatcher.install(activeStylesheetPath, registry)) {
+    promptForRestart(activeStylesheetPath);
   }
 }
 
@@ -350,8 +328,7 @@ function promptForRestart(cssPath: string) {
     });
 }
 
-function reportWorkspaceMapDiagnostics() {
-  const resolved = resolveCurrentCssColor();
+function reportWorkspaceMapDiagnostics(resolved = resolveCurrentCssColor()) {
   if (resolved.ambiguousNames.length) {
     reportDiagnostic(
       `ambiguous:${resolved.ambiguousNames.join('|')}`,
@@ -408,21 +385,12 @@ const cssRenderer: IColorRenderer = {
     if (options?.transient) {
       transientColor = color;
     }
-    const selectedColor = transientColor || color;
-    try {
-      return await renderCssColor(selectedColor);
-    } catch (error) {
-      currentAppliedColor = undefined;
-      setCssProfileStatusBar(undefined);
-      reportCssFailure(error);
-      return undefined;
-    }
+    return await safelyRenderCssColor(transientColor || color);
   },
 
   async unapply() {
     transientColor = undefined;
-    currentAppliedColor = undefined;
-    setCssProfileStatusBar(undefined);
+    clearCssProfile();
   },
 
   async capture() {
@@ -460,7 +428,7 @@ const cssRenderer: IColorRenderer = {
     } else {
       sessionSideBarBackground = color;
     }
-    await safelyRenderResolvedCssColor();
+    await safelyRenderCssColor();
   },
 };
 
@@ -487,7 +455,7 @@ const cssPersistence: IColorPersistence = {
     if (identity) {
       await saveCssWorkspaceOverrideGlobalMemento(identity.key, undefined);
     }
-    await safelyRenderResolvedCssColor();
+    await safelyRenderCssColor();
   },
 
   getCurrent() {

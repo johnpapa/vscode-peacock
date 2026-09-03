@@ -52,7 +52,7 @@ export const cssPatcher: ICssPatcher = {
     if (change.changed) {
       await writeAtomically(cssPath, change.content);
     }
-    return { changed: change.changed, path: cssPath, profileIds: change.profileIds };
+    return change.changed;
   },
 
   async remove(cssPath: string) {
@@ -62,7 +62,7 @@ export const cssPatcher: ICssPatcher = {
     if (change.changed) {
       await writeAtomically(cssPath, change.content);
     }
-    return { changed: change.changed, path: cssPath, profileIds: [] };
+    return change.changed;
   },
 };
 
