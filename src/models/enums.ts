@@ -16,6 +16,7 @@ export enum StandardSettings {
   SurpriseMeFromFavoritesOnly = 'surpriseMeFromFavoritesOnly',
   SurpriseMeInFavoritesOrder = 'surpriseMeInFavoritesOrder',
   SurpriseMeOnStartup = 'surpriseMeOnStartup',
+  Workspaces = 'workspaces',
 }
 
 export enum AffectedSettings {

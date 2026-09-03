@@ -19,6 +19,7 @@ import {
   ForegroundColors,
   defaultAmountToDarkenLighten,
   ColorSource,
+  IPeacockWorkspaces,
 } from '../models';
 import {
   getAdjustedColorHex,
@@ -47,6 +48,10 @@ export function getDarkenLightenPercentage() {
 
 export function getShowColorInStatusBar() {
   return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
+}
+
+export function getPeacockWorkspaces() {
+  return readConfiguration<IPeacockWorkspaces>(StandardSettings.Workspaces, {});
 }
 
 export function getColorCustomizationConfig() {

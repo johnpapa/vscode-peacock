@@ -9,6 +9,15 @@ export interface IFavoriteColors {
   value: string;
 }
 
+export interface IPeacockWorkspaceDefinition {
+  path?: string[];
+  color?: string;
+}
+
+export interface IPeacockWorkspaces {
+  [name: string]: IPeacockWorkspaceDefinition;
+}
+
 export interface ICommand {
   title: string;
   command: string;
@@ -72,6 +81,7 @@ export interface IPeacockSettings {
   surpriseMeOnStartup: boolean;
   color: string;
   remoteColor: string;
+  workspaces: IPeacockWorkspaces;
 }
 
 export interface IElementColors {

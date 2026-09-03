@@ -256,6 +256,30 @@
           "default": "",
           "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
         },
+        "peacock.workspaces": {
+          "type": "object",
+          "scope": "machine-overridable",
+          "default": {},
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                },
+                "description": "Exact absolute paths or workspace URIs that identify this workspace."
+              },
+              "color": {
+                "type": "string",
+                "description": "A color accepted by Peacock, such as #007fff or rebeccapurple."
+              }
+            },
+            "additionalProperties": false
+          },
+          "description": "Personal exact workspace-to-color mappings used by Peacock CSS injection. Entry names are labels only."
+        },
         "peacock.excludedSettings": {
           "type": "array",
           "default": [],
