@@ -8,7 +8,8 @@ import {
   updatePeacockColor,
   updatePeacockRemoteColor,
   getExcludedSettings,
-  getEnvironmentAwareColor,
+  getPeacockColor,
+  getPeacockRemoteColor,
   getCurrentColorBeforeAdjustments,
 } from './configuration';
 import { Logger } from './logging';
@@ -200,7 +201,7 @@ const workspaceSettingsPersistence: IColorPersistence = {
   },
 
   getCurrent() {
-    return getEnvironmentAwareColor();
+    return vscode.env.remoteName ? getPeacockRemoteColor() || getPeacockColor() : getPeacockColor();
   },
 };
 
