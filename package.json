@@ -284,7 +284,7 @@
           "type": "boolean",
           "scope": "machine",
           "default": false,
-          "description": "Opt in to Peacock's desktop CSS renderer. This modifies VS Code's installed stylesheet, requires a reload, and causes VS Code to report a modified installation."
+          "description": "Opt in to Peacock's desktop CSS renderer. This modifies VS Code's installed stylesheet, requires a full VS Code restart, and causes VS Code to report a modified installation."
         },
         "peacock.workspaces": {
           "type": "object",

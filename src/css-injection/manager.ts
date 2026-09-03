@@ -29,7 +29,7 @@ import { cssPatcher } from './css-patcher-platform';
 import { createCurrentCssProfile, mergeCssProfiles } from './profiles';
 
 const consentAction = 'Enable CSS Injection';
-const reloadAction = 'Reload Window';
+const quitAction = 'Quit VS Code';
 const consentMessage =
   "Peacock's CSS renderer modifies VS Code's installed workbench stylesheet. VS Code will report that its installation is modified or corrupt, and an update may remove the override. Continue only if you accept this.";
 
@@ -41,7 +41,7 @@ let sessionSideBarBackground: string | undefined;
 let modeQueue = Promise.resolve();
 const reportedDiagnostics = new Set<string>();
 const warnedLegacySettings = new Set<string>();
-const reloadPrompts = new Set<string>();
+const restartPrompts = new Set<string>();
 
 export function initializeColorApplicationMode() {
   return enqueueModeRefresh(false, false);
@@ -121,7 +121,7 @@ export function resetCssManagerForTests() {
   modeQueue = Promise.resolve();
   reportedDiagnostics.clear();
   warnedLegacySettings.clear();
-  reloadPrompts.clear();
+  restartPrompts.clear();
   setCssProfileStatusBar(undefined);
   configureColorApplication();
 }
@@ -185,7 +185,7 @@ async function disableCssMode(forceRemove: boolean) {
     if (cssPath) {
       const result = await cssPatcher.remove(cssPath);
       if (result.changed) {
-        promptForReload(cssPath);
+        promptForRestart(cssPath);
       }
     }
   } catch (error) {
@@ -319,24 +319,24 @@ async function installRegistry(registry: ReturnType<typeof getCssProfilesGlobalM
   }
   const result = await cssPatcher.install(activeStylesheetPath, registry);
   if (result.changed) {
-    promptForReload(result.path);
+    promptForRestart(result.path);
   }
 }
 
-function promptForReload(cssPath: string) {
-  if (reloadPrompts.has(cssPath)) {
+function promptForRestart(cssPath: string) {
+  if (restartPrompts.has(cssPath)) {
     return;
   }
-  reloadPrompts.add(cssPath);
+  restartPrompts.add(cssPath);
   void vscode.window
     .showInformationMessage(
-      'Peacock updated the VS Code stylesheet. Reload the window to activate the CSS overrides.',
-      reloadAction,
+      'Peacock updated the VS Code stylesheet. Fully quit and reopen VS Code to activate the CSS overrides.',
+      quitAction,
       'Later',
     )
     .then(selected => {
-      if (selected === reloadAction) {
-        void vscode.commands.executeCommand('workbench.action.reloadWindow');
+      if (selected === quitAction) {
+        void vscode.commands.executeCommand('workbench.action.quit');
       }
     });
 }
