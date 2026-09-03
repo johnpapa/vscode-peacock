@@ -209,10 +209,6 @@ export function configureColorApplication(
   activePersistence = persistence;
 }
 
-export function resetColorApplicationForTests() {
-  configureColorApplication();
-}
-
 export async function unapplyColors() {
   if (!vscode.workspace.workspaceFolders) {
     return;

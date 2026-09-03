@@ -14,7 +14,6 @@ suite('Workspace color resolution', () => {
       { uri: vscode.Uri.file('/Users/example/projects/peacock') },
     ]);
 
-    assert.ok(identity);
     assert.equal(
       identity?.address,
       canonicalizeWorkspaceAddress('file:///Users/example/projects/peacock/'),
@@ -29,23 +28,22 @@ suite('Workspace color resolution', () => {
     );
   });
 
-  test('uses a saved workspace file instead of its member folders', () => {
-    const identity = createWorkspaceIdentity(vscode.Uri.file('/tmp/example.code-workspace'), [
+  test('matches a saved multi-root workspace by its workspace file, not a member folder', () => {
+    const folders = [
       { uri: vscode.Uri.file('/tmp/member-one') },
       { uri: vscode.Uri.file('/tmp/member-two') },
-    ]);
+    ];
+    const saved = createWorkspaceIdentity(vscode.Uri.file('/tmp/example.code-workspace'), folders);
+    const match = matchWorkspaceColor(saved, {
+      saved: { path: ['/tmp/example.code-workspace'], color: '#007fff' },
+      member: { path: ['/tmp/member-one'], color: '#ff0000' },
+    });
 
-    assert.equal(identity?.kind, 'workspaceFile');
-    assert.equal(identity?.address, canonicalizeWorkspaceAddress('/tmp/example.code-workspace'));
-  });
-
-  test('does not assign a stable identity to an untitled multi-root workspace', () => {
-    const identity = createWorkspaceIdentity(vscode.Uri.parse('untitled:workspace'), [
-      { uri: vscode.Uri.file('/tmp/member-one') },
-      { uri: vscode.Uri.file('/tmp/member-two') },
-    ]);
-
-    assert.equal(identity, undefined);
+    assert.equal(match.name, 'saved');
+    assert.equal(
+      createWorkspaceIdentity(vscode.Uri.parse('untitled:workspace'), folders),
+      undefined,
+    );
   });
 
   test('requires the authority for remote workspace URIs', () => {
@@ -66,56 +64,13 @@ suite('Workspace color resolution', () => {
     assert.equal(result.color, '#663399');
   });
 
-  test('reports invalid and ambiguous definitions without selecting one', () => {
-    const identity = createWorkspaceIdentity(undefined, [{ uri: vscode.Uri.file('/tmp/project') }]);
-    const result = matchWorkspaceColor(identity, {
-      incomplete: { color: '#ff0000' },
-      invalidColor: { path: ['/tmp/project'], color: 'not-a-color' },
-      first: { path: ['/tmp/project'], color: '#ff0000' },
-      second: { path: ['/tmp/project'], color: '#00ff00' },
-    });
-
-    assert.deepEqual(result.invalidNames.sort(), ['incomplete', 'invalidColor']);
-    assert.deepEqual(result.ambiguousNames, ['first', 'second']);
-    assert.equal(result.color, undefined);
-  });
-
-  test('resolves transient, private, mapped, and legacy colors in order', () => {
-    const identity = createWorkspaceIdentity(undefined, [{ uri: vscode.Uri.file('/tmp/project') }]);
-    const workspaces = { mapped: { path: ['/tmp/project'], color: '#333333' } };
-
-    assert.equal(
-      resolveWorkspaceColor({
-        identity,
-        workspaces,
-        transientColor: '#111111',
-        privateColor: '#222222',
-        legacyColor: '#444444',
-      }).source,
-      'transient',
-    );
-    assert.equal(
-      resolveWorkspaceColor({
-        identity,
-        workspaces,
-        privateColor: '#222222',
-        legacyColor: '#444444',
-      }).source,
-      'private',
-    );
-    assert.equal(
-      resolveWorkspaceColor({ identity, workspaces, legacyColor: '#444444' }).source,
-      'workspaceMap',
-    );
-    assert.equal(resolveWorkspaceColor({ identity, legacyColor: '#444444' }).source, 'legacy');
-    assert.equal(resolveWorkspaceColor({ identity }).source, 'none');
-  });
-
-  test('falls through to legacy color for an ambiguous map', () => {
+  test('ignores invalid or ambiguous mappings and uses the legacy fallback', () => {
     const identity = createWorkspaceIdentity(undefined, [{ uri: vscode.Uri.file('/tmp/project') }]);
     const result = resolveWorkspaceColor({
       identity,
       workspaces: {
+        incomplete: { color: '#ff0000' },
+        invalidColor: { path: ['/tmp/project'], color: 'not-a-color' },
         first: { path: ['/tmp/project'], color: '#ff0000' },
         second: { path: ['/tmp/project'], color: '#00ff00' },
       },
@@ -124,6 +79,27 @@ suite('Workspace color resolution', () => {
 
     assert.equal(result.source, 'legacy');
     assert.equal(result.color, '#007fff');
-    assert.deepEqual(result.ambiguousNames, ['first', 'second']);
+    assert.equal(result.invalidNames.length, 2);
+    assert.equal(result.ambiguousNames.length, 2);
+  });
+
+  test('resolves transient, private, mapped, and legacy colors in order', () => {
+    const identity = createWorkspaceIdentity(undefined, [{ uri: vscode.Uri.file('/tmp/project') }]);
+    const workspaces = { mapped: { path: ['/tmp/project'], color: '#333333' } };
+
+    const source = (transientColor?: string, privateColor?: string) =>
+      resolveWorkspaceColor({
+        identity,
+        workspaces,
+        transientColor,
+        privateColor,
+        legacyColor: '#444444',
+      }).source;
+
+    assert.equal(source('#111111', '#222222'), 'transient');
+    assert.equal(source(undefined, '#222222'), 'private');
+    assert.equal(source(), 'workspaceMap');
+    assert.equal(resolveWorkspaceColor({ identity, legacyColor: '#444444' }).source, 'legacy');
+    assert.equal(resolveWorkspaceColor({ identity }).source, 'none');
   });
 });

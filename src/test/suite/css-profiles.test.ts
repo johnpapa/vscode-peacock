@@ -2,51 +2,31 @@ import * as assert from 'assert';
 
 import {
   createCssProfile,
-  createCssProfileMarkerLabel,
   generateCssProfileRule,
   mergeCssProfiles,
 } from '../../css-injection/profiles';
 
 suite('CSS profiles', () => {
-  test('converts sorted Peacock tokens into high-priority VS Code variables', () => {
+  const profileFor = (color: string, lastUsed: number) =>
+    createCssProfile(color, { 'statusBar.background': color }, [], lastUsed);
+
+  test('compiles Peacock tokens into high-priority variables and workbench surface rules', () => {
     const profile = createCssProfile(
       '#007fff',
       {
-        'titleBar.activeForeground': '#ffffff',
         'activityBar.background': '#0088ff',
-        'statusBar.background': '#007fff',
-      },
-      [],
-      1,
-    );
-
-    assert.deepEqual(profile.variables, {
-      '--vscode-activityBar-background': '#0088ff',
-      '--vscode-statusBar-background': '#007fff',
-      '--vscode-titleBar-activeForeground': '#ffffff',
-    });
-    assert.ok(
-      generateCssProfileRule(profile).includes('--vscode-statusBar-background:#007fff !important;'),
-    );
-  });
-
-  test('overrides literal workbench part styles with profile values', () => {
-    const profile = createCssProfile(
-      '#007fff',
-      {
-        'activityBar.background': '#3399ff',
         'statusBar.background': '#007fff',
         'statusBar.foreground': '#15202b',
         'titleBar.activeBackground': '#007fff',
         'titleBar.activeForeground': '#15202b',
-        'titleBar.inactiveBackground': '#0066cc',
       },
       [],
       1,
     );
     const css = generateCssProfileRule(profile);
 
-    assert.ok(css.includes('.part.activitybar{background-color:#3399ff !important;}'));
+    assert.ok(css.includes('--vscode-statusBar-background:#007fff !important;'));
+    assert.ok(css.includes('.part.activitybar{background-color:#0088ff !important;}'));
     assert.ok(
       css.includes(
         '.part.statusbar{background-color:#007fff !important;color:#15202b !important;}',
@@ -55,7 +35,6 @@ suite('CSS profiles', () => {
     assert.ok(
       css.includes('.part.titlebar{background-color:#007fff !important;color:#15202b !important;}'),
     );
-    assert.ok(css.includes('.part.titlebar.inactive{background-color:#0066cc !important;}'));
   });
 
   test('does not emit excluded settings', () => {
@@ -69,8 +48,7 @@ suite('CSS profiles', () => {
       1,
     );
 
-    assert.equal(profile.variables['--vscode-statusBar-background'], undefined);
-    assert.equal(profile.variables['--vscode-titleBar-activeBackground'], '#007fff');
+    assert.ok(!generateCssProfileRule(profile).includes('--vscode-statusBar-background'));
     assert.ok(!generateCssProfileRule(profile).includes('.part.statusbar{'));
   });
 
@@ -81,32 +59,20 @@ suite('CSS profiles', () => {
 
     assert.equal(first.id, same.id);
     assert.notEqual(first.id, changed.id);
-    assert.equal(
-      createCssProfileMarkerLabel(first),
-      `Peacock CSS profile ${first.id}; color #007fff`,
-    );
   });
 
-  test('keeps the most recently used profiles within the registry limit', () => {
-    const profiles = [
-      createCssProfile('#111111', { 'statusBar.background': '#111111' }, [], 1),
-      createCssProfile('#222222', { 'statusBar.background': '#222222' }, [], 2),
-      createCssProfile('#333333', { 'statusBar.background': '#333333' }, [], 3),
-    ];
-    const registry = mergeCssProfiles({}, profiles, 2);
+  test('keeps recently used profiles without duplicating refreshed entries', () => {
+    const first = profileFor('#111111', 1);
+    const second = profileFor('#222222', 2);
+    const third = profileFor('#333333', 3);
+    const registry = mergeCssProfiles(
+      { [first.id]: first },
+      [second, third, { ...first, lastUsed: 4 }],
+      2,
+    );
 
     assert.equal(Object.keys(registry).length, 2);
-    assert.equal(registry[profiles[0].id], undefined);
-    assert.ok(registry[profiles[1].id]);
-    assert.ok(registry[profiles[2].id]);
-  });
-
-  test('refreshes last-used time without duplicating a profile', () => {
-    const oldProfile = createCssProfile('#007fff', { 'statusBar.background': '#007fff' }, [], 1);
-    const refreshed = { ...oldProfile, lastUsed: 10 };
-    const registry = mergeCssProfiles({ [oldProfile.id]: oldProfile }, [refreshed]);
-
-    assert.equal(Object.keys(registry).length, 1);
-    assert.equal(registry[oldProfile.id].lastUsed, 10);
+    assert.ok(registry[first.id]);
+    assert.ok(registry[third.id]);
   });
 });

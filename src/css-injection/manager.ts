@@ -44,7 +44,7 @@ const reportedDiagnostics = new Set<string>();
 const warnedLegacySettings = new Set<string>();
 const restartPrompts = new Set<string>();
 
-export function initializeColorApplicationMode(mode = vscode.ExtensionMode.Production) {
+export function initializeColorApplicationMode(mode: vscode.ExtensionMode) {
   extensionMode = mode;
   return enqueueModeRefresh();
 }
@@ -55,10 +55,6 @@ export function refreshColorApplicationMode() {
 
 export function isCssColorApplicationActive() {
   return cssModeActive;
-}
-
-export function canUseCssInjection(mode: vscode.ExtensionMode) {
-  return mode !== vscode.ExtensionMode.Test;
 }
 
 export async function installOrRepairCssOverridesHandler() {
@@ -118,23 +114,9 @@ export function hasActiveWorkspaceMapping() {
   return resolveCurrentCssColor().source === 'workspaceMap';
 }
 
-export function resetCssManagerForTests() {
-  cssModeActive = false;
-  activeStylesheetPath = undefined;
-  transientColor = undefined;
-  sessionSideBarBackground = undefined;
-  modeQueue = Promise.resolve();
-  extensionMode = vscode.ExtensionMode.Production;
-  reportedDiagnostics.clear();
-  warnedLegacySettings.clear();
-  restartPrompts.clear();
-  clearCssProfile();
-  configureColorApplication();
-}
-
 function enqueueModeRefresh(forceRemove = false) {
   const operation = async () => {
-    if (!canUseCssInjection(extensionMode)) {
+    if (extensionMode === vscode.ExtensionMode.Test) {
       cssModeActive = false;
       configureColorApplication();
     } else if (getCssInjectionEnabled()) {
