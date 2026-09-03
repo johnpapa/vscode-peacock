@@ -38,11 +38,11 @@ let activeStylesheetPath: string | undefined;
 let currentAppliedColor: string | undefined;
 let transientColor: string | undefined;
 let sessionSideBarBackground: string | undefined;
-let modeQueue = Promise.resolve();
+let modeRefreshQueue = Promise.resolve();
 let extensionMode = vscode.ExtensionMode.Production;
-const reportedDiagnostics = new Set<string>();
+const reportedWorkspaceDiagnostics = new Set<string>();
 const warnedLegacySettings = new Set<string>();
-const restartPrompts = new Set<string>();
+const restartPromptedStylesheetPaths = new Set<string>();
 
 export function initializeColorApplicationMode(mode: vscode.ExtensionMode) {
   extensionMode = mode;
@@ -77,28 +77,29 @@ export async function removeCssOverridesHandler() {
 }
 
 export async function setStylesheetPathHandler() {
-  const cacheKey = getStylesheetCacheKey();
-  const existingPath = activeStylesheetPath || getCssStylesheetPathsGlobalMemento()[cacheKey];
-  const selectedPath = (
+  const stylesheetCacheKey = getStylesheetCacheKey();
+  const existingStylesheetPath =
+    activeStylesheetPath || getCssStylesheetPathsGlobalMemento()[stylesheetCacheKey];
+  const selectedStylesheetPath = (
     await vscode.window.showInputBox({
       prompt: 'Enter the full path to workbench.desktop.main.css',
-      value: existingPath,
+      value: existingStylesheetPath,
       ignoreFocusOut: true,
     })
   )?.trim();
-  if (!selectedPath) {
+  if (!selectedStylesheetPath) {
     return;
   }
 
-  if (!(await cssPatcher.validate(selectedPath))) {
+  if (!(await cssPatcher.validate(selectedStylesheetPath))) {
     await vscode.window.showErrorMessage(
       'Peacock could not find a workbench.desktop.main.css file at that path.',
     );
     return;
   }
 
-  activeStylesheetPath = selectedPath;
-  await saveCssStylesheetPathGlobalMemento(cacheKey, selectedPath);
+  activeStylesheetPath = selectedStylesheetPath;
+  await saveCssStylesheetPathGlobalMemento(stylesheetCacheKey, selectedStylesheetPath);
   if (getCssInjectionEnabled()) {
     await enqueueModeRefresh();
   }
@@ -114,21 +115,22 @@ export function hasActiveWorkspaceMapping() {
   return resolveCurrentCssColor().source === 'workspaceMap';
 }
 
-function enqueueModeRefresh(forceRemove = false) {
-  const operation = async () => {
+/** Serializes mode changes so concurrent configuration events cannot race file writes. */
+function enqueueModeRefresh(removeEvenWhenInactive = false) {
+  const refreshOperation = async () => {
     if (extensionMode === vscode.ExtensionMode.Test) {
       cssModeActive = false;
       configureColorApplication();
     } else if (getCssInjectionEnabled()) {
       await enableCssMode();
-    } else if (cssModeActive || forceRemove) {
-      await disableCssMode(forceRemove);
+    } else if (cssModeActive || removeEvenWhenInactive) {
+      await disableCssMode(removeEvenWhenInactive);
     } else {
       configureColorApplication();
     }
   };
-  modeQueue = modeQueue.then(operation, operation);
-  return modeQueue;
+  modeRefreshQueue = modeRefreshQueue.then(refreshOperation, refreshOperation);
+  return modeRefreshQueue;
 }
 
 async function enableCssMode() {
@@ -145,10 +147,10 @@ async function enableCssMode() {
     activeStylesheetPath = await locateStylesheet();
     warnAboutWorkspaceLegacyColor();
 
-    const resolved = resolveCurrentCssColor();
-    reportWorkspaceMapDiagnostics(resolved);
-    if (resolved.color) {
-      await renderCssColor(resolved.color);
+    const resolvedColor = resolveCurrentCssColor();
+    reportWorkspaceMapDiagnostics(resolvedColor);
+    if (resolvedColor.color) {
+      await renderCssColor(resolvedColor.color);
     } else {
       clearCssProfile();
       await installRegistry(getCssProfilesGlobalMemento());
@@ -159,16 +161,17 @@ async function enableCssMode() {
   }
 }
 
-async function disableCssMode(forceRemove: boolean) {
+async function disableCssMode(removeEvenWhenInactive: boolean) {
   transientColor = undefined;
   sessionSideBarBackground = undefined;
   clearCssProfile();
 
   try {
-    const cssPath = activeStylesheetPath || (forceRemove ? await locateStylesheet() : undefined);
-    if (cssPath) {
-      if (await cssPatcher.remove(cssPath)) {
-        promptForRestart(cssPath);
+    const stylesheetPath =
+      activeStylesheetPath || (removeEvenWhenInactive ? await locateStylesheet() : undefined);
+    if (stylesheetPath) {
+      if (await cssPatcher.remove(stylesheetPath)) {
+        promptForRestart(stylesheetPath);
       }
     }
   } catch (error) {
@@ -184,12 +187,12 @@ async function ensureConsent() {
     return true;
   }
 
-  const selected = await vscode.window.showWarningMessage(
+  const selectedAction = await vscode.window.showWarningMessage(
     consentMessage,
     { modal: true },
     consentAction,
   );
-  if (selected !== consentAction) {
+  if (selectedAction !== consentAction) {
     await updateCssInjectionEnabled(false);
     return false;
   }
@@ -198,19 +201,21 @@ async function ensureConsent() {
   return true;
 }
 
+/** Discovers the installed workbench stylesheet and caches it per VS Code app root. */
 async function locateStylesheet() {
-  const cacheKey = getStylesheetCacheKey();
-  const cachedPath = getCssStylesheetPathsGlobalMemento()[cacheKey];
-  const cssPath = await cssPatcher.locate(activeStylesheetPath || cachedPath);
-  if (!cssPath) {
+  const stylesheetCacheKey = getStylesheetCacheKey();
+  const cachedStylesheetPath = getCssStylesheetPathsGlobalMemento()[stylesheetCacheKey];
+  const stylesheetPath = await cssPatcher.locate(activeStylesheetPath || cachedStylesheetPath);
+  if (!stylesheetPath) {
     throw new Error(
       'Peacock could not locate workbench.desktop.main.css. Use “Peacock: Set VS Code Stylesheet Path” and try again.',
     );
   }
-  await saveCssStylesheetPathGlobalMemento(cacheKey, cssPath);
-  return cssPath;
+  await saveCssStylesheetPathGlobalMemento(stylesheetCacheKey, stylesheetPath);
+  return stylesheetPath;
 }
 
+/** Separates cached paths for different VS Code installations on one machine. */
 function getStylesheetCacheKey() {
   return `${vscode.env.machineId}:${vscode.env.appName || 'vscode'}:${
     vscode.env.appRoot || 'unknown'
@@ -226,14 +231,15 @@ function getLegacyFallbackColor() {
   return vscode.env.remoteName ? getPeacockRemoteColor() || getPeacockColor() : getPeacockColor();
 }
 
+/** Resolves the active color using Peacock's documented CSS-mode precedence. */
 function resolveCurrentCssColor() {
-  const hasWorkspace = !!vscode.workspace.workspaceFolders;
+  const hasWorkspaceFolders = !!vscode.workspace.workspaceFolders;
   return resolveWorkspaceColor({
     identity: getCurrentWorkspaceIdentity(),
     workspaces: getPeacockWorkspaces(),
     transientColor,
     privateColor: getPrivateWorkspaceOverride()?.color,
-    legacyColor: hasWorkspace ? getLegacyFallbackColor() : undefined,
+    legacyColor: hasWorkspaceFolders ? getLegacyFallbackColor() : undefined,
   });
 }
 
@@ -242,15 +248,17 @@ function clearCssProfile() {
   setCssProfileStatusBar(undefined);
 }
 
-async function safelyRenderCssColor(color?: string) {
+/** Reports failures without falling back to workspace-setting writes. */
+async function safelyRenderCssColor(requestedColor?: string) {
   try {
-    if (!color) {
-      const resolved = resolveCurrentCssColor();
-      reportWorkspaceMapDiagnostics(resolved);
-      color = resolved.color;
+    let colorToRender = requestedColor;
+    if (!colorToRender) {
+      const resolvedColor = resolveCurrentCssColor();
+      reportWorkspaceMapDiagnostics(resolvedColor);
+      colorToRender = resolvedColor.color;
     }
-    if (color) {
-      await renderCssColor(color);
+    if (colorToRender) {
+      await renderCssColor(colorToRender);
     } else {
       clearCssProfile();
     }
@@ -261,97 +269,100 @@ async function safelyRenderCssColor(color?: string) {
   }
 }
 
+/** Installs the profile before publishing the status-bar marker that selects it. */
 async function renderCssColor(color: string) {
   const sideBarBackground =
     getPrivateWorkspaceOverride()?.sideBarBackground || sessionSideBarBackground;
-  const overrides = sideBarBackground ? { 'sideBar.background': sideBarBackground } : {};
-  const profile = createCurrentCssProfile(color, Date.now(), overrides);
-  const registry = mergeCssProfiles(getCssProfilesGlobalMemento(), [profile]);
-  await saveCssProfilesGlobalMemento(registry);
-  await installRegistry(registry);
-  currentAppliedColor = profile.color;
-  setCssProfileStatusBar(profile);
+  const tokenOverrides = sideBarBackground ? { 'sideBar.background': sideBarBackground } : {};
+  const cssProfile = createCurrentCssProfile(color, Date.now(), tokenOverrides);
+  const profileRegistry = mergeCssProfiles(getCssProfilesGlobalMemento(), [cssProfile]);
+  await saveCssProfilesGlobalMemento(profileRegistry);
+  await installRegistry(profileRegistry);
+  currentAppliedColor = cssProfile.color;
+  setCssProfileStatusBar(cssProfile);
 }
 
-async function installRegistry(registry: ReturnType<typeof getCssProfilesGlobalMemento>) {
+async function installRegistry(profileRegistry: ReturnType<typeof getCssProfilesGlobalMemento>) {
   if (!activeStylesheetPath) {
     activeStylesheetPath = await locateStylesheet();
   }
-  if (await cssPatcher.install(activeStylesheetPath, registry)) {
+  if (await cssPatcher.install(activeStylesheetPath, profileRegistry)) {
     promptForRestart(activeStylesheetPath);
   }
 }
 
-function promptForRestart(cssPath: string) {
-  if (restartPrompts.has(cssPath)) {
+function promptForRestart(stylesheetPath: string) {
+  if (restartPromptedStylesheetPaths.has(stylesheetPath)) {
     return;
   }
-  restartPrompts.add(cssPath);
+  restartPromptedStylesheetPaths.add(stylesheetPath);
   void vscode.window
     .showInformationMessage(
       'Peacock updated the VS Code stylesheet. Fully quit and reopen VS Code to activate the CSS overrides.',
       quitAction,
       'Later',
     )
-    .then(selected => {
-      if (selected === quitAction) {
+    .then(selectedAction => {
+      if (selectedAction === quitAction) {
         void vscode.commands.executeCommand('workbench.action.quit');
       }
     });
 }
 
-function reportWorkspaceMapDiagnostics(resolved = resolveCurrentCssColor()) {
-  if (resolved.ambiguousNames.length) {
+function reportWorkspaceMapDiagnostics(resolvedColor = resolveCurrentCssColor()) {
+  if (resolvedColor.ambiguousNames.length) {
     reportDiagnostic(
-      `ambiguous:${resolved.ambiguousNames.join('|')}`,
-      `Peacock ignored ambiguous workspace mappings: ${resolved.ambiguousNames.join(
+      `ambiguous:${resolvedColor.ambiguousNames.join('|')}`,
+      `Peacock ignored ambiguous workspace mappings: ${resolvedColor.ambiguousNames.join(
         ', ',
       )}. Their exact path aliases all match this workspace.`,
     );
   }
-  if (resolved.invalidNames.length) {
+  if (resolvedColor.invalidNames.length) {
     reportDiagnostic(
-      `invalid:${resolved.invalidNames.join('|')}`,
-      `Peacock ignored invalid workspace mappings: ${resolved.invalidNames.join(
+      `invalid:${resolvedColor.invalidNames.join('|')}`,
+      `Peacock ignored invalid workspace mappings: ${resolvedColor.invalidNames.join(
         ', ',
       )}. Each effective entry needs a non-empty path array and valid color.`,
     );
   }
 }
 
-function reportDiagnostic(key: string, message: string) {
-  if (reportedDiagnostics.has(key)) {
+function reportDiagnostic(diagnosticKey: string, message: string) {
+  if (reportedWorkspaceDiagnostics.has(diagnosticKey)) {
     return;
   }
-  reportedDiagnostics.add(key);
+  reportedWorkspaceDiagnostics.add(diagnosticKey);
   void vscode.window.showWarningMessage(message);
   Logger.info(message);
 }
 
 function warnAboutWorkspaceLegacyColor() {
-  const settings = [StandardSettings.Color, StandardSettings.RemoteColor];
-  for (const setting of settings) {
-    const section = `peacock.${setting}`;
-    const inspection = vscode.workspace.getConfiguration().inspect<string>(section);
-    const hasWorkspaceValue = !!inspection?.workspaceValue || !!inspection?.workspaceFolderValue;
-    if (!hasWorkspaceValue || warnedLegacySettings.has(section)) {
+  const legacyColorSettings = [StandardSettings.Color, StandardSettings.RemoteColor];
+  for (const setting of legacyColorSettings) {
+    const settingSection = `peacock.${setting}`;
+    const settingInspection = vscode.workspace.getConfiguration().inspect<string>(settingSection);
+    const hasWorkspaceValue =
+      !!settingInspection?.workspaceValue || !!settingInspection?.workspaceFolderValue;
+    if (!hasWorkspaceValue || warnedLegacySettings.has(settingSection)) {
       continue;
     }
-    warnedLegacySettings.add(section);
+    warnedLegacySettings.add(settingSection);
     void vscode.window.showWarningMessage(
-      `${section} is defined in this workspace. CSS injection leaves it untouched and uses it only as a fallback; Peacock command selections and exact workspace mappings take precedence.`,
+      `${settingSection} is defined in this workspace. CSS injection leaves it untouched and uses it only as a fallback; Peacock command selections and exact workspace mappings take precedence.`,
     );
   }
 }
 
 function reportCssFailure(error: unknown) {
-  const message = error instanceof Error ? error.message : String(error);
-  Logger.info(`Peacock CSS injection failed: ${message}`);
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  Logger.info(`Peacock CSS injection failed: ${errorMessage}`);
   void vscode.window.showErrorMessage(
-    `Peacock CSS injection failed without changing workspace settings: ${message}`,
+    `Peacock CSS injection failed without changing workspace settings: ${errorMessage}`,
   );
 }
 
+/** Implements rendering without reading or writing workbench color customizations. */
 const cssRenderer: IColorRenderer = {
   async apply(color, options) {
     if (options?.transient) {
@@ -369,13 +380,13 @@ const cssRenderer: IColorRenderer = {
     return { appliedColor: currentAppliedColor };
   },
 
-  async restore(state: unknown) {
+  async restore(renderState: unknown) {
     transientColor = undefined;
-    const resolved = resolveCurrentCssColor();
-    const captured = state as { appliedColor?: string } | undefined;
-    const color = resolved.color || captured?.appliedColor;
-    if (color) {
-      await safelyRenderCssColor(color);
+    const resolvedColor = resolveCurrentCssColor();
+    const capturedState = renderState as { appliedColor?: string } | undefined;
+    const colorToRestore = resolvedColor.color || capturedState?.appliedColor;
+    if (colorToRestore) {
+      await safelyRenderCssColor(colorToRestore);
     } else {
       clearCssProfile();
     }
@@ -392,9 +403,9 @@ const cssRenderer: IColorRenderer = {
   async updateSideBarBackground(color) {
     const identity = getCurrentWorkspaceIdentity();
     if (identity) {
-      const existing = getPrivateWorkspaceOverride() || {};
+      const existingOverride = getPrivateWorkspaceOverride() || {};
       await saveCssWorkspaceOverrideGlobalMemento(identity.key, {
-        ...existing,
+        ...existingOverride,
         sideBarBackground: color,
       });
     } else {
@@ -404,6 +415,7 @@ const cssRenderer: IColorRenderer = {
   },
 };
 
+/** Persists command-selected colors privately under the exact workspace key. */
 const cssPersistence: IColorPersistence = {
   async save(color) {
     const identity = getCurrentWorkspaceIdentity();
@@ -415,9 +427,9 @@ const cssPersistence: IColorPersistence = {
     }
 
     const normalizedColor = isValidColorInput(color) ? getBackgroundColorHex(color) : undefined;
-    const existing = getPrivateWorkspaceOverride() || {};
+    const existingOverride = getPrivateWorkspaceOverride() || {};
     await saveCssWorkspaceOverrideGlobalMemento(identity.key, {
-      ...existing,
+      ...existingOverride,
       color: normalizedColor,
     });
   },

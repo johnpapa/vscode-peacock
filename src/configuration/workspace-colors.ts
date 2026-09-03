@@ -49,6 +49,11 @@ export function getCurrentWorkspaceIdentity(): IWorkspaceIdentity | undefined {
   return createWorkspaceIdentity(vscode.workspace.workspaceFile, vscode.workspace.workspaceFolders);
 }
 
+/**
+ * Returns the one stable address Peacock can use for the current window.
+ * Saved multi-root workspaces use their workspace file; a window with one
+ * folder uses that folder. Untitled multi-root workspaces have no stable key.
+ */
 export function createWorkspaceIdentity(
   workspaceFile: vscode.Uri | undefined,
   workspaceFolders: readonly IWorkspaceFolderLike[] | undefined,
@@ -78,60 +83,70 @@ export function createWorkspaceIdentity(
   return undefined;
 }
 
-export function canonicalizeWorkspaceAddress(value: string): string | undefined {
-  const input = value.trim();
-  if (!input) {
+/**
+ * Converts a user-supplied absolute path or URI to Peacock's exact-match form.
+ * This is lexical normalization only: it never resolves symlinks or touches the
+ * filesystem.
+ */
+export function canonicalizeWorkspaceAddress(workspaceAddress: string): string | undefined {
+  const trimmedAddress = workspaceAddress.trim();
+  if (!trimmedAddress) {
     return undefined;
   }
 
-  if (isAbsoluteFilePath(input)) {
-    return canonicalizeFilePath(input);
+  if (isAbsoluteFilePath(trimmedAddress)) {
+    return canonicalizeFilePath(trimmedAddress);
   }
 
-  if (!/^[a-z][a-z\d+.-]*:/i.test(input)) {
+  if (!/^[a-z][a-z\d+.-]*:/i.test(trimmedAddress)) {
     return undefined;
   }
 
   try {
-    return canonicalizeWorkspaceUri(vscode.Uri.parse(input, true));
+    return canonicalizeWorkspaceUri(vscode.Uri.parse(trimmedAddress, true));
   } catch {
     return undefined;
   }
 }
 
+/** Normalizes a VS Code URI without discarding remote authorities. */
 export function canonicalizeWorkspaceUri(uri: vscode.Uri): string | undefined {
-  const scheme = uri.scheme.toLowerCase();
-  if (!scheme || scheme === 'untitled') {
+  const normalizedScheme = uri.scheme.toLowerCase();
+  if (!normalizedScheme || normalizedScheme === 'untitled') {
     return undefined;
   }
 
-  if (scheme === 'file') {
+  if (normalizedScheme === 'file') {
     return canonicalizeFilePath(uri.fsPath);
   }
 
-  if (scheme === 'vscode-remote' && !uri.authority) {
+  if (normalizedScheme === 'vscode-remote' && !uri.authority) {
     return undefined;
   }
 
-  const authority = uri.authority.toLowerCase();
+  const normalizedAuthority = uri.authority.toLowerCase();
   const normalizedPath = normalizeSlashPath(uri.path, true);
   const query = uri.query ? `?${uri.query}` : '';
   const fragment = uri.fragment ? `#${uri.fragment}` : '';
-  return `${scheme}://${authority}${normalizedPath}${query}${fragment}`;
+  return `${normalizedScheme}://${normalizedAuthority}${normalizedPath}${query}${fragment}`;
 }
 
+/**
+ * Finds a single valid mapping whose normalized alias exactly equals the
+ * workspace address. Multiple matches are deliberately treated as ambiguous.
+ */
 export function matchWorkspaceColor(
   identity: IWorkspaceIdentity | undefined,
-  workspaces: IPeacockWorkspaces = {},
+  workspaceDefinitions: IPeacockWorkspaces = {},
 ): IWorkspaceMapMatch {
   const invalidNames: string[] = [];
   if (!identity) {
     return { ambiguousNames: [], invalidNames };
   }
 
-  const matches: Array<{ name: string; color: string }> = [];
-  Object.keys(workspaces).forEach(name => {
-    const definition = workspaces[name];
+  const matchingDefinitions: Array<{ name: string; color: string }> = [];
+  Object.keys(workspaceDefinitions).forEach(workspaceName => {
+    const definition = workspaceDefinitions[workspaceName];
     if (
       !definition ||
       !Array.isArray(definition.path) ||
@@ -139,38 +154,46 @@ export function matchWorkspaceColor(
       !definition.color ||
       !isValidColorInput(definition.color)
     ) {
-      invalidNames.push(name);
+      invalidNames.push(workspaceName);
       return;
     }
 
-    const addresses = definition.path
+    const normalizedAliases = definition.path
       .map(canonicalizeWorkspaceAddress)
       .filter((address): address is string => !!address);
-    if (addresses.length !== definition.path.length) {
-      invalidNames.push(name);
+    if (normalizedAliases.length !== definition.path.length) {
+      invalidNames.push(workspaceName);
       return;
     }
 
-    if (addresses.includes(identity.address)) {
-      matches.push({ name, color: getBackgroundColorHex(definition.color) });
+    if (normalizedAliases.includes(identity.address)) {
+      matchingDefinitions.push({
+        name: workspaceName,
+        color: getBackgroundColorHex(definition.color),
+      });
     }
   });
 
-  if (matches.length !== 1) {
+  if (matchingDefinitions.length !== 1) {
     return {
-      ambiguousNames: matches.length > 1 ? matches.map(match => match.name) : [],
+      ambiguousNames:
+        matchingDefinitions.length > 1 ? matchingDefinitions.map(match => match.name) : [],
       invalidNames,
     };
   }
 
   return {
-    color: matches[0].color,
-    name: matches[0].name,
+    color: matchingDefinitions[0].color,
+    name: matchingDefinitions[0].name,
     ambiguousNames: [],
     invalidNames,
   };
 }
 
+/**
+ * Resolves temporary session, private command, workspace mapping, and legacy
+ * colors in that order while carrying mapping diagnostics forward.
+ */
 export function resolveWorkspaceColor({
   identity,
   workspaces = {},
@@ -178,14 +201,14 @@ export function resolveWorkspaceColor({
   privateColor,
   legacyColor,
 }: IResolveWorkspaceColorOptions): IResolvedWorkspaceColor {
-  const transient = normalizeColor(transientColor);
-  if (transient) {
-    return emptyResolution('transient', transient);
+  const transientSessionColor = normalizeColor(transientColor);
+  if (transientSessionColor) {
+    return createDirectColorResolution('transient', transientSessionColor);
   }
 
   const privateWorkspaceColor = normalizeColor(privateColor);
   if (privateWorkspaceColor) {
-    return emptyResolution('private', privateWorkspaceColor);
+    return createDirectColorResolution('private', privateWorkspaceColor);
   }
 
   const workspaceMatch = matchWorkspaceColor(identity, workspaces);
@@ -199,16 +222,16 @@ export function resolveWorkspaceColor({
     };
   }
 
-  const legacy = normalizeColor(legacyColor);
+  const legacyWorkspaceColor = normalizeColor(legacyColor);
   return {
-    color: legacy,
-    source: legacy ? 'legacy' : 'none',
+    color: legacyWorkspaceColor,
+    source: legacyWorkspaceColor ? 'legacy' : 'none',
     ambiguousNames: workspaceMatch.ambiguousNames,
     invalidNames: workspaceMatch.invalidNames,
   };
 }
 
-function emptyResolution(
+function createDirectColorResolution(
   source: Exclude<ResolvedWorkspaceColorSource, 'workspaceMap' | 'none'>,
   color: string,
 ): IResolvedWorkspaceColor {
@@ -219,40 +242,47 @@ function normalizeColor(color: string | undefined) {
   return color && isValidColorInput(color) ? getBackgroundColorHex(color) : undefined;
 }
 
-function canonicalizeFilePath(value: string) {
-  const normalized = normalizeSlashPath(value, value.startsWith('/') || value.startsWith('\\'));
-  const isWindows = /^[a-z]:\//i.test(normalized) || normalized.startsWith('//');
-  return `file:${isWindows ? normalized.toLowerCase() : normalized}`;
+function canonicalizeFilePath(filePath: string) {
+  const normalizedPath = normalizeSlashPath(
+    filePath,
+    filePath.startsWith('/') || filePath.startsWith('\\'),
+  );
+  const isWindowsPath = /^[a-z]:\//i.test(normalizedPath) || normalizedPath.startsWith('//');
+  return `file:${isWindowsPath ? normalizedPath.toLowerCase() : normalizedPath}`;
 }
 
-function isAbsoluteFilePath(value: string) {
-  return value.startsWith('/') || /^[a-z]:[\\/]/i.test(value) || /^\\\\[^\\]/.test(value);
+function isAbsoluteFilePath(filePath: string) {
+  return filePath.startsWith('/') || /^[a-z]:[\\/]/i.test(filePath) || /^\\\\[^\\]/.test(filePath);
 }
 
-function normalizeSlashPath(value: string, absolute: boolean) {
-  const withSlashes = value.replace(/\\/g, '/');
-  const isUnc = withSlashes.startsWith('//');
-  const drive = withSlashes.match(/^[a-z]:/i)?.[0] || '';
-  const parts = withSlashes
-    .slice(isUnc ? 2 : drive.length)
+/**
+ * Collapses slash and dot-segment differences while preserving Unix roots,
+ * Windows drive prefixes, and Windows network paths beginning with `//`.
+ */
+function normalizeSlashPath(pathValue: string, isAbsolutePath: boolean) {
+  const slashNormalizedPath = pathValue.replace(/\\/g, '/');
+  const isWindowsNetworkPath = slashNormalizedPath.startsWith('//');
+  const windowsDrivePrefix = slashNormalizedPath.match(/^[a-z]:/i)?.[0] || '';
+  const pathSegments = slashNormalizedPath
+    .slice(isWindowsNetworkPath ? 2 : windowsDrivePrefix.length)
     .split('/')
-    .filter(part => !!part && part !== '.');
-  const normalizedParts: string[] = [];
-  parts.forEach(part => {
-    if (part === '..') {
-      normalizedParts.pop();
+    .filter(pathSegment => !!pathSegment && pathSegment !== '.');
+  const normalizedSegments: string[] = [];
+  pathSegments.forEach(pathSegment => {
+    if (pathSegment === '..') {
+      normalizedSegments.pop();
     } else {
-      normalizedParts.push(part);
+      normalizedSegments.push(pathSegment);
     }
   });
 
-  if (isUnc) {
-    return `//${normalizedParts.join('/')}`;
+  if (isWindowsNetworkPath) {
+    return `//${normalizedSegments.join('/')}`;
   }
-  if (drive) {
-    return `${drive}/${normalizedParts.join('/')}`.replace(/\/$/, '');
+  if (windowsDrivePrefix) {
+    return `${windowsDrivePrefix}/${normalizedSegments.join('/')}`.replace(/\/$/, '');
   }
-  const prefix = absolute ? '/' : '';
-  const normalized = `${prefix}${normalizedParts.join('/')}`;
-  return normalized.length > 1 ? normalized.replace(/\/$/, '') : normalized;
+  const rootPrefix = isAbsolutePath ? '/' : '';
+  const normalizedPath = `${rootPrefix}${normalizedSegments.join('/')}`;
+  return normalizedPath.length > 1 ? normalizedPath.replace(/\/$/, '') : normalizedPath;
 }

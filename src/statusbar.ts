@@ -12,38 +12,39 @@ export const getStatusBarItem = () => {
 };
 
 export function clearStatusBar() {
-  const sb = _statusBarItem;
-  sb.text = '';
-  sb.color = undefined;
-  sb.accessibilityInformation = undefined;
-  sb.hide();
+  const statusBarItem = _statusBarItem;
+  statusBarItem.text = '';
+  statusBarItem.color = undefined;
+  statusBarItem.accessibilityInformation = undefined;
+  statusBarItem.hide();
 }
 
+/** Publishes the accessibility marker used to select this window's CSS profile. */
 export function setCssProfileStatusBar(profile: ICssProfile | undefined) {
   cssProfile = profile;
   updateStatusBar();
 }
 
 export function updateStatusBar() {
-  const sb = _statusBarItem;
-  const show = getShowColorInStatusBar();
+  const statusBarItem = _statusBarItem;
+  const showColorInStatusBar = getShowColorInStatusBar();
   if (cssProfile) {
-    const label = createCssProfileMarkerLabel(cssProfile);
-    sb.text = show ? `$(paintcan) ${cssProfile.color}` : '';
-    sb.color = show ? undefined : 'transparent';
-    sb.command = Commands.showAndCopyCurrentColor;
-    sb.tooltip = show ? 'Copy the Peacock color' : label;
-    sb.accessibilityInformation = { label };
-    sb.show();
+    const profileMarkerLabel = createCssProfileMarkerLabel(cssProfile);
+    statusBarItem.text = showColorInStatusBar ? `$(paintcan) ${cssProfile.color}` : '';
+    statusBarItem.color = showColorInStatusBar ? undefined : 'transparent';
+    statusBarItem.command = Commands.showAndCopyCurrentColor;
+    statusBarItem.tooltip = showColorInStatusBar ? 'Copy the Peacock color' : profileMarkerLabel;
+    statusBarItem.accessibilityInformation = { label: profileMarkerLabel };
+    statusBarItem.show();
     return;
   }
 
   const color = getEnvironmentAwareColor();
-  sb.text = `$(paintcan) ${color}`;
-  sb.command = Commands.showAndCopyCurrentColor;
-  sb.tooltip = 'Copy the Peacock color';
-  if (show && !!color) {
-    sb.show();
+  statusBarItem.text = `$(paintcan) ${color}`;
+  statusBarItem.command = Commands.showAndCopyCurrentColor;
+  statusBarItem.tooltip = 'Copy the Peacock color';
+  if (showColorInStatusBar && !!color) {
+    statusBarItem.show();
   } else {
     clearStatusBar();
   }

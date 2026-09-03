@@ -102,14 +102,14 @@ export async function changeColorToRandomHandler() {
   let color = '';
 
   if (surpriseMeFromFavoritesOnly) {
-    const o = getRandomFavoriteColor(getCurrentColor());
-    if (!o) {
+    const favoriteColor = getRandomFavoriteColor(getCurrentColor());
+    if (!favoriteColor) {
       notify(
         'No favorites exist. Add some favorites if you want to use the surprise me from favorites feature',
       );
       return State.extensionContext;
     }
-    color = o.value;
+    color = favoriteColor.value;
   } else {
     color = getRandomColorHex();
   }

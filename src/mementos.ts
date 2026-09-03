@@ -42,11 +42,12 @@ async function saveGlobalMemento(mementoName: string, value: any) {
   }
 }
 
-function getGlobalMemento<T>(mementoName: string, fallback: T): T {
+/** Reads extension state, using the in-memory store before activation. */
+function getGlobalMemento<T>(mementoName: string, defaultValue: T): T {
   return (
-    getGlobalState()?.get<T>(mementoName, fallback) ??
+    getGlobalState()?.get<T>(mementoName, defaultValue) ??
     fallbackGlobalMementos.get(mementoName) ??
-    fallback
+    defaultValue
   );
 }
 
@@ -62,17 +63,23 @@ export function getCssProfilesGlobalMemento(): CssProfileRegistry {
   return getGlobalMemento(peacockMementos.cssProfiles, {});
 }
 
-export async function saveCssProfilesGlobalMemento(profiles: CssProfileRegistry) {
-  await saveGlobalMemento(peacockMementos.cssProfiles, profiles);
+export async function saveCssProfilesGlobalMemento(profileRegistry: CssProfileRegistry) {
+  await saveGlobalMemento(peacockMementos.cssProfiles, profileRegistry);
 }
 
 export function getCssStylesheetPathsGlobalMemento(): CssStylesheetPaths {
   return getGlobalMemento(peacockMementos.cssStylesheetPaths, {});
 }
 
-export async function saveCssStylesheetPathGlobalMemento(key: string, cssPath: string) {
-  const paths = getCssStylesheetPathsGlobalMemento();
-  await saveGlobalMemento(peacockMementos.cssStylesheetPaths, { ...paths, [key]: cssPath });
+export async function saveCssStylesheetPathGlobalMemento(
+  stylesheetCacheKey: string,
+  stylesheetPath: string,
+) {
+  const stylesheetPaths = getCssStylesheetPathsGlobalMemento();
+  await saveGlobalMemento(peacockMementos.cssStylesheetPaths, {
+    ...stylesheetPaths,
+    [stylesheetCacheKey]: stylesheetPath,
+  });
 }
 
 export function getCssWorkspaceOverridesGlobalMemento(): CssWorkspaceOverrides {
@@ -83,13 +90,13 @@ export async function saveCssWorkspaceOverrideGlobalMemento(
   workspaceKey: string,
   override: ICssWorkspaceOverride | undefined,
 ) {
-  const overrides = { ...getCssWorkspaceOverridesGlobalMemento() };
+  const workspaceOverrides = { ...getCssWorkspaceOverridesGlobalMemento() };
   if (override && (override.color || override.sideBarBackground)) {
-    overrides[workspaceKey] = override;
+    workspaceOverrides[workspaceKey] = override;
   } else {
-    delete overrides[workspaceKey];
+    delete workspaceOverrides[workspaceKey];
   }
-  await saveGlobalMemento(peacockMementos.cssWorkspaceOverrides, overrides);
+  await saveGlobalMemento(peacockMementos.cssWorkspaceOverrides, workspaceOverrides);
 }
 
 export async function clearCssWorkspaceOverridesGlobalMemento() {
@@ -137,7 +144,7 @@ export function getSurpriseMeStartupSelectionsGlobalMemento(): SurpriseStartupSe
 }
 
 export async function resetFavoritesVersionMemento() {
-  const names = [
+  const favoriteMementoNames = [
     peacockMementos.favoritesVersion,
     peacockMementos.surpriseMeFavoritesOrderIndex,
     peacockMementos.surpriseMeFavoritesOrderKey,
@@ -145,7 +152,7 @@ export async function resetFavoritesVersionMemento() {
   ];
   const globalState = getGlobalState();
   if (!globalState) {
-    names.forEach(name => fallbackGlobalMementos.delete(name));
+    favoriteMementoNames.forEach(mementoName => fallbackGlobalMementos.delete(mementoName));
     Logger.info(
       `${extensionShortName}: Skipping memento reset because extension context is not initialized yet`,
     );
@@ -156,7 +163,9 @@ export async function resetFavoritesVersionMemento() {
     `${extensionShortName}: Setting all workspaceState and globalState mementos to undefined`,
   );
 
-  await Promise.all(names.map(name => globalState.update(name, undefined)));
+  await Promise.all(
+    favoriteMementoNames.map(mementoName => globalState.update(mementoName, undefined)),
+  );
 }
 
 export function getMementos() {

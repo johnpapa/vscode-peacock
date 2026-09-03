@@ -20,17 +20,17 @@ export async function revertLiveShareWorkspaceColors() {
   previousColorRenderState = undefined;
 }
 
-async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
-  const colorSettingName = isHost
+async function setLiveShareSessionWorkspaceColors(isHostRole: boolean) {
+  const colorSettingName = isHostRole
     ? LiveShareSettings.VSLSShareColor
     : LiveShareSettings.VSLSJoinColor;
 
-  const liveShareColorSetting = getLiveShareColor(colorSettingName);
-  if (!liveShareColorSetting) {
+  const sessionColor = getLiveShareColor(colorSettingName);
+  if (!sessionColor) {
     return;
   }
 
-  await applyTransientColor(liveShareColorSetting);
+  await applyTransientColor(sessionColor);
 }
 
 export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise<boolean> {
@@ -45,8 +45,8 @@ export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise
     return false;
   }
 
-  const isHost = vslsApi.session.role === vsls.Role.Host;
-  await setLiveShareSessionWorkspaceColors(isHost);
+  const sessionHasHostRole = vslsApi.session.role === vsls.Role.Host;
+  await setLiveShareSessionWorkspaceColors(sessionHasHostRole);
   return true;
 }
 
@@ -62,10 +62,10 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
     return;
   }
 
-  vslsApi!.onDidChangeSession(async e => {
+  vslsApi!.onDidChangeSession(async sessionChangeEvent => {
     // If there isn't a session ID, then that
     // means the session has been ended.
-    if (!e.session.id) {
+    if (!sessionChangeEvent.session.id) {
       return await revertLiveShareWorkspaceColors();
     }
 
@@ -75,7 +75,7 @@ export async function addLiveShareIntegration(context: vscode.ExtensionContext) 
       previousColorRenderState = await captureColorRenderState();
     }
 
-    const isHost = e.session.role === vsls.Role.Host;
-    return await setLiveShareSessionWorkspaceColors(isHost);
+    const sessionHasHostRole = sessionChangeEvent.session.role === vsls.Role.Host;
+    return await setLiveShareSessionWorkspaceColors(sessionHasHostRole);
   });
 }

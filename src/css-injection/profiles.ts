@@ -15,6 +15,7 @@ export interface ICssProfile {
 
 export type CssProfileRegistry = Record<string, ICssProfile>;
 
+/** Builds a CSS profile from the same effective color settings as legacy mode. */
 export function createCurrentCssProfile(
   color: string,
   lastUsed = Date.now(),
@@ -29,54 +30,59 @@ export function createCurrentCssProfile(
   );
 }
 
+/**
+ * Removes excluded tokens, converts the rest to VS Code custom properties, and
+ * fingerprints the complete resulting style rather than only its base color.
+ */
 export function createCssProfile(
   color: string,
   colorSettings: ISettingsIndexer,
   excludedSettings: string[] = [],
   lastUsed = Date.now(),
 ): ICssProfile {
-  const variables: ISettingsIndexer = {};
+  const cssVariables: ISettingsIndexer = {};
   Object.keys(colorSettings)
-    .filter(setting => !excludedSettings.includes(setting))
+    .filter(colorToken => !excludedSettings.includes(colorToken))
     .sort()
-    .forEach(setting => {
-      const value = colorSettings[setting];
-      if (typeof value === 'string') {
-        variables[toCssVariableName(setting)] = value;
+    .forEach(colorToken => {
+      const colorValue = colorSettings[colorToken];
+      if (typeof colorValue === 'string') {
+        cssVariables[toCssVariableName(colorToken)] = colorValue;
       }
     });
 
   const normalizedColor = getBackgroundColorHex(color);
-  const canonical = canonicalizeCssVariables(variables);
+  const canonicalVariables = canonicalizeCssVariables(cssVariables);
   return {
-    id: fingerprint(canonical),
+    id: fingerprint(canonicalVariables),
     color: normalizedColor,
-    variables,
+    variables: cssVariables,
     lastUsed,
   };
 }
 
+/** Merges profiles by fingerprint and retains the most recently used entries. */
 export function mergeCssProfiles(
-  registry: CssProfileRegistry,
-  profiles: ICssProfile[],
+  existingRegistry: CssProfileRegistry,
+  incomingProfiles: ICssProfile[],
   limit = cssProfileLimit,
 ): CssProfileRegistry {
-  const merged: CssProfileRegistry = { ...registry };
-  profiles.forEach(profile => {
-    const previous = merged[profile.id];
-    merged[profile.id] = {
+  const mergedRegistry: CssProfileRegistry = { ...existingRegistry };
+  incomingProfiles.forEach(profile => {
+    const previousProfile = mergedRegistry[profile.id];
+    mergedRegistry[profile.id] = {
       ...profile,
-      lastUsed: Math.max(previous?.lastUsed || 0, profile.lastUsed),
+      lastUsed: Math.max(previousProfile?.lastUsed || 0, profile.lastUsed),
     };
   });
 
-  const retained = Object.values(merged)
+  const profilesByMostRecentUse = Object.values(mergedRegistry)
     .sort((left, right) => right.lastUsed - left.lastUsed || left.id.localeCompare(right.id))
     .slice(0, Math.max(1, limit));
 
-  return retained.reduce<CssProfileRegistry>((result, profile) => {
-    result[profile.id] = profile;
-    return result;
+  return profilesByMostRecentUse.reduce<CssProfileRegistry>((profilesById, profile) => {
+    profilesById[profile.id] = profile;
+    return profilesById;
   }, {});
 }
 
@@ -84,20 +90,25 @@ export function createCssProfileMarkerLabel(profile: ICssProfile) {
   return `Peacock CSS profile ${profile.id}; color ${profile.color}`;
 }
 
+/**
+ * Selects one profile by matching its status-bar accessibility label. The
+ * marker lets multiple windows share one installed stylesheet while choosing
+ * different profiles without another file write.
+ */
 export function generateCssProfileRule(profile: ICssProfile) {
-  const markerLabel = escapeCssString(createCssProfileMarkerLabel(profile));
-  const rootSelector = `body:has([aria-label="${markerLabel}"]) .monaco-workbench`;
-  const declarations = Object.keys(profile.variables)
+  const accessibilityMarkerLabel = escapeCssString(createCssProfileMarkerLabel(profile));
+  const selectedWorkbenchSelector = `body:has([aria-label="${accessibilityMarkerLabel}"]) .monaco-workbench`;
+  const customPropertyDeclarations = Object.keys(profile.variables)
     .sort()
-    .map(variable => `${variable}:${profile.variables[variable]} !important;`)
+    .map(cssVariableName => `${cssVariableName}:${profile.variables[cssVariableName]} !important;`)
     .join('');
-  const surfaceRules = generateSurfaceRules(profile, rootSelector);
+  const workbenchSurfaceRules = generateSurfaceRules(profile, selectedWorkbenchSelector);
 
-  return `${cssProfileStartPrefix}${profile.id}__*/${rootSelector}{${declarations}}${surfaceRules}${cssProfileEndPrefix}${profile.id}__*/`;
+  return `${cssProfileStartPrefix}${profile.id}__*/${selectedWorkbenchSelector}{${customPropertyDeclarations}}${workbenchSurfaceRules}${cssProfileEndPrefix}${profile.id}__*/`;
 }
 
-function toCssVariableName(setting: string) {
-  return `--vscode-${setting.replace(/\./g, '-')}`;
+function toCssVariableName(colorToken: string) {
+  return `--vscode-${colorToken.replace(/\./g, '-')}`;
 }
 
 /**
@@ -106,22 +117,22 @@ function toCssVariableName(setting: string) {
  * even with !important. Emit the profile values themselves for those parts;
  * the remaining tokens continue to flow through the --vscode-* declarations.
  */
-function generateSurfaceRules(profile: ICssProfile, rootSelector: string) {
+function generateSurfaceRules(profile: ICssProfile, selectedWorkbenchSelector: string) {
   return [
-    createSurfaceRule(profile, `${rootSelector} .part.titlebar`, [
+    createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.titlebar`, [
       ['background-color', '--vscode-titleBar-activeBackground'],
       ['color', '--vscode-titleBar-activeForeground'],
       ['border-color', '--vscode-titleBar-border'],
     ]),
-    createSurfaceRule(profile, `${rootSelector} .part.titlebar.inactive`, [
+    createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.titlebar.inactive`, [
       ['background-color', '--vscode-titleBar-inactiveBackground'],
       ['color', '--vscode-titleBar-inactiveForeground'],
     ]),
-    createSurfaceRule(profile, `${rootSelector} .part.activitybar`, [
+    createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.activitybar`, [
       ['background-color', '--vscode-activityBar-background'],
       ['color', '--vscode-activityBar-foreground'],
     ]),
-    createSurfaceRule(profile, `${rootSelector} .part.statusbar`, [
+    createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.statusbar`, [
       ['background-color', '--vscode-statusBar-background'],
       ['color', '--vscode-statusBar-foreground'],
       ['border-color', '--vscode-statusBar-border'],
@@ -129,37 +140,42 @@ function generateSurfaceRules(profile: ICssProfile, rootSelector: string) {
   ].join('');
 }
 
-function createSurfaceRule(profile: ICssProfile, selector: string, properties: [string, string][]) {
-  const declarations = properties
-    .map(([property, variable]) => {
-      const value = profile.variables[variable];
-      return typeof value === 'string' ? `${property}:${value} !important;` : '';
+function createSurfaceRule(
+  profile: ICssProfile,
+  selector: string,
+  propertyMappings: [string, string][],
+) {
+  const declarations = propertyMappings
+    .map(([cssProperty, cssVariableName]) => {
+      const colorValue = profile.variables[cssVariableName];
+      return typeof colorValue === 'string' ? `${cssProperty}:${colorValue} !important;` : '';
     })
     .join('');
 
   return declarations ? `${selector}{${declarations}}` : '';
 }
 
-function canonicalizeCssVariables(variables: ISettingsIndexer) {
-  return Object.keys(variables)
+function canonicalizeCssVariables(cssVariables: ISettingsIndexer) {
+  return Object.keys(cssVariables)
     .sort()
-    .map(name => `${name}:${variables[name]}`)
+    .map(cssVariableName => `${cssVariableName}:${cssVariables[cssVariableName]}`)
     .join(';');
 }
 
-function fingerprint(value: string) {
-  let first = 0x811c9dc5;
-  let second = 0x9e3779b9;
-  for (let index = 0; index < value.length; index += 1) {
-    const character = value.charCodeAt(index);
-    first = Math.imul(first ^ character, 0x01000193);
-    second = Math.imul(second ^ character, 0x85ebca6b);
+/** Produces a stable, compact, non-cryptographic ID for a canonical style. */
+function fingerprint(canonicalStyle: string) {
+  let firstHash = 0x811c9dc5;
+  let secondHash = 0x9e3779b9;
+  for (let index = 0; index < canonicalStyle.length; index += 1) {
+    const characterCode = canonicalStyle.charCodeAt(index);
+    firstHash = Math.imul(firstHash ^ characterCode, 0x01000193);
+    secondHash = Math.imul(secondHash ^ characterCode, 0x85ebca6b);
   }
-  return `${unsignedHex(first)}${unsignedHex(second)}`;
+  return `${unsignedHex(firstHash)}${unsignedHex(secondHash)}`;
 }
 
-function unsignedHex(value: number) {
-  return `00000000${(value >>> 0).toString(16)}`.slice(-8);
+function unsignedHex(hashValue: number) {
+  return `00000000${(hashValue >>> 0).toString(16)}`.slice(-8);
 }
 
 function escapeCssString(value: string) {

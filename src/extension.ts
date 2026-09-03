@@ -92,37 +92,39 @@ function addSubscriptions() {
   State.extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(applyPeacock()));
 }
 
-function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
-  return async e => {
-    if (e.affectsConfiguration(`peacock.${StandardSettings.CssInjectionEnabled}`)) {
+/** Re-applies the active backend when a relevant Peacock setting changes. */
+function applyPeacock(): (configurationChange: vscode.ConfigurationChangeEvent) => Promise<void> {
+  return async configurationChange => {
+    if (
+      configurationChange.affectsConfiguration(`peacock.${StandardSettings.CssInjectionEnabled}`)
+    ) {
       await refreshColorApplicationMode();
       return;
     }
 
-    const color = getCurrentColor();
-    const appliedColor = getRenderedColor();
-    if (checkIfPeacockSettingsChanged(e) && (color || appliedColor)) {
+    const selectedColor = getCurrentColor();
+    const renderedColor = getRenderedColor();
+    if (checkIfPeacockSettingsChanged(configurationChange) && (selectedColor || renderedColor)) {
       /**
        * If the settings have changed
-       * AND (either we have a peacock.color/remoteColor to apply
-       *       OR we have an applied color already in the color customizations),
-       * Then we apply the "color"
+       * AND either a selected or currently rendered color exists,
+       * then re-apply the selected color with the active backend.
        */
       Logger.info(
-        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
+        `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${selectedColor}`,
       );
       if (isCssColorApplicationActive()) {
         await refreshColorApplicationMode();
         return;
       }
 
-      await applyColor(color || '');
+      await applyColor(selectedColor || '');
 
       // Only update the color in the workspace settings
       // if there was already a workspace setting
       const colorSource = inspectColor();
       if (colorSource.colorSource === ColorSource.WorkspaceValue) {
-        await updateColorSetting(color || '');
+        await updateColorSetting(selectedColor || '');
       }
     }
   };

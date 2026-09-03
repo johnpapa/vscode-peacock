@@ -21,16 +21,19 @@ import {
 } from './color-library';
 import { notify } from './notification';
 
+/** Applies visual colors without deciding where a user's selection is stored. */
 export interface IColorRenderer {
   apply(color: string, options?: { transient?: boolean }): Promise<string | undefined>;
   unapply(): Promise<void>;
+  /** Captures enough renderer state to restore after a temporary session color. */
   capture(): Promise<unknown>;
-  restore(state: unknown): Promise<void>;
+  restore(renderState: unknown): Promise<void>;
   getAppliedColor(): string | undefined;
   getSideBarBackground(): string | undefined;
   updateSideBarBackground(color: string | undefined): Promise<void>;
 }
 
+/** Stores command-selected colors independently from their rendering backend. */
 export interface IColorPersistence {
   save(color: string): Promise<void>;
   clearWorkspace(): Promise<void>;
@@ -121,7 +124,7 @@ function mergeColorCustomizations(
   return mergedCustomizations;
 }
 
-async function applyWorkspaceSettingsColor(input: string) {
+async function applyWorkspaceSettingsColor(color: string) {
   /**************************************************************
    * This is the heart of Peacock logic to apply the colors.
    *
@@ -136,7 +139,7 @@ async function applyWorkspaceSettingsColor(input: string) {
   const existingColors = getColorCustomizationConfigFromWorkspace();
 
   // Get updated Peacock colors.
-  const updatedColors = prepareColors(input);
+  const updatedColors = prepareColors(color);
 
   const colorCustomizations = mergeColorCustomizations(existingColors, updatedColors);
 
@@ -144,7 +147,7 @@ async function applyWorkspaceSettingsColor(input: string) {
   updateStatusBar();
   showModernUICompatibilityNoticeIfNeeded();
 
-  return input;
+  return color;
 }
 
 const workspaceSettingsRenderer: IColorRenderer = {
@@ -155,8 +158,8 @@ const workspaceSettingsRenderer: IColorRenderer = {
     return { ...getColorCustomizationConfigFromWorkspace() };
   },
 
-  async restore(state: unknown) {
-    await updateWorkspaceConfiguration(state as ISettingsIndexer | undefined);
+  async restore(renderState: unknown) {
+    await updateWorkspaceConfiguration(renderState as ISettingsIndexer | undefined);
     updateStatusBar();
   },
 
@@ -201,6 +204,7 @@ const workspaceSettingsPersistence: IColorPersistence = {
 let activeRenderer = workspaceSettingsRenderer;
 let activePersistence = workspaceSettingsPersistence;
 
+/** Selects the rendering and persistence backends; defaults preserve legacy behavior. */
 export function configureColorApplication(
   renderer: IColorRenderer = workspaceSettingsRenderer,
   persistence: IColorPersistence = workspaceSettingsPersistence,
@@ -224,20 +228,20 @@ export async function applyTransientColor(input: string) {
   return applyColorWithOptions(input, { transient: true });
 }
 
-async function applyColorWithOptions(input: string, options?: { transient?: boolean }) {
+async function applyColorWithOptions(colorInput: string, options?: { transient?: boolean }) {
   if (!vscode.workspace.workspaceFolders) {
     return;
   }
 
-  if (!isValidColorInput(input)) {
+  if (!isValidColorInput(colorInput)) {
     await unapplyColors();
     return;
   }
 
-  const color = getBackgroundColorHex(input);
-  const appliedColor = await activeRenderer.apply(color, options);
-  Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
-  return appliedColor;
+  const normalizedColor = getBackgroundColorHex(colorInput);
+  const renderedColor = await activeRenderer.apply(normalizedColor, options);
+  Logger.info(`${extensionShortName}: Peacock is now using ${normalizedColor}`);
+  return renderedColor;
 }
 
 export function getCurrentColor() {
@@ -272,8 +276,8 @@ export async function captureColorRenderState() {
   return await activeRenderer.capture();
 }
 
-export async function restoreColorRenderState(state: unknown) {
-  await activeRenderer.restore(state);
+export async function restoreColorRenderState(renderState: unknown) {
+  await activeRenderer.restore(renderState);
 }
 
 export function getRenderedSideBarBackground() {

@@ -27,38 +27,43 @@ export interface IStylesheetChange {
   changed: boolean;
 }
 
-export function parseStylesheet(content: string): IStylesheetParts {
-  const start = content.indexOf(cssPatchStart);
-  const end = content.indexOf(cssPatchEnd);
+/**
+ * Splits out Peacock's one owned block without modifying surrounding bytes.
+ * Partial, reversed, or duplicated sentinels are rejected rather than guessed.
+ */
+export function parseStylesheet(stylesheetContent: string): IStylesheetParts {
+  const startMarkerIndex = stylesheetContent.indexOf(cssPatchStart);
+  const endMarkerIndex = stylesheetContent.indexOf(cssPatchEnd);
 
-  if (start === -1 && end === -1) {
-    return { before: content, after: '' };
+  if (startMarkerIndex === -1 && endMarkerIndex === -1) {
+    return { before: stylesheetContent, after: '' };
   }
 
   if (
-    start === -1 ||
-    end === -1 ||
-    start !== content.lastIndexOf(cssPatchStart) ||
-    end !== content.lastIndexOf(cssPatchEnd) ||
-    end < start
+    startMarkerIndex === -1 ||
+    endMarkerIndex === -1 ||
+    startMarkerIndex !== stylesheetContent.lastIndexOf(cssPatchStart) ||
+    endMarkerIndex !== stylesheetContent.lastIndexOf(cssPatchEnd) ||
+    endMarkerIndex < startMarkerIndex
   ) {
     throw new CssPatchError(
       'The Peacock CSS override block is malformed or appears more than once. No changes were made.',
     );
   }
 
-  const blockEnd = end + cssPatchEnd.length;
+  const ownedBlockEndIndex = endMarkerIndex + cssPatchEnd.length;
   return {
-    before: content.slice(0, start),
-    block: content.slice(start, blockEnd),
-    after: content.slice(blockEnd),
+    before: stylesheetContent.slice(0, startMarkerIndex),
+    block: stylesheetContent.slice(startMarkerIndex, ownedBlockEndIndex),
+    after: stylesheetContent.slice(ownedBlockEndIndex),
   };
 }
 
-export function extractCssProfileRules(block: string | undefined) {
-  const rules: Record<string, string> = {};
-  if (!block) {
-    return rules;
+/** Extracts complete profile rules and rejects any unaccounted profile marker. */
+export function extractCssProfileRules(peacockBlock: string | undefined) {
+  const profileRules: Record<string, string> = {};
+  if (!peacockBlock) {
+    return profileRules;
   }
 
   const profilePattern = new RegExp(
@@ -67,74 +72,90 @@ export function extractCssProfileRules(block: string | undefined) {
     )}\\1__\\*/`,
     'g',
   );
-  let match: RegExpExecArray | null;
-  while ((match = profilePattern.exec(block))) {
-    const id = match[1];
-    if (rules[id]) {
+  let profileMatch: RegExpExecArray | null;
+  while ((profileMatch = profilePattern.exec(peacockBlock))) {
+    const profileId = profileMatch[1];
+    if (profileRules[profileId]) {
       throw new CssPatchError('A Peacock CSS profile is duplicated. No changes were made.');
     }
-    rules[id] = match[0];
+    profileRules[profileId] = profileMatch[0];
   }
 
-  const profileCount = Object.keys(rules).length;
-  const profileStarts = block.split(cssProfileStartPrefix).length - 1;
-  const profileEnds = block.split(cssProfileEndPrefix).length - 1;
-  if (profileStarts !== profileCount || profileEnds !== profileCount) {
+  const profileCount = Object.keys(profileRules).length;
+  const profileStartMarkerCount = peacockBlock.split(cssProfileStartPrefix).length - 1;
+  const profileEndMarkerCount = peacockBlock.split(cssProfileEndPrefix).length - 1;
+  if (profileStartMarkerCount !== profileCount || profileEndMarkerCount !== profileCount) {
     throw new CssPatchError('The Peacock CSS profile list is malformed. No changes were made.');
   }
 
-  return rules;
+  return profileRules;
 }
 
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+/**
+ * Adds or replaces Peacock's block while retaining profiles installed by
+ * other windows and preserving all non-Peacock stylesheet content verbatim.
+ */
 export function installCssProfiles(
-  content: string,
-  registry: CssProfileRegistry,
-  limit = cssProfileLimit,
+  stylesheetContent: string,
+  profileRegistry: CssProfileRegistry,
+  profileLimit = cssProfileLimit,
 ): IStylesheetChange {
-  const parts = parseStylesheet(content);
-  const existingRules = extractCssProfileRules(parts.block);
-  const incomingRules = Object.values(registry).reduce<Record<string, string>>((rules, profile) => {
-    rules[profile.id] = generateCssProfileRule(profile);
-    return rules;
-  }, {});
-  const profileIds = selectProfileIds(existingRules, incomingRules, limit);
-  const rules = profileIds.map(id => incomingRules[id] || existingRules[id]).join('');
-  const block = `${cssPatchStart}${rules}${cssPatchEnd}`;
-  const updatedContent = `${parts.before}${block}${parts.after}`;
+  const stylesheetParts = parseStylesheet(stylesheetContent);
+  const existingProfileRules = extractCssProfileRules(stylesheetParts.block);
+  const incomingProfileRules = Object.values(profileRegistry).reduce<Record<string, string>>(
+    (generatedRules, profile) => {
+      generatedRules[profile.id] = generateCssProfileRule(profile);
+      return generatedRules;
+    },
+    {},
+  );
+  const selectedProfileIds = selectProfileIds(
+    existingProfileRules,
+    incomingProfileRules,
+    profileLimit,
+  );
+  const serializedProfileRules = selectedProfileIds
+    .map(profileId => incomingProfileRules[profileId] || existingProfileRules[profileId])
+    .join('');
+  const peacockBlock = `${cssPatchStart}${serializedProfileRules}${cssPatchEnd}`;
+  const updatedContent = `${stylesheetParts.before}${peacockBlock}${stylesheetParts.after}`;
 
   return {
     content: updatedContent,
-    changed: updatedContent !== content,
+    changed: updatedContent !== stylesheetContent,
   };
 }
 
-export function removeCssPatch(content: string): IStylesheetChange {
-  const parts = parseStylesheet(content);
-  if (!parts.block) {
-    return { content, changed: false };
+export function removeCssPatch(stylesheetContent: string): IStylesheetChange {
+  const stylesheetParts = parseStylesheet(stylesheetContent);
+  if (!stylesheetParts.block) {
+    return { content: stylesheetContent, changed: false };
   }
-  extractCssProfileRules(parts.block);
+  extractCssProfileRules(stylesheetParts.block);
 
   return {
-    content: `${parts.before}${parts.after}`,
+    content: `${stylesheetParts.before}${stylesheetParts.after}`,
     changed: true,
   };
 }
 
+/** Gives incoming profiles priority, then fills spare slots deterministically. */
 function selectProfileIds(
-  existingRules: Record<string, string>,
-  incomingRules: Record<string, string>,
-  limit: number,
+  existingProfileRules: Record<string, string>,
+  incomingProfileRules: Record<string, string>,
+  profileLimit: number,
 ) {
-  const incomingIds = Object.keys(incomingRules).sort();
-  const remaining = Math.max(0, limit - incomingIds.length);
-  const candidates = Object.keys(existingRules)
-    .filter(id => !incomingRules[id])
+  const incomingProfileIds = Object.keys(incomingProfileRules).sort();
+  const availableExistingSlots = Math.max(0, profileLimit - incomingProfileIds.length);
+  const existingCandidateIds = Object.keys(existingProfileRules)
+    .filter(profileId => !incomingProfileRules[profileId])
     .sort();
-  const existingIds = remaining ? candidates.slice(-remaining) : [];
-  return [...existingIds, ...incomingIds].slice(-Math.max(1, limit)).sort();
+  const selectedExistingIds = availableExistingSlots
+    ? existingCandidateIds.slice(-availableExistingSlots)
+    : [];
+  return [...selectedExistingIds, ...incomingProfileIds].slice(-Math.max(1, profileLimit)).sort();
 }
