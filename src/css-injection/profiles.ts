@@ -90,12 +90,14 @@ export function createCssProfileMarkerLabel(profile: ICssProfile) {
 
 export function generateCssProfileRule(profile: ICssProfile) {
   const markerLabel = escapeCssString(createCssProfileMarkerLabel(profile));
+  const rootSelector = `body:has([aria-label="${markerLabel}"]) .monaco-workbench`;
   const declarations = Object.keys(profile.variables)
     .sort()
     .map(variable => `${variable}:${profile.variables[variable]} !important;`)
     .join('');
+  const surfaceRules = generateSurfaceRules(profile, rootSelector);
 
-  return `${cssProfileStartPrefix}${profile.id}__*/body:has([aria-label="${markerLabel}"]) .monaco-workbench{${declarations}}${cssProfileEndPrefix}${profile.id}__*/`;
+  return `${cssProfileStartPrefix}${profile.id}__*/${rootSelector}{${declarations}}${surfaceRules}${cssProfileEndPrefix}${profile.id}__*/`;
 }
 
 export function generateCssProfileRules(registry: CssProfileRegistry) {
@@ -107,6 +109,46 @@ export function generateCssProfileRules(registry: CssProfileRegistry) {
 
 function toCssVariableName(setting: string) {
   return `--vscode-${setting.replace(/\./g, '-')}`;
+}
+
+/**
+ * Workbench parts resolve some theme colors to literal inline styles. Custom
+ * properties on the workbench root therefore cannot repaint these surfaces,
+ * even with !important. Emit the profile values themselves for those parts;
+ * the remaining tokens continue to flow through the --vscode-* declarations.
+ */
+function generateSurfaceRules(profile: ICssProfile, rootSelector: string) {
+  return [
+    createSurfaceRule(profile, `${rootSelector} .part.titlebar`, [
+      ['background-color', '--vscode-titleBar-activeBackground'],
+      ['color', '--vscode-titleBar-activeForeground'],
+      ['border-color', '--vscode-titleBar-border'],
+    ]),
+    createSurfaceRule(profile, `${rootSelector} .part.titlebar.inactive`, [
+      ['background-color', '--vscode-titleBar-inactiveBackground'],
+      ['color', '--vscode-titleBar-inactiveForeground'],
+    ]),
+    createSurfaceRule(profile, `${rootSelector} .part.activitybar`, [
+      ['background-color', '--vscode-activityBar-background'],
+      ['color', '--vscode-activityBar-foreground'],
+    ]),
+    createSurfaceRule(profile, `${rootSelector} .part.statusbar`, [
+      ['background-color', '--vscode-statusBar-background'],
+      ['color', '--vscode-statusBar-foreground'],
+      ['border-color', '--vscode-statusBar-border'],
+    ]),
+  ].join('');
+}
+
+function createSurfaceRule(profile: ICssProfile, selector: string, properties: [string, string][]) {
+  const declarations = properties
+    .map(([property, variable]) => {
+      const value = profile.variables[variable];
+      return typeof value === 'string' ? `${property}:${value} !important;` : '';
+    })
+    .join('');
+
+  return declarations ? `${selector}{${declarations}}` : '';
 }
 
 function canonicalizeCssVariables(variables: ISettingsIndexer) {

@@ -31,6 +31,34 @@ suite('CSS profiles', () => {
     );
   });
 
+  test('overrides literal workbench part styles with profile values', () => {
+    const profile = createCssProfile(
+      '#007fff',
+      {
+        'activityBar.background': '#3399ff',
+        'statusBar.background': '#007fff',
+        'statusBar.foreground': '#15202b',
+        'titleBar.activeBackground': '#007fff',
+        'titleBar.activeForeground': '#15202b',
+        'titleBar.inactiveBackground': '#0066cc',
+      },
+      [],
+      1,
+    );
+    const css = generateCssProfileRule(profile);
+
+    assert.ok(css.includes('.part.activitybar{background-color:#3399ff !important;}'));
+    assert.ok(
+      css.includes(
+        '.part.statusbar{background-color:#007fff !important;color:#15202b !important;}',
+      ),
+    );
+    assert.ok(
+      css.includes('.part.titlebar{background-color:#007fff !important;color:#15202b !important;}'),
+    );
+    assert.ok(css.includes('.part.titlebar.inactive{background-color:#0066cc !important;}'));
+  });
+
   test('does not emit excluded settings', () => {
     const profile = createCssProfile(
       '#007fff',
@@ -44,6 +72,7 @@ suite('CSS profiles', () => {
 
     assert.equal(profile.variables['--vscode-statusBar-background'], undefined);
     assert.equal(profile.variables['--vscode-titleBar-activeBackground'], '#007fff');
+    assert.ok(!generateCssProfileRule(profile).includes('.part.statusbar{'));
   });
 
   test('fingerprints the complete derived style rather than only the base color', () => {
