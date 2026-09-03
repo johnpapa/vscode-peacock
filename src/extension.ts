@@ -30,13 +30,11 @@ import {
   getSurpriseMeFromFavoritesOnly,
   getSurpriseMeOnStartup,
   writeRecommendedFavoriteColors,
-  getEnvironmentAwareColor,
   inspectColor,
-  getCurrentColorBeforeAdjustments,
   getFavoriteColors,
   getCurrentWorkspaceIdentity,
 } from './configuration';
-import { applyColor, updateColorSetting } from './apply-color';
+import { applyColor, getCurrentColor, getRenderedColor, updateColorSetting } from './apply-color';
 import { isValidColorInput } from './color-library';
 import { Logger } from './logging';
 import { addLiveShareIntegration } from './live-share';
@@ -51,6 +49,14 @@ import {
   saveSurpriseMeStartupSelectionGlobalMemento,
 } from './mementos';
 import type { IFavoriteColors } from './models';
+import {
+  initializeColorApplicationMode,
+  installOrRepairCssOverridesHandler,
+  isCssColorApplicationActive,
+  refreshColorApplicationMode,
+  removeCssOverridesHandler,
+  setStylesheetPathHandler,
+} from './css-injection/manager';
 
 const { commands, workspace } = vscode;
 
@@ -61,6 +67,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   await initializeTheStarterSetOfFavorites();
+  await initializeColorApplicationMode();
 
   if (workspace.workspaceFolders) {
     Logger.info('Peacock is in a workspace, so Peacock functionality is available.');
@@ -87,8 +94,13 @@ function addSubscriptions() {
 
 function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
   return async e => {
-    const color = getEnvironmentAwareColor();
-    const appliedColor = getCurrentColorBeforeAdjustments();
+    if (e.affectsConfiguration(`peacock.${StandardSettings.CssInjectionEnabled}`)) {
+      await refreshColorApplicationMode();
+      return;
+    }
+
+    const color = getCurrentColor();
+    const appliedColor = getRenderedColor();
     if (checkIfPeacockSettingsChanged(e) && (color || appliedColor)) {
       /**
        * If the settings have changed
@@ -99,13 +111,18 @@ function applyPeacock(): (e: vscode.ConfigurationChangeEvent) => any {
       Logger.info(
         `${extensionShortName}: Configuration changed. Changing the color to most recently selected color: ${color}`,
       );
-      await applyColor(color);
+      if (isCssColorApplicationActive()) {
+        await refreshColorApplicationMode();
+        return;
+      }
+
+      await applyColor(color || '');
 
       // Only update the color in the workspace settings
       // if there was already a workspace setting
       const colorSource = inspectColor();
       if (colorSource.colorSource === ColorSource.WorkspaceValue) {
-        await updateColorSetting(color);
+        await updateColorSetting(color || '');
       }
     }
   };
@@ -125,6 +142,9 @@ function registerCommands() {
   commands.registerCommand(Commands.lighten, lightenHandler);
   commands.registerCommand(Commands.showAndCopyCurrentColor, showAndCopyCurrentColorHandler);
   commands.registerCommand(Commands.affectSideBarBackground, setSideBarDarknessLevelHandler);
+  commands.registerCommand(Commands.installCssOverrides, installOrRepairCssOverridesHandler);
+  commands.registerCommand(Commands.removeCssOverrides, removeCssOverridesHandler);
+  commands.registerCommand(Commands.setStylesheetPath, setStylesheetPathHandler);
 }
 
 export function deactivate() {
@@ -154,7 +174,7 @@ export async function checkSurpriseMeOnStartupLogic() {
    * as this would confuse users who choose a specific color in a
    * workspace and see it changed to the "surprise" color
    */
-  const peacockColor = getEnvironmentAwareColor();
+  const peacockColor = getCurrentColor();
   if (getSurpriseMeOnStartup()) {
     if (peacockColor) {
       await saveCurrentWorkspaceStartupSelection(peacockColor);
@@ -170,7 +190,7 @@ export async function checkSurpriseMeOnStartupLogic() {
         await changeColorToRandomHandler();
       }
     }
-    const color = getEnvironmentAwareColor();
+    const color = getCurrentColor();
     await saveCurrentWorkspaceStartupSelection(color);
     const message = `Peacock changed the color to ${color}, because the setting is enabled for ${StandardSettings.SurpriseMeOnStartup}`;
     Logger.info(message);

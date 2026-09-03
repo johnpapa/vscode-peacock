@@ -8,6 +8,8 @@ import {
   updatePeacockColor,
   updatePeacockRemoteColor,
   getExcludedSettings,
+  getEnvironmentAwareColor,
+  getCurrentColorBeforeAdjustments,
 } from './configuration';
 import { Logger } from './logging';
 import { updateStatusBar } from './statusbar';
@@ -19,10 +21,11 @@ import {
 import { notify } from './notification';
 
 export interface IColorRenderer {
-  apply(color: string): Promise<string | undefined>;
+  apply(color: string, options?: { transient?: boolean }): Promise<string | undefined>;
   unapply(): Promise<void>;
   capture(): Promise<unknown>;
   restore(state: unknown): Promise<void>;
+  getAppliedColor(): string | undefined;
   getSideBarBackground(): string | undefined;
   updateSideBarBackground(color: string | undefined): Promise<void>;
 }
@@ -30,6 +33,7 @@ export interface IColorRenderer {
 export interface IColorPersistence {
   save(color: string): Promise<void>;
   clearWorkspace(): Promise<void>;
+  getCurrent(): string | undefined;
 }
 
 const modernUICompatibilityNotice =
@@ -162,6 +166,10 @@ const workspaceSettingsRenderer: IColorRenderer = {
     updateStatusBar();
   },
 
+  getAppliedColor() {
+    return getCurrentColorBeforeAdjustments();
+  },
+
   getSideBarBackground() {
     return getColorCustomizationConfigFromWorkspace()['sideBar.background'];
   },
@@ -190,6 +198,10 @@ const workspaceSettingsPersistence: IColorPersistence = {
     await updatePeacockColor(undefined);
     await updatePeacockRemoteColor(undefined);
   },
+
+  getCurrent() {
+    return getEnvironmentAwareColor();
+  },
 };
 
 let activeRenderer = workspaceSettingsRenderer;
@@ -215,6 +227,14 @@ export async function unapplyColors() {
 }
 
 export async function applyColor(input: string) {
+  return await applyColorWithOptions(input);
+}
+
+export async function applyTransientColor(input: string) {
+  return await applyColorWithOptions(input, { transient: true });
+}
+
+async function applyColorWithOptions(input: string, options?: { transient?: boolean }) {
   if (!vscode.workspace.workspaceFolders) {
     return;
   }
@@ -225,9 +245,17 @@ export async function applyColor(input: string) {
   }
 
   const color = getBackgroundColorHex(input);
-  const appliedColor = await activeRenderer.apply(color);
+  const appliedColor = await activeRenderer.apply(color, options);
   Logger.info(`${extensionShortName}: Peacock is now using ${color}`);
   return appliedColor;
+}
+
+export function getCurrentColor() {
+  return activePersistence.getCurrent();
+}
+
+export function getRenderedColor() {
+  return activeRenderer.getAppliedColor();
 }
 
 export async function updateColorSetting(color: string) {
@@ -264,4 +292,10 @@ export function getRenderedSideBarBackground() {
 
 export async function updateRenderedSideBarBackground(color: string | undefined) {
   await activeRenderer.updateSideBarBackground(color);
+}
+
+export async function removeLegacyWorkspaceColors() {
+  await unapplyWorkspaceSettingsColors();
+  await updatePeacockColor(undefined);
+  await updatePeacockRemoteColor(undefined);
 }

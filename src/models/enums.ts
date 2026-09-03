@@ -2,6 +2,7 @@ import { LiveShareSettings } from '../live-share';
 
 export enum StandardSettings {
   Color = 'color',
+  CssInjectionEnabled = 'cssInjection.enabled',
   DarkenLightenPercentage = 'darkenLightenPercentage',
   DarkForegroundColor = 'darkForegroundColor',
   ElementAdjustments = 'elementAdjustments',
@@ -49,6 +50,9 @@ export enum Commands {
   saveColorToFavorites = 'peacock.saveColorToFavorites',
   showAndCopyCurrentColor = 'peacock.showAndCopyCurrentColor',
   affectSideBarBackground = 'peacock.affectSideBarBackground',
+  installCssOverrides = 'peacock.cssInjection.install',
+  removeCssOverrides = 'peacock.cssInjection.remove',
+  setStylesheetPath = 'peacock.cssInjection.setStylesheetPath',
   showDocumentation = 'peacock.docs',
 }
 

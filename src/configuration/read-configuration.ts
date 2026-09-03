@@ -50,6 +50,10 @@ export function getShowColorInStatusBar() {
   return readConfiguration<boolean>(StandardSettings.ShowColorInStatusBar, true);
 }
 
+export function getCssInjectionEnabled() {
+  return readConfiguration<boolean>(StandardSettings.CssInjectionEnabled, false);
+}
+
 export function getPeacockWorkspaces() {
   return readConfiguration<IPeacockWorkspaces>(StandardSettings.Workspaces, {});
 }
@@ -227,9 +231,8 @@ export function getFavoriteColors() {
   };
 }
 
-export function getRandomFavoriteColor() {
+export function getRandomFavoriteColor(currentColor = getEnvironmentAwareColor()) {
   const { values: favoriteColors } = getFavoriteColors();
-  const currentColor = getEnvironmentAwareColor();
   let newColorFromFavorites: IFavoriteColors;
   do {
     newColorFromFavorites = favoriteColors[Math.floor(Math.random() * favoriteColors.length)];

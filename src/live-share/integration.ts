@@ -2,7 +2,11 @@
 import * as vsls from 'vsls';
 import * as vscode from 'vscode';
 
-import { applyColor, captureColorRenderState, restoreColorRenderState } from '../apply-color';
+import {
+  applyTransientColor,
+  captureColorRenderState,
+  restoreColorRenderState,
+} from '../apply-color';
 import { registerLiveShareIntegrationCommands } from './liveshare-commands';
 import { State } from '../models';
 import { notify } from '../notification';
@@ -26,7 +30,7 @@ async function setLiveShareSessionWorkspaceColors(isHost: boolean) {
     return;
   }
 
-  await applyColor(liveShareColorSetting);
+  await applyTransientColor(liveShareColorSetting);
 }
 
 export async function refreshLiveShareSessionColor(isHostRole: boolean): Promise<boolean> {

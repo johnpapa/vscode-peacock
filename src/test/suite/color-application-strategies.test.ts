@@ -6,6 +6,8 @@ import {
   captureColorRenderState,
   clearWorkspaceColorSettings,
   configureColorApplication,
+  getCurrentColor,
+  getRenderedColor,
   getRenderedSideBarBackground,
   resetColorApplicationForTests,
   restoreColorRenderState,
@@ -33,6 +35,10 @@ suite('Color application strategies', () => {
       async restore(state) {
         calls.push(`restore:${state}`);
       },
+      getAppliedColor() {
+        calls.push('getApplied');
+        return '#007fff';
+      },
       getSideBarBackground() {
         calls.push('getSideBar');
         return '#111111';
@@ -48,11 +54,17 @@ suite('Color application strategies', () => {
       async clearWorkspace() {
         calls.push('clear');
       },
+      getCurrent() {
+        calls.push('getCurrent');
+        return '#007fff';
+      },
     };
     configureColorApplication(renderer, persistence);
 
     await updateColorSetting('#007fff');
     await clearWorkspaceColorSettings();
+    assert.equal(getCurrentColor(), '#007fff');
+    assert.equal(getRenderedColor(), '#007fff');
     assert.equal(getRenderedSideBarBackground(), '#111111');
     await updateRenderedSideBarBackground('#222222');
     const captured = await captureColorRenderState();
@@ -61,6 +73,8 @@ suite('Color application strategies', () => {
     assert.deepEqual(calls, [
       'save:#007fff',
       'clear',
+      'getCurrent',
+      'getApplied',
       'getSideBar',
       'sideBar:#222222',
       'capture',

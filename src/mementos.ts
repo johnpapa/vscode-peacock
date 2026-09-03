@@ -1,7 +1,16 @@
 import { peacockMementos, extensionShortName, State } from './models';
 import { Logger } from './logging';
+import type { CssProfileRegistry } from './css-injection/profiles';
 
 type SurpriseStartupSelections = Record<string, string>;
+export type CssStylesheetPaths = Record<string, string>;
+
+export interface ICssWorkspaceOverride {
+  color?: string;
+  sideBarBackground?: string;
+}
+
+export type CssWorkspaceOverrides = Record<string, ICssWorkspaceOverride>;
 
 export interface IMementoLog {
   name: string;
@@ -27,6 +36,68 @@ async function saveGlobalMemento(mementoName: string, value: any) {
     }
     fallbackGlobalMementos.set(mementoName, value);
   }
+}
+
+export function getCssInjectionConsentGlobalMemento() {
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<boolean>(peacockMementos.cssInjectionConsent, false);
+  }
+  return fallbackGlobalMementos.get(peacockMementos.cssInjectionConsent) ?? false;
+}
+
+export async function saveCssInjectionConsentGlobalMemento(consent: boolean) {
+  await saveGlobalMemento(peacockMementos.cssInjectionConsent, consent);
+}
+
+export function getCssProfilesGlobalMemento(): CssProfileRegistry {
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<CssProfileRegistry>(peacockMementos.cssProfiles, {});
+  }
+  return fallbackGlobalMementos.get(peacockMementos.cssProfiles) ?? {};
+}
+
+export async function saveCssProfilesGlobalMemento(profiles: CssProfileRegistry) {
+  await saveGlobalMemento(peacockMementos.cssProfiles, profiles);
+}
+
+export function getCssStylesheetPathsGlobalMemento(): CssStylesheetPaths {
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<CssStylesheetPaths>(peacockMementos.cssStylesheetPaths, {});
+  }
+  return fallbackGlobalMementos.get(peacockMementos.cssStylesheetPaths) ?? {};
+}
+
+export async function saveCssStylesheetPathGlobalMemento(key: string, cssPath: string) {
+  const paths = getCssStylesheetPathsGlobalMemento();
+  await saveGlobalMemento(peacockMementos.cssStylesheetPaths, { ...paths, [key]: cssPath });
+}
+
+export function getCssWorkspaceOverridesGlobalMemento(): CssWorkspaceOverrides {
+  const globalState = getGlobalState();
+  if (globalState) {
+    return globalState.get<CssWorkspaceOverrides>(peacockMementos.cssWorkspaceOverrides, {});
+  }
+  return fallbackGlobalMementos.get(peacockMementos.cssWorkspaceOverrides) ?? {};
+}
+
+export async function saveCssWorkspaceOverrideGlobalMemento(
+  workspaceKey: string,
+  override: ICssWorkspaceOverride | undefined,
+) {
+  const overrides = { ...getCssWorkspaceOverridesGlobalMemento() };
+  if (override && (override.color || override.sideBarBackground)) {
+    overrides[workspaceKey] = override;
+  } else {
+    delete overrides[workspaceKey];
+  }
+  await saveGlobalMemento(peacockMementos.cssWorkspaceOverrides, overrides);
+}
+
+export async function clearCssWorkspaceOverridesGlobalMemento() {
+  await saveGlobalMemento(peacockMementos.cssWorkspaceOverrides, undefined);
 }
 
 export async function saveFavoritesVersionGlobalMemento(version: string) {
@@ -95,6 +166,10 @@ export async function resetFavoritesVersionMemento() {
     fallbackGlobalMementos.delete(peacockMementos.surpriseMeFavoritesOrderIndex);
     fallbackGlobalMementos.delete(peacockMementos.surpriseMeFavoritesOrderKey);
     fallbackGlobalMementos.delete(peacockMementos.surpriseMeStartupSelections);
+    fallbackGlobalMementos.delete(peacockMementos.cssInjectionConsent);
+    fallbackGlobalMementos.delete(peacockMementos.cssProfiles);
+    fallbackGlobalMementos.delete(peacockMementos.cssStylesheetPaths);
+    fallbackGlobalMementos.delete(peacockMementos.cssWorkspaceOverrides);
     Logger.info(
       `${extensionShortName}: Skipping memento reset because extension context is not initialized yet`,
     );
@@ -110,6 +185,10 @@ export async function resetFavoritesVersionMemento() {
   await ec.globalState.update(peacockMementos.surpriseMeFavoritesOrderIndex, undefined);
   await ec.globalState.update(peacockMementos.surpriseMeFavoritesOrderKey, undefined);
   await ec.globalState.update(peacockMementos.surpriseMeStartupSelections, undefined);
+  await ec.globalState.update(peacockMementos.cssInjectionConsent, undefined);
+  await ec.globalState.update(peacockMementos.cssProfiles, undefined);
+  await ec.globalState.update(peacockMementos.cssStylesheetPaths, undefined);
+  await ec.globalState.update(peacockMementos.cssWorkspaceOverrides, undefined);
 }
 
 export function getMementos() {

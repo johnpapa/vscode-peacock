@@ -104,6 +104,21 @@
         "category": "Peacock"
       },
       {
+        "command": "peacock.cssInjection.install",
+        "title": "Install or Repair CSS Overrides",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.cssInjection.remove",
+        "title": "Remove CSS Overrides",
+        "category": "Peacock"
+      },
+      {
+        "command": "peacock.cssInjection.setStylesheetPath",
+        "title": "Set VS Code Stylesheet Path",
+        "category": "Peacock"
+      },
+      {
         "command": "peacock.changeColorOfLiveShareHost",
         "title": "Change Live Share Color (Host)",
         "category": "Peacock"
@@ -128,6 +143,15 @@
       "commandPalette": [
         {
           "command": "peacock.docs"
+        },
+        {
+          "command": "peacock.cssInjection.install"
+        },
+        {
+          "command": "peacock.cssInjection.remove"
+        },
+        {
+          "command": "peacock.cssInjection.setStylesheetPath"
         },
         {
           "command": "peacock.changeColorOfLiveShareHost",
@@ -255,6 +279,12 @@
           "format": "color",
           "default": "",
           "description": "The Peacock color that will be applied to workspaces. This should only be set at the workspace level."
+        },
+        "peacock.cssInjection.enabled": {
+          "type": "boolean",
+          "scope": "machine",
+          "default": false,
+          "description": "Opt in to Peacock's desktop CSS renderer. This modifies VS Code's installed stylesheet, requires a reload, and causes VS Code to report a modified installation."
         },
         "peacock.workspaces": {
           "type": "object",

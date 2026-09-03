@@ -98,6 +98,10 @@ export async function updateShowColorInStatusBar(value: boolean) {
   return await updateGlobalConfiguration(StandardSettings.ShowColorInStatusBar, value);
 }
 
+export async function updateCssInjectionEnabled(value: boolean) {
+  return await updateGlobalConfiguration(StandardSettings.CssInjectionEnabled, value);
+}
+
 export async function updateSurpriseMeFromFavoritesOnly(value: boolean) {
   return await updateGlobalConfiguration(StandardSettings.SurpriseMeFromFavoritesOnly, value);
 }

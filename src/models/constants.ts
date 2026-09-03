@@ -18,6 +18,10 @@ export const azureBlue = '#007fff';
 export const peacockGreen = '#42b883';
 
 export const peacockMementos = {
+  cssInjectionConsent: `${extensionShortName}.cssInjectionConsent`,
+  cssProfiles: `${extensionShortName}.cssProfiles`,
+  cssStylesheetPaths: `${extensionShortName}.cssStylesheetPaths`,
+  cssWorkspaceOverrides: `${extensionShortName}.cssWorkspaceOverrides`,
   favoritesVersion: `${extensionShortName}.favoritesVersion`,
   surpriseMeFavoritesOrderIndex: `${extensionShortName}.surpriseMeFavoritesOrderIndex`,
   surpriseMeFavoritesOrderKey: `${extensionShortName}.surpriseMeFavoritesOrderKey`,

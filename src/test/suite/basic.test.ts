@@ -67,6 +67,17 @@ suite('Basic Extension Tests', () => {
     }
   });
 
+  test('CSS injection is opt-in and machine scoped', () => {
+    const properties = extension.packageJSON.contributes.configuration.properties;
+    const cssInjection = properties['peacock.cssInjection.enabled'];
+    const workspaces = properties['peacock.workspaces'];
+
+    assert.equal(cssInjection.default, false);
+    assert.equal(cssInjection.scope, 'machine');
+    assert.equal(workspaces.scope, 'machine-overridable');
+    assert.equal(workspaces.additionalProperties.required, undefined);
+  });
+
   test('AffectedSettings exist in package.json', () => {
     // let extension = getExtension() as vscode.Extension<any>;
     const config: IConfiguration = extension.packageJSON.contributes.configuration;

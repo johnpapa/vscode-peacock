@@ -15,7 +15,11 @@ export interface ICssProfile {
 
 export type CssProfileRegistry = Record<string, ICssProfile>;
 
-export function createCurrentCssProfile(color: string, lastUsed = Date.now()) {
+export function createCurrentCssProfile(
+  color: string,
+  lastUsed = Date.now(),
+  overrides: ISettingsIndexer = {},
+) {
   if (!isValidColorInput(color)) {
     return undefined;
   }
@@ -23,7 +27,7 @@ export function createCurrentCssProfile(color: string, lastUsed = Date.now()) {
   const normalizedColor = getBackgroundColorHex(color);
   return createCssProfile(
     normalizedColor,
-    prepareColors(normalizedColor),
+    { ...prepareColors(normalizedColor), ...overrides },
     getExcludedSettings(),
     lastUsed,
   );

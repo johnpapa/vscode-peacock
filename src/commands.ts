@@ -7,7 +7,9 @@ import {
 import {
   applyColor,
   clearWorkspaceColorSettings,
+  getCurrentColor,
   getRenderedSideBarBackground,
+  removeLegacyWorkspaceColors,
   unapplyColors,
   updateColorSetting,
   updateRenderedSideBarBackground,
@@ -19,7 +21,6 @@ import {
   getSurpriseMeFromFavoritesOnly,
   addNewFavoriteColor,
   writeRecommendedFavoriteColors,
-  getEnvironmentAwareColor,
   updatePeacockRemoteColorInUserSettings,
   updatePeacockColorInUserSettings,
 } from './configuration';
@@ -28,8 +29,31 @@ import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } fr
 import { resetLiveSharePreviousColors } from './live-share';
 import { notify } from './notification';
 import * as vscode from 'vscode';
+import {
+  clearAllPrivateCssColors,
+  hasActiveWorkspaceMapping,
+  isCssColorApplicationActive,
+  refreshColorApplicationMode,
+} from './css-injection/manager';
 
 export async function removeAllPeacockColorsHandler() {
+  if (isCssColorApplicationActive()) {
+    await resetLiveSharePreviousColors();
+    await unapplyColors();
+    await clearAllPrivateCssColors();
+    await removeLegacyWorkspaceColors();
+    await updatePeacockColorInUserSettings(undefined);
+    await updatePeacockRemoteColorInUserSettings(undefined);
+    await refreshColorApplicationMode();
+    if (hasActiveWorkspaceMapping()) {
+      notify(
+        'Global, workspace, and private Peacock colors were removed. The current peacock.workspaces mapping remains active.',
+        true,
+      );
+    }
+    return State.extensionContext;
+  }
+
   await resetWorkspaceColorsHandler();
   await updatePeacockColorInUserSettings(undefined);
   await updatePeacockRemoteColorInUserSettings(undefined);
@@ -49,7 +73,7 @@ export async function resetWorkspaceColorsHandler() {
 }
 
 export async function saveColorToFavoritesHandler() {
-  const color = getEnvironmentAwareColor();
+  const color = getCurrentColor();
   if (color) {
     const name = await promptForFavoriteColorName(color);
     if (!name) {
@@ -78,7 +102,7 @@ export async function changeColorToRandomHandler() {
   let color = '';
 
   if (surpriseMeFromFavoritesOnly) {
-    const o = getRandomFavoriteColor();
+    const o = getRandomFavoriteColor(getCurrentColor());
     if (!o) {
       notify(
         'No favorites exist. Add some favorites if you want to use the surprise me from favorites feature',
@@ -108,7 +132,7 @@ export async function changeColorToPeacockGreenHandler() {
 
 export async function changeColorToFavoriteHandler() {
   // Remember the color we started with
-  const startingColor = getEnvironmentAwareColor();
+  const startingColor = getCurrentColor();
   const favoriteColor = await promptForFavoriteColor();
 
   if (isValidColorInput(favoriteColor)) {
@@ -131,7 +155,7 @@ export async function changeColorToFavoriteHandler() {
 }
 
 export async function darkenHandler() {
-  const color = getEnvironmentAwareColor();
+  const color = getCurrentColor();
   if (color) {
     const darkenLightenPercentage = getDarkenLightenPercentage();
     const darkenedColor = getDarkenedColorHex(color, darkenLightenPercentage);
@@ -142,7 +166,7 @@ export async function darkenHandler() {
 }
 
 export async function lightenHandler() {
-  const color = getEnvironmentAwareColor();
+  const color = getCurrentColor();
   if (color) {
     const darkenLightenPercentage = getDarkenLightenPercentage();
     const lightenedColor = getLightenedColorHex(color, darkenLightenPercentage);
@@ -153,7 +177,7 @@ export async function lightenHandler() {
 }
 
 export async function showAndCopyCurrentColorHandler() {
-  const color = getEnvironmentAwareColor();
+  const color = getCurrentColor();
   if (!color) {
     return;
   }
@@ -167,7 +191,7 @@ export async function showAndCopyCurrentColorHandler() {
 
 export async function setSideBarDarknessLevelHandler() {
   try {
-    const color = getEnvironmentAwareColor();
+    const color = getCurrentColor();
     if (!color) {
       return;
     }

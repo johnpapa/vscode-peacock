@@ -80,6 +80,7 @@ export interface IPeacockSettings {
   surpriseMeInFavoritesOrder: boolean;
   surpriseMeOnStartup: boolean;
   color: string;
+  cssInjectionEnabled: boolean;
   remoteColor: string;
   workspaces: IPeacockWorkspaces;
 }

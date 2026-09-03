@@ -35,7 +35,7 @@ export const cssPatcher: ICssPatcher = {
   },
 
   async validate(cssPath: string) {
-    if (path.basename(cssPath) !== stylesheetFilename) {
+    if (!path.isAbsolute(cssPath) || path.basename(cssPath) !== stylesheetFilename) {
       return false;
     }
     try {
@@ -67,7 +67,7 @@ export const cssPatcher: ICssPatcher = {
 };
 
 function ensureStylesheetPath(cssPath: string) {
-  if (path.basename(cssPath) !== stylesheetFilename) {
+  if (!path.isAbsolute(cssPath) || path.basename(cssPath) !== stylesheetFilename) {
     throw new Error(`Expected ${stylesheetFilename}, received ${cssPath}`);
   }
 }
@@ -102,7 +102,11 @@ function findWindowsAppRootFromWsl() {
     if (!codeCommand) {
       return undefined;
     }
-    return path.win32.dirname(path.win32.dirname(codeCommand));
+    const windowsRoot = path.win32.dirname(path.win32.dirname(codeCommand));
+    return execFileSync('wslpath', ['-u', windowsRoot], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
   } catch {
     return undefined;
   }

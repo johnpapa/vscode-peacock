@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 
-import { applyColor } from '../apply-color';
+import { applyColor, getCurrentColor } from '../apply-color';
 import { State } from '../models';
-import { getPeacockRemoteColor, getPeacockColor } from '../configuration';
 
 // function remoteExtensionsInstalled(): boolean {
 //   let remoteExtensions = [
@@ -19,11 +18,5 @@ export async function addRemoteIntegration(context: vscode.ExtensionContext) {
   // const remoteExtensions = remoteExtensionsInstalled();
   // await vscode.commands.executeCommand('setContext', 'peacock:remote', remoteExtensions);
 
-  if (vscode.env.remoteName) {
-    const remoteColor = getPeacockRemoteColor() || getPeacockColor();
-    await applyColor(remoteColor);
-  } else {
-    const peacockColor = getPeacockColor();
-    await applyColor(peacockColor);
-  }
+  await applyColor(getCurrentColor() || '');
 }

@@ -3,15 +3,15 @@ import { commands } from 'vscode';
 
 import { promptForFavoriteColor } from '../inputs';
 import { isValidColorInput } from '../color-library';
-import { applyColor } from '../apply-color';
+import { applyColor, getCurrentColor } from '../apply-color';
 import { LiveShareCommands, LiveShareSettings } from './enums';
 import { refreshLiveShareSessionColor, revertLiveShareWorkspaceColors } from './integration';
-import { updateLiveShareColor, getEnvironmentAwareColor } from '../configuration';
+import { updateLiveShareColor } from '../configuration';
 import { State } from '../models';
 
 const changeColorOfLiveShareSessionFactory = (isHost: boolean) => {
   return async function changeColorOfLiveShareSession() {
-    const startingColor = getEnvironmentAwareColor();
+    const startingColor = getCurrentColor();
     const input = await promptForFavoriteColor();
 
     if (isValidColorInput(input)) {
