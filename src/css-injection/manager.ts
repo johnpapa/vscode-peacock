@@ -39,11 +39,13 @@ let currentAppliedColor: string | undefined;
 let transientColor: string | undefined;
 let sessionSideBarBackground: string | undefined;
 let modeQueue = Promise.resolve();
+let extensionMode = vscode.ExtensionMode.Production;
 const reportedDiagnostics = new Set<string>();
 const warnedLegacySettings = new Set<string>();
 const restartPrompts = new Set<string>();
 
-export function initializeColorApplicationMode() {
+export function initializeColorApplicationMode(mode = vscode.ExtensionMode.Production) {
+  extensionMode = mode;
   return enqueueModeRefresh(false, false);
 }
 
@@ -53,6 +55,10 @@ export function refreshColorApplicationMode(forceRepair = false) {
 
 export function isCssColorApplicationActive() {
   return cssModeActive;
+}
+
+export function canUseCssInjection(mode: vscode.ExtensionMode) {
+  return mode !== vscode.ExtensionMode.Test;
 }
 
 export async function installOrRepairCssOverridesHandler() {
@@ -128,7 +134,10 @@ export function resetCssManagerForTests() {
 
 function enqueueModeRefresh(forceRepair: boolean, forceRemove: boolean) {
   const operation = async () => {
-    if (getCssInjectionEnabled()) {
+    if (!canUseCssInjection(extensionMode)) {
+      cssModeActive = false;
+      configureColorApplication();
+    } else if (getCssInjectionEnabled()) {
       await enableCssMode(forceRepair);
     } else if (cssModeActive || forceRemove) {
       await disableCssMode(forceRemove);

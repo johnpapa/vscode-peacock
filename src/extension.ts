@@ -67,7 +67,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands();
   await initializeTheStarterSetOfFavorites();
-  await initializeColorApplicationMode();
+  await initializeColorApplicationMode(context.extensionMode);
 
   if (workspace.workspaceFolders) {
     Logger.info('Peacock is in a workspace, so Peacock functionality is available.');
