@@ -2,6 +2,21 @@
 
 All notable changes to the code will be documented in this file.
 
+## Unreleased
+
+### Features
+
+- Added exact personal workspace mappings through the machine-overridable `peacock.workspaces` setting, allowing users to assign colors without changing shared or version-controlled workspace settings. Folder, saved multi-root, local path/file URI, alias, and remote URI identities are matched exactly after lexical normalization; ambiguous matches are reported and ignored ([#7](https://github.com/johnpapa/vscode-peacock/issues/7), [#495](https://github.com/johnpapa/vscode-peacock/issues/495)).
+- Added the opt-in desktop mechanism behind personal workspace colors through `peacock.cssInjection.enabled`. It compiles the same Peacock color tokens and exclusions as the default renderer, applies them at high priority without workspace writes, and keeps the existing `workbench.colorCustomizations` behavior as the unchanged default.
+- Added private per-workspace command color persistence, Live Share/session precedence, CSS-aware reset/remove-all behavior, and status-bar profile selection across simultaneous windows.
+- Added **Install or Repair CSS Overrides**, **Remove CSS Overrides**, and **Set VS Code Stylesheet Path** commands, including explicit first-use consent, safe marked-block replacement/removal, update repair, and full-restart guidance.
+
+### Safety and compatibility
+
+- CSS injection is disabled by default because it modifies VS Code's installed stylesheet and triggers the modified/corrupt-installation warning. It fails closed on browser, discovery, permission, and malformed-file errors without falling back to workspace writes.
+- Updated modernUI guidance to distinguish the default color-customization renderer from the invasive CSS alternative.
+- Added a README acknowledgment for the CSS-injection proof of concept from [jetbrains-titlebar](https://github.com/baendlorel/jetbrains-titlebar).
+
 ## 4.3.3
 
 ### Release update

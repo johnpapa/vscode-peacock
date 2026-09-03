@@ -33,6 +33,26 @@ Now enjoy exploring the rest of the features explained in the docs!
 
 ![Peacock Windows](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/hero.png 'Peacock windows')
 
+## Keep personal colors out of workspace settings
+
+By default, Peacock saves a workspace's color in its workspace settings. For a folder, that normally means `.vscode/settings.json`. If you do not want to change that file—for example, because it is shared under version control—put your personal workspace-to-color mappings in [VS Code User Settings](https://code.visualstudio.com/docs/configure/settings#_user-settings) instead:
+
+```jsonc
+"peacock.cssInjection.enabled": true,
+"peacock.workspaces": {
+  "workspace-one": {
+    "path": ["/absolute/path/to/workspace-one"],
+    "color": "#007fff"
+  }
+}
+```
+
+Open **Preferences: Open User Settings (JSON)** from the Command Palette and add both settings. `peacock.workspaces` is kept on the current machine and is not synchronized. Peacock matches the exact path and applies the color without writing to that workspace's settings. See the [personal workspace colors guide](https://johnpapa.github.io/vscode-peacock/#/guide/?id=personal-workspace-colors-without-workspace-settings) for local, multi-root, and remote workspace examples.
+
+This feature works by injecting CSS into desktop VS Code. On first use, Peacock asks for permission to modify VS Code's installed stylesheet. You must then fully quit and reopen VS Code. VS Code will report the modified installation as corrupt, and on macOS the application may be described as “damaged.” VS Code updates can remove the override, in which case Peacock will offer to repair it. Browser-hosted VS Code is not supported.
+
+Thanks to [Kasukabe Tsumugi](https://github.com/baendlorel) for the CSS-injection proof of concept in [jetbrains-titlebar](https://github.com/baendlorel/jetbrains-titlebar) that inspired this approach. Peacock uses its own workspace matching, color derivation, profile management, and stylesheet-safety implementation; it does not include jetbrains-titlebar's glow, palette, or workspace hashing.
+
 ## Resources
 
 - [Peacock docs on GitHub Pages](https://johnpapa.github.io/vscode-peacock/)
