@@ -79,11 +79,7 @@ async function writeAtomically(cssPath: string, content: string) {
     await fs.writeFile(temporaryPath, content, { encoding: 'utf8', mode: stat.mode });
     await fs.rename(temporaryPath, cssPath);
   } catch (error) {
-    try {
-      await fs.unlink(temporaryPath);
-    } catch {
-      // The temporary file may not have been created.
-    }
+    await fs.unlink(temporaryPath).catch(() => undefined);
     throw error;
   }
 }

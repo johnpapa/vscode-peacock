@@ -112,9 +112,6 @@ export async function clearAllPrivateCssColors() {
   await clearCssWorkspaceOverridesGlobalMemento();
   transientColor = undefined;
   sessionSideBarBackground = undefined;
-  if (cssModeActive) {
-    await safelyRenderCssColor();
-  }
 }
 
 export function hasActiveWorkspaceMapping() {
@@ -124,7 +121,6 @@ export function hasActiveWorkspaceMapping() {
 export function resetCssManagerForTests() {
   cssModeActive = false;
   activeStylesheetPath = undefined;
-  currentAppliedColor = undefined;
   transientColor = undefined;
   sessionSideBarBackground = undefined;
   modeQueue = Promise.resolve();
@@ -259,16 +255,6 @@ function resolveCurrentCssColor() {
   });
 }
 
-async function renderResolvedCssColor() {
-  const resolved = resolveCurrentCssColor();
-  reportWorkspaceMapDiagnostics(resolved);
-  if (resolved.color) {
-    return await renderCssColor(resolved.color);
-  }
-  clearCssProfile();
-  return undefined;
-}
-
 function clearCssProfile() {
   currentAppliedColor = undefined;
   setCssProfileStatusBar(undefined);
@@ -276,19 +262,24 @@ function clearCssProfile() {
 
 async function safelyRenderCssColor(color?: string) {
   try {
-    return color ? await renderCssColor(color) : await renderResolvedCssColor();
+    if (!color) {
+      const resolved = resolveCurrentCssColor();
+      reportWorkspaceMapDiagnostics(resolved);
+      color = resolved.color;
+    }
+    if (color) {
+      await renderCssColor(color);
+    } else {
+      clearCssProfile();
+    }
+    return currentAppliedColor;
   } catch (error) {
     clearCssProfile();
     reportCssFailure(error);
-    return undefined;
   }
 }
 
 async function renderCssColor(color: string) {
-  if (!activeStylesheetPath) {
-    activeStylesheetPath = await locateStylesheet();
-  }
-
   const sideBarBackground =
     getPrivateWorkspaceOverride()?.sideBarBackground || sessionSideBarBackground;
   const overrides = sideBarBackground ? { 'sideBar.background': sideBarBackground } : {};
@@ -298,7 +289,6 @@ async function renderCssColor(color: string) {
   await installRegistry(registry);
   currentAppliedColor = profile.color;
   setCssProfileStatusBar(profile);
-  return profile.color;
 }
 
 async function installRegistry(registry: ReturnType<typeof getCssProfilesGlobalMemento>) {
@@ -405,7 +395,7 @@ const cssRenderer: IColorRenderer = {
     if (color) {
       await safelyRenderCssColor(color);
     } else {
-      await this.unapply();
+      clearCssProfile();
     }
   },
 
