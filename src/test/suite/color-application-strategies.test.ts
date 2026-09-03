@@ -3,6 +3,8 @@ import * as assert from 'assert';
 import {
   IColorPersistence,
   IColorRenderer,
+  applyColor,
+  applyTransientColor,
   captureColorRenderState,
   clearWorkspaceColorSettings,
   configureColorApplication,
@@ -21,8 +23,8 @@ suite('Color application strategies', () => {
   test('routes persistence and renderer-specific operations through configured strategies', async () => {
     const calls: string[] = [];
     const renderer: IColorRenderer = {
-      async apply(color) {
-        calls.push(`apply:${color}`);
+      async apply(color, options) {
+        calls.push(`apply:${color}:${options?.transient ? 'transient' : 'normal'}`);
         return color;
       },
       async unapply() {
@@ -61,6 +63,8 @@ suite('Color application strategies', () => {
     };
     configureColorApplication(renderer, persistence);
 
+    await applyColor('#007fff');
+    await applyTransientColor('#ff0000');
     await updateColorSetting('#007fff');
     await clearWorkspaceColorSettings();
     assert.equal(getCurrentColor(), '#007fff');
@@ -71,6 +75,8 @@ suite('Color application strategies', () => {
     await restoreColorRenderState(captured);
 
     assert.deepEqual(calls, [
+      'apply:#007fff:normal',
+      'apply:#ff0000:transient',
       'save:#007fff',
       'clear',
       'getCurrent',
