@@ -49,7 +49,9 @@ By default, Peacock saves a workspace's color in its workspace settings. For a f
 
 Open **Preferences: Open User Settings (JSON)** from the Command Palette and add both settings. `peacock.workspaces` is kept on the current machine and is not synchronized. Peacock matches the exact path and applies the color without writing to that workspace's settings. See the [personal workspace colors guide](https://johnpapa.github.io/vscode-peacock/#/guide/?id=personal-workspace-colors-without-workspace-settings) for local, multi-root, and remote workspace examples.
 
-This feature works by injecting CSS into desktop VS Code. On first use, Peacock asks for permission to modify VS Code's installed stylesheet. You must then fully quit and reopen VS Code. VS Code will report the modified installation as corrupt, and on macOS the application may be described as “damaged.” VS Code updates can remove the override, in which case Peacock will offer to repair it. Browser-hosted VS Code is not supported.
+This feature works by injecting CSS into desktop VS Code. On first use, Peacock asks for permission to modify VS Code's installed stylesheet. Changes to `peacock.workspaces` are detected automatically; you do not need to run **Install or Repair CSS Overrides** for each workspace. If a mapping introduces a color style that is not already installed, Peacock adds it and asks you to fully quit and reopen VS Code. Already-installed styles switch immediately, and one restart loads every style added since the previous launch.
+
+VS Code will report the modified installation as corrupt, and on macOS the application may be described as “damaged.” VS Code updates can remove the override, in which case Peacock will offer to repair it. Browser-hosted VS Code is not supported.
 
 Thanks to [Kasukabe Tsumugi](https://github.com/baendlorel) for the CSS-injection proof of concept in [jetbrains-titlebar](https://github.com/baendlorel/jetbrains-titlebar) that inspired this approach. Peacock uses its own workspace matching, color derivation, profile management, and stylesheet-safety implementation; it does not include jetbrains-titlebar's glow, palette, or workspace hashing.
 

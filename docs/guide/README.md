@@ -100,7 +100,7 @@ To assign colors without changing the workspace, store exact workspace-to-color 
 }
 ```
 
-Then save the file, accept Peacock's first-use warning, and fully quit and reopen VS Code. Peacock applies the matching color without writing to the folder's `.vscode/settings.json` or to the `.code-workspace` file.
+Then save the file and accept Peacock's first-use warning. Peacock applies the matching color without writing to the folder's `.vscode/settings.json` or to the `.code-workspace` file. If it needs to add the color style to the installed stylesheet, fully quit and reopen VS Code when prompted.
 
 Both settings are specific to the current machine and are excluded from Settings Sync. `peacock.workspaces` uses VS Code's `machine-overridable` scope, so object entries follow [VS Code's normal settings precedence and object-merging behavior](https://code.visualstudio.com/docs/configure/settings#_settings-precedence). See VS Code's [configuration scope reference](https://code.visualstudio.com/api/references/contribution-points#_scope) for the definition of machine-specific scopes.
 
@@ -108,7 +108,7 @@ Both settings are specific to the current machine and are excluded from Settings
 
 To override the interface without writing `workbench.colorCustomizations` into the workspace, Peacock injects CSS into desktop VS Code's installed `workbench.desktop.main.css`. VS Code will report that the installation is modified or corrupt. On macOS, changing a quarantined or newly copied application bundle can also cause macOS to refuse to launch it as “damaged.” VS Code updates replace the stylesheet and remove the injected block.
 
-The feature is disabled by default. `peacock.cssInjection.enabled` has machine scope, is not synchronized, and cannot be enabled by a repository. Peacock shows a modal consent warning before its first file modification. A full application restart is required because a window reload does not reload the installed stylesheet. Browser-hosted VS Code is not supported.
+The feature is disabled by default. `peacock.cssInjection.enabled` has machine scope, is not synchronized, and cannot be enabled by a repository. Peacock shows a modal consent warning before its first file modification. A full application restart is required whenever Peacock changes the installed stylesheet because a window reload does not reload it. Browser-hosted VS Code is not supported.
 
 #### Workspace matching
 
@@ -141,7 +141,9 @@ A workspace-scoped legacy color remains untouched and can act as the last fallba
 
 #### Repair, updates, and removal
 
-Enabling personal workspace colors installs or repairs Peacock's marked CSS block and prompts for a full VS Code restart when the stylesheet changes. A window reload is not sufficient because VS Code caches its workbench stylesheet for the lifetime of the application process. Once color profiles are installed, different windows can select them immediately without another rewrite. After a VS Code update removes the block, Peacock repairs it on activation and requests another restart.
+Peacock detects `peacock.workspaces` changes automatically; you do not need to run **Install or Repair CSS Overrides** for each workspace. If a mapping resolves to an already-installed color style, it switches immediately. If it introduces a new style, Peacock adds the profile to its marked CSS block and prompts for a full VS Code restart. One restart loads every profile added since the previous launch.
+
+A window reload is not sufficient because VS Code caches its workbench stylesheet for the lifetime of the application process. After a VS Code update removes the block, Peacock repairs it on activation and requests another restart.
 
 The following commands are available:
 
@@ -309,24 +311,24 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 
 ## Commands
 
-| Command                                         | Description                                                                                                                            |
-| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Command                                         | Description                                                                                                                        |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Peacock: Reset Workspace Colors                 | Resets the current workspace. With personal workspace colors, clears its private override and reveals the next configured color source |
-| Peacock: Remove All Global and Workspace Colors | Removes private and legacy generated/scalar color state. A `peacock.workspaces` mapping is preserved                                   |
-| Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))                                                                     |
-| Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                          |
-| Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                       |
-| Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites                                                                                            |
-| Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                                  |
-| Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                                   |
-| Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                                 |
-| Peacock: Lighten                                | Lightens the current color by `darkenLightenPercentage`                                                                                |
-| Peacock: Install or Repair CSS Overrides        | Enables personal workspace colors, requests first-use consent, and installs or repairs Peacock's stylesheet block                      |
-| Peacock: Remove CSS Overrides                   | Disables personal workspace colors and removes only Peacock's stylesheet block                                                         |
-| Peacock: Set VS Code Stylesheet Path            | Sets the exact `workbench.desktop.main.css` path when automatic discovery fails                                                        |
-| Peacock: Set SideBar Darkness Level             | Sets the SideBar background to a darker shade of the current color (Dark, Darker, or Darkest)                                          |
-| Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                                 |
-| Peacock: Show the Documentation                 | Opens the Peacock documentation web site in a browser                                                                                  |
+| Peacock: Remove All Global and Workspace Colors | Removes private and legacy generated/scalar color state. A `peacock.workspaces` mapping is preserved |
+| Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))                                                                 |
+| Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                      |
+| Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                   |
+| Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites                                                                                        |
+| Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                              |
+| Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
+| Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
+| Peacock: Lighten                                | Lightens the current color by `darkenLightenPercentage`                                                                            |
+| Peacock: Install or Repair CSS Overrides        | Enables personal workspace colors, requests first-use consent, and installs or repairs Peacock's stylesheet block |
+| Peacock: Remove CSS Overrides                   | Disables personal workspace colors and removes only Peacock's stylesheet block |
+| Peacock: Set VS Code Stylesheet Path            | Sets the exact `workbench.desktop.main.css` path when automatic discovery fails |
+| Peacock: Set SideBar Darkness Level             | Sets the SideBar background to a darker shade of the current color (Dark, Darker, or Darkest)                                      |
+| Peacock: Show and Copy Current Color            | Shows the current color and copies it to the clipboard                                                                             |
+| Peacock: Show the Documentation                 | Opens the Peacock documentation web site in a browser                                                                              |
 
 ## Keyboard Shortcuts
 
@@ -447,7 +449,7 @@ Peacock needs an open folder or workspace to apply a workspace color. If you ope
 
 ### Peacock colors are written but not visually applied (`modernUI` enabled)
 
-Peacock's default `workbench.colorCustomizations` renderer can become visually ineffective when `workbench.experimental.modernUI` overrides the workbench color tokens Peacock depends on. We have observed this in Insiders and can also reproduce it in Stable when modernUI is turned on. In legacy mode Peacock shows a one-time notice when it detects this situation.
+If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this happens when `workbench.experimental.modernUI` is enabled. modernUI overrides the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), so Peacock is effectively non-functional while it is on. We have observed this in Insiders (where modernUI is enabled by default) and can also reproduce it in Stable if `modernUI` is turned on. Peacock will show a one-time notice when it detects this situation.
 
 Primary Peacock tracking issue:
 
@@ -458,20 +460,26 @@ Upstream VS Code tracking:
 - [microsoft/vscode#325250](https://github.com/microsoft/vscode/issues/325250)
 - [microsoft/vscode#326126](https://github.com/microsoft/vscode/issues/326126)
 
-Two alternatives are available:
+Temporary workaround:
 
 1. Open Settings and set `"workbench.experimental.modernUI": false`
 2. Run **Developer: Reload Window**
 3. Run a Peacock command again (for example, **Peacock: Surprise Me**)
 
-Or, on desktop VS Code, configure [personal workspace colors without workspace settings](#personal-workspace-colors-without-workspace-settings). Peacock applies its custom properties and direct workbench-part overrides at high priority, taking precedence over resolved color customizations. The mechanism is invasive: it modifies the installed stylesheet, requires a full VS Code restart after stylesheet changes, and produces VS Code's modified/corrupt-installation warning.
+Alternatively, desktop users can configure [personal workspace colors without workspace settings](#personal-workspace-colors-without-workspace-settings). Its CSS overrides take precedence over the color customizations affected by modernUI, but modifying the installed stylesheet requires consent and a full restart whenever a new style is added.
 
-Current known impact areas under `modernUI` for the default renderer:
+Current known impact areas under `modernUI` (research snapshot):
 
 - Often ignored/remapped: `titleBar.*`, `statusBar.*`, `activityBar.*`, `tab.activeBorder`, `commandCenter.border`
 - Better reliability today: editor/background-adjacent tokens and selective tab styling once upstream fixes land
 
-Because modernUI is experimental, re-test both renderers when VS Code updates and follow the tracking issues above for current compatibility.
+Near-term compatibility research focus:
+
+| Area | Current behavior (modernUI on) | Near-term Peacock direction |
+| --- | --- | --- |
+| `titleBar.*`, `statusBar.*`, `activityBar.*` | Frequently blended/overridden by modernUI shell/floating panel styles | Keep warning users and avoid relying on these for strong visual separation |
+| `tab.activeBorder` and related tab cues | Known upstream bug/regression in active tracking | Re-test and adopt as soon as upstream fix ships |
+| Workspace identity signaling | Some classic tokens no longer produce distinct shell colors | Shift toward best-effort token set and clear compatibility guidance per VS Code version |
 
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 
