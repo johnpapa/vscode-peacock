@@ -15,6 +15,8 @@ suite('CSS profiles', () => {
       '#007fff',
       {
         'activityBar.background': '#0088ff',
+        'activityBar.foreground': '#15202b',
+        'activityBar.inactiveForeground': '#15202b99',
         'statusBar.background': '#007fff',
         'statusBar.foreground': '#15202b',
         'titleBar.activeBackground': '#007fff',
@@ -26,14 +28,26 @@ suite('CSS profiles', () => {
     const css = generateCssProfileRule(profile);
 
     assert.ok(css.includes('--vscode-statusBar-background:#007fff !important;'));
-    assert.ok(css.includes('.part.activitybar{background-color:#0088ff !important;}'));
+    assert.ok(
+      /\.part\.activitybar\{[^}]*--vscode-foreground:#15202b !important;[^}]*--vscode-icon-foreground:#15202b99 !important;/.test(
+        css,
+      ),
+    );
+    [
+      '.action-item .action-label.codicon{color:#15202b99 !important;}',
+      '.action-item .action-label:not(.codicon){background-color:#15202b99 !important;}',
+      '.action-item.checked .action-label.codicon{color:#15202b !important;}',
+      '.action-item.checked .action-label:not(.codicon){background-color:#15202b !important;}',
+    ].forEach(rule => assert.ok(css.includes(rule)));
     assert.ok(
       css.includes(
         '.part.statusbar{background-color:#007fff !important;color:#15202b !important;}',
       ),
     );
     assert.ok(
-      css.includes('.part.titlebar{background-color:#007fff !important;color:#15202b !important;}'),
+      /\.part\.titlebar\{[^}]*--vscode-foreground:#15202b !important;[^}]*--vscode-descriptionForeground:#15202b !important;/.test(
+        css,
+      ),
     );
   });
 

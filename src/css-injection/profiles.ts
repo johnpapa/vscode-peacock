@@ -114,8 +114,9 @@ function toCssVariableName(colorToken: string) {
 /**
  * Workbench parts resolve some theme colors to literal inline styles. Custom
  * properties on the workbench root therefore cannot repaint these surfaces,
- * even with !important. Emit the profile values themselves for those parts;
- * the remaining tokens continue to flow through the --vscode-* declarations.
+ * even with !important. Nested controls can also use generic foreground
+ * variables instead of their part's color tokens. Scope the derived values to
+ * the affected chrome so they do not alter unrelated editor content.
  */
 function generateSurfaceRules(profile: ICssProfile, selectedWorkbenchSelector: string) {
   return [
@@ -123,21 +124,54 @@ function generateSurfaceRules(profile: ICssProfile, selectedWorkbenchSelector: s
       ['background-color', '--vscode-titleBar-activeBackground'],
       ['color', '--vscode-titleBar-activeForeground'],
       ['border-color', '--vscode-titleBar-border'],
+      ['--vscode-foreground', '--vscode-titleBar-activeForeground'],
+      ['--vscode-icon-foreground', '--vscode-titleBar-activeForeground'],
+      ['--vscode-descriptionForeground', '--vscode-titleBar-activeForeground'],
     ]),
     createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.titlebar.inactive`, [
       ['background-color', '--vscode-titleBar-inactiveBackground'],
       ['color', '--vscode-titleBar-inactiveForeground'],
+      ['--vscode-foreground', '--vscode-titleBar-inactiveForeground'],
+      ['--vscode-icon-foreground', '--vscode-titleBar-inactiveForeground'],
+      ['--vscode-descriptionForeground', '--vscode-titleBar-inactiveForeground'],
     ]),
     createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.activitybar`, [
       ['background-color', '--vscode-activityBar-background'],
       ['color', '--vscode-activityBar-foreground'],
+      ['--vscode-foreground', '--vscode-activityBar-foreground'],
+      ['--vscode-icon-foreground', '--vscode-activityBar-inactiveForeground'],
     ]),
+    generateActivityBarActionRules(profile, selectedWorkbenchSelector),
     createSurfaceRule(profile, `${selectedWorkbenchSelector} .part.statusbar`, [
       ['background-color', '--vscode-statusBar-background'],
       ['color', '--vscode-statusBar-foreground'],
       ['border-color', '--vscode-statusBar-border'],
     ]),
   ].join('');
+}
+
+/** Overrides the literal inline colors that VS Code assigns to activity actions. */
+function generateActivityBarActionRules(profile: ICssProfile, selectedWorkbenchSelector: string) {
+  const activityBarSelector = `${selectedWorkbenchSelector} .part.activitybar`;
+  const actionRules: [string, string, string][] = [
+    ['.action-item .action-label.codicon', 'color', '--vscode-activityBar-inactiveForeground'],
+    [
+      '.action-item .action-label:not(.codicon)',
+      'background-color',
+      '--vscode-activityBar-inactiveForeground',
+    ],
+    ['.action-item.checked .action-label.codicon', 'color', '--vscode-activityBar-foreground'],
+    [
+      '.action-item.checked .action-label:not(.codicon)',
+      'background-color',
+      '--vscode-activityBar-foreground',
+    ],
+  ];
+  return actionRules
+    .map(([selector, property, variable]) =>
+      createSurfaceRule(profile, `${activityBarSelector} ${selector}`, [[property, variable]]),
+    )
+    .join('');
 }
 
 function createSurfaceRule(
