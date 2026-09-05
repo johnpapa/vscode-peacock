@@ -34,6 +34,7 @@ import {
   inspectColor,
   getCurrentColorBeforeAdjustments,
   getFavoriteColors,
+  backupExistingColorCustomizationsIfNeeded,
 } from './configuration';
 import { applyColor, updateColorSetting } from './apply-color';
 import { isValidColorInput } from './color-library';
@@ -68,6 +69,7 @@ export async function activate(context: vscode.ExtensionContext) {
      * because they may write peacock settings, and it will fail.
      * This entire function will re-run when a workspace is opened.
      */
+    await backupExistingColorCustomizationsIfNeeded();
     await checkSurpriseMeOnStartupLogic();
     await addLiveShareIntegration(State.extensionContext);
     await addRemoteIntegration(State.extensionContext);

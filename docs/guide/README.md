@@ -46,8 +46,8 @@ Commands can be found in the command palette. Look for commands beginning with "
 | Property                            | Description                                                                                                                                                                                                           |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                                                                                                                              |
-| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                                                                                                                                |
-| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should use a distinct Peacock debugging status bar color while debugging. Defaults to false. When false, Peacock still preserves the normal status bar colors during launch/debug sessions. |
+| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar. Set to `false` to preserve the debugger's orange color or other theme-specific status bar colors.                                                           |
+| peacock.affectStatusBarDebugging    | Specifies whether Peacock should use a distinct Peacock debugging status bar color while debugging. Defaults to false. When false, Peacock still preserves the normal status bar colors during launch/debug sessions. |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))                                                                                                                 |
 | peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                                                                                                                                    |
 | peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                                                                                                                                          |
@@ -218,6 +218,41 @@ Peacock now also remembers the startup-surprise selection per workspace in a glo
 
 Example: You open `repo-a` (worktree A) and Peacock startup surprise picks `#333333`. Later you close and reopen worktree A. If worktree A still has no explicit Peacock color in settings, Peacock restores `#333333` for that workspace instead of picking a different color. A different workspace/worktree keeps its own startup-surprise selection.
 
+### Status Bar Customization
+
+The status bar is the bar at the bottom of VS Code that shows information like line/column numbers, git branch, and linting status. Peacock provides fine-grained control over status bar coloring:
+
+- **`peacock.affectStatusBar`** (default: `true`): Whether Peacock affects the status bar at all
+  - Set to `false` to completely prevent Peacock from touching the status bar
+  - Useful if you want to preserve theme-specific status bar colors or the debugger's distinctive orange color
+
+- **`peacock.affectStatusBarDebugging`** (default: `false`): Whether Peacock applies its color to the status bar **while debugging**
+  - When `false`, Peacock leaves the status bar untouched during debug sessions (preserves debugger orange)
+  - When `true`, Peacock applies its color even during debugging
+
+#### Common Status Bar Scenarios
+
+**Scenario 1: Never affect the status bar**
+```json
+"peacock.affectStatusBar": false
+```
+Result: Status bar is never colored by Peacock, retaining its theme default and debugger colors.
+
+**Scenario 2: Color the status bar, except during debugging**
+```json
+"peacock.affectStatusBar": true,
+"peacock.affectStatusBarDebugging": false
+```
+Result: Peacock colors the status bar normally, but when you start debugging, the debugger's orange color takes over.
+
+**Scenario 3: Always use Peacock colors, even when debugging**
+```json
+"peacock.affectStatusBar": true,
+"peacock.affectStatusBarDebugging": true
+```
+Result: Peacock's color is applied to the status bar at all times, including during debug sessions.
+
+
 ### Lighten and Darken
 
 You may like a color but want to lighten or darken it. You can do this through the corresponding [commands](#commands). When you choose one of these commands the current color will be lightened or darkened by the percentage that is in the `darkenLightenPercentage` setting. You may change this setting to be a value between 1 and 10 percent.
@@ -363,7 +398,7 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 VS Code's `workbench.experimental.modernUI` setting used to override the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), which made Peacock appear non-functional while it was on. This was fixed upstream in VS Code ([microsoft/vscode#329701](https://github.com/microsoft/vscode/pull/329701)), and Peacock colors now apply normally with modernUI enabled (which is the default in current VS Code releases).
 
-Peacock's one-time "colors may not be visible" notice for modernUI has been removed in an upcoming release, since it's no longer accurate for current VS Code versions.
+Peacock's one-time "colors may not be visible" notice for modernUI has been removed, since it's no longer accurate for current VS Code versions.
 
 Primary Peacock tracking issue:
 
@@ -377,7 +412,7 @@ Upstream VS Code tracking:
 
 If you're still on an older VS Code version and colors aren't visible, either update VS Code or temporarily set `"workbench.experimental.modernUI": false` and reload.
 
-**Sidebar icons hard to read with modernUI on:** if your primary sidebar icons look unreadable for a given Peacock color, check the **Affect Title Bar** Peacock setting — enabling it also fixes sidebar icon contrast under modernUI (naming is confusing here; see [#585](https://github.com/johnpapa/vscode-peacock/issues/585) and [#700](https://github.com/johnpapa/vscode-peacock/issues/700) for the related contrast work still in progress).
+**Sidebar icons hard to read with modernUI on:** under modernUI, VS Code uses the title bar color as a backdrop that shows through the gaps between workbench surfaces ([microsoft/vscode#329701](https://github.com/microsoft/vscode/pull/329701)). If you've disabled Peacock's **Affect Title Bar** setting, VS Code's own default title bar color is what bleeds through instead of your Peacock color, which can clash with the activity bar and make sidebar icons hard to read. Peacock itself writes the same activity bar color tokens regardless of this setting — this is a rendering interaction in modernUI's compositing, not a Peacock bug. If you hit this, keep **Affect Title Bar** enabled (the default) for the best contrast under modernUI. See [#585](https://github.com/johnpapa/vscode-peacock/issues/585) and [#652](https://github.com/johnpapa/vscode-peacock/issues/652) for the ongoing discussion.
 
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 

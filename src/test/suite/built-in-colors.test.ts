@@ -115,7 +115,7 @@ suite('can set color to built-in color', () => {
 });
 
 function testChangingColorToPeacockGreen():
-  | ((this: Mocha.ITestCallbackContext, done: MochaDone) => any)
+  | ((this: Mocha.Context, done: Mocha.Done) => any)
   | undefined {
   return testBuiltInColor(Commands.changeColorToPeacockGreen, peacockGreen);
 }
@@ -123,7 +123,7 @@ function testChangingColorToPeacockGreen():
 function testBuiltInColor(
   cmd: Commands,
   builtInColor: string,
-): ((this: Mocha.ITestCallbackContext, done: MochaDone) => any) | undefined {
+): ((this: Mocha.Context, done: Mocha.Done) => any) | undefined {
   return async () => {
     await vscode.commands.executeCommand(cmd);
     const config = getColorCustomizationConfig();

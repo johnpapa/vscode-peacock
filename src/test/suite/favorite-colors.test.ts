@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import * as assert from 'assert';
 import { IPeacockSettings, Commands, azureBlue } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
-import { parseFavoriteColorValue } from '../../inputs';
+import { parseFavoriteColorValue } from '../../favorite-color';
 import { isValidColorInput } from '../../color-library';
 import { executeCommand } from './lib/constants';
 import {

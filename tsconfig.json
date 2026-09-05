@@ -18,7 +18,9 @@
 	"exclude": [
 		"node_modules",
 		".vscode-test",
+		"src/test/unit",
 		"e2e",
+		"vitest.config.ts",
 		"playwright.config.ts"
 	]
 }

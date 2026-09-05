@@ -113,7 +113,9 @@ export async function addNewFavoriteColor(name: string, value: string) {
 }
 
 export async function writeRecommendedFavoriteColors(overrideFavorites?: IFavoriteColors[]) {
-  const newFavoriteColors = removeDuplicatesToStarterSet(overrideFavorites);
+  const starter = overrideFavorites || starterSetOfFavorites;
+  const { values: existingFavoriteColors } = getFavoriteColors();
+  const newFavoriteColors = mergeStarterAndExistingFavorites(starter, existingFavoriteColors);
   return await updateFavoriteColors(newFavoriteColors);
 }
 
@@ -172,11 +174,10 @@ export async function updateAffectedElements(values: IPeacockAffectedElementSett
   return true;
 }
 
-function removeDuplicatesToStarterSet(overrideFavorites?: IFavoriteColors[]) {
-  const starter = overrideFavorites || starterSetOfFavorites;
-
-  const { values: existingFavoriteColors } = getFavoriteColors();
-
+export function mergeStarterAndExistingFavorites(
+  starter: IFavoriteColors[],
+  existingFavoriteColors: IFavoriteColors[],
+) {
   // starter set must be first, so it overrides the existing ones if their are dupes.
   const faves = [...starter, ...existingFavoriteColors];
   return faves.filter((fav, position, arr) => {
