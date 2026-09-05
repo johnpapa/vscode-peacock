@@ -26,11 +26,17 @@ webpack.config.json
 coverage/
 out-cov/
 .eslintrc
+eslint.config.js
+tsconfig.eslint.json
+vitest.config.ts
 .prettierrc
 docs
 testworkspace
 webpack.config.js
 .prettierrc.js
+.claude/
+.husky/
+scripts/
 # Exclude e2e assets from VSIX
 extension/e2e/**
 
