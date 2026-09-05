@@ -2,6 +2,10 @@
 
 All notable changes to the code will be documented in this file.
 
+## Unreleased
+
+- Removed the one-time `workbench.experimental.modernUI` compatibility notice. VS Code fixed color customization support for modernUI upstream ([microsoft/vscode#329701](https://github.com/microsoft/vscode/pull/329701)), so the warning is no longer accurate and was confusing users. See [#652](https://github.com/johnpapa/vscode-peacock/issues/652) and [#711](https://github.com/johnpapa/vscode-peacock/issues/711).
+
 ## 4.3.3
 
 ### Release update

@@ -359,11 +359,13 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 > Thanks to [@tjeanes](https://github.com/tjeanes), [@ShrimpCryptid](https://github.com/ShrimpCryptid), [@ralfaro17](https://github.com/ralfaro17), and [@diepes](https://github.com/diepes) for identifying the Live Share conflict workaround ([#550](https://github.com/johnpapa/vscode-peacock/issues/550)).
 
-### Peacock colors are written but not visually applied (`modernUI` enabled)
+### Peacock colors don't show up with `modernUI` enabled (resolved)
 
-If Peacock writes `workbench.colorCustomizations` and `peacock.color` but the UI does not change, this happens when `workbench.experimental.modernUI` is enabled. modernUI overrides the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), so Peacock is effectively non-functional while it is on. We have observed this in Insiders (where modernUI is enabled by default) and can also reproduce it in Stable if `modernUI` is turned on. Peacock will show a one-time notice when it detects this situation.
+VS Code's `workbench.experimental.modernUI` setting used to override the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), which made Peacock appear non-functional while it was on. This was fixed upstream in VS Code ([microsoft/vscode#329701](https://github.com/microsoft/vscode/pull/329701)), and Peacock colors now apply normally with modernUI enabled (which is the default in current VS Code releases).
 
-Primary Peacock tracking issue:
+Peacock's one-time "colors may not be visible" notice for modernUI has been removed as of v4.3.5, since it's no longer accurate for current VS Code versions.
+
+Primary Peacock tracking issue (closed, kept for history):
 
 - [Tracking: modernUI compatibility (#652)](https://github.com/johnpapa/vscode-peacock/issues/652)
 
@@ -371,25 +373,11 @@ Upstream VS Code tracking:
 
 - [microsoft/vscode#325250](https://github.com/microsoft/vscode/issues/325250)
 - [microsoft/vscode#326126](https://github.com/microsoft/vscode/issues/326126)
+- [microsoft/vscode#329701](https://github.com/microsoft/vscode/pull/329701) (the upstream fix)
 
-Temporary workaround:
+If you're still on an older VS Code version and colors aren't visible, either update VS Code or temporarily set `"workbench.experimental.modernUI": false` and reload.
 
-1. Open Settings and set `"workbench.experimental.modernUI": false`
-2. Run **Developer: Reload Window**
-3. Run a Peacock command again (for example, **Peacock: Surprise Me**)
-
-Current known impact areas under `modernUI` (research snapshot):
-
-- Often ignored/remapped: `titleBar.*`, `statusBar.*`, `activityBar.*`, `tab.activeBorder`, `commandCenter.border`
-- Better reliability today: editor/background-adjacent tokens and selective tab styling once upstream fixes land
-
-Near-term compatibility research focus:
-
-| Area | Current behavior (modernUI on) | Near-term Peacock direction |
-| --- | --- | --- |
-| `titleBar.*`, `statusBar.*`, `activityBar.*` | Frequently blended/overridden by modernUI shell/floating panel styles | Keep warning users and avoid relying on these for strong visual separation |
-| `tab.activeBorder` and related tab cues | Known upstream bug/regression in active tracking | Re-test and adopt as soon as upstream fix ships |
-| Workspace identity signaling | Some classic tokens no longer produce distinct shell colors | Shift toward best-effort token set and clear compatibility guidance per VS Code version |
+**Sidebar icons hard to read with modernUI on:** if your primary sidebar icons look unreadable for a given Peacock color, check the **Affect Title Bar** Peacock setting — enabling it also fixes sidebar icon contrast under modernUI (naming is confusing here; see [#585](https://github.com/johnpapa/vscode-peacock/issues/585) and [#700](https://github.com/johnpapa/vscode-peacock/issues/700) for the related contrast work still in progress).
 
 ### Why don't I see the latest Peacock version in the Marketplace immediately?
 

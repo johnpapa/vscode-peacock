@@ -77,7 +77,7 @@ See [AGENTS.md](AGENTS.md) for the full project guide including architecture, pa
 
 [Open an issue here](https://github.com/johnpapa/vscode-peacock/issues)
 
-For `workbench.experimental.modernUI` compatibility status, follow the primary tracking issue: [#652](https://github.com/johnpapa/vscode-peacock/issues/652).
+`workbench.experimental.modernUI` compatibility was fixed upstream in VS Code and Peacock colors now apply normally with it enabled. See [#652](https://github.com/johnpapa/vscode-peacock/issues/652) for history.
 
 ## Contributors
 
