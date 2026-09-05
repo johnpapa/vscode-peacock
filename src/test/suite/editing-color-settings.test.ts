@@ -1,6 +1,6 @@
-import vscode = require('vscode');
-import sinon = require('sinon');
-import assert = require('assert');
+import * as vscode from 'vscode';
+import * as sinon from 'sinon';
+import * as assert from 'assert';
 
 import {
   IPeacockSettings,
