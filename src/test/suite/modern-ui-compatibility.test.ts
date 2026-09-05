@@ -4,7 +4,10 @@ import { ConfigurationTarget } from 'vscode';
 
 import { IPeacockSettings, peacockGreen } from '../../models';
 import { applyColor } from '../../apply-color';
-import { getColorCustomizationConfig } from '../../configuration';
+import {
+  getColorCustomizationConfig,
+  getColorCustomizationConfigFromWorkspace,
+} from '../../configuration';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 
 suite('Modern UI Compatibility Tests', () => {
@@ -38,13 +41,13 @@ suite('Modern UI Compatibility Tests', () => {
       .getConfiguration('workbench')
       .update('experimental.modernUI', false, ConfigurationTarget.Workspace);
     await applyColor(peacockGreen);
-    const classicConfig = { ...getColorCustomizationConfig() };
+    const classicConfig = { ...getColorCustomizationConfigFromWorkspace() };
 
     await vscode.workspace
       .getConfiguration('workbench')
       .update('experimental.modernUI', true, ConfigurationTarget.Workspace);
     await applyColor(peacockGreen);
-    const modernConfig = { ...getColorCustomizationConfig() };
+    const modernConfig = { ...getColorCustomizationConfigFromWorkspace() };
 
     assert.deepStrictEqual(
       modernConfig,
