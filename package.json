@@ -453,7 +453,7 @@
     "@types/sinon": "^22.0.0",
     "@types/vscode": "^1.134.0",
     "@types/webpack-env": "^1.18.8",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/coverage-v8": "^5.0.0",
     "@vscode/test-web": "^0.0.81",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
@@ -472,7 +472,7 @@
     "ts-loader": "^9.6.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.69.0",
-    "vitest": "^0.34.6",
+    "vitest": "^5.0.0",
     "vscode-test": "^1.4.0",
     "webpack": "^5.110.3",
     "webpack-cli": "^7.2.3"
