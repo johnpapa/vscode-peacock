@@ -20,7 +20,8 @@ suite('Migration Tests', () => {
       // Mark backup as already done
       await saveColorCustomizationsBackupDoneMemento();
 
-      const updateStub = sandbox.stub(vscode.workspace.getConfiguration(), 'update');
+      const updateStub = sandbox.stub();
+      sandbox.stub(vscode.workspace, 'getConfiguration').returns({ update: updateStub } as any);
 
       await backupExistingColorCustomizationsIfNeeded();
 
@@ -29,7 +30,8 @@ suite('Migration Tests', () => {
 
     test('should skip backup if not in a workspace', async () => {
       sandbox.stub(vscode.workspace, 'workspaceFolders').value(undefined);
-      const updateStub = sandbox.stub(vscode.workspace.getConfiguration(), 'update');
+      const updateStub = sandbox.stub();
+      sandbox.stub(vscode.workspace, 'getConfiguration').returns({ update: updateStub } as any);
 
       await backupExistingColorCustomizationsIfNeeded();
 
