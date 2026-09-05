@@ -1,6 +1,12 @@
 import * as path from 'path';
-import * as Mocha from 'mocha';
+import * as MochaModule from 'mocha';
 import * as glob from 'glob';
+
+// mocha@12's CJS build exposes the Mocha class as a named export rather than
+// as the module's whole export value, but @types/mocha still types the
+// module as `export = Mocha`. Pull the real constructor off the runtime
+// module and keep the constructor type from `export =`.
+const Mocha = (MochaModule as unknown as { Mocha: typeof MochaModule }).Mocha;
 
 export function run(): Promise<void> {
   // Create the mocha test
