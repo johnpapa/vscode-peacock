@@ -423,6 +423,7 @@
   "scripts": {
     "prepare": "husky",
     "package": "npx vsce package",
+    "package:check": "node scripts/check-vsix-contents.js",
     "publish": "npx vsce publish",
     "vscode:prepublish": "webpack --mode production",
     "lint": "eslint ./src --ext .js,.ts",

@@ -43,3 +43,6 @@ jobs:
 
       - name: Test (Unit)
         run: npm run test:unit
+
+      - name: Package contents check
+        run: npm run package:check

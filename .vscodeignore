@@ -8,6 +8,8 @@ vsc-extension-quickstart.md
 **/tslint.json
 **/*.map
 **/*.ts
+**/*.mts
+**/*.cts
 
 # Extra file to ignore
 azure-pipelines.yml
@@ -26,11 +28,17 @@ webpack.config.json
 coverage/
 out-cov/
 .eslintrc
+eslint.config.js
+tsconfig.eslint.json
+vitest.config.mts
 .prettierrc
 docs
 testworkspace
 webpack.config.js
 .prettierrc.js
+.claude/
+.husky/
+scripts/
 # Exclude e2e assets from VSIX
 extension/e2e/**
 
