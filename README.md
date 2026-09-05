@@ -1,17 +1,12 @@
 # Peacock for Visual Studio Code
 
+**Latest published version:** [v4.3.4 on the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+
 ![Peacock Icon](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/peacock-icon-small.png 'Peacock')
 
 Subtly change the color of your Visual Studio Code workspace. Ideal when you have multiple VS Code instances, use VS Live Share, or use VS Code's Remote features, and you want to quickly identify your editor.
 
 Read the extensive [documentation here](https://johnpapa.github.io/vscode-peacock/) which includes a guide on how to use Peacock and a [changelog](https://johnpapa.github.io/vscode-peacock/#/changelog/)
-
-[Marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa) ·
-[Live Share](https://visualstudio.microsoft.com/services/live-share/?WT.mc_id=academic-0000-jopapa) ·
-[AI Ready](https://github.com/johnpapa/ai-ready) ·
-[MIT License](http://opensource.org/licenses/MIT) ·
-[All Contributors](#contributors) ·
-[CI](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
 
 ## Install
 
@@ -41,6 +36,10 @@ Now enjoy exploring the rest of the features explained in the docs!
 ## Resources
 
 - [Peacock docs on GitHub Pages](https://johnpapa.github.io/vscode-peacock/)
+- [Peacock on the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+- [CI workflow (GitHub Actions)](https://github.com/johnpapa/vscode-peacock/actions/workflows/ci.yml)
+- [Docs workflow (GitHub Actions)](https://github.com/johnpapa/vscode-peacock/actions/workflows/docs.yml)
+- [MIT License](http://opensource.org/licenses/MIT)
 - [Get VS Code](https://code.visualstudio.com/?WT.mc_id=academic-0000-jopapa)
 - [Create your first VS Code extension](https://code.visualstudio.com/api/get-started/your-first-extension?WT.mc_id=academic-0000-jopapa)
 - [VS Code Extension API](https://code.visualstudio.com/api/references/vscode-api?WT.mc_id=academic-0000-jopapa)
@@ -78,6 +77,8 @@ See [AGENTS.md](AGENTS.md) for the full project guide including architecture, pa
 
 [Open an issue here](https://github.com/johnpapa/vscode-peacock/issues)
 
+For `workbench.experimental.modernUI` compatibility status, follow the primary tracking issue: [#652](https://github.com/johnpapa/vscode-peacock/issues/652).
+
 ## Contributors
 
 [Contribution guidelines are located here](./CONTRIBUTING.md)
@@ -110,6 +111,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://www.aaron-powell.com"><img src="https://avatars0.githubusercontent.com/u/434140?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aaron Powell</b></sub></a><br /><a href="#ideas-aaronpowell" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/tanhakabir"><img src="https://avatars.githubusercontent.com/u/12758612?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tanhakabir</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=tanhakabir" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ndrake"><img src="https://avatars.githubusercontent.com/u/73789?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nate Drake</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=ndrake" title="Code">💻</a></td>
+    <td align="center" valign="top" width="14.28%"><a href="https://github.com/Prateek-Wayne"><img src="https://avatars.githubusercontent.com/u/114328592?v=4?s=100" width="100px;" alt="Prateek Verma"/><br /><sub><b>Prateek Verma</b></sub></a><br /><a href="https://github.com/johnpapa/vscode-peacock/commits?author=Prateek-Wayne" title="Code">💻</a></td>
   </tr>
 </table>
 

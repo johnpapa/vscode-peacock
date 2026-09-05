@@ -7,6 +7,8 @@ body:
     attributes:
       value: |
         Thanks for taking the time to report a bug! Please fill out the form below.
+        If this report is related to modern UI compatibility, please also see the tracking issue:
+        https://github.com/johnpapa/vscode-peacock/issues/652
 
   - type: input
     id: peacock-version
@@ -34,6 +36,17 @@ body:
         - macOS
         - Windows
         - Linux
+    validations:
+      required: true
+
+  - type: dropdown
+    id: modern-ui
+    attributes:
+      label: Is `workbench.experimental.modernUI` enabled?
+      options:
+        - 'Yes'
+        - 'No'
+        - I am not sure
     validations:
       required: true
 
@@ -75,4 +88,4 @@ body:
     id: additional
     attributes:
       label: Additional Context
-      description: Any other context about the problem (e.g., workspace settings, other extensions).
+      description: Any other context about the problem (e.g., workspace settings, other extensions). If this is modernUI-related, include your `workbench.colorCustomizations` snippet.

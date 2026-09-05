@@ -9,6 +9,17 @@ All notable changes to the code will be documented in this file.
 - Started test modernization by adding a dedicated Vitest unit lane (`test:unit`) and an explicit VS Code host lane (`test:host`), then moving pure suites (`object-library`, `notification`, `foreground`) to unit tests and beginning split coverage for Cursor title bar behavior ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
 - Continued the modernization split by extracting pure command/configuration helpers and migrating additional suite coverage to unit tests (`darken-lighten`, `excluded-settings`, `favorite-colors`, `save-favorite-color`, `save-starter-favorite-colors`, `set-sidebar-darkness-level`) while retaining slim host contract tests and preserving overall executed test-count parity ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
 
+## 4.3.3
+
+### Release update
+
+- Re-published the full 4.3.x feature set as a clean patch release after Marketplace validation checks.
+- Added validation-safe Marketplace badge URLs in `README.md` to avoid blocked SVG badge providers.
+- Confirmed Peacock color customization behavior when `workbench.experimental.modernUI` is disabled; this workaround applies in Insiders and can also apply in Stable when `modernUI` is manually enabled.
+- Added a guide FAQ entry documenting the temporary `workbench.experimental.modernUI` workaround and upstream tracking issue.
+- Modern UI compatibility note: VS Code's experimental `workbench.experimental.modernUI` overrides the workbench color customizations Peacock relies on, making Peacock's colors effectively invisible while it is enabled. Peacock now detects this and shows a one-time notice with guidance, and we are iterating compatibility as upstream fixes land.
+- Added a primary Peacock tracking issue for modernUI support updates: [#652](https://github.com/johnpapa/vscode-peacock/issues/652).
+
 ## 4.3.0
 
 > This release consolidates the previously unpublished 4.2.3-4.2.6 changelog drafts into the next Marketplace release after 4.2.2.
