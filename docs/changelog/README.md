@@ -2,13 +2,23 @@
 
 All notable changes to the code will be documented in this file.
 
-## 4.4.0 (Unreleased)
+## Unreleased
+
+### Features
+
+- Added automatic migration that backs up existing `workbench.colorCustomizations` on first extension activation, preventing data loss when installing Peacock in workspaces with pre-existing color customizations. Users receive a notification with the option to view backed-up settings ([#687](https://github.com/johnpapa/vscode-peacock/issues/687))
+
+### Fixes
+
+- Fixed title bar text readability on dark color schemes in Cursor IDE. Peacock now gates the mid-gray title bar foreground workaround (#647) behind a `background.isLight()` check, using adaptive light foreground (#e7e7e7) for dark schemes to maintain WCAG AA contrast ratios while preserving the toolbar icon visibility fix on light backgrounds ([#700](https://github.com/johnpapa/vscode-peacock/issues/700))
 
 ### Docs & Infrastructure
 
+- Clarified `peacock.affectStatusBar` and `peacock.affectStatusBarDebugging` settings in documentation with dedicated "Status Bar Customization" section, three common scenario examples, and improved setting descriptions to make feature discoverability easier. Closed #704 as this feature was already supported ([#704](https://github.com/johnpapa/vscode-peacock/issues/704))
 - Started test modernization by adding a dedicated Vitest unit lane (`test:unit`) and an explicit VS Code host lane (`test:host`), then moving pure suites (`object-library`, `notification`, `foreground`) to unit tests and extracting pure helper functions (`title-bar-foreground.ts`, `favorite-color.ts`, `commands-helpers.ts`) with unit coverage for the branches those helpers own ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
 - An earlier draft of this migration deleted several host-suite assertions (notably around `darken`/`lighten`, `affectedElements` toggles, `excludedSettings` reset behavior, and sidebar color removal) without an equivalent replacement, which would have reduced actual coverage. Restored that coverage as host tests — the unit lane only replaces host tests where the underlying logic is genuinely pure and the unit test exercises the same branches, not as a blanket substitution. Net result: 141 fast unit tests added, and host suite coverage is at or above its pre-migration baseline ([#670](https://github.com/johnpapa/vscode-peacock/issues/670)).
 - Fixed a `tinycolor2` CJS/ESM interop bug in the Vitest lane: `color-library.ts`'s `import * as tinycolor from 'tinycolor2'` compiles to a raw `require()` under the project's classic (non-`esModuleInterop`) TypeScript/webpack build, but under Vite/esbuild's stricter ESM semantics a namespace import can never be callable — any unit test exercising `getDarkenedColorHex`/`getLightenedColorHex`/etc. failed with `TypeError: ... is not a function`. Switched to `import tinycolor = require('tinycolor2')`, which compiles identically (a plain `require()`) under both toolchains.
+- Reconciled the title bar foreground fix (#700) with the extracted `getTitleBarForegroundForApp` helper (#670) — the helper now takes the background color and applies the same light/dark gating as the host fix, instead of unconditionally overriding the Cursor foreground.
 
 ## 4.3.3
 
