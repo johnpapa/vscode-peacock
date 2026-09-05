@@ -5,9 +5,29 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    labels:
+      - dependencies
+    groups:
+      npm-minor-patch:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+      npm-major:
+        applies-to: version-updates
+        update-types:
+          - major
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    groups:
+      github-actions:
+        update-types:
+          - major
+          - minor
+          - patch
