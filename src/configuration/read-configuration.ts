@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as tinycolor from 'tinycolor2';
 import {
   ColorSettings,
   Sections,
@@ -332,9 +333,12 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
 
     if (!keepForegroundColor) {
       // Cursor mis-uses titleBar.activeForeground for editor toolbar icons on dark
-      // backgrounds; VS Code does not. Only compensate when running in Cursor.
+      // backgrounds; VS Code does not. Only compensate when running in Cursor AND the
+      // background is light. On dark backgrounds in Cursor, a light foreground maintains
+      // better contrast and readability as text.
       const isCursor = !!vscode.env.appName && vscode.env.appName.includes('Cursor');
-      const foregroundHex = isCursor
+      const background = tinycolor(titleBarStyle.backgroundHex);
+      const foregroundHex = isCursor && background.isLight()
         ? ForegroundColors.CursorTitleBarForeground
         : titleBarStyle.foregroundHex;
       titleBarSettings[ColorSettings.titleBar_activeForeground] = foregroundHex;

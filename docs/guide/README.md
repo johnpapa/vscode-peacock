@@ -46,8 +46,8 @@ Commands can be found in the command palette. Look for commands beginning with "
 | Property                            | Description                                                                                                                                                                                                           |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | peacock.affectActivityBar           | Specifies whether Peacock should affect the activity bar                                                                                                                                                              |
-| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar                                                                                                                                                                |
-| peacock.affectDebuggingStatusBar    | Specifies whether Peacock should use a distinct Peacock debugging status bar color while debugging. Defaults to false. When false, Peacock still preserves the normal status bar colors during launch/debug sessions. |
+| peacock.affectStatusBar             | Specifies whether Peacock should affect the status bar. Set to `false` to preserve the debugger's orange color or other theme-specific status bar colors.                                                           |
+| peacock.affectStatusBarDebugging    | Specifies whether Peacock should use a distinct Peacock debugging status bar color while debugging. Defaults to false. When false, Peacock still preserves the normal status bar colors during launch/debug sessions. |
 | peacock.affectTitleBar              | Specifies whether Peacock should affect the title bar (see [title bar coloring](#title-bar-coloring))                                                                                                                 |
 | peacock.affectEditorGroupBorder     | Specifies whether Peacock should affect the editorGroup border. Defaults to false.                                                                                                                                    |
 | peacock.affectPanelBorder           | Specifies whether Peacock should affect the panel border. Defaults to false.                                                                                                                                          |
@@ -217,6 +217,41 @@ If this setting is `true` and there is no peacock color set, then Peacock will c
 Peacock now also remembers the startup-surprise selection per workspace in a global memento. If a workspace has no saved Peacock color at startup, Peacock first restores the last startup-surprise selection for that same workspace before choosing a new random/favorite color.
 
 Example: You open `repo-a` (worktree A) and Peacock startup surprise picks `#333333`. Later you close and reopen worktree A. If worktree A still has no explicit Peacock color in settings, Peacock restores `#333333` for that workspace instead of picking a different color. A different workspace/worktree keeps its own startup-surprise selection.
+
+### Status Bar Customization
+
+The status bar is the bar at the bottom of VS Code that shows information like line/column numbers, git branch, and linting status. Peacock provides fine-grained control over status bar coloring:
+
+- **`peacock.affectStatusBar`** (default: `true`): Whether Peacock affects the status bar at all
+  - Set to `false` to completely prevent Peacock from touching the status bar
+  - Useful if you want to preserve theme-specific status bar colors or the debugger's distinctive orange color
+
+- **`peacock.affectStatusBarDebugging`** (default: `false`): Whether Peacock applies its color to the status bar **while debugging**
+  - When `false`, Peacock leaves the status bar untouched during debug sessions (preserves debugger orange)
+  - When `true`, Peacock applies its color even during debugging
+
+#### Common Status Bar Scenarios
+
+**Scenario 1: Never affect the status bar**
+```json
+"peacock.affectStatusBar": false
+```
+Result: Status bar is never colored by Peacock, retaining its theme default and debugger colors.
+
+**Scenario 2: Color the status bar, except during debugging**
+```json
+"peacock.affectStatusBar": true,
+"peacock.affectStatusBarDebugging": false
+```
+Result: Peacock colors the status bar normally, but when you start debugging, the debugger's orange color takes over.
+
+**Scenario 3: Always use Peacock colors, even when debugging**
+```json
+"peacock.affectStatusBar": true,
+"peacock.affectStatusBarDebugging": true
+```
+Result: Peacock's color is applied to the status bar at all times, including during debug sessions.
+
 
 ### Lighten and Darken
 
