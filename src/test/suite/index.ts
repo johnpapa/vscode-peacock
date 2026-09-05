@@ -1,7 +1,26 @@
 import * as path from 'path';
-import * as Mocha from 'mocha';
+import * as MochaModule from 'mocha';
 import * as glob from 'glob';
 import { createReport } from '../coverage';
+
+// mocha@12's CJS build exposes the Mocha class as a named export rather than
+// as the module's whole export value, but @types/mocha still types the
+// module as `export = Mocha`. Pull the real constructor off the runtime
+// module and keep the constructor type from `export =`.
+const Mocha = (MochaModule as unknown as { Mocha: typeof MochaModule }).Mocha;
+
+// mocha@12 turned its built-in reporters into real ES6 classes, which broke
+// mocha-multi-reporters (it calls `Base.call(this, runner)` instead of
+// `new`). Rather than depend on that unmaintained package, run mocha's own
+// Spec and XUnit reporters side by side against the same runner - mocha's
+// `reporter` option accepts a constructor directly, not just a name.
+class SpecAndXUnitReporter extends Mocha.reporters.Base {
+  constructor(runner: MochaModule.Runner, options?: MochaModule.MochaOptions) {
+    super(runner, options);
+    new Mocha.reporters.Spec(runner, options);
+    new Mocha.reporters.XUnit(runner, options);
+  }
+}
 
 export function run(): Promise<void> {
   // Create the mocha test
@@ -12,12 +31,9 @@ export function run(): Promise<void> {
     timeout: 7500, // longer timeout, in case
     // useColors: true, // colored output from test results
     //----------------------------------------
-    reporter: 'mocha-multi-reporters',
+    reporter: SpecAndXUnitReporter,
     reporterOptions: {
-      reporterEnabled: 'spec, xunit',
-      xunitReporterOptions: {
-        output: path.join(__dirname, '..', '..', 'test-results.xml'),
-      },
+      output: path.join(__dirname, '..', '..', 'test-results.xml'),
     },
   });
   // mocha.useColors(true);
@@ -35,7 +51,7 @@ export function run(): Promise<void> {
 
       try {
         // Run the mocha test
-        mocha.run(failures => {
+        mocha.run((failures: number) => {
           if (failures > 0) {
             e(new Error(`${failures} tests failed.`));
           } else {
