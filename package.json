@@ -421,6 +421,7 @@
     }
   },
   "scripts": {
+    "prepare": "husky",
     "package": "npx vsce package",
     "publish": "npx vsce publish",
     "vscode:prepublish": "webpack --mode production",
@@ -457,7 +458,7 @@
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
     "glob": "^7.1.6",
-    "husky": "^4.3.0",
+    "husky": "^9.1.7",
     "istanbul-lib-coverage": "^3.2.2",
     "istanbul-lib-instrument": "^3.3.0",
     "istanbul-lib-report": "^2.0.8",
@@ -478,11 +479,6 @@
     "@types/tinycolor2": "^1.4.6",
     "tinycolor2": "^1.6.0",
     "vsls": "^1.0.2594"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run pretty"
-    }
   },
   "__metadata": {
     "id": "5a7017bf-c571-4d77-b902-6e56b16f539a",
