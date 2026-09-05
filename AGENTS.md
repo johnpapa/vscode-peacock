@@ -87,6 +87,7 @@ npm run test-all                # Run unit + Live Share tests
 - Every bug fix must include a regression test that fails without the fix and passes with it
 - Every new feature must include unit tests covering the happy path and relevant edge cases
 - Never merge code that reduces the passing test count
+- UI/theme-affecting changes (status bar, title bar, activity bar, color tokens) should be verified on Windows, VS Live Share, and Cursor before considering the fix complete — automated tests alone haven't caught real-world issues here in the past
 
 ## Key Patterns and Conventions
 
