@@ -363,9 +363,9 @@ Peacock needs an open workspace folder to write to `.vscode/settings.json`. If y
 
 VS Code's `workbench.experimental.modernUI` setting used to override the workbench color tokens Peacock depends on (title bar, status bar, activity bar, and more), which made Peacock appear non-functional while it was on. This was fixed upstream in VS Code ([microsoft/vscode#329701](https://github.com/microsoft/vscode/pull/329701)), and Peacock colors now apply normally with modernUI enabled (which is the default in current VS Code releases).
 
-Peacock's one-time "colors may not be visible" notice for modernUI has been removed as of v4.3.5, since it's no longer accurate for current VS Code versions.
+Peacock's one-time "colors may not be visible" notice for modernUI has been removed in an upcoming release, since it's no longer accurate for current VS Code versions.
 
-Primary Peacock tracking issue (closed, kept for history):
+Primary Peacock tracking issue:
 
 - [Tracking: modernUI compatibility (#652)](https://github.com/johnpapa/vscode-peacock/issues/652)
 
