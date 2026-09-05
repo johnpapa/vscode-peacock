@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as tinycolor from 'tinycolor2';
 import {
   ColorSettings,
   Sections,
@@ -32,6 +31,7 @@ import {
 } from '../color-library';
 import { LiveShareSettings } from '../live-share';
 import { sortSettingsIndexer } from '../object-library';
+import { getTitleBarForegroundForApp } from '../title-bar-foreground';
 
 const { workspace } = vscode;
 
@@ -336,11 +336,11 @@ function collectTitleBarSettings(backgroundHex: string, keepForegroundColor: boo
       // backgrounds; VS Code does not. Only compensate when running in Cursor AND the
       // background is light. On dark backgrounds in Cursor, a light foreground maintains
       // better contrast and readability as text.
-      const isCursor = !!vscode.env.appName && vscode.env.appName.includes('Cursor');
-      const background = tinycolor(titleBarStyle.backgroundHex);
-      const foregroundHex = isCursor && background.isLight()
-        ? ForegroundColors.CursorTitleBarForeground
-        : titleBarStyle.foregroundHex;
+      const foregroundHex = getTitleBarForegroundForApp(
+        vscode.env.appName,
+        titleBarStyle.backgroundHex,
+        titleBarStyle.foregroundHex,
+      );
       titleBarSettings[ColorSettings.titleBar_activeForeground] = foregroundHex;
       titleBarSettings[ColorSettings.titleBar_inactiveForeground] =
         titleBarStyle.inactiveForegroundHex;

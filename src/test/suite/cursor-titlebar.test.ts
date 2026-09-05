@@ -70,7 +70,7 @@ suite('Cursor title bar foreground workaround', () => {
 
     // Apply a dark blue color (Mandalorian Blue - #1857a4)
     const darkColor = '#1857a4';
-    await executeCommand(Commands.enterColor, [darkColor]);
+    await executeCommand(Commands.enterColor, darkColor);
 
     const config = getColorCustomizationConfig();
     const bg = config[ColorSettings.titleBar_activeBackground];

@@ -35,7 +35,7 @@ suite('Remote Integration', () => {
   setup(async () => await setupTest());
 
   test('when in remote, and peacock.color is empty and peacock.remoteColor is a color, remote color should be applied', async () => {
-    await updatePeacockColor(undefined);
+    await updatePeacockColor('');
     await updatePeacockRemoteColor(peacockGreen);
 
     // Go to remote env
@@ -55,7 +55,7 @@ suite('Remote Integration', () => {
   });
 
   test('when in remote and we go out of remote, and peacock.color is empty and peacock.remoteColor is a color, colors should be unapplied ', async () => {
-    await updatePeacockColor(undefined);
+    await updatePeacockColor('');
     await updatePeacockRemoteColor(peacockGreen);
 
     // Go to remote env
@@ -89,7 +89,7 @@ suite('Remote Integration', () => {
   });
 
   test('can set to remote color and it is stored in workspace config', async () => {
-    await updatePeacockColor(undefined);
+    await updatePeacockColor('');
     await updatePeacockRemoteColor(peacockGreen);
     // Go to remote env and set to blue
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.wsl);
@@ -227,7 +227,7 @@ suite('Remote Integration', () => {
 
   test('when in remote and remoteColor is not set, peacock.color is used as fallback', async () => {
     await updatePeacockColor(peacockGreen);
-    await updatePeacockRemoteColor(undefined);
+    await updatePeacockRemoteColor('');
 
     const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.devContainer);
     const { addRemoteIntegration } = await import('../../remote/integration');

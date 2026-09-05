@@ -21,6 +21,12 @@ import {
   getColorCustomizationConfigFromWorkspace,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
+import {
+  resolveFavoriteSelectionAction,
+  canSaveFavoriteColor,
+  getSideBarDarknessOptions,
+  getSideBarDarkenedColor,
+} from './commands-helpers';
 
 import { resetLiveSharePreviousColors } from './live-share';
 import { notify } from './notification';
@@ -50,6 +56,9 @@ export async function saveColorToFavoritesHandler() {
   const color = getEnvironmentAwareColor();
   if (color) {
     const name = await promptForFavoriteColorName(color);
+    if (!canSaveFavoriteColor(color, name)) {
+      return;
+    }
     if (!name) {
       return;
     }
@@ -108,22 +117,18 @@ export async function changeColorToFavoriteHandler() {
   // Remember the color we started with
   const startingColor = getEnvironmentAwareColor();
   const favoriteColor = await promptForFavoriteColor();
+  const action = resolveFavoriteSelectionAction(favoriteColor, startingColor, isValidColorInput);
 
-  if (isValidColorInput(favoriteColor)) {
-    // We have a valid Favorite color,
-    // apply it and write the new color to settings
-    await applyColor(favoriteColor);
-    await updateColorSetting(favoriteColor);
-  } else if (startingColor) {
-    // No favorite was selected.
-    // We need to re-apply the starting color
-    // and write the new color to settings
-    await applyColor(startingColor);
-    await updateColorSetting(startingColor);
-  } else {
+  if (action.action === 'unapply') {
     // No favorite was selected. We had no color to start, either.
     // We need re unapply the colors, and NOT write a color to settings.
     await unapplyColors();
+    return State.extensionContext;
+  }
+
+  if (action.color) {
+    await applyColor(action.color);
+    await updateColorSetting(action.color);
   }
   return State.extensionContext;
 }
@@ -174,15 +179,7 @@ export async function setSideBarDarknessLevelHandler() {
     const colorCustomizations = { ...getColorCustomizationConfigFromWorkspace() };
     const existingSideBarColor = colorCustomizations[sideBarBackgroundKey];
 
-    const options = [
-      { label: 'Dark', factor: 1 },
-      { label: 'Darker', factor: 2 },
-      { label: 'Darkest', factor: 3 },
-    ];
-
-    if (existingSideBarColor) {
-      options.unshift({ label: 'Remove Side Bar Color', factor: 0 });
-    }
+    const options = getSideBarDarknessOptions(existingSideBarColor);
 
     const selection = await vscode.window.showQuickPick(
       options.map(o => o.label),
@@ -207,10 +204,7 @@ export async function setSideBarDarknessLevelHandler() {
       return;
     }
 
-    let newColor = color;
-    for (let i = 0; i < selected.factor; i++) {
-      newColor = getDarkenedColorHex(newColor, 10);
-    }
+    const newColor = getSideBarDarkenedColor(color, selected.factor);
 
     colorCustomizations[sideBarBackgroundKey] = newColor;
     await updateWorkspaceConfiguration(colorCustomizations);

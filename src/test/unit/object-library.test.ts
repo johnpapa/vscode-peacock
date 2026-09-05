@@ -1,75 +1,75 @@
-import * as assert from 'assert';
+import { describe, it, expect } from 'vitest';
 import { sortSettingsIndexer, settingsIndexersAreEqual } from '../../object-library';
 
-suite('Object Library', () => {
-  suite('sortSettingsIndexer', () => {
-    test('returns keys in alphabetical order', () => {
+describe('Object Library', () => {
+  describe('sortSettingsIndexer', () => {
+    it('returns keys in alphabetical order', () => {
       const unordered = { zebra: '#000', apple: '#111', mango: '#222' };
       const ordered = sortSettingsIndexer(unordered);
       const keys = Object.keys(ordered);
-      assert.deepStrictEqual(keys, ['apple', 'mango', 'zebra']);
+      expect(keys).toEqual(['apple', 'mango', 'zebra']);
     });
 
-    test('preserves values after sorting', () => {
+    it('preserves values after sorting', () => {
       const unordered = { b: '#222', a: '#111' };
       const ordered = sortSettingsIndexer(unordered);
-      assert.equal(ordered['a'], '#111');
-      assert.equal(ordered['b'], '#222');
+      expect(ordered['a']).toBe('#111');
+      expect(ordered['b']).toBe('#222');
     });
 
-    test('handles empty object', () => {
+    it('handles empty object', () => {
       const ordered = sortSettingsIndexer({});
-      assert.deepStrictEqual(ordered, {});
+      expect(ordered).toEqual({});
     });
 
-    test('handles single key', () => {
+    it('handles single key', () => {
       const ordered = sortSettingsIndexer({ only: '#fff' });
-      assert.deepStrictEqual(Object.keys(ordered), ['only']);
+      expect(Object.keys(ordered)).toEqual(['only']);
     });
   });
 
-  suite('settingsIndexersAreEqual', () => {
-    test('returns true for identical objects', () => {
+  describe('settingsIndexersAreEqual', () => {
+    it('returns true for identical objects', () => {
       const a = { 'titleBar.activeBackground': '#ff0000', 'statusBar.background': '#00ff00' };
       const b = { 'titleBar.activeBackground': '#ff0000', 'statusBar.background': '#00ff00' };
-      assert.ok(settingsIndexersAreEqual(a, b));
+      expect(settingsIndexersAreEqual(a, b)).toBe(true);
     });
 
-    test('returns true for two empty objects', () => {
-      assert.ok(settingsIndexersAreEqual({}, {}));
+    it('returns true for two empty objects', () => {
+      expect(settingsIndexersAreEqual({}, {})).toBe(true);
     });
 
-    test('returns false when key counts differ', () => {
+    it('returns false when key counts differ', () => {
       const a = { 'titleBar.activeBackground': '#ff0000' };
       const b = { 'titleBar.activeBackground': '#ff0000', 'statusBar.background': '#00ff00' };
-      assert.ok(!settingsIndexersAreEqual(a, b));
+      expect(settingsIndexersAreEqual(a, b)).toBe(false);
     });
 
-    test('returns false when a is empty and b has keys', () => {
-      assert.ok(!settingsIndexersAreEqual({}, { key: 'value' }));
+    it('returns false when a is empty and b has keys', () => {
+      expect(settingsIndexersAreEqual({}, { key: 'value' })).toBe(false);
     });
 
-    test('returns false when values differ for same keys', () => {
+    it('returns false when values differ for same keys', () => {
       const a = { 'titleBar.activeBackground': '#ff0000' };
       const b = { 'titleBar.activeBackground': '#00ff00' };
-      assert.ok(!settingsIndexersAreEqual(a, b));
+      expect(settingsIndexersAreEqual(a, b)).toBe(false);
     });
 
-    test('returns false when keys differ but count is same', () => {
+    it('returns false when keys differ but count is same', () => {
       const a = { 'titleBar.activeBackground': '#ff0000' };
       const b = { 'statusBar.background': '#ff0000' };
-      assert.ok(!settingsIndexersAreEqual(a, b));
+      expect(settingsIndexersAreEqual(a, b)).toBe(false);
     });
 
-    test('does not mutate input objects', () => {
+    it('does not mutate input objects', () => {
       const a = { key1: 'val1', key2: 'val2' };
       const b = { key1: 'val1', key2: 'val2' };
       settingsIndexersAreEqual(a, b);
-      assert.deepStrictEqual(a, { key1: 'val1', key2: 'val2' });
-      assert.deepStrictEqual(b, { key1: 'val1', key2: 'val2' });
+      expect(a).toEqual({ key1: 'val1', key2: 'val2' });
+      expect(b).toEqual({ key1: 'val1', key2: 'val2' });
     });
 
-    test('handles many Peacock color settings', () => {
+    it('handles many Peacock color settings', () => {
       const colors = {
         'activityBar.background': '#ff0000',
         'activityBar.foreground': '#ffffff',
@@ -82,10 +82,10 @@ suite('Object Library', () => {
         'titleBar.inactiveForeground': '#ffffff99',
       };
       const clone = { ...colors };
-      assert.ok(settingsIndexersAreEqual(colors, clone));
+      expect(settingsIndexersAreEqual(colors, clone)).toBe(true);
 
       clone['statusBar.background'] = '#0000ff';
-      assert.ok(!settingsIndexersAreEqual(colors, clone));
+      expect(settingsIndexersAreEqual(colors, clone)).toBe(false);
     });
   });
 });
