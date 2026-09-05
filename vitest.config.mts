@@ -4,7 +4,7 @@ import * as path from 'path';
 export default defineConfig({
   resolve: {
     alias: {
-      vscode: path.resolve(__dirname, 'src/test/unit/mocks/vscode.ts'),
+      vscode: path.resolve(import.meta.dirname, 'src/test/unit/mocks/vscode.ts'),
     },
   },
   test: {
