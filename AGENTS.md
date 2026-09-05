@@ -135,10 +135,12 @@ Check the latest **push-triggered** run of `ci.yml` on `main` — not just the l
 5. **Create and push the git tag** for the release (e.g. `vX.Y.Z`) once the merge commit is on `main` and green.
 6. **Create the GitHub Release** from that tag, using the changelog section as the release notes.
 7. **After the human has run the publish step below and confirmed it's live**, update `README.md`'s "Latest published version" line to the new version (in its own small PR, same as any other change) — not before, since it names a real Marketplace link and updating it earlier would claim a version is published before it actually is.
+8. **Draft the release's social media announcements** (LinkedIn, X/Twitter, etc.) if the release warrants one — pull the headline changes from the finalized changelog. Drafting is agent-executable; posting is not (see below).
 
-### Human-only — the actual publish gate
+### Human-only — steps that need a person
 
-- **Run `vsce publish`** (or manually upload the packaged VSIX) to push the new version to the Marketplace. This needs the publisher's Marketplace personal access token, which only the maintainer holds — an agent shouldn't have it or use it autonomously. It's also the one genuinely irreversible, externally-visible action in the whole process — everything up to this point can be redone or reverted; this can't. That's what makes it the actual release, and the only step that has to wait for a person.
+- **Run `vsce publish`** (or manually upload the packaged VSIX) to push the new version to the Marketplace. This needs the publisher's Marketplace personal access token, which only the maintainer holds — an agent shouldn't have it or use it autonomously. It's also one of two genuinely irreversible, externally-visible actions in the whole process — everything before it can be redone or reverted; this can't.
+- **Review and post the social media announcements.** An agent can draft them, but publishing public content under the maintainer's voice/identity is the maintainer's call — review for accuracy (don't let a drafted "hook" overstate or misrepresent a feature) and post it themselves.
 
 ## Adding a New Command
 
