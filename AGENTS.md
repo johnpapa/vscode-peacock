@@ -112,11 +112,11 @@ npm run package:check           # Package the VSIX and verify contents/size (see
 
 ## Release Process
 
-**This checklist is mandatory for every release, no exceptions — run through it in full even when the release feels small.** It splits into what CI already verifies for you (Automated) and what a human or agent has to actively decide and do (Manual). Skipping a Manual step is how version drift, stale docs, and unnoticed VSIX bloat happen.
+**This checklist is mandatory for every release, no exceptions — run through it in full even when the release feels small.** Almost all of it is agent-executable — Claude (or any agent working this repo) should just do it, not ask a human to. Exactly one step is human-only: it's called out explicitly below, and it's the only one that requires stopping and waiting for a person.
 
-### Automated — CI already checks these on every push to `main`
+### Agent-executable — do these yourself, don't wait to be asked
 
-You don't have to run these yourself, but you do have to **confirm they're actually green before releasing** rather than assuming:
+**CI, on every push to `main` (confirm green, don't assume):**
 
 - **Lint** — `npm run lint`
 - **Build** — `npm run test-compile`
@@ -126,17 +126,19 @@ You don't have to run these yourself, but you do have to **confirm they're actua
 
 Check the latest **push-triggered** run of `ci.yml` on `main` — not just the last PR's run, since PR runs can be stale relative to what actually merged. If you want to double-check locally instead of trusting CI, `rm -rf node_modules && npm ci` then run the same commands above (host tests still need a real VS Code/Electron runtime, so they can only be verified via CI in most dev environments).
 
-### Manual — a human/agent must actively do these; nothing enforces them automatically
+**Then, in order:**
 
 1. **Check for blocking open work** — any in-flight PRs or issues the release should wait for (e.g., an in-progress dependency-modernization chain). Don't release out from under unfinished work.
 2. **Finalize `docs/changelog/README.md`** — rename the `## Unreleased` section to `## X.Y.Z (YYYY-MM-DD)`, add a fresh empty `## Unreleased` heading above it for whatever comes next. Every entry should link the issue/PR it closes, and separate entries by category (Features / Fixes / Docs / Infrastructure). Pick the version bump per semver: a new user-facing feature → minor; fixes/infra only → patch; a removed/renamed command, setting, or default → major.
 3. **Bump `package.json`'s `version`** — use `npm version X.Y.Z --no-git-tag-version` (updates `package.json` and `package-lock.json` together, no git tag yet). Version lives solely in `package.json` — there's no other file to sync at this step.
-4. **Open a PR with the changelog + version bump, get it merged to `main`.** Wait for CI to go green on the merge commit (back to the Automated section above) before doing anything below.
-5. **Publish, only after the version-bump PR is merged and green on `main`:**
-   - Create the git tag for the release (e.g. `vX.Y.Z`) and push it.
-   - Create the GitHub Release from that tag, using the changelog section as the release notes.
-   - Run `vsce publish` to push the new version to the Marketplace.
-   - Update `README.md`'s "Latest published version" line to the new version. Not before — it names a real Marketplace link, so updating it earlier would claim a version is published before it actually is.
+4. **Open a PR with the changelog + version bump, verify CI is green, merge it to `main`.**
+5. **Create and push the git tag** for the release (e.g. `vX.Y.Z`) once the merge commit is on `main` and green.
+6. **Create the GitHub Release** from that tag, using the changelog section as the release notes.
+7. **After the human has run the publish step below and confirmed it's live**, update `README.md`'s "Latest published version" line to the new version (in its own small PR, same as any other change) — not before, since it names a real Marketplace link and updating it earlier would claim a version is published before it actually is.
+
+### Human-only — the actual publish gate
+
+- **Run `vsce publish`** (or manually upload the packaged VSIX) to push the new version to the Marketplace. This needs the publisher's Marketplace personal access token, which only the maintainer holds — an agent shouldn't have it or use it autonomously. It's also the one genuinely irreversible, externally-visible action in the whole process — everything up to this point can be redone or reverted; this can't. That's what makes it the actual release, and the only step that has to wait for a person.
 
 ## Adding a New Command
 
