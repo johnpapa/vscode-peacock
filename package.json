@@ -445,7 +445,7 @@
     "@types/istanbul-lib-report": "^1.1.1",
     "@types/istanbul-lib-source-maps": "^1.2.2",
     "@types/istanbul-reports": "^1.1.2",
-    "@types/mocha": "^7.0.2",
+    "@types/mocha": "^10.0.10",
     "@types/node": "12.12.16",
     "@types/sinon": "^7.5.2",
     "@types/vscode": "^1.49.0",
