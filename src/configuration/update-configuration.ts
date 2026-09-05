@@ -28,7 +28,9 @@ export async function updateGlobalConfiguration(setting: AllSettings, value?: an
   return await config.update(section, value, ConfigurationTarget.Global);
 }
 
-export async function updateWorkspaceConfiguration(colorCustomizations: {} | undefined) {
+export async function updateWorkspaceConfiguration(
+  colorCustomizations: Record<string, unknown> | undefined,
+) {
   if (isObjectEmpty(colorCustomizations)) {
     // We are receiving an empty object, so let's make it undefined.
     // This means we can skip writing the workbench.colorCustomizations section

@@ -22,7 +22,7 @@ async function main() {
         // '${workspaceFolder}/testworkspace'
       ],
     });
-  } catch (err) {
+  } catch {
     console.error('Failed to run tests');
     process.exit(1);
   }

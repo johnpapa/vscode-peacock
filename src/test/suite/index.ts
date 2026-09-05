@@ -40,7 +40,7 @@ export function run(): Promise<void> {
 
   const testsRoot = path.resolve(__dirname, '..');
 
-  return new Promise((c, e) => {
+  return new Promise<void>((c, e) => {
     glob('suite/**/*.test.js', { cwd: testsRoot }, (err: any, files: any) => {
       if (err) {
         return e(err);

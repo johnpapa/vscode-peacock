@@ -34,7 +34,7 @@ export function instrument() {
     let map = null;
     try {
       map = JSON.parse(fs.readFileSync(`${inputPath}.map`).toString());
-    } catch (err) {
+    } catch {
       // missing source map...
     }
 
