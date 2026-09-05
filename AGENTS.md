@@ -112,15 +112,31 @@ npm run package:check           # Package the VSIX and verify contents/size (see
 
 ## Release Process
 
-Before publishing a new version, verify all of the following — don't skip steps even if the change feels small:
+**This checklist is mandatory for every release, no exceptions — run through it in full even when the release feels small.** It splits into what CI already verifies for you (Automated) and what a human or agent has to actively decide and do (Manual). Skipping a Manual step is how version drift, stale docs, and unnoticed VSIX bloat happen.
 
-1. **CI is green on `main`** — check the latest push-triggered run of `ci.yml`, not just the last PR's run.
-2. **Fresh local verification** — `rm -rf node_modules && npm ci`, then `npm run lint`, `npm run test-compile`, `npm run test:unit`, and `npm run package:check` all pass. (Host tests can only be verified via CI in most dev environments — a sandbox without a real VS Code/Electron runtime can't launch the extension host.)
-3. **No open PRs or issues that should block the release** — check for anything still in flight that the release should wait for (e.g., an in-progress dependency-modernization chain).
-4. **`docs/changelog/README.md` is finalized** — rename the `## Unreleased` section to `## X.Y.Z (YYYY-MM-DD)`, add a fresh empty `## Unreleased` heading above it for whatever comes next. Every entry should link the issue/PR it closes. Pick the version bump per semver: a new user-facing feature → minor; fixes/infra only → patch; a removed/renamed command, setting, or default → major.
-5. **`package.json`'s `version` is bumped** — use `npm version X.Y.Z --no-git-tag-version` (updates `package.json` and `package-lock.json` together, no git tag). Version lives solely in `package.json` — there's no other file to sync.
-6. **`README.md`'s "Latest published version" line is left alone until the release is actually live** — it names a real Marketplace link, so updating it early would claim a version is published before it is. Update it (and create the git tag / GitHub Release / `vsce publish`) only as the last step, after the version-bump PR is merged.
-7. **VSIX packaging sanity** — `npm run package:check` catches dev-only file leakage and size regressions automatically (added after `.claude/`, `.husky/`, and stray config files were found shipping in the package unnoticed — see the 4.4.0 changelog entry).
+### Automated — CI already checks these on every push to `main`
+
+You don't have to run these yourself, but you do have to **confirm they're actually green before releasing** rather than assuming:
+
+- **Lint** — `npm run lint`
+- **Build** — `npm run test-compile`
+- **Test (Host)** — Mocha extension-host tests (`xvfb-run npm run just-test`)
+- **Test (Unit)** — Vitest (`npm run test:unit`)
+- **Package contents check** — `npm run package:check` (catches dev-only file leakage into the VSIX and package-size regressions; see `scripts/check-vsix-contents.js`)
+
+Check the latest **push-triggered** run of `ci.yml` on `main` — not just the last PR's run, since PR runs can be stale relative to what actually merged. If you want to double-check locally instead of trusting CI, `rm -rf node_modules && npm ci` then run the same commands above (host tests still need a real VS Code/Electron runtime, so they can only be verified via CI in most dev environments).
+
+### Manual — a human/agent must actively do these; nothing enforces them automatically
+
+1. **Check for blocking open work** — any in-flight PRs or issues the release should wait for (e.g., an in-progress dependency-modernization chain). Don't release out from under unfinished work.
+2. **Finalize `docs/changelog/README.md`** — rename the `## Unreleased` section to `## X.Y.Z (YYYY-MM-DD)`, add a fresh empty `## Unreleased` heading above it for whatever comes next. Every entry should link the issue/PR it closes, and separate entries by category (Features / Fixes / Docs / Infrastructure). Pick the version bump per semver: a new user-facing feature → minor; fixes/infra only → patch; a removed/renamed command, setting, or default → major.
+3. **Bump `package.json`'s `version`** — use `npm version X.Y.Z --no-git-tag-version` (updates `package.json` and `package-lock.json` together, no git tag yet). Version lives solely in `package.json` — there's no other file to sync at this step.
+4. **Open a PR with the changelog + version bump, get it merged to `main`.** Wait for CI to go green on the merge commit (back to the Automated section above) before doing anything below.
+5. **Publish, only after the version-bump PR is merged and green on `main`:**
+   - Create the git tag for the release (e.g. `vX.Y.Z`) and push it.
+   - Create the GitHub Release from that tag, using the changelog section as the release notes.
+   - Run `vsce publish` to push the new version to the Marketplace.
+   - Update `README.md`'s "Latest published version" line to the new version. Not before — it names a real Marketplace link, so updating it earlier would claim a version is published before it actually is.
 
 ## Adding a New Command
 
