@@ -62,7 +62,9 @@ export async function backupExistingColorCustomizationsIfNeeded(): Promise<void>
     }
   } catch (error) {
     Logger.info(
-      `${extensionShortName}: Failed to back up colorCustomizations: ${error instanceof Error ? error.message : String(error)}`,
+      `${extensionShortName}: Failed to back up colorCustomizations: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
     );
   }
 

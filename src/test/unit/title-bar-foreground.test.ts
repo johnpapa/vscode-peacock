@@ -4,9 +4,7 @@ import { ForegroundColors } from '../../models';
 
 describe('Title bar foreground selection', () => {
   it('keeps the computed foreground when app is not Cursor', () => {
-    expect(getTitleBarForegroundForApp('Visual Studio Code', '#123456', '#123456')).toBe(
-      '#123456',
-    );
+    expect(getTitleBarForegroundForApp('Visual Studio Code', '#123456', '#123456')).toBe('#123456');
   });
 
   it('uses the Cursor mid-gray foreground when running in Cursor on a light background', () => {

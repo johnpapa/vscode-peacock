@@ -25,7 +25,11 @@ suite('Migration Tests', () => {
 
       await backupExistingColorCustomizationsIfNeeded();
 
-      assert.strictEqual(updateStub.called, false, 'update should not be called if backup was already done');
+      assert.strictEqual(
+        updateStub.called,
+        false,
+        'update should not be called if backup was already done',
+      );
     });
 
     test('should skip backup if not in a workspace', async () => {
@@ -35,7 +39,11 @@ suite('Migration Tests', () => {
 
       await backupExistingColorCustomizationsIfNeeded();
 
-      assert.strictEqual(updateStub.called, false, 'update should not be called if not in a workspace');
+      assert.strictEqual(
+        updateStub.called,
+        false,
+        'update should not be called if not in a workspace',
+      );
     });
 
     test('should handle empty color customizations', async () => {
