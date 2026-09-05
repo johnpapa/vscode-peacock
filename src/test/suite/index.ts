@@ -9,6 +9,19 @@ import { createReport } from '../coverage';
 // module and keep the constructor type from `export =`.
 const Mocha = (MochaModule as unknown as { Mocha: typeof MochaModule }).Mocha;
 
+// mocha@12 turned its built-in reporters into real ES6 classes, which broke
+// mocha-multi-reporters (it calls `Base.call(this, runner)` instead of
+// `new`). Rather than depend on that unmaintained package, run mocha's own
+// Spec and XUnit reporters side by side against the same runner - mocha's
+// `reporter` option accepts a constructor directly, not just a name.
+class SpecAndXUnitReporter extends Mocha.reporters.Base {
+  constructor(runner: MochaModule.Runner, options?: MochaModule.MochaOptions) {
+    super(runner, options);
+    new Mocha.reporters.Spec(runner, options);
+    new Mocha.reporters.XUnit(runner, options);
+  }
+}
+
 export function run(): Promise<void> {
   // Create the mocha test
   const mocha = new Mocha({
@@ -18,12 +31,9 @@ export function run(): Promise<void> {
     timeout: 7500, // longer timeout, in case
     // useColors: true, // colored output from test results
     //----------------------------------------
-    reporter: 'mocha-multi-reporters',
+    reporter: SpecAndXUnitReporter,
     reporterOptions: {
-      reporterEnabled: 'spec, xunit',
-      xunitReporterOptions: {
-        output: path.join(__dirname, '..', '..', 'test-results.xml'),
-      },
+      output: path.join(__dirname, '..', '..', 'test-results.xml'),
     },
   });
   // mocha.useColors(true);

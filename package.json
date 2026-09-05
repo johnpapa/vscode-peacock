@@ -464,7 +464,6 @@
     "istanbul-lib-source-maps": "^3.0.6",
     "istanbul-reports": "^3.0.2",
     "mocha": "^12.0.0",
-    "mocha-multi-reporters": "^1.1.7",
     "prettier": "^2.1.2",
     "process": "^0.11.10",
     "serve": "^14.2.6",
