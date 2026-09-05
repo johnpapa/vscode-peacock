@@ -2,6 +2,20 @@
 
 All notable changes to the code will be documented in this file.
 
+## Unreleased
+
+### Features
+
+- Added automatic migration that backs up existing `workbench.colorCustomizations` on first extension activation, preventing data loss when installing Peacock in workspaces with pre-existing color customizations. Users receive a notification with the option to view backed-up settings ([#687](https://github.com/johnpapa/vscode-peacock/issues/687))
+
+### Fixes
+
+- Fixed title bar text readability on dark color schemes in Cursor IDE. Peacock now gates the mid-gray title bar foreground workaround (#647) behind a `background.isLight()` check, using adaptive light foreground (#e7e7e7) for dark schemes to maintain WCAG AA contrast ratios while preserving the toolbar icon visibility fix on light backgrounds ([#700](https://github.com/johnpapa/vscode-peacock/issues/700))
+
+### Docs & Infrastructure
+
+- Clarified `peacock.affectStatusBar` and `peacock.affectStatusBarDebugging` settings in documentation with dedicated "Status Bar Customization" section, three common scenario examples, and improved setting descriptions to make feature discoverability easier. Closed #704 as this feature was already supported ([#704](https://github.com/johnpapa/vscode-peacock/issues/704))
+
 ## 4.3.3
 
 ### Release update
