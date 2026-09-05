@@ -26,6 +26,7 @@ const DISALLOWED_FILENAMES = new Set([
   'eslint.config.js',
   'tsconfig.eslint.json',
   'vitest.config.ts',
+  'vitest.config.mts',
   '.eslintrc',
   '.prettierrc.js',
 ]);

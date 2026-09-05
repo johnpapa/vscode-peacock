@@ -8,6 +8,8 @@ vsc-extension-quickstart.md
 **/tslint.json
 **/*.map
 **/*.ts
+**/*.mts
+**/*.cts
 
 # Extra file to ignore
 azure-pipelines.yml
@@ -28,7 +30,7 @@ out-cov/
 .eslintrc
 eslint.config.js
 tsconfig.eslint.json
-vitest.config.ts
+vitest.config.mts
 .prettierrc
 docs
 testworkspace
