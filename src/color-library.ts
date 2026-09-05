@@ -1,4 +1,4 @@
-import * as tinycolor from 'tinycolor2';
+import tinycolor = require('tinycolor2');
 
 import {
   ColorAdjustment,
