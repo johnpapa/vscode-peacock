@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Infrastructure
+
+- Migrated the host-test runner from the deprecated `vscode-test` package (last meaningfully updated years ago) to its maintained successor `@vscode/test-electron`. `vscode-test`'s hardcoded assumptions about the downloaded VS Code `.app` bundle's internal layout on macOS had rotted against recent VS Code releases, causing `spawn .../Contents/MacOS/Electron ENOENT` when running `npm test`/`npm run test:host` locally on macOS even though the download itself completed successfully. `@vscode/test-electron` exposes an identical `runTests()` API, so the fix is a drop-in dependency swap. As a side effect, this also clears 3 of 5 `npm audit` findings that were rooted in `vscode-test`'s own transitive dependencies.
+
 ## 4.4.0 (2026-09-05)
 
 ### Features
