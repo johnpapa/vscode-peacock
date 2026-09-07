@@ -4,7 +4,7 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
-## 4.4.0 (2026-09-05)
+## 4.4.0 (2026-09-07)
 
 ### Features
 
