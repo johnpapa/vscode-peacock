@@ -2,7 +2,7 @@
 
 [![AI Ready](https://img.shields.io/badge/AI--Ready-yes-brightgreen?style=flat)](https://github.com/johnpapa/ai-ready)
 
-**Latest published version:** [v4.3.4 on the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/johnpapa.vscode-peacock?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock&WT.mc_id=academic-0000-jopapa)
 
 ![Peacock Icon](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/peacock-icon-small.png 'Peacock')
 
