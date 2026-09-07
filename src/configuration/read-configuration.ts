@@ -375,10 +375,18 @@ function collectActivityBarSettings(
       activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBar_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
+      // VS Code defaults activityBar.activeBorder / activityBarTop.activeBorder to the
+      // theme's own foreground color rather than any workbench.colorCustomizations
+      // override, which can leave the currently-selected icon a mismatched gray instead
+      // of Peacock's colorized foreground (#652). Set both explicitly so the active
+      // item's border always matches the rest of the icons.
+      activityBarSettings[ColorSettings.activityBar_activeBorder] = activityBarStyle.foregroundHex;
 
       activityBarSettings[ColorSettings.activityBarTop_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBarTop_inactiveForeground] =
         activityBarStyle.inactiveForegroundHex;
+      activityBarSettings[ColorSettings.activityBarTop_activeBorder] =
+        activityBarStyle.foregroundHex;
     }
 
     if (!keepBadgeColor) {

@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Fixes
+
+- Fixed the currently-selected activity bar icon rendering VS Code's default gray instead of Peacock's colorized foreground under Modern UI's "activity bar on top" layout (and, more subtly, in the classic side layout too). VS Code's `activityBar.activeBorder` and `activityBarTop.activeBorder` tokens both default to the theme's own foreground color rather than any `workbench.colorCustomizations` override, so leaving them unset could mismatch the rest of the Peacock-colorized icons. Peacock now sets both explicitly to match the computed foreground ([#652](https://github.com/johnpapa/vscode-peacock/issues/652))
+
 ## 4.4.0 (2026-09-07)
 
 ### Features
