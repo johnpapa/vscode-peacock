@@ -5,6 +5,14 @@
  * When `workbench.activityBar.location` is set to "top", VS Code uses
  * `activityBarTop.*` color tokens instead of `activityBar.*`.
  * Peacock must set both token families so the highlight applies in either layout.
+ *
+ * Also covers #652 (modernUI compatibility): `activityBar.activeBorder` and
+ * `activityBarTop.activeBorder` both default, in VS Code itself, to the theme's
+ * own foreground color rather than any `workbench.colorCustomizations` override.
+ * Left unset, this can leave the currently-selected activity bar icon a
+ * mismatched gray instead of Peacock's colorized foreground under Modern UI.
+ * Peacock sets both explicitly so the active item's border always matches the
+ * rest of the icons.
  */
 import * as assert from 'assert';
 import { ColorSettings, Commands, peacockGreen } from '../../models';
@@ -113,6 +121,57 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       );
     });
 
+    test('sets activityBar.activeBorder to match the computed foreground (#652)', async () => {
+      await updateKeepForegroundColor(false);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
+
+      assert.ok(
+        config[ColorSettings.activityBar_activeBorder],
+        'activityBar.activeBorder should be set',
+      );
+      assert.equal(
+        config[ColorSettings.activityBar_activeBorder],
+        activityBarStyle.foregroundHex,
+        'activityBar.activeBorder should match computed foreground so the active icon is not left VS Code\u2019s default gray',
+      );
+    });
+
+    test('sets activityBarTop.activeBorder to match the computed foreground (#652)', async () => {
+      await updateKeepForegroundColor(false);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
+
+      assert.ok(
+        config[ColorSettings.activityBarTop_activeBorder],
+        'activityBarTop.activeBorder should be set',
+      );
+      assert.equal(
+        config[ColorSettings.activityBarTop_activeBorder],
+        activityBarStyle.foregroundHex,
+        'activityBarTop.activeBorder should match computed foreground so the active icon is not left VS Code\u2019s default gray under Modern UI',
+      );
+    });
+
+    test('does not set activityBar.activeBorder or activityBarTop.activeBorder when keepForegroundColor is true', async () => {
+      await updateKeepForegroundColor(true);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(
+        !config[ColorSettings.activityBar_activeBorder],
+        'activityBar.activeBorder should not be set when keepForegroundColor is true',
+      );
+      assert.ok(
+        !config[ColorSettings.activityBarTop_activeBorder],
+        'activityBarTop.activeBorder should not be set when keepForegroundColor is true',
+      );
+    });
+
     test('activityBarTop.background matches expected color value for peacock green', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
@@ -167,6 +226,20 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       assert.ok(
         !config[ColorSettings.activityBarTop_inactiveForeground],
         'activityBarTop.inactiveForeground should not be set when activity bar is not affected',
+      );
+    });
+
+    test('does not set activityBar.activeBorder or activityBarTop.activeBorder when activity bar is not affected', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(
+        !config[ColorSettings.activityBar_activeBorder],
+        'activityBar.activeBorder should not be set when activity bar is not affected',
+      );
+      assert.ok(
+        !config[ColorSettings.activityBarTop_activeBorder],
+        'activityBarTop.activeBorder should not be set when activity bar is not affected',
       );
     });
 

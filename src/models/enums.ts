@@ -59,6 +59,7 @@ export enum ElementNames {
 
 export enum ColorSettings {
   activityBar_activeBackground = 'activityBar.activeBackground',
+  activityBar_activeBorder = 'activityBar.activeBorder',
   activityBar_background = 'activityBar.background',
   activityBar_foreground = 'activityBar.foreground',
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
@@ -67,6 +68,7 @@ export enum ColorSettings {
   // Activity Bar "on top" layout tokens (VS Code 1.84+)
   activityBarTop_background = 'activityBarTop.background',
   activityBarTop_activeBackground = 'activityBarTop.activeBackground',
+  activityBarTop_activeBorder = 'activityBarTop.activeBorder',
   activityBarTop_foreground = 'activityBarTop.foreground',
   activityBarTop_inactiveForeground = 'activityBarTop.inactiveForeground',
   commandCenter_border = 'commandCenter.border',
