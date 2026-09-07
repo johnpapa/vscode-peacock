@@ -4,10 +4,6 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
-### Infrastructure
-
-- Migrated the host-test runner from the deprecated `vscode-test` package (last meaningfully updated years ago) to its maintained successor `@vscode/test-electron`. `vscode-test`'s hardcoded assumptions about the downloaded VS Code `.app` bundle's internal layout on macOS had rotted against recent VS Code releases, causing `spawn .../Contents/MacOS/Electron ENOENT` when running `npm test`/`npm run test:host` locally on macOS even though the download itself completed successfully. `@vscode/test-electron` exposes an identical `runTests()` API, so the fix is a drop-in dependency swap. As a side effect, this also clears 3 of 5 `npm audit` findings that were rooted in `vscode-test`'s own transitive dependencies.
-
 ## 4.4.0 (2026-09-05)
 
 ### Features
@@ -24,6 +20,7 @@ All notable changes to the code will be documented in this file.
 
 ### Docs
 
+- Added a README comparison showing Peacock working identically in VS Code's classic UI and the new Modern UI, as a visual companion to the Modern UI compatibility fix above.
 - Clarified `peacock.affectStatusBar` and `peacock.affectStatusBarDebugging` settings in documentation with dedicated "Status Bar Customization" section, three common scenario examples, and improved setting descriptions to make feature discoverability easier. Closed #704 as this feature was already supported ([#704](https://github.com/johnpapa/vscode-peacock/issues/704))
 - Synced `AGENTS.md`'s Tech Stack/Testing/CI sections, which still described the pre-#670 single-lane Mocha-only setup — added the Vitest unit lane, the `test:unit`/`package:check` scripts, and the current 5-step CI pipeline. Also added a documented Release Process section (version bump, changelog finalization, verification checklist) ahead of the 4.4.0 release.
 
@@ -41,6 +38,7 @@ All notable changes to the code will be documented in this file.
 - Bumped CI's Node runtime from 20 to 22 (`ci.yml`, `copilot-setup-steps.yml`, `docs.yml`) and `@types/node` from `20.19.43` to `22.20.1` to match, then bumped `vitest`/`@vitest/coverage-v8` from `0.34.6` to `5.0.0` (`vitest@5` requires `@types/node` `^22.0.0 || >=24.0.0` as a peer, which the previous Node 20 baseline couldn't satisfy). Renamed `vitest.config.ts` to `vitest.config.mts` and swapped `__dirname` for `import.meta.dirname` to clear Vitest 5's native-ESM-config warnings; no behavior change, all 142 unit tests still pass ([#724](https://github.com/johnpapa/vscode-peacock/issues/724)).
 - Bumped `eslint` `10.7.0` → `10.9.1` (patch), and `@playwright/test`, `@types/vscode`, `webpack`, `webpack-cli` to their latest compatible versions — routine dependency housekeeping cleared as part of the same modernization pass ([#724](https://github.com/johnpapa/vscode-peacock/issues/724)).
 - **Toolchain modernization complete ([#724](https://github.com/johnpapa/vscode-peacock/issues/724)):** closing out the chain above. Current state: ESLint 10 (flat config), TypeScript 5.9.3, `@types/node` 22.20.1, `vitest`/`@vitest/coverage-v8` 5.0.0, CI on Node 22, and the Dependabot queue is fully clear — every PR blocked on this chain (11 in total) is now either merged in equivalent form or closed with an evidence comment. Two items are intentionally _not_ pursued further: TypeScript 7 (no `typescript-eslint` release supports it yet — it hard-caps TS at `<6.1.0`) and `@types/node` 26 (superseded; `22.20.1` is the correct match for the Node 22 runtime CI actually uses). Two small follow-ups remain identified but deferred to their own dedicated PRs: a `glob`/`istanbul-lib-*` major-version bump for the coverage-instrumentation files, and a `prettier` 2 → 3 upgrade (will produce a large reformatting diff, so it deserves review on its own).
+- Migrated the host-test runner from the deprecated `vscode-test` package (last meaningfully updated years ago) to its maintained successor `@vscode/test-electron`. `vscode-test`'s hardcoded assumptions about the downloaded VS Code `.app` bundle's internal layout on macOS had rotted against recent VS Code releases, causing `spawn .../Contents/MacOS/Electron ENOENT` when running `npm test`/`npm run test:host` locally on macOS even though the download itself completed successfully. `@vscode/test-electron` exposes an identical `runTests()` API, so the fix is a drop-in dependency swap. As a side effect, this also clears 3 of 5 `npm audit` findings that were rooted in `vscode-test`'s own transitive dependencies.
 
 ## 4.3.3
 
