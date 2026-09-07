@@ -135,7 +135,12 @@ Check the latest **push-triggered** run of `ci.yml` on `main` — not just the l
 5. **Create and push the git tag** for the release (e.g. `vX.Y.Z`) once the merge commit is on `main` and green.
 6. **Create the GitHub Release** from that tag, using the changelog section as the release notes.
 7. **After the human has run the publish step below and confirmed it's live**, update `README.md`'s "Latest published version" line to the new version (in its own small PR, same as any other change) — not before, since it names a real Marketplace link and updating it earlier would claim a version is published before it actually is.
-8. **Draft the release's social media announcements** (LinkedIn, X/Twitter, etc.) if the release warrants one — pull the headline changes from the finalized changelog. Drafting is agent-executable; posting is not (see below).
+8. **Draft the release's social media announcements** (LinkedIn, X/Twitter, etc.) if the release warrants one — pull the headline changes from the finalized changelog. Drafting is agent-executable; posting is not (see below). Follow these conventions when drafting:
+   - **Always include a 🦚 emoji** — this is Peacock's repo, it should feel like Peacock.
+   - **Always give a copy-paste-ready version**, not just the text shown in chat. Save each platform's draft to its own file (e.g. `/tmp/peacock-x-paste-safe.txt`, `/tmp/peacock-linkedin-paste-safe.txt`) so the maintainer can copy straight from a file instead of the chat UI, which can mangle emoji/formatting on copy.
+   - **LinkedIn strips Markdown on paste** (`**bold**`, backticks, etc. render as literal stray characters) — write LinkedIn drafts as plain text, using emoji and line breaks for emphasis instead of Markdown syntax.
+   - **Truly-empty blank lines between paragraphs often get collapsed on paste** (observed on LinkedIn). Insert an invisible zero-width space (U+200B) on each blank line so it survives as a real line and paragraph breaks are preserved.
+   - **Verify every factual/attribution claim against the actual source before drafting** — don't imply the maintainer personally discovered, reported, or fixed an upstream bug unless that's literally true. Check the linked upstream issue/PR yourself (e.g. via `gh issue view`/`gh pr view` on the external repo) rather than inferring credit from the changelog wording alone; changelog phrasing written by an agent earlier in the release can itself be imprecise about who did what.
 
 ### Human-only — steps that need a person
 
