@@ -134,7 +134,7 @@ Check the latest **push-triggered** run of `ci.yml` on `main` — not just the l
 4. **Open a PR with the changelog + version bump, verify CI is green, merge it to `main`.**
 5. **Create and push the git tag** for the release (e.g. `vX.Y.Z`) once the merge commit is on `main` and green.
 6. **Create the GitHub Release** from that tag, using the changelog section as the release notes.
-7. **After the human has run the publish step below and confirmed it's live**, update `README.md`'s "Latest published version" line to the new version (in its own small PR, same as any other change) — not before, since it names a real Marketplace link and updating it earlier would claim a version is published before it actually is.
+7. ~~Update `README.md`'s "Latest published version" line~~ — no longer needed. The README uses a live shields.io badge (`https://img.shields.io/visual-studio-marketplace/v/johnpapa.vscode-peacock`) that reads the current version directly from the Marketplace API, so it never goes stale and there's nothing to sync after publishing.
 8. **Draft the release's social media announcements** (LinkedIn, X/Twitter, etc.) if the release warrants one — pull the headline changes from the finalized changelog. Drafting is agent-executable; posting is not (see below). Follow these conventions when drafting:
    - **Always include a 🦚 emoji** — this is Peacock's repo, it should feel like Peacock.
    - **Always give a copy-paste-ready version**, not just the text shown in chat. Save each platform's draft to its own file (e.g. `/tmp/peacock-x-paste-safe.txt`, `/tmp/peacock-linkedin-paste-safe.txt`) so the maintainer can copy straight from a file instead of the chat UI, which can mangle emoji/formatting on copy.
