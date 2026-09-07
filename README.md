@@ -35,6 +35,14 @@ Now enjoy exploring the rest of the features explained in the docs!
 
 ![Peacock Windows](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/hero.png 'Peacock windows')
 
+## Works with Modern UI
+
+Peacock works whether you're on VS Code's classic UI or the new Modern UI — same colors, same experience.
+
+| Classic UI | Modern UI |
+| --- | --- |
+| ![Peacock in classic UI](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/modern-ui-classic.png 'Peacock in classic UI') | ![Peacock in modern UI](https://raw.githubusercontent.com/johnpapa/vscode-peacock/main/resources/modern-ui-modern.png 'Peacock in modern UI') |
+
 ## Resources
 
 - [Peacock docs on GitHub Pages](https://johnpapa.github.io/vscode-peacock/)
