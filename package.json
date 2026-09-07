@@ -455,6 +455,7 @@
     "@types/vscode": "^1.49.0",
     "@types/webpack-env": "^1.18.8",
     "@vitest/coverage-v8": "^5.0.0",
+    "@vscode/test-electron": "^3.1.0",
     "@vscode/test-web": "^0.0.81",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
@@ -474,7 +475,6 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.69.0",
     "vitest": "^5.0.0",
-    "vscode-test": "^1.4.0",
     "webpack": "^5.110.3",
     "webpack-cli": "^7.2.3"
   },
