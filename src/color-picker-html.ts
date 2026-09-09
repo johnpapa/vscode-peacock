@@ -340,13 +340,23 @@ export function getColorPickerHtml(initialColor: string): string {
         }
       });
 
-      hex.addEventListener('keydown', event => {
-        if (event.key === 'Enter' && !applyBtn.disabled) {
-          vscodeApi.postMessage({ type: 'apply', color: hex.value.trim() });
-        }
-      });
-
+      // Enter applies and Escape cancels no matter which control has focus
+      // (color well, hex field, or the eyedropper button), matching the
+      // Apply/Cancel buttons themselves. Buttons already activate on Enter
+      // via the browser's own default behavior, so skip them here to avoid
+      // posting a duplicate message (and to let a focused Cancel button's
+      // Enter press still cancel, rather than being overridden by Apply).
       document.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+          if (event.target instanceof HTMLButtonElement) {
+            return;
+          }
+          if (!applyBtn.disabled) {
+            event.preventDefault();
+            vscodeApi.postMessage({ type: 'apply', color: hex.value.trim() });
+          }
+          return;
+        }
         if (event.key === 'Escape') {
           vscodeApi.postMessage({ type: 'cancel' });
         }

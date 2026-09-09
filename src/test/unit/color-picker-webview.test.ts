@@ -186,4 +186,132 @@ describe('Color picker webview (#708)', () => {
       expect(html).toContain('/^(rgb|rgba|hsl|hsla|hsv|hsva)\\s*\\(/i');
     });
   });
+
+  describe('Keyboard shortcuts: Enter applies, Escape cancels (#708 follow-up)', () => {
+    /**
+     * Extracts the picker's inline <script> and actually executes it (not
+     * just parses it) against a minimal fake DOM/window, so these tests
+     * exercise the real runtime keydown handler rather than just matching
+     * strings against the generated source.
+     */
+    function runPickerScript(initialColor: string) {
+      const html = getColorPickerHtml(initialColor);
+      const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
+      if (!scriptMatch) {
+        throw new Error('Could not find inline <script> in generated picker HTML');
+      }
+
+      class HTMLButtonElement {}
+
+      function makeElement(isButton: boolean, initialValue = '') {
+        const listeners: Record<string, Array<(event: any) => void>> = {};
+        const element: any = {
+          value: initialValue,
+          disabled: false,
+          hidden: false,
+          className: '',
+          style: {},
+          textContent: '',
+          classList: { toggle: () => {} },
+          addEventListener(type: string, fn: (event: any) => void) {
+            (listeners[type] ||= []).push(fn);
+          },
+        };
+        if (isButton) {
+          Object.setPrototypeOf(element, HTMLButtonElement.prototype);
+        }
+        return element;
+      }
+
+      const elements: Record<string, any> = {
+        colorWell: makeElement(false, initialColor),
+        hexInput: makeElement(false, initialColor),
+        applyBtn: makeElement(true),
+        eyedropperBtn: makeElement(true),
+        contrastPreview: makeElement(false),
+        contrastBadge: makeElement(false),
+        cancelBtn: makeElement(true),
+      };
+
+      const documentListeners: Record<string, Array<(event: any) => void>> = {};
+      const fakeDocument = {
+        getElementById: (id: string) => elements[id],
+        addEventListener(type: string, fn: (event: any) => void) {
+          (documentListeners[type] ||= []).push(fn);
+        },
+      };
+
+      const windowListeners: Record<string, Array<(event: any) => void>> = {};
+      const fakeWindow: any = {
+        addEventListener(type: string, fn: (event: any) => void) {
+          (windowListeners[type] ||= []).push(fn);
+        },
+      };
+
+      const posted: Array<Record<string, unknown>> = [];
+      const sandbox: any = {
+        document: fakeDocument,
+        window: fakeWindow,
+        HTMLButtonElement,
+        acquireVsCodeApi: () => ({
+          postMessage: (message: Record<string, unknown>) => posted.push(message),
+        }),
+      };
+      vm.createContext(sandbox);
+      new vm.Script(scriptMatch[1]).runInContext(sandbox);
+
+      const dispatchKeydown = (key: string, target: any = elements.hexInput) => {
+        let defaultPrevented = false;
+        (documentListeners['keydown'] || []).forEach(fn =>
+          fn({ key, target, preventDefault: () => (defaultPrevented = true) }),
+        );
+        return defaultPrevented;
+      };
+
+      return { elements, posted, dispatchKeydown };
+    }
+
+    it('pressing Enter while the hex field is focused posts an apply message with the current value', () => {
+      const { elements, posted, dispatchKeydown } = runPickerScript(azureBlue);
+      elements.hexInput.value = '#123456';
+
+      dispatchKeydown('Enter', elements.hexInput);
+
+      expect(posted).toEqual([{ type: 'apply', color: '#123456' }]);
+    });
+
+    it('pressing Enter while the color well is focused also applies (not just the hex field)', () => {
+      const { elements, posted, dispatchKeydown } = runPickerScript(azureBlue);
+      elements.hexInput.value = '#654321';
+
+      dispatchKeydown('Enter', elements.colorWell);
+
+      expect(posted).toEqual([{ type: 'apply', color: '#654321' }]);
+    });
+
+    it('pressing Enter does nothing when the current value is invalid (Apply disabled)', () => {
+      const { posted, elements, dispatchKeydown } = runPickerScript(azureBlue);
+      elements.applyBtn.disabled = true;
+
+      dispatchKeydown('Enter', elements.hexInput);
+
+      expect(posted).toEqual([]);
+    });
+
+    it("pressing Enter while a button (e.g. Cancel) has focus does not also post apply, letting the button's own click win", () => {
+      const { elements, posted, dispatchKeydown } = runPickerScript(azureBlue);
+
+      dispatchKeydown('Enter', elements.cancelBtn);
+
+      expect(posted).toEqual([]);
+    });
+
+    it('pressing Escape posts a cancel message regardless of which control has focus', () => {
+      const { elements, posted, dispatchKeydown } = runPickerScript(azureBlue);
+
+      dispatchKeydown('Escape', elements.applyBtn);
+
+      expect(posted).toEqual([{ type: 'cancel' }]);
+    });
+  });
 });
