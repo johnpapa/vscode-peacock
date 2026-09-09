@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import * as vm from 'vm';
 import {
   createColorPickerMessageHandler,
   getColorPickerHtml,
@@ -165,6 +166,24 @@ describe('Color picker webview (#708)', () => {
       expect(html).not.toMatch(/id="hexInput"[^>]*maxlength="9"/);
       expect(html).toMatch(/namedColorPattern/);
       expect(html).toMatch(/rgb\|rgba\|hsl\|hsla\|hsv\|hsva/);
+    });
+
+    it('generates an inline <script> that is syntactically valid JavaScript (regression: escaped chars inside a nested regex literal were silently stripped by the outer TS template literal, e.g. "\\s" collapsing to "s" and "\\(" collapsing to an unescaped "(", producing an unterminated-group SyntaxError that killed every listener -- Apply/Cancel/preview/contrast -- since a parse error aborts the whole inline script)', () => {
+      const html = getColorPickerHtml(azureBlue);
+      const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
+
+      expect(scriptMatch).not.toBeNull();
+      expect(() => new vm.Script(scriptMatch![1])).not.toThrow();
+    });
+
+    it('keeps the rgb/rgba/hsl/hsla/hsv/hsva function-color regex\'s backslashes intact through the outer template literal', () => {
+      const html = getColorPickerHtml(azureBlue);
+
+      // Any backslash that isn't doubled (e.g. a bare "\s" or "\(") gets its
+      // backslash silently dropped by the *outer* TS template literal at
+      // compile time, since "\s"/"\(" aren't recognized string escapes --
+      // so the generated regex source must contain the doubled form.
+      expect(html).toContain('/^(rgb|rgba|hsl|hsla|hsv|hsva)\\s*\\(/i');
     });
   });
 });

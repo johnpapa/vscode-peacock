@@ -303,7 +303,7 @@ export function getColorPickerHtml(initialColor: string): string {
       // (color-picker-html.ts's createColorPickerMessageHandler) remains
       // the real, authoritative check before anything is ever applied.
       const namedColorPattern = /^[a-zA-Z]+$/;
-      const functionColorPattern = /^(rgb|rgba|hsl|hsla|hsv|hsva)\s*\(/i;
+      const functionColorPattern = /^(rgb|rgba|hsl|hsla|hsv|hsva)\\s*\\(/i;
 
       function looksLikeColor(value) {
         const trimmed = value.trim();
