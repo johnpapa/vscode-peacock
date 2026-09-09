@@ -5,6 +5,8 @@ import { ColorSettings, Commands, IPeacockSettings } from '../../models';
 import { isValidColorInput } from '../../color-library';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
+import { createFakeWebviewPanel } from './lib/fake-webview-panel';
+import { createFakeInputBox } from './lib/fake-input-box';
 import { getColorCustomizationConfig } from '../../configuration';
 
 suite('Enter color', () => {
@@ -15,9 +17,58 @@ suite('Enter color', () => {
   setup(async () => await setupTest());
 
   suite('Invalid values do nothing', () => {
-    test('can hit ESC with no error', createColorInputTest('', undefined));
+    test('can hit ESC with no error', createColorInputEscapeTest());
 
     test('can hit ENTER with no error', createColorInputTest('', undefined));
+  });
+
+  suite('Pick visually button (#708)', () => {
+    test('clicking the button hands off to the visual color picker', async () => {
+      const { input, ready, clickPickVisuallyButton } = createFakeInputBox();
+      const createInputBoxStub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+
+      const enterColorPromise = executeCommand(Commands.enterColor);
+      await ready;
+
+      // The button should be present and labeled for the visual picker.
+      assert.strictEqual(input.buttons?.length, 1);
+      assert.ok(String(input.buttons?.[0].tooltip).toLowerCase().includes('visually'));
+
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      // Don't await yet -- it doesn't resolve until the fake webview panel
+      // (opened inside the button handler) receives an apply/cancel message.
+      const buttonClickPromise = clickPickVisuallyButton();
+      await postToExtension({ type: 'apply', color: '#123456' });
+
+      await buttonClickPromise;
+      await enterColorPromise;
+      createInputBoxStub.restore();
+      createPanelStub.restore();
+
+      const config = getColorCustomizationConfig();
+      const value = config[ColorSettings.titleBar_activeBackground];
+      assert.equal(value, '#123456');
+    });
+
+    test('canceling the picker leaves no color applied', async () => {
+      const { input, clickPickVisuallyButton } = createFakeInputBox();
+      const createInputBoxStub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+
+      const enterColorPromise = executeCommand(Commands.enterColor);
+
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const buttonClickPromise = clickPickVisuallyButton();
+      await postToExtension({ type: 'cancel' });
+
+      await buttonClickPromise;
+      await enterColorPromise;
+      createInputBoxStub.restore();
+      createPanelStub.restore();
+    });
   });
 
   suite('Hex, Hex RGBA', () => {
@@ -146,13 +197,15 @@ suite('Enter color', () => {
 
 function createColorInputTest(fakeResponse: string, expectedValue: string | undefined) {
   return async () => {
-    // Stub the async input box to return a response
-    const stub = await sinon
-      .stub(vscode.window, 'showInputBox')
-      .returns(Promise.resolve(fakeResponse));
+    // Stub the InputBox to accept with a typed response.
+    const { input, typeAndAccept } = createFakeInputBox();
+    const stub = sinon.stub(vscode.window, 'createInputBox').returns(input);
 
     // fire the command
-    await executeCommand(Commands.enterColor);
+    const enterColorPromise = executeCommand(Commands.enterColor);
+    await typeAndAccept(fakeResponse);
+    await enterColorPromise;
+
     const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
@@ -161,6 +214,25 @@ function createColorInputTest(fakeResponse: string, expectedValue: string | unde
     // Otherwise, we need a valid color
     assert.ok(!value || isValidColorInput(value));
     assert.equal(expectedValue, value);
+  };
+}
+
+function createColorInputEscapeTest() {
+  return async () => {
+    // Stub the InputBox to simulate the user pressing Esc (hides without
+    // accepting a value).
+    const { input, escape } = createFakeInputBox();
+    const stub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+
+    const enterColorPromise = executeCommand(Commands.enterColor);
+    await escape();
+    await enterColorPromise;
+
+    const config = getColorCustomizationConfig();
+    const value = config[ColorSettings.titleBar_activeBackground];
+    stub.restore();
+
+    assert.ok(!value || isValidColorInput(value));
   };
 }
 

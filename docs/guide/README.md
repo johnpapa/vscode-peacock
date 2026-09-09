@@ -106,10 +106,11 @@ When opening the Favorites command in the command palette, Peacock now previews 
 
 #### Custom Color Picker
 
-You can open the visual color picker two ways:
+You can open the visual color picker three ways:
 
 - Run **Peacock: Pick a Custom Color (Visual Picker)** from the Command Palette at any time.
-- Or, in **Peacock: Change to a Favorite Color**, choose **Custom color…** — always the last item in the list, even if you have not saved any favorites yet.
+- In **Peacock: Change to a Favorite Color**, choose **Custom color…** — always the last item in the list, even if you have not saved any favorites yet.
+- In **Peacock: Enter a Color**, click the **pick visually** button on the input box instead of typing a hex code (see [Input Formats](#input-formats)).
 
 ![Favorites Quick Pick with Custom color… selected](../assets/custom-color-picker-1-quickpick.png)
 
@@ -368,6 +369,8 @@ All formats offer flexible data validation:
 - For named HTML colors, case is insensitive
 - For any hex value, the `#` is optional.
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
+
+Don't want to type a value at all? **Peacock: Enter a Color** also has a **pick visually** button (the 🎨 icon at the right edge of the input box) that opens the same [Custom Color Picker](#custom-color-picker) — including the eyedropper — instead of typing a format above.
 
 ### Alpha Support
 

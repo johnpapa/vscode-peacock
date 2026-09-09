@@ -10,6 +10,7 @@ import {
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
+import { createFakeWebviewPanel } from './lib/fake-webview-panel';
 import {
   getFavoriteColors,
   updateFavoriteColors,
@@ -17,67 +18,6 @@ import {
   getCurrentColorBeforeAdjustments,
 } from '../../configuration';
 import { promptForCustomColorViaColorPicker } from '../../color-picker-webview';
-
-/**
- * Stands in for the real vscode.WebviewPanel returned by
- * vscode.window.createWebviewPanel(). Captures the message/dispose
- * listeners that color-picker-webview.ts registers so tests can simulate
- * the webview's own script posting messages back to the extension (#708).
- */
-function createFakeWebviewPanel() {
-  let messageListener: ((message: unknown) => unknown) | undefined;
-  let disposeListener: (() => unknown) | undefined;
-  let disposed = false;
-  let resolveReady!: () => void;
-  const postedMessages: unknown[] = [];
-  // Resolves once color-picker-webview.ts has wired up its message handler,
-  // so tests that go through vscode.commands.executeCommand (a real,
-  // potentially async round trip) know it's safe to post a message rather
-  // than racing a fixed timeout.
-  const ready = new Promise<void>(resolve => {
-    resolveReady = resolve;
-  });
-
-  const panel = {
-    webview: {
-      html: '',
-      onDidReceiveMessage: (listener: (message: unknown) => unknown) => {
-        messageListener = listener;
-        resolveReady();
-        return { dispose: () => undefined };
-      },
-      postMessage: async (message: unknown) => {
-        postedMessages.push(message);
-        return true;
-      },
-      asWebviewUri: (uri: vscode.Uri) => uri,
-      cspSource: '',
-    },
-    onDidDispose: (listener: () => unknown) => {
-      disposeListener = listener;
-      return { dispose: () => undefined };
-    },
-    dispose: () => {
-      if (disposed) {
-        return;
-      }
-      disposed = true;
-      disposeListener?.();
-    },
-    reveal: () => undefined,
-  };
-
-  return {
-    panel: panel as unknown as vscode.WebviewPanel,
-    ready,
-    postedMessages,
-    postToExtension: async (message: unknown) => {
-      await ready;
-      await messageListener?.(message);
-    },
-    simulateUserClosingPanel: () => panel.dispose(),
-  };
-}
 
 suite('Custom color picker (#708)', () => {
   const originalValues = {} as IPeacockSettings;

@@ -7,6 +7,9 @@ import {
   updateFavoriteColors,
 } from '../../configuration';
 import { executeCommand, stubInputBox } from './lib/constants';
+import { createFakeInputBox } from './lib/fake-input-box';
+import * as vscode from 'vscode';
+import * as sinon from 'sinon';
 
 suite('Save starter favorite colors', () => {
   const originalValues = {} as IPeacockSettings;
@@ -48,8 +51,11 @@ suite('Save starter favorite colors', () => {
       const nightBlueName = 'Night Blue';
 
       // input the hex #103362
-      const qiColorStub = await stubInputBox(nightBlue);
-      await executeCommand(Commands.enterColor);
+      const { input, typeAndAccept } = createFakeInputBox();
+      const qiColorStub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+      const enterColorPromise = executeCommand(Commands.enterColor);
+      await typeAndAccept(nightBlue);
+      await enterColorPromise;
       qiColorStub.restore();
 
       // enter the name "Night Blue"
