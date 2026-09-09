@@ -7,6 +7,21 @@ import {
 } from '../../color-picker-html';
 import { peacockGreen, azureBlue } from '../../models';
 
+/**
+ * Extracts the contents of the picker's inline <script> tag from its
+ * generated HTML. Case-insensitive (CodeQL: js/bad-tag-filter -- an HTML tag
+ * match that only accounts for lower case can be trivially missed if the
+ * source ever emits `<SCRIPT>`), even though color-picker-html.ts always
+ * emits a lower case tag today.
+ */
+function extractInlineScript(html: string): string {
+  const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/i);
+  if (!scriptMatch) {
+    throw new Error('Could not find inline <script> in generated picker HTML');
+  }
+  return scriptMatch[1];
+}
+
 describe('Color picker webview (#708)', () => {
   describe('serializeMessageHandler (#708 follow-up: contrast race condition)', () => {
     it('processes messages strictly in arrival order, even when an earlier call resolves later', async () => {
@@ -170,10 +185,9 @@ describe('Color picker webview (#708)', () => {
 
     it('generates an inline <script> that is syntactically valid JavaScript (regression: escaped chars inside a nested regex literal were silently stripped by the outer TS template literal, e.g. "\\s" collapsing to "s" and "\\(" collapsing to an unescaped "(", producing an unterminated-group SyntaxError that killed every listener -- Apply/Cancel/preview/contrast -- since a parse error aborts the whole inline script)', () => {
       const html = getColorPickerHtml(azureBlue);
-      const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
+      const script = extractInlineScript(html);
 
-      expect(scriptMatch).not.toBeNull();
-      expect(() => new vm.Script(scriptMatch![1])).not.toThrow();
+      expect(() => new vm.Script(script)).not.toThrow();
     });
 
     it("keeps the rgb/rgba/hsl/hsla/hsv/hsva function-color regex's backslashes intact through the outer template literal", () => {
@@ -196,10 +210,7 @@ describe('Color picker webview (#708)', () => {
      */
     function runPickerScript(initialColor: string) {
       const html = getColorPickerHtml(initialColor);
-      const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
-      if (!scriptMatch) {
-        throw new Error('Could not find inline <script> in generated picker HTML');
-      }
+      const script = extractInlineScript(html);
 
       class HTMLButtonElement {}
 
@@ -258,7 +269,7 @@ describe('Color picker webview (#708)', () => {
         }),
       };
       vm.createContext(sandbox);
-      new vm.Script(scriptMatch[1]).runInContext(sandbox);
+      new vm.Script(script).runInContext(sandbox);
 
       const dispatchKeydown = (key: string, target: any = elements.hexInput) => {
         let defaultPrevented = false;
