@@ -52,10 +52,7 @@ suite('File tree selection (issue #539)', () => {
       const config = getColorCustomizationConfig();
       const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
 
-      assert.equal(
-        config[ColorSettings.list_hoverBackground],
-        activityBarStyle.backgroundHoverHex,
-      );
+      assert.equal(config[ColorSettings.list_hoverBackground], activityBarStyle.backgroundHoverHex);
     });
 
     suiteTeardown(async () => {
