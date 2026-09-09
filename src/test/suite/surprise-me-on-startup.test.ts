@@ -19,12 +19,16 @@ import {
   updateSurpriseMeInFavoritesOrder,
   getEnvironmentAwareColor,
   updateSurpriseMeOnStartup,
+  updatePeacockColor,
+  updatePeacockRemoteColor,
+  getPeacockRemoteColor,
 } from '../../configuration';
 import { checkSurpriseMeOnStartupLogic } from '../../extension';
 import {
   resetFavoritesVersionMemento,
   saveSurpriseMeStartupSelectionGlobalMemento,
 } from '../../mementos';
+import { RemoteNames } from '../../remote';
 
 suite('Surprise me on startup', () => {
   const originalValues = {} as IPeacockSettings;
@@ -63,6 +67,41 @@ suite('Surprise me on startup', () => {
 
     teardown(async () => {
       await updateSurpriseMeOnStartup(false);
+    });
+  });
+
+  suite('when in a remote environment (#573)', () => {
+    setup(async () => {
+      await updateSurpriseMeOnStartup(true);
+    });
+
+    teardown(async () => {
+      await updateSurpriseMeOnStartup(false);
+    });
+
+    test('does not pick a new random color when peacock.remoteColor is already set on reload/reconnect', async () => {
+      const remoteNameStub = sinon.stub(vscode.env, 'remoteName').value(RemoteNames.sshRemote);
+      try {
+        await updatePeacockColor('');
+        await updatePeacockRemoteColor('#f13768');
+
+        const randomStub = sinon.stub(Math, 'random');
+        try {
+          // Simulate reload/reconnect: run the startup logic repeatedly, as would
+          // happen on every "Developer: Reload Window" or SSH reconnect.
+          await checkSurpriseMeOnStartupLogic();
+          await checkSurpriseMeOnStartupLogic();
+          await checkSurpriseMeOnStartupLogic();
+
+          assert.equal(randomStub.callCount, 0);
+          assert.equal(getPeacockRemoteColor(), '#f13768');
+          assert.equal(getEnvironmentAwareColor(), '#f13768');
+        } finally {
+          randomStub.restore();
+        }
+      } finally {
+        remoteNameStub.restore();
+      }
     });
   });
 
