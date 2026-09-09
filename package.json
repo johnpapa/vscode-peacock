@@ -253,7 +253,7 @@
         "peacock.affectFileTreeSelection": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies whether Peacock should affect the selected/hovered item highlight in the file tree and other list views (list.activeSelectionBackground, list.inactiveSelectionBackground, list.hoverBackground)."
+          "description": "Specifies whether Peacock should outline the focused/selected item in the file tree and other list views with the Peacock color (list.focusOutline, list.focusAndSelectionOutline, list.inactiveFocusOutline). The theme's own selection fill is left unchanged."
         },
         "peacock.color": {
           "type": "string",

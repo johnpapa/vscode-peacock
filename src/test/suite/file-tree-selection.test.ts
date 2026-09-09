@@ -1,9 +1,9 @@
 /**
- * Regression coverage for issue #539: match Peacock's current color in the
- * file tree / list selection highlight (list.activeSelectionBackground,
- * list.inactiveSelectionBackground, list.hoverBackground), gated behind
- * peacock.affectFileTreeSelection (default false -- opt-in, since it visibly
- * changes the Explorer/Search selection color for anyone who turns it on).
+ * Regression coverage for issue #539: outline the focused/selected item in the
+ * file tree / list views with Peacock's current accent color (list.focusOutline,
+ * list.focusAndSelectionOutline, list.inactiveFocusOutline), gated behind
+ * peacock.affectFileTreeSelection (default false -- opt-in). The theme's own
+ * selection/hover fills are deliberately left alone.
  */
 import * as assert from 'assert';
 import { AffectedSettings, ColorSettings, Commands, peacockGreen } from '../../models';
@@ -25,34 +25,40 @@ suite('File tree selection (issue #539)', () => {
       await updateGlobalConfiguration(AffectedSettings.FileTreeSelection, true);
     });
 
-    test('sets list.activeSelectionBackground to the computed accent color', async () => {
+    test('sets list.focusOutline to the computed accent color', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
+
+      assert.equal(config[ColorSettings.list_focusOutline], activityBarStyle.backgroundHex);
+    });
+
+    test('sets list.focusAndSelectionOutline to the computed accent color', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
       const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
 
       assert.equal(
-        config[ColorSettings.list_activeSelectionBackground],
+        config[ColorSettings.list_focusAndSelectionOutline],
         activityBarStyle.backgroundHex,
       );
     });
 
-    test('sets list.inactiveSelectionBackground to the computed inactive accent color', async () => {
+    test('sets list.inactiveFocusOutline to the computed accent color', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
       const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
 
-      assert.equal(
-        config[ColorSettings.list_inactiveSelectionBackground],
-        activityBarStyle.inactiveBackgroundHex,
-      );
+      assert.equal(config[ColorSettings.list_inactiveFocusOutline], activityBarStyle.backgroundHex);
     });
 
-    test('sets list.hoverBackground to the computed hover accent color', async () => {
+    test('does not touch the selection or hover background fills', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
-      const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
 
-      assert.equal(config[ColorSettings.list_hoverBackground], activityBarStyle.backgroundHoverHex);
+      assert.ok(!config['list.activeSelectionBackground']);
+      assert.ok(!config['list.inactiveSelectionBackground']);
+      assert.ok(!config['list.hoverBackground']);
     });
 
     suiteTeardown(async () => {
@@ -69,9 +75,9 @@ suite('File tree selection (issue #539)', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(!config[ColorSettings.list_activeSelectionBackground]);
-      assert.ok(!config[ColorSettings.list_inactiveSelectionBackground]);
-      assert.ok(!config[ColorSettings.list_hoverBackground]);
+      assert.ok(!config[ColorSettings.list_focusOutline]);
+      assert.ok(!config[ColorSettings.list_focusAndSelectionOutline]);
+      assert.ok(!config[ColorSettings.list_inactiveFocusOutline]);
     });
   });
 });

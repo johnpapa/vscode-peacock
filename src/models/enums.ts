@@ -99,9 +99,9 @@ export enum ColorSettings {
   titleBar_inactiveForeground = 'titleBar.inactiveForeground',
   window_activeBorder = 'window.activeBorder',
   window_inactiveBorder = 'window.inactiveBorder',
-  list_activeSelectionBackground = 'list.activeSelectionBackground',
-  list_inactiveSelectionBackground = 'list.inactiveSelectionBackground',
-  list_hoverBackground = 'list.hoverBackground',
+  list_focusOutline = 'list.focusOutline',
+  list_focusAndSelectionOutline = 'list.focusAndSelectionOutline',
+  list_inactiveFocusOutline = 'list.inactiveFocusOutline',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';

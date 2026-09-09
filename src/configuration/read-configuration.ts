@@ -493,13 +493,16 @@ function collectFileTreeSettings(backgroundHex: string) {
   const fileTreeSettings = {} as ISettingsIndexer;
 
   if (isAffectedSettingSelected(AffectedSettings.FileTreeSelection)) {
-    // Same adjustment as the activity bar / accent borders (#539), so the
-    // selected-item highlight in the Explorer, Search, and other list/tree
-    // views reads as part of the same accent rather than a mismatched extra.
-    const style = getElementStyle(backgroundHex, ElementNames.activityBar);
-    fileTreeSettings[ColorSettings.list_activeSelectionBackground] = style.backgroundHex;
-    fileTreeSettings[ColorSettings.list_inactiveSelectionBackground] = style.inactiveBackgroundHex;
-    fileTreeSettings[ColorSettings.list_hoverBackground] = style.backgroundHoverHex;
+    // Outline only (#539): a 1px ring in the same accent the activity bar and
+    // accent borders use, drawn around the focused/selected row in the Explorer
+    // and other list/tree views. The theme's own selection and hover fills are
+    // left untouched so the change stays subtle. inactiveFocusOutline covers
+    // the common case where the editor has focus and the tree merely tracks
+    // the active file.
+    const { backgroundHex: color } = getElementStyle(backgroundHex, ElementNames.activityBar);
+    fileTreeSettings[ColorSettings.list_focusOutline] = color;
+    fileTreeSettings[ColorSettings.list_focusAndSelectionOutline] = color;
+    fileTreeSettings[ColorSettings.list_inactiveFocusOutline] = color;
   }
   return fileTreeSettings;
 }
