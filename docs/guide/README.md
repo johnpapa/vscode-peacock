@@ -325,6 +325,8 @@ Peacock detects when the [VS Code Remote](https://marketplace.visualstudio.com/i
 
 When a workspace is opened in a remote context, if a `peacock.remoteColor` is set, it will be applied. Otherwise, the regular `peacock.color` is applied.
 
+When `peacock.showColorInStatusBar` is enabled, the Peacock status bar item in a remote window also shows a remote icon before the paint can, and its tooltip names the remote (for example `ssh-remote` or `wsl`), so you can tell a remote window from a local one at a glance even when both use similar colors.
+
 ![Remote Integration with Peacock](../assets/peacock-remote.gif)
 
 VS Code distinguishes two classes of extensions: UI Extensions and Workspace Extensions. Peacock is classified as a UI extension as it makes contributions to the VS Code user interface and is always run on the user's local machine. UI Extensions cannot directly access files in the workspace, or run scripts/tools installed in that workspace or on the machine. Example UI Extensions include: themes, snippets, language grammars, and keymaps.
