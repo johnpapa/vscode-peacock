@@ -176,7 +176,7 @@ describe('Color picker webview (#708)', () => {
       expect(() => new vm.Script(scriptMatch![1])).not.toThrow();
     });
 
-    it('keeps the rgb/rgba/hsl/hsla/hsv/hsva function-color regex\'s backslashes intact through the outer template literal', () => {
+    it("keeps the rgb/rgba/hsl/hsla/hsv/hsva function-color regex's backslashes intact through the outer template literal", () => {
       const html = getColorPickerHtml(azureBlue);
 
       // Any backslash that isn't doubled (e.g. a bare "\s" or "\(") gets its

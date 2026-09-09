@@ -106,10 +106,11 @@ When opening the Favorites command in the command palette, Peacock now previews 
 
 #### Custom Color Picker
 
-You can open the visual color picker two ways:
+You can open the visual color picker three ways:
 
 - Run **Peacock: Choose a Custom Color** from the Command Palette at any time. Type a hex code, color name, or `rgb`/`hsl`/`hsv` value directly into its field (see [Input Formats](#input-formats)), or pick one visually.
 - In **Peacock: Change to a Favorite Color**, choose **Custom color…** — always the last item in the list, even if you have not saved any favorites yet.
+- Click the Peacock color in the status bar (when `peacock.showColorInStatusBar` is enabled) — opens the picker pre-filled with the color that's already showing. To copy the current color to your clipboard without opening the picker, run **Peacock: Copy the Current Color to the Clipboard** from the Command Palette instead.
 
 ![Favorites Quick Pick with Custom color… selected](../assets/custom-color-picker-1-quickpick.png)
 
