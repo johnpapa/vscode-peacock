@@ -172,6 +172,7 @@ export async function updateAffectedElements(values: IPeacockAffectedElementSett
   await updateGlobalConfiguration(AffectedSettings.TabActiveBorder, values.tabActiveBorder);
   await updateGlobalConfiguration(AffectedSettings.TabActiveBackground, values.tabActiveBackground);
   await updateGlobalConfiguration(AffectedSettings.WindowBorder, values.windowBorder);
+  await updateGlobalConfiguration(AffectedSettings.FileTreeSelection, values.fileTreeSelection);
 
   return true;
 }

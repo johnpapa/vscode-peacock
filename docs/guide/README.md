@@ -117,6 +117,8 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 Peacock also automatically colorizes the Command Center foreground and border to match the title bar when title bar coloring is enabled.
 
+![affected elements](../assets/affected-settings.png)
+
 #### Window Border (VS Code 1.104+ on Windows)
 
 To color the outer window border, enable `peacock.affectWindowBorder`. When enabled, Peacock sets both `window.activeBorder` and `window.inactiveBorder` to your Peacock color.
@@ -134,8 +136,6 @@ To mark the selected item in the Explorer, Search, and other list/tree views wit
 ```
 
 ![File tree selection before and after enabling peacock.affectFileTreeSelection](../assets/file-tree-selection.png)
-
-![affected elements](../assets/affected-settings.png)
 
 ### Excluded Settings
 
