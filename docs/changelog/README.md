@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Features
+
+- Added an opt-in `peacock.affectFileTreeSelection` setting (default `false`). When enabled, Peacock colors the selected and hovered item highlight in the Explorer, Search, and every other list/tree view (`list.activeSelectionBackground`, `list.inactiveSelectionBackground`, `list.hoverBackground`) using the same computed accent already used for the activity bar, so the selection reads as part of the Peacock color instead of the theme's unrelated default. Off by default because it visibly changes every list view's selection color ([#539](https://github.com/johnpapa/vscode-peacock/issues/539))
+
 ### Tests
 
 - Added regression coverage confirming `peacock.remoteColor` is preserved (not overwritten with a new random color) across repeated `Developer: Reload Window`/reconnect cycles in a remote SSH/WSL/container workspace when `peacock.surpriseMeOnStartup` is enabled. Verified this exact scenario is already handled correctly by the startup-selection persistence added for [#582](https://github.com/johnpapa/vscode-peacock/issues/582) (released in 4.3.0) — no functional code change was required ([#573](https://github.com/johnpapa/vscode-peacock/issues/573))
