@@ -57,6 +57,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                                                                                                                    |
 | peacock.affectTabActiveBackground   | Specifies whether Peacock should affect the active tab's background color. Defaults to false                                                                                                                          |
 | peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+.                                             |
+| peacock.affectAgentsWindow          | Specifies whether Peacock should affect the Agents Window (`agents.background`, `agentsPanel.background`, and `agentsPanel.foreground`). Defaults to false. Available in VS Code 1.120+.                              |
 | peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)                                                                                                          |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                                                                                                                               |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                                                                                                                       |
@@ -125,6 +126,20 @@ To color the outer window border, enable `peacock.affectWindowBorder`. When enab
 ```
 
 ![affected elements](../assets/affected-settings.png)
+
+#### Agents Window (VS Code 1.120+)
+
+VS Code's Agents Window is the dedicated top-level window for managing Copilot/Claude/Codex agent sessions. It has its own title bar and panel chrome, separate from the tokens Peacock already colors for the standard editor window. Enable `peacock.affectAgentsWindow` to have Peacock colorize it too:
+
+```javascript
+  "peacock.affectAgentsWindow": true
+```
+
+When enabled, Peacock sets:
+
+- `agents.background` — the Agents Window shell and title bar
+- `agentsPanel.background` — the chat/files/terminal card panels
+- `agentsPanel.foreground` — text in those panels, computed for contrast the same way Peacock computes the title bar's foreground color, so a light accent color still gets readable dark text (unless `peacock.keepForegroundColor` is enabled)
 
 ### Excluded Settings
 

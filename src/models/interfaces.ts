@@ -44,6 +44,7 @@ export interface IPeacockAffectedElementSettings {
   tabActiveBorder: boolean;
   tabActiveBackground: boolean;
   windowBorder: boolean;
+  agentsWindow: boolean;
 }
 
 export interface IPeacockElementAdjustments {

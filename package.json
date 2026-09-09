@@ -240,6 +240,11 @@
           "default": false,
           "description": "Specifies whether Peacock should affect the window border (window.activeBorder and window.inactiveBorder). Available on Windows in VS Code 1.104+."
         },
+        "peacock.affectAgentsWindow": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the Agents Window (agents.background, agentsPanel.background, and agentsPanel.foreground). Available in VS Code 1.120+."
+        },
         "peacock.affectTabActiveBackground": {
           "type": "boolean",
           "default": false,

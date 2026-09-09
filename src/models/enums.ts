@@ -31,6 +31,7 @@ export enum AffectedSettings {
   TabActiveBackground = 'affectTabActiveBackground',
   TitleBar = 'affectTitleBar',
   WindowBorder = 'affectWindowBorder',
+  AgentsWindow = 'affectAgentsWindow',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
@@ -98,6 +99,10 @@ export enum ColorSettings {
   titleBar_inactiveForeground = 'titleBar.inactiveForeground',
   window_activeBorder = 'window.activeBorder',
   window_inactiveBorder = 'window.inactiveBorder',
+  // Agents Window tokens (VS Code 1.120+, src/vs/sessions/common/theme.ts)
+  agents_background = 'agents.background',
+  agentsPanel_background = 'agentsPanel.background',
+  agentsPanel_foreground = 'agentsPanel.foreground',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';

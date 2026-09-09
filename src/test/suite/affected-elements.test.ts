@@ -128,6 +128,7 @@ suite('Affected elements', () => {
 
         tabActiveBorder: false,
         windowBorder: false,
+        agentsWindow: false,
       } as IPeacockAffectedElementSettings);
     });
 
@@ -243,6 +244,103 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
     });
 
+    test('agentsWindow sets agents.background, agentsPanel.background and agentsPanel.foreground when enabled', async () => {
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      const keepForegroundColor = getKeepForegroundColor();
+      const style = getElementStyle(peacockGreen);
+
+      assert.equal(config[ColorSettings.agents_background], style.backgroundHex);
+      assert.equal(config[ColorSettings.agentsPanel_background], style.backgroundHex);
+      assert.ok(
+        shouldKeepColorTest(
+          style.foregroundHex,
+          ColorSettings.agentsPanel_foreground,
+          keepForegroundColor,
+        ),
+      );
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('agentsWindow does not set agents/agentsPanel colors when disabled', async () => {
+      await updateAffectedElements({
+        agentsWindow: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.agents_background]);
+      assert.ok(!config[ColorSettings.agentsPanel_background]);
+      assert.ok(!config[ColorSettings.agentsPanel_foreground]);
+    });
+
+    test('agentsPanel.foreground is contrast-aware for a light accent color', async () => {
+      const originalKeepForegroundColor = getKeepForegroundColor();
+      await updateKeepForegroundColor(false);
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+
+      const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.75)');
+      const backgroundHex = config[ColorSettings.agentsPanel_background];
+      const foregroundHex = config[ColorSettings.agentsPanel_foreground];
+
+      assert.equal(foregroundHex, getElementStyle(backgroundHex).foregroundHex);
+      assert.ok(
+        getColorBrightness(backgroundHex) > getColorBrightness(foregroundHex),
+        'a light agentsPanel.background should get a darker foreground for contrast',
+      );
+
+      await updateKeepForegroundColor(originalKeepForegroundColor);
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('agentsPanel.foreground is contrast-aware for a dark accent color', async () => {
+      const originalKeepForegroundColor = getKeepForegroundColor();
+      await updateKeepForegroundColor(false);
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+
+      const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.25)');
+      const backgroundHex = config[ColorSettings.agentsPanel_background];
+      const foregroundHex = config[ColorSettings.agentsPanel_foreground];
+
+      assert.equal(foregroundHex, getElementStyle(backgroundHex).foregroundHex);
+      assert.ok(
+        getColorBrightness(backgroundHex) < getColorBrightness(foregroundHex),
+        'a dark agentsPanel.background should get a lighter foreground for contrast',
+      );
+
+      await updateKeepForegroundColor(originalKeepForegroundColor);
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('agentsPanel.foreground respects keepForegroundColor', async () => {
+      const originalKeepForegroundColor = getKeepForegroundColor();
+      await updateKeepForegroundColor(true);
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.agentsPanel_foreground]);
+      // backgrounds are still set even when the foreground is kept
+      assert.ok(config[ColorSettings.agents_background]);
+      assert.ok(config[ColorSettings.agentsPanel_background]);
+
+      await updateKeepForegroundColor(originalKeepForegroundColor);
+      await updateAffectedElements(allAffectedElements);
+    });
+
     test('tabActiveBackground is colored when enabled', async () => {
       await updateAffectedElements({
         tabActiveBackground: true,
@@ -297,6 +395,7 @@ suite('Affected elements', () => {
         tabActiveBorder: false,
         tabActiveBackground: false,
         windowBorder: false,
+        agentsWindow: false,
       } as IPeacockAffectedElementSettings);
     });
 
@@ -330,6 +429,9 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.tabActiveBackground]);
       assert.ok(!config[ColorSettings.window_activeBorder]);
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
+      assert.ok(!config[ColorSettings.agents_background]);
+      assert.ok(!config[ColorSettings.agentsPanel_background]);
+      assert.ok(!config[ColorSettings.agentsPanel_foreground]);
     });
 
     suiteTeardown(async () => {
@@ -352,6 +454,7 @@ suite('Affected elements', () => {
         sashHover: true,
         statusAndTitleBorders: false,
         windowBorder: false,
+        agentsWindow: false,
       });
 
       const value = await getColorSettingAfterEnterColor(

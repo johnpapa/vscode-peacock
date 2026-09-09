@@ -129,6 +129,8 @@ export function prepareColors(backgroundHex: string) {
 
   const statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
+  const agentsWindowSettings = collectAgentsWindowSettings(backgroundHex, keepForegroundColor);
+
   // Merge all color settings
   const mergedSettings: ISettingsIndexer = {
     ...activityBarSettings,
@@ -136,6 +138,7 @@ export function prepareColors(backgroundHex: string) {
     ...statusBarSettings,
     ...accentBorderSettings,
     ...windowBorderSettings,
+    ...agentsWindowSettings,
     ...squigglyBeGoneSettings,
   };
 
@@ -259,6 +262,7 @@ export function getAffectedElements() {
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
     tabActiveBackground: readConfiguration<boolean>(AffectedSettings.TabActiveBackground) || false,
     windowBorder: readConfiguration<boolean>(AffectedSettings.WindowBorder) || false,
+    agentsWindow: readConfiguration<boolean>(AffectedSettings.AgentsWindow) || false,
   } as IPeacockAffectedElementSettings;
 }
 
@@ -484,6 +488,21 @@ function collectWindowBorderSettings(backgroundHex: string) {
     windowBorderSettings[ColorSettings.window_inactiveBorder] = color;
   }
   return windowBorderSettings;
+}
+
+function collectAgentsWindowSettings(backgroundHex: string, keepForegroundColor: boolean) {
+  const agentsWindowSettings = {} as ISettingsIndexer;
+
+  if (isAffectedSettingSelected(AffectedSettings.AgentsWindow)) {
+    const agentsWindowStyle = getElementStyle(backgroundHex);
+    agentsWindowSettings[ColorSettings.agents_background] = agentsWindowStyle.backgroundHex;
+    agentsWindowSettings[ColorSettings.agentsPanel_background] = agentsWindowStyle.backgroundHex;
+
+    if (!keepForegroundColor) {
+      agentsWindowSettings[ColorSettings.agentsPanel_foreground] = agentsWindowStyle.foregroundHex;
+    }
+  }
+  return agentsWindowSettings;
 }
 
 function collectSquigglyBeGoneSettings() {
