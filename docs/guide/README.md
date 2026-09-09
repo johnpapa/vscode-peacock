@@ -133,6 +133,8 @@ To match the selected-item highlight in the Explorer, Search, and other list/tre
   "peacock.affectFileTreeSelection": true
 ```
 
+![File tree selection before and after enabling peacock.affectFileTreeSelection](../assets/file-tree-selection.png)
+
 ![affected elements](../assets/affected-settings.png)
 
 ### Excluded Settings
