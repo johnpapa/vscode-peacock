@@ -269,7 +269,7 @@ export function getColorPickerHtml(initialColor: string): string {
     <span class="field-label" id="colorFieldLabel">Color</span>
     <div class="row" role="group" aria-labelledby="colorFieldLabel">
       <input type="color" id="colorWell" value="${safeInitial}" aria-label="Color well" />
-      <button type="button" id="eyedropperBtn" title="Pick a color from anywhere on screen" aria-label="Pick a color from anywhere on screen" hidden>&#128302;</button>
+      <button type="button" id="eyedropperBtn" title="Pick a color from anywhere on screen" aria-label="Pick a color from anywhere on screen" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M19.5 3.5a2.5 2.5 0 0 1 0 3.54l-1.06 1.06 1.5 1.5-2.12 2.12-1.5-1.5-8.5 8.5a1 1 0 0 1-.46.26l-4 1a1 1 0 0 1-1.21-1.21l1-4a1 1 0 0 1 .26-.46l8.5-8.5-1.5-1.5L12.03 2.7l1.5 1.5 1.06-1.06a2.5 2.5 0 0 1 3.54 0z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
       <input type="text" id="hexInput" value="${safeInitial}" maxlength="9" spellcheck="false" aria-label="Hex color value" />
     </div>
 
