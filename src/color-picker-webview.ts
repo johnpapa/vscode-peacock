@@ -1,9 +1,31 @@
 import * as vscode from 'vscode';
 import { applyColor } from './apply-color';
-import { createColorPickerMessageHandler, getColorPickerHtml } from './color-picker-html';
+import {
+  createColorPickerMessageHandler,
+  getColorPickerHtml,
+  serializeMessageHandler,
+} from './color-picker-html';
+import { getTitleBarContrastPreview } from './color-picker-contrast';
 
 export { getColorPickerHtml } from './color-picker-html';
 export type { ColorPickerMessage, ColorPickerCallbacks } from './color-picker-html';
+
+/**
+ * Posts the title bar background/foreground pairing Peacock would apply for
+ * `color` down to the webview so its contrast preview swatch stays in sync
+ * with the same logic applyColor() just used -- never a separate,
+ * reimplemented copy of it (#708 follow-up).
+ */
+function postContrastPreview(panel: vscode.WebviewPanel, color: string) {
+  const preview = getTitleBarContrastPreview(color);
+  panel.webview.postMessage({
+    type: 'contrast',
+    backgroundHex: preview.backgroundHex,
+    foregroundHex: preview.foregroundHex,
+    ratio: preview.ratio,
+    isReadable: preview.isReadable,
+  });
+}
 
 /**
  * Opens the picker as a webview panel and resolves to the applied hex color,
@@ -31,10 +53,12 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
     };
 
     panel.webview.html = getColorPickerHtml(startingColor);
+    postContrastPreview(panel, startingColor);
 
-    const handleMessage = createColorPickerMessageHandler({
+    const rawHandleMessage = createColorPickerMessageHandler({
       onPreview: async color => {
         await applyColor(color);
+        postContrastPreview(panel, color);
       },
       onApply: color => finish(color),
       onCancel: async () => {
@@ -44,6 +68,11 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
         finish('');
       },
     });
+
+    // See serializeMessageHandler's doc comment: without this, rapid
+    // preview messages from dragging the color well or the EyeDropper can
+    // race and leave a stale color applied.
+    const handleMessage = serializeMessageHandler(rawHandleMessage);
 
     panel.webview.onDidReceiveMessage(handleMessage);
 

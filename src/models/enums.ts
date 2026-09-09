@@ -49,6 +49,7 @@ export enum Commands {
   showAndCopyCurrentColor = 'peacock.showAndCopyCurrentColor',
   affectSideBarBackground = 'peacock.affectSideBarBackground',
   showDocumentation = 'peacock.docs',
+  pickCustomColor = 'peacock.pickCustomColor',
 }
 
 export enum ElementNames {

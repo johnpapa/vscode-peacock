@@ -29,6 +29,7 @@ function createFakeWebviewPanel() {
   let disposeListener: (() => unknown) | undefined;
   let disposed = false;
   let resolveReady!: () => void;
+  const postedMessages: unknown[] = [];
   // Resolves once color-picker-webview.ts has wired up its message handler,
   // so tests that go through vscode.commands.executeCommand (a real,
   // potentially async round trip) know it's safe to post a message rather
@@ -45,7 +46,10 @@ function createFakeWebviewPanel() {
         resolveReady();
         return { dispose: () => undefined };
       },
-      postMessage: async () => true,
+      postMessage: async (message: unknown) => {
+        postedMessages.push(message);
+        return true;
+      },
       asWebviewUri: (uri: vscode.Uri) => uri,
       cspSource: '',
     },
@@ -66,6 +70,7 @@ function createFakeWebviewPanel() {
   return {
     panel: panel as unknown as vscode.WebviewPanel,
     ready,
+    postedMessages,
     postToExtension: async (message: unknown) => {
       await ready;
       await messageListener?.(message);
@@ -173,6 +178,77 @@ suite('Custom color picker (#708)', () => {
       await resultPromise;
 
       createPanelStub.restore();
+    });
+
+    test("posts a title bar contrast preview matching Peacock's own applyColor() pairing (#708 follow-up)", async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const { panel, postedMessages, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const resultPromise = promptForCustomColorViaColorPicker(peacockGreen);
+      // One contrast message should already have been posted for the
+      // starting color as soon as the panel opened...
+      assert.ok(
+        postedMessages.some(
+          (message: any) => message.type === 'contrast' && message.backgroundHex === peacockGreen,
+        ),
+      );
+
+      // ...and previewing a new (light) color should post an updated
+      // contrast pairing for *that* color -- proving the preview swatch
+      // can never silently drift out of sync with what's actually applied.
+      await postToExtension({ type: 'preview', color: '#ffa500' });
+      const orangeContrast: any = postedMessages.find(
+        (message: any) => message.type === 'contrast' && message.backgroundHex === '#ffa500',
+      );
+      assert.ok(orangeContrast, 'expected a contrast update for the previewed orange color');
+      assert.strictEqual(orangeContrast.foregroundHex, '#15202b');
+      assert.strictEqual(orangeContrast.isReadable, true);
+
+      await postToExtension({ type: 'cancel' });
+      await resultPromise;
+
+      createPanelStub.restore();
+    });
+  });
+
+  suite('pickCustomColor command (#708 follow-up: standalone Command Palette entry)', () => {
+    test('opens the picker directly and applies/persists the chosen color', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const commandPromise = executeCommand(Commands.pickCustomColor);
+      await postToExtension({ type: 'preview', color: azureBlue });
+      await postToExtension({ type: 'apply', color: azureBlue });
+      await commandPromise;
+
+      createPanelStub.restore();
+
+      assert.strictEqual(getEnvironmentAwareColor(), azureBlue);
+      const { values: favoriteColors } = getFavoriteColors();
+      // updateColorSetting() only writes a favorite for a name match; this
+      // just confirms the command didn't blow up interacting with settings.
+      assert.ok(Array.isArray(favoriteColors));
+    });
+
+    test('canceling the standalone command reverts to the color active before it ran', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const startingColor = getEnvironmentAwareColor();
+
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const commandPromise = executeCommand(Commands.pickCustomColor);
+      await postToExtension({ type: 'preview', color: azureBlue });
+      await postToExtension({ type: 'cancel' });
+      await commandPromise;
+
+      createPanelStub.restore();
+
+      assert.strictEqual(getEnvironmentAwareColor(), startingColor);
     });
   });
 

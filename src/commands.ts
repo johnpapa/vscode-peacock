@@ -21,6 +21,7 @@ import {
   getColorCustomizationConfigFromWorkspace,
 } from './configuration';
 import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
+import { promptForCustomColorViaColorPicker } from './color-picker-webview';
 import {
   resolveFavoriteSelectionAction,
   canSaveFavoriteColor,
@@ -77,6 +78,23 @@ export async function enterColorHandler(color?: string) {
   }
   await applyColor(input);
   await updateColorSetting(input);
+  return State.extensionContext;
+}
+
+export async function pickCustomColorHandler() {
+  // Same standalone shape as Enter a Color/Peacock Green/etc: prompt, then
+  // apply + persist the result. The favorites Quick Pick's "Custom color…"
+  // item (#708) opens this exact same picker inline; this command is the
+  // first-class, directly-discoverable Command Palette entry point for it
+  // (#708 follow-up -- "it should be its own menu/command palette option").
+  const startingColor = getEnvironmentAwareColor();
+  const color = await promptForCustomColorViaColorPicker(startingColor);
+  if (!color) {
+    // User canceled; the picker itself already reverted any live preview.
+    return State.extensionContext;
+  }
+  await applyColor(color);
+  await updateColorSetting(color);
   return State.extensionContext;
 }
 

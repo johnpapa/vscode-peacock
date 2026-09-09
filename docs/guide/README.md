@@ -106,23 +106,22 @@ When opening the Favorites command in the command palette, Peacock now previews 
 
 #### Custom Color Picker
 
-The last item in the favorites list is **Custom color…**. Selecting it opens a small color picker panel with a native color well and a hex text field kept in sync with each other, so you can pick a color visually instead of looking up a hex code elsewhere and pasting it into **Peacock: Enter a Color**.
+You can open the visual color picker two ways:
+
+- Run **Peacock: Pick a Custom Color (Visual Picker)** from the Command Palette at any time.
+- Or, in **Peacock: Change to a Favorite Color**, choose **Custom color…** — always the last item in the list, even if you have not saved any favorites yet.
 
 ![Favorites Quick Pick with Custom color… selected](../assets/custom-color-picker-1-quickpick.png)
 
-Selecting **Custom color…** opens the picker panel, starting from your current Peacock color:
+Either path opens the same picker panel, starting from your current Peacock color. The panel has:
 
-![Custom Color Picker panel with a color well and hex field](../assets/custom-color-picker-2-webview.png)
+- A native color well and a hex text field, kept in sync with each other, so you can pick a color visually instead of looking up a hex code elsewhere and pasting it into **Peacock: Enter a Color**.
+- An **eyedropper button** (in VS Code builds that support the browser EyeDropper API) to sample any color from anywhere on your screen, not just within the panel.
+- A **live contrast preview** showing a sample "Aa Peacock" swatch and a WCAG contrast ratio badge, using Peacock's own title-bar contrast logic — the same logic that picks a dark or light font automatically for any other color, so light colors like orange or pink still get readable, high-contrast text.
 
-The picker starts from your current Peacock color. Every change previews live, just like hovering a favorite does — notice the title bar and activity bar update immediately as you type a new hex value:
+Every change previews live, just like hovering a favorite does — the title bar, activity bar, and contrast badge all update immediately as you type a new hex value, drag the color well, or use the eyedropper.
 
-![Live preview while editing the hex value](../assets/custom-color-picker-3-live-preview.png)
-
-Press **Apply** to keep the color, or **Cancel** (or close the panel) to revert to the color you had before opening the picker. Once applied, the color persists in your workspace settings, just like any other Peacock color:
-
-![Color applied and persisted in the title bar and status bar](../assets/custom-color-picker-4-applied.png)
-
-The **Custom color…** item is always available, even if you have not saved any favorites yet.
+Press **Apply** to keep the color, or **Cancel** (or close the panel) to revert to the color you had before opening the picker. Once applied, the color persists in your workspace settings, just like any other Peacock color.
 
 #### Save Favorite Color
 
@@ -289,6 +288,7 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                      |
 | Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                   |
 | Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites, or open the [Custom Color Picker](#custom-color-picker)                               |
+| Peacock: Pick a Custom Color (Visual Picker)    | Opens the [Custom Color Picker](#custom-color-picker) directly, without going through Favorites                                    |
 | Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                              |
 | Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
 | Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
