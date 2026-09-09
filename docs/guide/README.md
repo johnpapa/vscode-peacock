@@ -114,6 +114,10 @@ You can open the visual color picker three ways:
 
 ![Favorites Quick Pick with Custom color… selected](../assets/custom-color-picker-1-quickpick.png)
 
+However you open it, you land on the same **Custom Color** panel:
+
+![Custom Color Picker panel with color well, eyedropper, hex field, and live title-bar contrast preview](../assets/custom-color-picker-panel.png)
+
 Either path opens the same picker panel, starting from your current Peacock color. The panel has:
 
 - A native color well and a hex text field, kept in sync with each other, so you can pick a color visually instead of looking up a hex code elsewhere and pasting it into **Peacock: Enter a Color**.
