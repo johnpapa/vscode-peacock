@@ -55,6 +55,7 @@ jobs:
             --root-dir docs
             --exclude-path changelog/README.md
             --exclude https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+            --exclude https://brandcolors.net
             docs/**/*.md
             docs/index.html
         env:
