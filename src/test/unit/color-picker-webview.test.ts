@@ -25,9 +25,7 @@ describe('Color picker webview (#708)', () => {
         onCancel: vi.fn(),
       });
 
-      await expect(
-        handle({ type: 'preview', color: 'not-a-color' }),
-      ).resolves.toBeUndefined();
+      await expect(handle({ type: 'preview', color: 'not-a-color' })).resolves.toBeUndefined();
       expect(onPreview).not.toHaveBeenCalled();
     });
 
