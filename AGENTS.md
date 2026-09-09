@@ -95,6 +95,7 @@ npm run package:check           # Package the VSIX and verify contents/size (see
 - Every new feature must include unit tests covering the happy path and relevant edge cases
 - Never merge code that reduces the passing test count
 - UI/theme-affecting changes (status bar, title bar, activity bar, color tokens) should be verified on Windows, VS Live Share, and Cursor before considering the fix complete — automated tests alone haven't caught real-world issues here in the past
+- **Treat "this can't be tested" claims in a PR as a hypothesis to verify, not a fact to accept.** Before agreeing, `grep` `src/test/` for the exact `vscode` API/state the new code depends on (e.g. `env.remoteName`, a config key, a command). If any existing suite already stubs/mocks that exact dependency (host lane can `sinon.stub(vscode.env, ...)`; unit lane only has what's in `src/test/unit/mocks/vscode.ts`), the claim usually means "untestable in the one lane I checked," not "untestable everywhere" — write the test in the lane that already supports it instead of skipping coverage. See PR #757 for a worked example (claim was wrong; host-lane precedent existed in `remote.test.ts`).
 
 ## Key Patterns and Conventions
 
