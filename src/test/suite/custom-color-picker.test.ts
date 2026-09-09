@@ -151,6 +151,64 @@ suite('Custom color picker (#708)', () => {
 
       createPanelStub.restore();
     });
+
+    test("posts the picker's own fallback color (peacockGreen) as the initial contrast preview when there's no starting color to resolve (#708 follow-up)", async () => {
+      const { panel, postedMessages, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      // '' is what getEnvironmentAwareColor() returns when no
+      // peacock.color/remoteColor is set yet -- getColorPickerHtml('')
+      // falls back to peacockGreen for the well/hex field, and the
+      // initial contrast preview must be computed from that same
+      // resolved color, not from '' (which would compute a black
+      // background/light-foreground pairing that has nothing to do with
+      // what the picker actually shows).
+      const resultPromise = promptForCustomColorViaColorPicker('');
+
+      const initialContrast: any = postedMessages.find(
+        (message: any) => message.type === 'contrast',
+      );
+      assert.ok(initialContrast, 'expected an initial contrast message');
+      assert.strictEqual(initialContrast.backgroundHex, peacockGreen);
+
+      await postToExtension({ type: 'cancel' });
+      await resultPromise;
+
+      createPanelStub.restore();
+    });
+
+    test('closing the panel while a preview is still queued does not leave a stale color applied, and does not throw (#708 follow-up: dispose race)', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const startingColor = getEnvironmentAwareColor();
+
+      const { panel, postToExtension, simulateUserClosingPanel } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const resultPromise = promptForCustomColorViaColorPicker(startingColor);
+
+      // Deliberately don't await this preview -- it's still queued/in
+      // flight when the panel closes right after, mirroring a color-well
+      // drag event landing at the same moment the user clicks the tab's
+      // close button.
+      const previewPromise = postToExtension({ type: 'preview', color: azureBlue });
+      simulateUserClosingPanel();
+
+      // The queued preview's own contrast-preview post now happens after
+      // the panel is disposed; it must be silently skipped, not throw
+      // (previously this posted to the fake's now-disposed webview, which
+      // throws "Webview is disposed" -- an unhandled rejection since
+      // nothing awaits that post).
+      await assert.doesNotReject(previewPromise);
+      const result = await resultPromise;
+
+      createPanelStub.restore();
+
+      assert.strictEqual(result, '');
+      // The dispose-triggered revert to startingColor is queued *after*
+      // the in-flight preview, so it runs last and wins: no stale azureBlue
+      // preview is left applied.
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
+    });
   });
 
   suite('enterColor command with no argument (#708 follow-up: merged with visual picker)', () => {

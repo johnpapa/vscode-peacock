@@ -33,6 +33,16 @@ export function createFakeWebviewPanel() {
         return { dispose: () => undefined };
       },
       postMessage: async (message: unknown) => {
+        // Mirrors the real vscode.Webview: posting after the panel is
+        // disposed throws, rather than silently succeeding. A caller that
+        // races a still-in-flight message handler against the panel
+        // closing (e.g. dragging a color well right up to the moment the
+        // tab is closed) needs to guard against this itself -- this fake
+        // needs to actually fail the same way, or a test could pass
+        // despite the caller doing nothing to prevent it (#708 follow-up).
+        if (disposed) {
+          throw new Error('Webview is disposed');
+        }
         postedMessages.push(message);
         return true;
       },

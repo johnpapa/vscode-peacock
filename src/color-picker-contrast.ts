@@ -1,10 +1,6 @@
 import * as vscode from 'vscode';
-import { AffectedSettings, ElementNames, ReadabilityRatios } from './models';
-import {
-  getElementStyle,
-  isAffectedSettingSelected,
-  getKeepForegroundColor,
-} from './configuration';
+import { ElementNames, ReadabilityRatios } from './models';
+import { getElementStyle } from './configuration';
 import { getReadabilityRatio } from './color-library';
 import { getTitleBarForegroundForApp } from './title-bar-foreground';
 
@@ -13,14 +9,6 @@ export interface TitleBarContrastPreview {
   foregroundHex: string;
   ratio: number;
   isReadable: boolean;
-  /**
-   * False when Peacock's current settings mean the title bar foreground
-   * shown here is illustrative only (peacock.affectTitleBar is off, or
-   * peacock.keepForegroundColor is on) rather than what will actually be
-   * applied. The picker still shows the pairing Peacock *would* use so
-   * users can judge contrast, but callers can use this to caveat it.
-   */
-  wouldBeApplied: boolean;
 }
 
 /**
@@ -42,14 +30,10 @@ export function getTitleBarContrastPreview(backgroundHex: string): TitleBarContr
   );
   const ratio = getReadabilityRatio(titleBarStyle.backgroundHex, foregroundHex);
 
-  const wouldBeApplied =
-    isAffectedSettingSelected(AffectedSettings.TitleBar) && !getKeepForegroundColor();
-
   return {
     backgroundHex: titleBarStyle.backgroundHex,
     foregroundHex,
     ratio,
     isReadable: ratio >= ReadabilityRatios.Text,
-    wouldBeApplied,
   };
 }

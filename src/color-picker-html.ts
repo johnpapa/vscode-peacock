@@ -1,5 +1,27 @@
 import { peacockGreen } from './models';
-import { isValidColorInput } from './color-library';
+import { isValidColorInput, getColorHex } from './color-library';
+
+/**
+ * A random per-render token for the CSP's script-src, so the inline
+ * <script> below is the only script this page's CSP will ever run,
+ * rather than a blanket 'unsafe-inline' that would let ANY inline script
+ * execute -- including one smuggled in through some future, less careful
+ * edit that interpolates an unnormalized value into the HTML. Doesn't
+ * need to be cryptographically random: it only has to be unguessable for
+ * the lifetime of one panel render, not secret long-term, so plain
+ * Math.random() (the same approach VS Code's own webview-sample
+ * extension uses) avoids depending on Node's `crypto` module, which the
+ * web/webworker extension bundle (extension-web.js) can't resolve (#708
+ * follow-up).
+ */
+function getNonce(): string {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < 32; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
 
 /**
  * Message shapes posted from the webview's own script (see getColorPickerHtml).
@@ -30,6 +52,16 @@ export interface ColorPickerCallbacks {
   onPreview: (color: string) => void | Promise<void>;
   onApply: (color: string) => void | Promise<void>;
   onCancel: () => void | Promise<void>;
+  /**
+   * Called instead of onPreview/onApply when a 'preview' or 'apply'
+   * message's color fails isValidColorInput() even though the webview's
+   * own client-side looksLikeColor() heuristic accepted it -- e.g. a typo
+   * like "purpel" matches the client's "any run of letters" named-color
+   * check, or a malformed rgb()/hsl() call. Without this, Apply stayed
+   * enabled and clicking it silently did nothing: the host quietly
+   * dropped the message with no feedback (#708 follow-up).
+   */
+  onInvalid?: (color: string) => void;
 }
 
 /**
@@ -60,10 +92,11 @@ export function serializeMessageHandler<T>(handler: (message: T) => void | Promi
 /**
  * Pure message-handling logic, factored out of the webview wiring (in
  * color-picker-webview.ts) so it's testable without a real vscode.Webview.
- * Invalid colors from 'preview'/'apply' are silently ignored rather than
- * throwing -- the webview's own hex field already guards against malformed
- * input before posting, so this is a second, defensive check, not the
- * primary validation.
+ * Invalid colors from 'preview'/'apply' never reach onPreview/onApply --
+ * the webview's own hex field already guards against malformed input
+ * before posting, so this is a second, authoritative check, not the
+ * primary validation -- but callers are told via onInvalid rather than
+ * the message being dropped with no signal at all.
  */
 export function createColorPickerMessageHandler(callbacks: ColorPickerCallbacks) {
   return async (message: ColorPickerMessage) => {
@@ -71,11 +104,15 @@ export function createColorPickerMessageHandler(callbacks: ColorPickerCallbacks)
       case 'preview':
         if (isValidColorInput(message.color)) {
           await callbacks.onPreview(message.color);
+        } else {
+          callbacks.onInvalid?.(message.color);
         }
         break;
       case 'apply':
         if (isValidColorInput(message.color)) {
           await callbacks.onApply(message.color);
+        } else {
+          callbacks.onInvalid?.(message.color);
         }
         break;
       case 'cancel':
@@ -83,6 +120,33 @@ export function createColorPickerMessageHandler(callbacks: ColorPickerCallbacks)
         break;
     }
   };
+}
+
+/**
+ * Resolves the color the picker should display when it opens: the
+ * caller's color, normalized to a plain #rrggbb[aa] hex string, if
+ * Peacock considers it valid; peacockGreen otherwise (e.g. no
+ * peacock.color set yet). Always normalizing through getColorHex() -- not
+ * just validity-checking the raw input -- matters for two reasons: (1) a
+ * string can pass isValidColorInput() (tinycolor's rgb()/hsl() parsing is
+ * not anchored to the whole string) while still containing characters
+ * that would break out of the HTML attribute it's interpolated into
+ * below, e.g. a workspace's committed peacock.color set to
+ * `rgb(1,2,3)" autofocus onfocus="...` -- getColorHex()'s tinycolor
+ * output is always just `#` followed by hex digits, so it can never
+ * contain a quote; (2) <input type="color"> only understands hex, so a
+ * stored named/rgb/hsl/hsv color would otherwise render the well as black
+ * while the text field shows the real value (#708 follow-up).
+ *
+ * Exported so color-picker-webview.ts can post this *same* resolved color
+ * as the initial contrast preview that getColorPickerHtml() actually
+ * renders -- otherwise an empty/invalid starting color would render
+ * peacockGreen in the picker but compute the contrast preview from ''
+ * (black), a second, unrelated instance of the same "resolve once, reuse
+ * everywhere" problem (#708 follow-up).
+ */
+export function resolveInitialColor(initialColor: string): string {
+  return isValidColorInput(initialColor) ? getColorHex(initialColor) : peacockGreen;
 }
 
 /**
@@ -95,12 +159,18 @@ export function createColorPickerMessageHandler(callbacks: ColorPickerCallbacks)
  * without leaving the editor (#708).
  */
 export function getColorPickerHtml(initialColor: string): string {
-  const safeInitial = isValidColorInput(initialColor) ? initialColor : peacockGreen;
+  const safeInitial = resolveInitialColor(initialColor);
+  // <input type="color"> silently ignores a value with an alpha byte
+  // (9-char #rrggbbaa, from Peacock's Hex8/RGBA/HSLA/HSVA input formats)
+  // and falls back to black; seed the well with the alpha-less prefix and
+  // let the hex text field show the full value.
+  const wellInitial = safeInitial.length === 9 ? safeInitial.slice(0, 7) : safeInitial;
+  const nonce = getNonce();
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';" />
 <style>
   :root {
     color-scheme: light dark;
@@ -268,7 +338,7 @@ export function getColorPickerHtml(initialColor: string): string {
 
     <span class="field-label" id="colorFieldLabel">Color</span>
     <div class="row" role="group" aria-labelledby="colorFieldLabel">
-      <input type="color" id="colorWell" value="${safeInitial}" aria-label="Color well" />
+      <input type="color" id="colorWell" value="${wellInitial}" aria-label="Color well" />
       <button type="button" id="eyedropperBtn" title="Pick a color from anywhere on screen" aria-label="Pick a color from anywhere on screen" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M19.5 3.5a2.5 2.5 0 0 1 0 3.54l-1.06 1.06 1.5 1.5-2.12 2.12-1.5-1.5-8.5 8.5a1 1 0 0 1-.46.26l-4 1a1 1 0 0 1-1.21-1.21l1-4a1 1 0 0 1 .26-.46l8.5-8.5-1.5-1.5L12.03 2.7l1.5 1.5 1.06-1.06a2.5 2.5 0 0 1 3.54 0z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
       <input type="text" id="hexInput" value="${safeInitial}" maxlength="40" spellcheck="false" aria-label="Color value: hex, name, or rgb/hsl/hsv" placeholder="#42b883, DarkBlue, rgb(66, 184, 131)…" />
     </div>
@@ -284,7 +354,7 @@ export function getColorPickerHtml(initialColor: string): string {
       <button id="applyBtn" type="button">Apply</button>
     </div>
   </div>
-  <script>
+  <script nonce="${nonce}">
     (function () {
       const vscodeApi = acquireVsCodeApi();
       const well = document.getElementById('colorWell');
@@ -394,7 +464,19 @@ export function getColorPickerHtml(initialColor: string): string {
 
       window.addEventListener('message', event => {
         const message = event.data;
-        if (!message || message.type !== 'contrast') {
+        if (!message) {
+          return;
+        }
+        if (message.type === 'invalid') {
+          // The host's isValidColorInput() check is authoritative; this
+          // client-side heuristic only knows a value LOOKS plausible (e.g.
+          // any run of letters for a named color), not that it's real, so
+          // surface the host's rejection instead of leaving Apply enabled
+          // for a color that will never actually apply (#708 follow-up).
+          setValidity(false);
+          return;
+        }
+        if (message.type !== 'contrast') {
           return;
         }
         contrastPreview.style.backgroundColor = message.backgroundHex;

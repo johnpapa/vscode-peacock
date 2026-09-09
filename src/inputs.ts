@@ -43,6 +43,17 @@ export async function promptForFavoriteColor() {
 
 async function tryColorWithPeacock() {
   return async (item: string) => {
+    // "Custom color…" is not a favorite -- it's the Quick Pick item that
+    // opens the color picker panel. Merely highlighting it (e.g. arrowing
+    // down to it, before ever selecting it) must not touch the applied
+    // color: parseFavoriteColorValue() on its label has no
+    // favoriteColorSeparator, so it returns a garbage substring that
+    // applyColor() treats as invalid input and responds to by unapplying
+    // every current Peacock color (title bar, activity bar, status bar)
+    // the instant the item is highlighted (#708 follow-up).
+    if (item === customColorPickerLabel) {
+      return;
+    }
     const color = parseFavoriteColorValue(item);
     return await applyColor(color);
   };

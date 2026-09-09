@@ -5,17 +5,20 @@ import {
   getColorPickerHtml,
   serializeMessageHandler,
 } from '../../color-picker-html';
+import { isValidColorInput } from '../../color-library';
 import { peacockGreen, azureBlue } from '../../models';
 
 /**
  * Extracts the contents of the picker's inline <script> tag from its
- * generated HTML. Case-insensitive (CodeQL: js/bad-tag-filter -- an HTML tag
- * match that only accounts for lower case can be trivially missed if the
- * source ever emits `<SCRIPT>`), even though color-picker-html.ts always
- * emits a lower case tag today.
+ * generated HTML. Matches any attributes on the opening tag (e.g. the CSP
+ * nonce -- see getColorPickerHtml()'s use of getNonce()), and is
+ * case-insensitive (CodeQL: js/bad-tag-filter -- an HTML tag match that
+ * only accounts for lower case can be trivially missed if the source ever
+ * emits `<SCRIPT>`), even though color-picker-html.ts always emits a lower
+ * case tag today.
  */
 function extractInlineScript(html: string): string {
-  const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/i);
+  const scriptMatch = html.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
   if (!scriptMatch) {
     throw new Error('Could not find inline <script> in generated picker HTML');
   }
@@ -79,16 +82,19 @@ describe('Color picker webview (#708)', () => {
       expect(onCancel).not.toHaveBeenCalled();
     });
 
-    it('ignores an invalid preview color rather than throwing', async () => {
+    it('ignores an invalid preview color rather than throwing, and reports it via onInvalid', async () => {
       const onPreview = vi.fn();
+      const onInvalid = vi.fn();
       const handle = createColorPickerMessageHandler({
         onPreview,
         onApply: vi.fn(),
         onCancel: vi.fn(),
+        onInvalid,
       });
 
       await expect(handle({ type: 'preview', color: 'not-a-color' })).resolves.toBeUndefined();
       expect(onPreview).not.toHaveBeenCalled();
+      expect(onInvalid).toHaveBeenCalledWith('not-a-color');
     });
 
     it('calls onApply for a valid apply color', async () => {
@@ -104,17 +110,31 @@ describe('Color picker webview (#708)', () => {
       expect(onApply).toHaveBeenCalledWith(peacockGreen);
     });
 
-    it('ignores an invalid apply color rather than resolving with it', async () => {
+    it('ignores an invalid apply color rather than resolving with it, and reports it via onInvalid', async () => {
       const onApply = vi.fn();
+      const onInvalid = vi.fn();
       const handle = createColorPickerMessageHandler({
         onPreview: vi.fn(),
         onApply,
         onCancel: vi.fn(),
+        onInvalid,
       });
 
       await handle({ type: 'apply', color: 'nope' });
 
       expect(onApply).not.toHaveBeenCalled();
+      expect(onInvalid).toHaveBeenCalledWith('nope');
+    });
+
+    it('does not throw when onInvalid is omitted (it is optional)', async () => {
+      const handle = createColorPickerMessageHandler({
+        onPreview: vi.fn(),
+        onApply: vi.fn(),
+        onCancel: vi.fn(),
+      });
+
+      await expect(handle({ type: 'preview', color: 'nope' })).resolves.toBeUndefined();
+      await expect(handle({ type: 'apply', color: 'nope' })).resolves.toBeUndefined();
     });
 
     it('calls onCancel regardless of any color value', async () => {
@@ -146,11 +166,61 @@ describe('Color picker webview (#708)', () => {
       expect(html).toContain(`id="hexInput" value="${peacockGreen}"`);
     });
 
-    it('sets a restrictive Content-Security-Policy with no remote sources', () => {
+    it('normalizes the starting color to plain hex before interpolating it, so a crafted value cannot break out of the HTML attribute (security regression)', () => {
+      // tinycolor's rgb() parsing is not anchored to the whole string, so
+      // this passes isValidColorInput() even though it is not a color --
+      // it's an attribute-breakout attempt a workspace could smuggle in
+      // via a committed .vscode/settings.json peacock.color value. Before
+      // normalizing through getColorHex(), this string was interpolated
+      // into value="${safeInitial}" verbatim, closing the attribute early
+      // and injecting an onfocus handler that runs on load.
+      const evilColor = 'rgb(1,2,3)" autofocus onfocus="window.__pwned = true';
+      expect(isValidColorInput(evilColor)).toBe(true); // confirms the premise
+
+      const html = getColorPickerHtml(evilColor);
+
+      expect(html).not.toContain(evilColor);
+      expect(html).not.toContain('onfocus=');
+      expect(html).not.toContain('autofocus');
+      // The normalized value is a plain #rrggbb hex string in both fields.
+      expect(html).toMatch(/id="colorWell" value="#[0-9a-fA-F]{6}"/);
+      expect(html).toMatch(/id="hexInput" value="#[0-9a-fA-F]{6}"/);
+    });
+
+    it('seeds the color well with the alpha-less prefix of an 8-digit hex color, since <input type="color"> only understands 6-digit hex', () => {
+      const translucentBlue = '#007fffcc'; // azureBlue with alpha
+      const html = getColorPickerHtml(translucentBlue);
+
+      // The well can't render alpha -- it gets the 6-digit prefix -- but
+      // the hex text field keeps the full value the user actually chose.
+      expect(html).toContain(`id="colorWell" value="${azureBlue}"`);
+      expect(html).toContain(`id="hexInput" value="${translucentBlue}"`);
+    });
+
+    it("sets a restrictive Content-Security-Policy with no remote sources, and a per-render nonce instead of 'unsafe-inline' for script-src", () => {
       const html = getColorPickerHtml(peacockGreen);
 
       expect(html).toMatch(/Content-Security-Policy/);
       expect(html).toContain("default-src 'none'");
+      // Only the CSS is trusted inline unconditionally -- it's fully
+      // static, with no interpolated values -- while the script is gated
+      // behind a nonce that changes every render, so no OTHER inline
+      // script (e.g. one smuggled in by some future, less careful change)
+      // can execute under this CSP.
+      expect(html).toContain("style-src 'unsafe-inline'");
+      expect(html).not.toMatch(/script-src[^;]*unsafe-inline/);
+      const nonceMatch = html.match(/script-src 'nonce-([A-Za-z0-9]+)'/);
+      expect(nonceMatch).not.toBeNull();
+      expect(html).toContain(`<script nonce="${nonceMatch![1]}">`);
+    });
+
+    it('generates a different nonce on every call, so the CSP cannot be replayed across renders', () => {
+      const first = getColorPickerHtml(peacockGreen).match(/nonce-([A-Za-z0-9]+)/)?.[1];
+      const second = getColorPickerHtml(peacockGreen).match(/nonce-([A-Za-z0-9]+)/)?.[1];
+
+      expect(first).toBeDefined();
+      expect(second).toBeDefined();
+      expect(first).not.toEqual(second);
     });
 
     it('includes a feature-detected EyeDropper button, hidden until JS confirms support', () => {
@@ -279,7 +349,15 @@ describe('Color picker webview (#708)', () => {
         return defaultPrevented;
       };
 
-      return { elements, posted, dispatchKeydown };
+      // Simulates the extension host posting a message down to the webview
+      // (e.g. { type: 'invalid' } or { type: 'contrast', ... }), the same
+      // way panel.webview.postMessage() in color-picker-webview.ts arrives
+      // on the client side as a 'message' event on window.
+      const dispatchMessage = (data: Record<string, unknown>) => {
+        (windowListeners['message'] || []).forEach(fn => fn({ data }));
+      };
+
+      return { elements, posted, dispatchKeydown, dispatchMessage };
     }
 
     it('pressing Enter while the hex field is focused posts an apply message with the current value', () => {
@@ -323,6 +401,106 @@ describe('Color picker webview (#708)', () => {
       dispatchKeydown('Escape', elements.applyBtn);
 
       expect(posted).toEqual([{ type: 'cancel' }]);
+    });
+  });
+
+  describe("Host->webview 'invalid' message (#708 follow-up: silently-dropped Apply)", () => {
+    function runPickerScript(initialColor: string) {
+      const html = getColorPickerHtml(initialColor);
+      const script = extractInlineScript(html);
+
+      function makeElement(initialValue = '') {
+        return {
+          value: initialValue,
+          disabled: false,
+          className: '',
+          style: {},
+          textContent: '',
+          classList: { toggle: () => {} },
+          addEventListener: () => {},
+        };
+      }
+
+      const elements: Record<string, any> = {
+        colorWell: makeElement(initialColor),
+        hexInput: makeElement(initialColor),
+        applyBtn: makeElement(),
+        eyedropperBtn: makeElement(),
+        contrastPreview: makeElement(),
+        contrastBadge: makeElement(),
+        cancelBtn: makeElement(),
+      };
+
+      const fakeDocument = {
+        getElementById: (id: string) => elements[id],
+        addEventListener: () => {},
+      };
+
+      const windowListeners: Record<string, Array<(event: any) => void>> = {};
+      const fakeWindow: any = {
+        addEventListener(type: string, fn: (event: any) => void) {
+          (windowListeners[type] ||= []).push(fn);
+        },
+      };
+
+      const sandbox: any = {
+        document: fakeDocument,
+        window: fakeWindow,
+        HTMLButtonElement: class {},
+        acquireVsCodeApi: () => ({ postMessage: () => undefined }),
+      };
+      vm.createContext(sandbox);
+      new vm.Script(script).runInContext(sandbox);
+
+      const dispatchMessage = (data: Record<string, unknown>) => {
+        (windowListeners['message'] || []).forEach(fn => fn({ data }));
+      };
+
+      return { elements, dispatchMessage };
+    }
+
+    it("marks the hex field invalid and disables Apply on a host {type: 'invalid'} message", () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+      // Apply starts enabled (a valid starting color); the host is the
+      // one telling us this value doesn't actually work.
+      elements.applyBtn.disabled = false;
+
+      dispatchMessage({ type: 'invalid' });
+
+      expect(elements.applyBtn.disabled).toBe(true);
+    });
+
+    it('ignores an unrelated message type', () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+      elements.applyBtn.disabled = false;
+
+      dispatchMessage({ type: 'something-else' });
+
+      expect(elements.applyBtn.disabled).toBe(false);
+    });
+
+    it('ignores a message with no data', () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+      elements.applyBtn.disabled = false;
+
+      expect(() => dispatchMessage(undefined as any)).not.toThrow();
+      expect(elements.applyBtn.disabled).toBe(false);
+    });
+
+    it('still applies a contrast update after an earlier invalid message (the two message types do not interfere)', () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+
+      dispatchMessage({ type: 'invalid' });
+      dispatchMessage({
+        type: 'contrast',
+        backgroundHex: '#ffa500',
+        foregroundHex: '#15202b',
+        ratio: 10,
+        isReadable: true,
+      });
+
+      expect(elements.contrastPreview.style.backgroundColor).toBe('#ffa500');
+      expect(elements.contrastBadge.textContent).toContain('10.0:1');
     });
   });
 });
