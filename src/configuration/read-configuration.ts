@@ -259,6 +259,7 @@ export function getAffectedElements() {
     tabActiveBorder: readConfiguration<boolean>(AffectedSettings.TabActiveBorder) || false,
     tabActiveBackground: readConfiguration<boolean>(AffectedSettings.TabActiveBackground) || false,
     windowBorder: readConfiguration<boolean>(AffectedSettings.WindowBorder) || false,
+    fileTreeSelection: readConfiguration<boolean>(AffectedSettings.FileTreeSelection) || false,
   } as IPeacockAffectedElementSettings;
 }
 
@@ -471,6 +472,16 @@ function collectAccentBorderSettings(backgroundHex: string) {
   }
   if (isAffectedSettingSelected(AffectedSettings.TabActiveBackground)) {
     accentBorderSettings[ColorSettings.tabActiveBackground] = color;
+  }
+  if (isAffectedSettingSelected(AffectedSettings.FileTreeSelection)) {
+    // Outline only (#539): a 1px ring in the accent color around the
+    // focused/selected row in the Explorer and other list/tree views. The
+    // theme's own selection and hover fills are left untouched so the change
+    // stays subtle. inactiveFocusOutline covers the common case where the
+    // editor has focus and the tree merely tracks the active file.
+    accentBorderSettings[ColorSettings.list_focusOutline] = color;
+    accentBorderSettings[ColorSettings.list_focusAndSelectionOutline] = color;
+    accentBorderSettings[ColorSettings.list_inactiveFocusOutline] = color;
   }
   return accentBorderSettings;
 }

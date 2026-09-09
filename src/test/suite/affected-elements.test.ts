@@ -128,6 +128,7 @@ suite('Affected elements', () => {
 
         tabActiveBorder: false,
         windowBorder: false,
+        fileTreeSelection: false,
       } as IPeacockAffectedElementSettings);
     });
 
@@ -234,6 +235,7 @@ suite('Affected elements', () => {
     test('windowBorder does not set activeBorder and inactiveBorder when disabled', async () => {
       await updateAffectedElements({
         windowBorder: false,
+        fileTreeSelection: false,
       } as IPeacockAffectedElementSettings);
 
       await executeCommand(Commands.changeColorToPeacockGreen);
@@ -241,6 +243,46 @@ suite('Affected elements', () => {
 
       assert.ok(!config[ColorSettings.window_activeBorder]);
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
+    });
+
+    test('fileTreeSelection outlines the focused list row in the accent color when enabled', async () => {
+      await updateAffectedElements({
+        fileTreeSelection: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      const { backgroundHex: accent } = getElementStyle(peacockGreen, 'activityBar');
+
+      assert.equal(config[ColorSettings.list_focusOutline], accent);
+      assert.equal(config[ColorSettings.list_focusAndSelectionOutline], accent);
+      assert.equal(config[ColorSettings.list_inactiveFocusOutline], accent);
+    });
+
+    test('fileTreeSelection leaves the list selection and hover fills to the theme', async () => {
+      await updateAffectedElements({
+        fileTreeSelection: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config['list.activeSelectionBackground']);
+      assert.ok(!config['list.inactiveSelectionBackground']);
+      assert.ok(!config['list.hoverBackground']);
+    });
+
+    test('fileTreeSelection does not set any list outline when disabled', async () => {
+      await updateAffectedElements({
+        fileTreeSelection: false,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.list_focusOutline]);
+      assert.ok(!config[ColorSettings.list_focusAndSelectionOutline]);
+      assert.ok(!config[ColorSettings.list_inactiveFocusOutline]);
     });
 
     test('tabActiveBackground is colored when enabled', async () => {
@@ -297,6 +339,7 @@ suite('Affected elements', () => {
         tabActiveBorder: false,
         tabActiveBackground: false,
         windowBorder: false,
+        fileTreeSelection: false,
       } as IPeacockAffectedElementSettings);
     });
 
@@ -352,6 +395,7 @@ suite('Affected elements', () => {
         sashHover: true,
         statusAndTitleBorders: false,
         windowBorder: false,
+        fileTreeSelection: false,
       });
 
       const value = await getColorSettingAfterEnterColor(

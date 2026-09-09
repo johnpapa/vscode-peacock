@@ -6,6 +6,7 @@ All notable changes to the code will be documented in this file.
 
 ### Features
 
+- Added an opt-in `peacock.affectFileTreeSelection` setting (default `false`). When enabled, Peacock draws a thin outline in its computed accent color around the focused/selected row in the Explorer, Search, and every other list/tree view (`list.focusOutline`, `list.focusAndSelectionOutline`, `list.inactiveFocusOutline`). The theme's own selection and hover fills are left untouched, so the current file gets a subtle Peacock-colored ring instead of a recolored row. Off by default because it applies to every list view ([#539](https://github.com/johnpapa/vscode-peacock/issues/539))
 - Peacock's status bar item now signals a remote window. When `vscode.env.remoteName` is set (Remote SSH, WSL, Dev Containers, and similar), the item reads `$(remote) $(paintcan) <color>` instead of `$(paintcan) <color>`, and its tooltip includes the remote name. The existing `statusBarItem.remoteBackground`/`remoteForeground` coloring is unchanged; this only adds a readable text cue for the case where the color alone is easy to miss at a glance ([#392](https://github.com/johnpapa/vscode-peacock/issues/392))
 
 ### Tests

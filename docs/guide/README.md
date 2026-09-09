@@ -57,6 +57,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                                                                                                                    |
 | peacock.affectTabActiveBackground   | Specifies whether Peacock should affect the active tab's background color. Defaults to false                                                                                                                          |
 | peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+.                                             |
+| peacock.affectFileTreeSelection     | Specifies whether Peacock should outline the selected item in the file tree and other list views with the Peacock color (see [file tree selection](#file-tree-selection)). Defaults to false.                          |
 | peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)                                                                                                          |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                                                                                                                               |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                                                                                                                       |
@@ -116,6 +117,8 @@ You can tell peacock which parts of VS Code will be affected by when you select 
 
 Peacock also automatically colorizes the Command Center foreground and border to match the title bar when title bar coloring is enabled.
 
+![affected elements](../assets/affected-settings.png)
+
 #### Window Border (VS Code 1.104+ on Windows)
 
 To color the outer window border, enable `peacock.affectWindowBorder`. When enabled, Peacock sets both `window.activeBorder` and `window.inactiveBorder` to your Peacock color.
@@ -124,7 +127,15 @@ To color the outer window border, enable `peacock.affectWindowBorder`. When enab
   "peacock.affectWindowBorder": true
 ```
 
-![affected elements](../assets/affected-settings.png)
+#### File Tree Selection
+
+To mark the selected item in the Explorer, Search, and other list/tree views with your Peacock color, enable `peacock.affectFileTreeSelection`. When enabled, Peacock draws a thin outline in the same accent it computes for the activity bar around the focused/selected row (`list.focusOutline`, `list.focusAndSelectionOutline`, `list.inactiveFocusOutline`). The theme's own selection and hover fills are left unchanged, so the effect is a subtle ring rather than a recolored row. Because VS Code tracks the active editor in the Explorer, this also makes the current file easier to spot. It is off by default because it applies to every list view, not just the file tree.
+
+```javascript
+  "peacock.affectFileTreeSelection": true
+```
+
+![File tree selection before and after enabling peacock.affectFileTreeSelection](../assets/file-tree-selection.png)
 
 ### Excluded Settings
 
