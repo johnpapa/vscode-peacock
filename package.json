@@ -250,6 +250,11 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the title bar."
         },
+        "peacock.affectFileTreeSelection": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should affect the selected/hovered item highlight in the file tree and other list views (list.activeSelectionBackground, list.inactiveSelectionBackground, list.hoverBackground)."
+        },
         "peacock.color": {
           "type": "string",
           "format": "color",

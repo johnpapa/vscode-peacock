@@ -129,6 +129,8 @@ export function prepareColors(backgroundHex: string) {
 
   const statusBarSettings = collectStatusBarSettings(backgroundHex, keepForegroundColor);
 
+  const fileTreeSettings = collectFileTreeSettings(backgroundHex);
+
   // Merge all color settings
   const mergedSettings: ISettingsIndexer = {
     ...activityBarSettings,
@@ -137,6 +139,7 @@ export function prepareColors(backgroundHex: string) {
     ...accentBorderSettings,
     ...windowBorderSettings,
     ...squigglyBeGoneSettings,
+    ...fileTreeSettings,
   };
 
   const newColorCustomizations = sortSettingsIndexer(mergedSettings);
@@ -484,6 +487,21 @@ function collectWindowBorderSettings(backgroundHex: string) {
     windowBorderSettings[ColorSettings.window_inactiveBorder] = color;
   }
   return windowBorderSettings;
+}
+
+function collectFileTreeSettings(backgroundHex: string) {
+  const fileTreeSettings = {} as ISettingsIndexer;
+
+  if (isAffectedSettingSelected(AffectedSettings.FileTreeSelection)) {
+    // Same adjustment as the activity bar / accent borders (#539), so the
+    // selected-item highlight in the Explorer, Search, and other list/tree
+    // views reads as part of the same accent rather than a mismatched extra.
+    const style = getElementStyle(backgroundHex, ElementNames.activityBar);
+    fileTreeSettings[ColorSettings.list_activeSelectionBackground] = style.backgroundHex;
+    fileTreeSettings[ColorSettings.list_inactiveSelectionBackground] = style.inactiveBackgroundHex;
+    fileTreeSettings[ColorSettings.list_hoverBackground] = style.backgroundHoverHex;
+  }
+  return fileTreeSettings;
 }
 
 function collectSquigglyBeGoneSettings() {
