@@ -34,6 +34,7 @@ VS Code extension written in TypeScript, bundled with Webpack, published to the 
 - Tests use `testworkspace/` as the VS Code workspace
 - **Every bug fix must include a regression test** that fails without the fix and passes with it
 - **Every new feature must include unit tests** covering the happy path and relevant edge cases
+- **Don't accept "this can't be tested" claims at face value.** Grep `src/test/` for the exact `vscode` API/state the change depends on — if any existing suite already stubs it (host lane can `sinon.stub(vscode.env, ...)`), reuse that lane/pattern instead of skipping the test. See PR #757 for a worked example.
 
 ## Code Style
 
