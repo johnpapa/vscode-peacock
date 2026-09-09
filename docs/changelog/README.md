@@ -7,9 +7,11 @@ All notable changes to the code will be documented in this file.
 ### Features
 
 - Added an opt-in `peacock.affectFileTreeSelection` setting (default `false`). When enabled, Peacock colors the selected and hovered item highlight in the Explorer, Search, and every other list/tree view (`list.activeSelectionBackground`, `list.inactiveSelectionBackground`, `list.hoverBackground`) using the same computed accent already used for the activity bar, so the selection reads as part of the Peacock color instead of the theme's unrelated default. Off by default because it visibly changes every list view's selection color ([#539](https://github.com/johnpapa/vscode-peacock/issues/539))
+- Peacock's status bar item now signals a remote window. When `vscode.env.remoteName` is set (Remote SSH, WSL, Dev Containers, and similar), the item reads `$(remote) $(paintcan) <color>` instead of `$(paintcan) <color>`, and its tooltip includes the remote name. The existing `statusBarItem.remoteBackground`/`remoteForeground` coloring is unchanged; this only adds a readable text cue for the case where the color alone is easy to miss at a glance ([#392](https://github.com/johnpapa/vscode-peacock/issues/392))
 
 ### Tests
 
+- Added host-lane regression coverage for the remote status bar indicator (`$(remote)` prefix + updated tooltip when `vscode.env.remoteName` is set), stubbing the remote context the same way `remote.test.ts` already does ([#392](https://github.com/johnpapa/vscode-peacock/issues/392))
 - Added regression coverage confirming `peacock.remoteColor` is preserved (not overwritten with a new random color) across repeated `Developer: Reload Window`/reconnect cycles in a remote SSH/WSL/container workspace when `peacock.surpriseMeOnStartup` is enabled. Verified this exact scenario is already handled correctly by the startup-selection persistence added for [#582](https://github.com/johnpapa/vscode-peacock/issues/582) (released in 4.3.0) — no functional code change was required ([#573](https://github.com/johnpapa/vscode-peacock/issues/573))
 
 ## 4.4.1 (2026-09-07)
