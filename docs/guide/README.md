@@ -108,7 +108,7 @@ When opening the Favorites command in the command palette, Peacock now previews 
 
 The last item in the favorites list is **Custom color…**. Selecting it opens a small color picker panel with a native color well and a hex text field kept in sync with each other, so you can pick a color visually instead of looking up a hex code elsewhere and pasting it into **Peacock: Enter a Color**.
 
-![Favorites Quick Pick with the Custom color… item](../assets/custom-color-picker-1-quickpick.png)
+![Favorites Quick Pick with Custom color… selected](../assets/custom-color-picker-1-quickpick.png)
 
 Selecting **Custom color…** opens the picker panel, starting from your current Peacock color:
 
