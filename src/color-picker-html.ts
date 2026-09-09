@@ -264,13 +264,13 @@ export function getColorPickerHtml(initialColor: string): string {
 <body>
   <div class="picker">
     <h1>Custom Color</h1>
-    <p class="subtitle">Pick a color visually, then Apply it as your Peacock color.</p>
+    <p class="subtitle">Type a hex code, color name, or rgb/hsl/hsv value below, or pick one visually -- then Apply it as your Peacock color.</p>
 
     <span class="field-label" id="colorFieldLabel">Color</span>
     <div class="row" role="group" aria-labelledby="colorFieldLabel">
       <input type="color" id="colorWell" value="${safeInitial}" aria-label="Color well" />
       <button type="button" id="eyedropperBtn" title="Pick a color from anywhere on screen" aria-label="Pick a color from anywhere on screen" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M19.5 3.5a2.5 2.5 0 0 1 0 3.54l-1.06 1.06 1.5 1.5-2.12 2.12-1.5-1.5-8.5 8.5a1 1 0 0 1-.46.26l-4 1a1 1 0 0 1-1.21-1.21l1-4a1 1 0 0 1 .26-.46l8.5-8.5-1.5-1.5L12.03 2.7l1.5 1.5 1.06-1.06a2.5 2.5 0 0 1 3.54 0z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
-      <input type="text" id="hexInput" value="${safeInitial}" maxlength="9" spellcheck="false" aria-label="Hex color value" />
+      <input type="text" id="hexInput" value="${safeInitial}" maxlength="40" spellcheck="false" aria-label="Color value: hex, name, or rgb/hsl/hsv" placeholder="#42b883, DarkBlue, rgb(66, 184, 131)…" />
     </div>
 
     <span class="field-label">Title bar contrast preview</span>
@@ -294,6 +294,26 @@ export function getColorPickerHtml(initialColor: string): string {
       const contrastPreview = document.getElementById('contrastPreview');
       const contrastBadge = document.getElementById('contrastBadge');
       const hexPattern = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+      // Accept the same broader set of formats Peacock's "Enter a Color"
+      // input used to (#708 follow-up -- "merge... remove enter a color and
+      // instead call it choose a custom color"): a bare hex value, a CSS
+      // named color (letters only), or an rgb/rgba/hsl/hsla/hsv/hsva
+      // function call. This is only a client-side heuristic to enable Apply
+      // and drive live preview -- isValidColorInput() on the extension host
+      // (color-picker-html.ts's createColorPickerMessageHandler) remains
+      // the real, authoritative check before anything is ever applied.
+      const namedColorPattern = /^[a-zA-Z]+$/;
+      const functionColorPattern = /^(rgb|rgba|hsl|hsla|hsv|hsva)\s*\(/i;
+
+      function looksLikeColor(value) {
+        const trimmed = value.trim();
+        return (
+          trimmed.length > 0 &&
+          (hexPattern.test(trimmed) ||
+            namedColorPattern.test(trimmed) ||
+            functionColorPattern.test(trimmed))
+        );
+      }
 
       function setValidity(isValid) {
         hex.classList.toggle('invalid', !isValid);
@@ -307,17 +327,22 @@ export function getColorPickerHtml(initialColor: string): string {
       });
 
       hex.addEventListener('input', () => {
-        const isValid = hexPattern.test(hex.value);
+        const value = hex.value.trim();
+        const isValid = looksLikeColor(value);
         setValidity(isValid);
         if (isValid) {
-          well.value = hex.value.length === 9 ? hex.value.slice(0, 7) : hex.value;
-          vscodeApi.postMessage({ type: 'preview', color: hex.value });
+          // The native color well only understands hex; leave it as-is for
+          // named/rgb/hsl/hsv input rather than fighting its format.
+          if (hexPattern.test(value)) {
+            well.value = value.length === 9 ? value.slice(0, 7) : value;
+          }
+          vscodeApi.postMessage({ type: 'preview', color: value });
         }
       });
 
       hex.addEventListener('keydown', event => {
         if (event.key === 'Enter' && !applyBtn.disabled) {
-          vscodeApi.postMessage({ type: 'apply', color: hex.value });
+          vscodeApi.postMessage({ type: 'apply', color: hex.value.trim() });
         }
       });
 
@@ -349,7 +374,7 @@ export function getColorPickerHtml(initialColor: string): string {
 
       applyBtn.addEventListener('click', () => {
         if (!applyBtn.disabled) {
-          vscodeApi.postMessage({ type: 'apply', color: hex.value });
+          vscodeApi.postMessage({ type: 'apply', color: hex.value.trim() });
         }
       });
 

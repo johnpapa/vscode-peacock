@@ -60,7 +60,7 @@
       },
       {
         "command": "peacock.enterColor",
-        "title": "Enter a Color",
+        "title": "Choose a Custom Color",
         "category": "Peacock"
       },
       {
@@ -86,11 +86,6 @@
       {
         "command": "peacock.changeColorToFavorite",
         "title": "Change to a Favorite Color",
-        "category": "Peacock"
-      },
-      {
-        "command": "peacock.pickCustomColor",
-        "title": "Pick a Custom Color (Visual Picker)",
         "category": "Peacock"
       },
       {
@@ -172,10 +167,6 @@
         },
         {
           "command": "peacock.changeColorToFavorite",
-          "when": "workspaceFolderCount != 0"
-        },
-        {
-          "command": "peacock.pickCustomColor",
           "when": "workspaceFolderCount != 0"
         },
         {

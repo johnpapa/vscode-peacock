@@ -6,10 +6,16 @@ import { isValidColorInput } from '../../color-library';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { executeCommand } from './lib/constants';
 import { createFakeWebviewPanel } from './lib/fake-webview-panel';
-import { createFakeInputBox } from './lib/fake-input-box';
 import { getColorCustomizationConfig } from '../../configuration';
 
-suite('Enter color', () => {
+// "Enter a Color" and the standalone visual picker were merged into a single
+// peacock.enterColor command (#708 follow-up: "merge... remove enter a
+// color and instead call it choose a custom color"). Calling it with no
+// argument now always opens the visual picker webview, whose hex/color
+// field accepts every format (hex, named colors, rgb/rgba/hsl/hsla/hsv/hsva)
+// that the retired InputBox used to -- these tests exercise that field via
+// the same 'apply' message the webview's own script posts.
+suite('Enter color (choose a custom color)', () => {
   const originalValues = {} as IPeacockSettings;
 
   suiteSetup(async () => await setupTestSuite(originalValues));
@@ -17,58 +23,12 @@ suite('Enter color', () => {
   setup(async () => await setupTest());
 
   suite('Invalid values do nothing', () => {
-    test('can hit ESC with no error', createColorInputEscapeTest());
+    test('canceling the picker leaves no color applied', createColorInputCancelTest());
 
-    test('can hit ENTER with no error', createColorInputTest('', undefined));
-  });
-
-  suite('Pick visually button (#708)', () => {
-    test('clicking the button hands off to the visual color picker', async () => {
-      const { input, ready, clickPickVisuallyButton } = createFakeInputBox();
-      const createInputBoxStub = sinon.stub(vscode.window, 'createInputBox').returns(input);
-
-      const enterColorPromise = executeCommand(Commands.enterColor);
-      await ready;
-
-      // The button should be present and labeled for the visual picker.
-      assert.strictEqual(input.buttons?.length, 1);
-      assert.ok(String(input.buttons?.[0].tooltip).toLowerCase().includes('visually'));
-
-      const { panel, postToExtension } = createFakeWebviewPanel();
-      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
-
-      // Don't await yet -- it doesn't resolve until the fake webview panel
-      // (opened inside the button handler) receives an apply/cancel message.
-      const buttonClickPromise = clickPickVisuallyButton();
-      await postToExtension({ type: 'apply', color: '#123456' });
-
-      await buttonClickPromise;
-      await enterColorPromise;
-      createInputBoxStub.restore();
-      createPanelStub.restore();
-
-      const config = getColorCustomizationConfig();
-      const value = config[ColorSettings.titleBar_activeBackground];
-      assert.equal(value, '#123456');
-    });
-
-    test('canceling the picker leaves no color applied', async () => {
-      const { input, clickPickVisuallyButton } = createFakeInputBox();
-      const createInputBoxStub = sinon.stub(vscode.window, 'createInputBox').returns(input);
-
-      const enterColorPromise = executeCommand(Commands.enterColor);
-
-      const { panel, postToExtension } = createFakeWebviewPanel();
-      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
-
-      const buttonClickPromise = clickPickVisuallyButton();
-      await postToExtension({ type: 'cancel' });
-
-      await buttonClickPromise;
-      await enterColorPromise;
-      createInputBoxStub.restore();
-      createPanelStub.restore();
-    });
+    test(
+      'closing the picker without applying anything leaves no color applied',
+      createColorInputCloseTest(),
+    );
   });
 
   suite('Hex, Hex RGBA', () => {
@@ -197,35 +157,57 @@ suite('Enter color', () => {
 
 function createColorInputTest(fakeResponse: string, expectedValue: string | undefined) {
   return async () => {
-    // Stub the InputBox to accept with a typed response.
-    const { input, typeAndAccept } = createFakeInputBox();
-    const stub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+    // Stub the webview panel and simulate its script posting the same
+    // 'apply' message it would for whatever the user typed into the
+    // hex/color field.
+    const { panel, postToExtension } = createFakeWebviewPanel();
+    const stub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
 
-    // fire the command
     const enterColorPromise = executeCommand(Commands.enterColor);
-    await typeAndAccept(fakeResponse);
+    await postToExtension({ type: 'apply', color: fakeResponse });
     await enterColorPromise;
 
     const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
     stub.restore();
 
-    // undefined is OK, since that means they hit ESC or blank
+    // undefined is OK, since that means nothing got applied
     // Otherwise, we need a valid color
     assert.ok(!value || isValidColorInput(value));
     assert.equal(expectedValue, value);
   };
 }
 
-function createColorInputEscapeTest() {
+function createColorInputCancelTest() {
   return async () => {
-    // Stub the InputBox to simulate the user pressing Esc (hides without
-    // accepting a value).
-    const { input, escape } = createFakeInputBox();
-    const stub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+    // Stub the webview panel and simulate its script posting a 'cancel'
+    // message (mirrors the picker's own Cancel button/Esc handling).
+    const { panel, postToExtension } = createFakeWebviewPanel();
+    const stub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
 
     const enterColorPromise = executeCommand(Commands.enterColor);
-    await escape();
+    await postToExtension({ type: 'cancel' });
+    await enterColorPromise;
+
+    const config = getColorCustomizationConfig();
+    const value = config[ColorSettings.titleBar_activeBackground];
+    stub.restore();
+
+    assert.ok(!value || isValidColorInput(value));
+  };
+}
+
+function createColorInputCloseTest() {
+  return async () => {
+    // Stub the webview panel and simulate the user closing/dismissing the
+    // panel entirely (e.g. clicking the editor tab's close button) without
+    // ever applying or explicitly canceling.
+    const { panel, ready, simulateUserClosingPanel } = createFakeWebviewPanel();
+    const stub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+    const enterColorPromise = executeCommand(Commands.enterColor);
+    await ready;
+    simulateUserClosingPanel();
     await enterColorPromise;
 
     const config = getColorCustomizationConfig();

@@ -7,7 +7,7 @@ import {
   updateFavoriteColors,
 } from '../../configuration';
 import { executeCommand, stubInputBox } from './lib/constants';
-import { createFakeInputBox } from './lib/fake-input-box';
+import { createFakeWebviewPanel } from './lib/fake-webview-panel';
 import * as vscode from 'vscode';
 import * as sinon from 'sinon';
 
@@ -50,11 +50,11 @@ suite('Save starter favorite colors', () => {
       const nightBlue = '#103362';
       const nightBlueName = 'Night Blue';
 
-      // input the hex #103362
-      const { input, typeAndAccept } = createFakeInputBox();
-      const qiColorStub = sinon.stub(vscode.window, 'createInputBox').returns(input);
+      // input the hex #103362 via the visual picker's hex/color field
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const qiColorStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
       const enterColorPromise = executeCommand(Commands.enterColor);
-      await typeAndAccept(nightBlue);
+      await postToExtension({ type: 'apply', color: nightBlue });
       await enterColorPromise;
       qiColorStub.restore();
 

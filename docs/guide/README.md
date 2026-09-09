@@ -106,11 +106,10 @@ When opening the Favorites command in the command palette, Peacock now previews 
 
 #### Custom Color Picker
 
-You can open the visual color picker three ways:
+You can open the visual color picker two ways:
 
-- Run **Peacock: Pick a Custom Color (Visual Picker)** from the Command Palette at any time.
+- Run **Peacock: Choose a Custom Color** from the Command Palette at any time. Type a hex code, color name, or `rgb`/`hsl`/`hsv` value directly into its field (see [Input Formats](#input-formats)), or pick one visually.
 - In **Peacock: Change to a Favorite Color**, choose **Custom color…** — always the last item in the list, even if you have not saved any favorites yet.
-- In **Peacock: Enter a Color**, click the **pick visually** button on the input box instead of typing a hex code (see [Input Formats](#input-formats)).
 
 ![Favorites Quick Pick with Custom color… selected](../assets/custom-color-picker-1-quickpick.png)
 
@@ -120,11 +119,11 @@ However you open it, you land on the same **Custom Color** panel:
 
 Either path opens the same picker panel, starting from your current Peacock color. The panel has:
 
-- A native color well and a hex text field, kept in sync with each other, so you can pick a color visually instead of looking up a hex code elsewhere and pasting it into **Peacock: Enter a Color**.
+- A native color well and a text field (accepting hex, named colors, or `rgb`/`hsl`/`hsv` values), kept in sync with each other, so you can pick a color visually or type one in without leaving the panel.
 - An **eyedropper button** (in VS Code builds that support the browser EyeDropper API) to sample any color from anywhere on your screen, not just within the panel.
 - A **live contrast preview** showing a sample "Aa Peacock" swatch and a WCAG contrast ratio badge, using Peacock's own title-bar contrast logic — the same logic that picks a dark or light font automatically for any other color, so light colors like orange or pink still get readable, high-contrast text.
 
-Every change previews live, just like hovering a favorite does — the title bar, activity bar, and contrast badge all update immediately as you type a new hex value, drag the color well, or use the eyedropper.
+Every change previews live, just like hovering a favorite does — the title bar, activity bar, and contrast badge all update immediately as you type a new value, drag the color well, or use the eyedropper.
 
 Press **Apply** to keep the color, or **Cancel** (or close the panel) to revert to the color you had before opening the picker. Once applied, the color persists in your workspace settings, just like any other Peacock color.
 
@@ -289,11 +288,10 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Peacock: Reset Workspace Colors                 | Removes any of the color settings from the `.vscode/settings.json` file. If colors exist in the user settings, they may be applied |
 | Peacock: Remove All Global and Workspace Colors | Removes all of the color settings from both the Workspace `.vscode/settings.json` file and the Global user `settings.json` file.   |
-| Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))                                                                 |
+| Peacock: Choose a Custom Color                  | Opens the [Custom Color Picker](#custom-color-picker) directly — type a value or pick one visually (see [input formats](#input-formats)) |
 | Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                      |
 | Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                   |
 | Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites, or open the [Custom Color Picker](#custom-color-picker)                               |
-| Peacock: Pick a Custom Color (Visual Picker)    | Opens the [Custom Color Picker](#custom-color-picker) directly, without going through Favorites                                    |
 | Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                              |
 | Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
 | Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
@@ -374,7 +372,7 @@ All formats offer flexible data validation:
 - For any hex value, the `#` is optional.
 - For any color formula value all parentheses and commas are optional and any number can be a decimal or percentage (with the exception of the alpha channel in rgba(), hsla(), and hsva() which must be a decimal between 0 and 1).
 
-Don't want to type a value at all? **Peacock: Enter a Color** also has a **pick visually** button (the 🎨 icon at the right edge of the input box) that opens the same [Custom Color Picker](#custom-color-picker) — including the eyedropper — instead of typing a format above.
+Don't want to type a value at all? **Peacock: Choose a Custom Color** opens the [Custom Color Picker](#custom-color-picker) — including the eyedropper — so you can pick visually instead of typing a format above.
 
 ### Alpha Support
 

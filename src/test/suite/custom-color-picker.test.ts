@@ -153,14 +153,14 @@ suite('Custom color picker (#708)', () => {
     });
   });
 
-  suite('pickCustomColor command (#708 follow-up: standalone Command Palette entry)', () => {
+  suite('enterColor command with no argument (#708 follow-up: merged with visual picker)', () => {
     test('opens the picker directly and applies/persists the chosen color', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
 
       const { panel, postToExtension } = createFakeWebviewPanel();
       const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
 
-      const commandPromise = executeCommand(Commands.pickCustomColor);
+      const commandPromise = executeCommand(Commands.enterColor);
       await postToExtension({ type: 'preview', color: azureBlue });
       await postToExtension({ type: 'apply', color: azureBlue });
       await commandPromise;
@@ -174,14 +174,14 @@ suite('Custom color picker (#708)', () => {
       assert.ok(Array.isArray(favoriteColors));
     });
 
-    test('canceling the standalone command reverts to the color active before it ran', async () => {
+    test('canceling reverts to the color active before it ran', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const startingColor = getEnvironmentAwareColor();
 
       const { panel, postToExtension } = createFakeWebviewPanel();
       const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
 
-      const commandPromise = executeCommand(Commands.pickCustomColor);
+      const commandPromise = executeCommand(Commands.enterColor);
       await postToExtension({ type: 'preview', color: azureBlue });
       await postToExtension({ type: 'cancel' });
       await commandPromise;

@@ -152,5 +152,19 @@ describe('Color picker webview (#708)', () => {
       expect(html).toContain('id="contrastBadge"');
       expect(html).toMatch(/message\.type !== 'contrast'/);
     });
+
+    it('accepts named colors and rgb/hsl/hsv function values in the hex/color field, not just hex (#708 follow-up: merged with Enter a Color)', () => {
+      const html = getColorPickerHtml(azureBlue);
+
+      // The field is no longer hex-only: it must not be capped at a hex
+      // string's length, and the client-side heuristic must recognize
+      // named colors ("DarkBlue") and rgb/rgba/hsl/hsla/hsv/hsva function
+      // calls as valid enough to enable Apply and preview, mirroring every
+      // format the retired Enter a Color input box used to accept.
+      expect(html).toContain('id="hexInput"');
+      expect(html).not.toMatch(/id="hexInput"[^>]*maxlength="9"/);
+      expect(html).toMatch(/namedColorPattern/);
+      expect(html).toMatch(/rgb\|rgba\|hsl\|hsla\|hsv\|hsva/);
+    });
   });
 });

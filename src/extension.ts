@@ -23,7 +23,6 @@ import {
   removeAllPeacockColorsHandler,
   showDocumentationHandler,
   setSideBarDarknessLevelHandler,
-  pickCustomColorHandler,
 } from './commands';
 import {
   checkIfPeacockSettingsChanged,
@@ -127,7 +126,6 @@ function registerCommands() {
   commands.registerCommand(Commands.lighten, lightenHandler);
   commands.registerCommand(Commands.showAndCopyCurrentColor, showAndCopyCurrentColorHandler);
   commands.registerCommand(Commands.affectSideBarBackground, setSideBarDarknessLevelHandler);
-  commands.registerCommand(Commands.pickCustomColor, pickCustomColorHandler);
 }
 
 export function deactivate() {
