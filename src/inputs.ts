@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { peacockGreen } from './models';
-import { getFavoriteColors } from './configuration';
+import { peacockGreen, customColorPickerLabel } from './models';
+import { getFavoriteColors, getEnvironmentAwareColor } from './configuration';
 import { applyColor } from './apply-color';
 import { parseFavoriteColorValue } from './favorite-color';
+import { promptForCustomColorViaColorPicker } from './color-picker-webview';
 
 export async function promptForColor() {
   const options: vscode.InputBoxOptions = {
@@ -31,15 +32,19 @@ export async function promptForFavoriteColorName(color: string) {
 }
 
 export async function promptForFavoriteColor() {
-  const { menu, values: favoriteColors } = getFavoriteColors();
-  let selection = '';
+  const { menu } = getFavoriteColors();
+  const menuWithCustomColor = [...menu, customColorPickerLabel];
   const options = {
-    placeHolder: 'Pick a favorite color',
+    placeHolder: 'Pick a favorite color, or choose Custom color… to pick one visually',
     onDidSelectItem: await tryColorWithPeacock(),
   };
-  if (favoriteColors && favoriteColors.length) {
-    selection = (await vscode.window.showQuickPick(menu, options)) || '';
+  const selection = (await vscode.window.showQuickPick(menuWithCustomColor, options)) || '';
+
+  if (selection === customColorPickerLabel) {
+    const startingColor = getEnvironmentAwareColor();
+    return await promptForCustomColorViaColorPicker(startingColor);
   }
+
   if (selection) {
     const selectedColor = parseFavoriteColorValue(selection);
     return selectedColor || '';
