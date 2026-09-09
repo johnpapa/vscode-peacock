@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Features
+
+- Added a visual color picker to the **Peacock: Change to a Favorite Color** flow. The favorites Quick Pick now ends with a `$(paintcan) Custom color…` item that opens a small webview with a native color well kept in sync with a hex text field. Every edit previews live (the same way hovering a favorite already does), **Apply** keeps the color, and **Cancel** (or closing the panel) reverts to the color that was active before the picker opened. No new command and no change to **Enter a Color**; the Quick Pick now always opens, even with zero favorites saved, so the picker is reachable regardless ([#708](https://github.com/johnpapa/vscode-peacock/issues/708))
+
 ### Tests
 
 - Added regression coverage confirming `peacock.remoteColor` is preserved (not overwritten with a new random color) across repeated `Developer: Reload Window`/reconnect cycles in a remote SSH/WSL/container workspace when `peacock.surpriseMeOnStartup` is enabled. Verified this exact scenario is already handled correctly by the startup-selection persistence added for [#582](https://github.com/johnpapa/vscode-peacock/issues/582) (released in 4.3.0) — no functional code change was required ([#573](https://github.com/johnpapa/vscode-peacock/issues/573))

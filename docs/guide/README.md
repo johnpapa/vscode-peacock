@@ -34,7 +34,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 - Change the color of [Affected Elements](#affected-elements) (see `peacock.affect*` in the [Settings](#settings) section) to
   - [user defined color](#input-formats)
   - a random color
-- Select a user-defined color from your [Favorite Colors](#favorite-colors)
+- Select a user-defined color from your [Favorite Colors](#favorite-colors), or pick one visually with the [Custom Color Picker](#custom-color-picker)
 - Save a user-defined color with the [Save Favorite Color](#save-favorite-color)
 - [Adjust the coloring of affected elements](#element-adjustments) by making them slightly darker or lighter to provide a subtle visual contrast between them
 - Saves colors to your workspace in the `.vscode/settings.json` file
@@ -103,6 +103,14 @@ When `peacock.surpriseMeOnStartup` and `peacock.surpriseMeFromFavoritesOnly` are
 When opening the Favorites command in the command palette, Peacock now previews (applies) the color as you cycle through them. If you cancel (press ESC), your colors revert to what you had prior to trying the Favorites command
 
 ![favorites](../assets/named-colors.gif)
+
+#### Custom Color Picker
+
+The last item in the favorites list is **Custom color…**. Selecting it opens a small color picker panel with a native color well and a hex text field kept in sync with each other, so you can pick a color visually instead of looking up a hex code elsewhere and pasting it into **Peacock: Enter a Color**.
+
+The picker starts from your current Peacock color. Every change previews live, just like hovering a favorite does. Press **Apply** to keep the color, or **Cancel** (or close the panel) to revert to the color you had before opening the picker.
+
+The **Custom color…** item is always available, even if you have not saved any favorites yet.
 
 #### Save Favorite Color
 
@@ -268,7 +276,7 @@ There are key bindings for the lighten command `alt+cmd+=` and for darken comman
 | Peacock: Enter a Color                          | Prompts you to enter a color (see [input formats](#input-formats))                                                                 |
 | Peacock: Color to Peacock Green                 | Sets the color to Peacock main color, #42b883                                                                                      |
 | Peacock: Surprise me with a Random Color        | Sets the color to a random color                                                                                                   |
-| Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites                                                                                        |
+| Peacock: Change to a Favorite Color             | Prompts user to select from their Favorites, or open the [Custom Color Picker](#custom-color-picker)                               |
 | Peacock: Save Current Color to Favorites        | Save Current Color to their Favorites                                                                                              |
 | Peacock: Add Recommended Favorites              | Add the recommended favorites to user settings (override same names)                                                               |
 | Peacock: Darken                                 | Darkens the current color by `darkenLightenPercentage`                                                                             |
