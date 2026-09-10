@@ -10,17 +10,20 @@ import { peacockGreen, azureBlue } from '../../models';
 
 /**
  * Extracts the contents of the picker's inline <script> tag from its
- * generated HTML. Matches any attributes on the opening tag (e.g. the CSP
- * nonce -- see getColorPickerHtml()'s use of getNonce()) and any
- * whitespace before the closing tag's `>` (e.g. `</script >`), and is
- * case-insensitive (CodeQL: js/bad-tag-filter -- an HTML tag match that
- * only accounts for lower case, or a fixed-whitespace closing tag, can be
- * trivially missed if the source ever emits a variant), even though
- * color-picker-html.ts always emits a plain lower case `<script
- * nonce="...">...</script>` today.
+ * generated HTML. `[^>]*` on both the opening tag (e.g. the CSP nonce --
+ * see getColorPickerHtml()'s use of getNonce()) and the closing tag
+ * accepts anything up to the next `>` -- whitespace, a stray attribute,
+ * whatever -- since an HTML parser ignores content in a closing tag
+ * beyond the tag name, so `</script anything>` or `</script\t\n bar>`
+ * are both real closing tags a naive `<\/script>`-only match would miss.
+ * Case-insensitive throughout too (CodeQL: js/bad-tag-filter -- a match
+ * that only accounts for one case/one exact form can be trivially missed
+ * if the source ever emits a variant), even though color-picker-html.ts
+ * always emits a plain lower case `<script nonce="...">...</script>`
+ * today.
  */
 function extractInlineScript(html: string): string {
-  const scriptMatch = html.match(/<script[^>]*>([\s\S]*?)<\/script\s*>/i);
+  const scriptMatch = html.match(/<script[^>]*>([\s\S]*?)<\/script[^>]*>/i);
   if (!scriptMatch) {
     throw new Error('Could not find inline <script> in generated picker HTML');
   }
