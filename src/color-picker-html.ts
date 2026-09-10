@@ -46,6 +46,8 @@ export interface ColorPickerContrastUpdate {
   foregroundHex: string;
   ratio: number;
   isReadable: boolean;
+  titleBarAffected: boolean;
+  foregroundApplied: boolean;
 }
 
 export interface ColorPickerCallbacks {
@@ -298,6 +300,14 @@ export function getColorPickerHtml(initialColor: string): string {
     background: rgba(218, 54, 51, 0.85);
     color: #ffffff;
   }
+  .contrast-note {
+    font-size: 0.78em;
+    opacity: 0.75;
+    margin: -0.6em 0 1.2em;
+  }
+  .contrast-note[hidden] {
+    display: none;
+  }
   .actions {
     display: flex;
     justify-content: flex-end;
@@ -348,6 +358,7 @@ export function getColorPickerHtml(initialColor: string): string {
       <span class="sample" id="contrastSample">Aa Peacock</span>
       <span class="contrast-badge" id="contrastBadge">--</span>
     </div>
+    <p class="contrast-note" id="contrastNote" hidden></p>
 
     <div class="actions">
       <button id="cancelBtn" type="button">Cancel</button>
@@ -363,6 +374,7 @@ export function getColorPickerHtml(initialColor: string): string {
       const eyedropperBtn = document.getElementById('eyedropperBtn');
       const contrastPreview = document.getElementById('contrastPreview');
       const contrastBadge = document.getElementById('contrastBadge');
+      const contrastNote = document.getElementById('contrastNote');
       const hexPattern = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
       // Accept the same broader set of formats Peacock's "Enter a Color"
       // input used to (#708 follow-up -- "merge... remove enter a color and
@@ -485,6 +497,19 @@ export function getColorPickerHtml(initialColor: string): string {
           ? 'AA \u2713 ' + message.ratio.toFixed(1) + ':1'
           : 'Low contrast ' + message.ratio.toFixed(1) + ':1';
         contrastBadge.className = 'contrast-badge ' + (message.isReadable ? 'pass' : 'fail');
+        // The badge above always shows the pairing Peacock WOULD use for
+        // this background; these two settings determine whether it
+        // actually gets applied, so surface that instead of silently
+        // showing a preview that won't match reality (#708 follow-up).
+        if (!message.titleBarAffected) {
+          contrastNote.textContent = 'Title bar coloring is off (peacock.affectTitleBar) -- this preview will not be applied.';
+          contrastNote.hidden = false;
+        } else if (!message.foregroundApplied) {
+          contrastNote.textContent = 'peacock.keepForegroundColor is on -- only the background above will be applied, not this text color.';
+          contrastNote.hidden = false;
+        } else {
+          contrastNote.hidden = true;
+        }
       });
     })();
   </script>

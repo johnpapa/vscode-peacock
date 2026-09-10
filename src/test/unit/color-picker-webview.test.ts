@@ -316,6 +316,7 @@ describe('Color picker webview (#708)', () => {
         eyedropperBtn: makeElement(true),
         contrastPreview: makeElement(false),
         contrastBadge: makeElement(false),
+        contrastNote: makeElement(false),
         cancelBtn: makeElement(true),
       };
 
@@ -418,6 +419,7 @@ describe('Color picker webview (#708)', () => {
         return {
           value: initialValue,
           disabled: false,
+          hidden: false,
           className: '',
           style: {},
           textContent: '',
@@ -433,6 +435,7 @@ describe('Color picker webview (#708)', () => {
         eyedropperBtn: makeElement(),
         contrastPreview: makeElement(),
         contrastBadge: makeElement(),
+        contrastNote: makeElement(),
         cancelBtn: makeElement(),
       };
 
@@ -502,10 +505,62 @@ describe('Color picker webview (#708)', () => {
         foregroundHex: '#15202b',
         ratio: 10,
         isReadable: true,
+        titleBarAffected: true,
+        foregroundApplied: true,
       });
 
       expect(elements.contrastPreview.style.backgroundColor).toBe('#ffa500');
       expect(elements.contrastBadge.textContent).toContain('10.0:1');
+    });
+
+    it('hides the contrast note when the pairing will actually be applied', () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+
+      dispatchMessage({
+        type: 'contrast',
+        backgroundHex: '#ffa500',
+        foregroundHex: '#15202b',
+        ratio: 10,
+        isReadable: true,
+        titleBarAffected: true,
+        foregroundApplied: true,
+      });
+
+      expect(elements.contrastNote.hidden).toBe(true);
+    });
+
+    it('surfaces a note instead of a silent mismatch when peacock.affectTitleBar is off (#755 code-review follow-up)', () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+
+      dispatchMessage({
+        type: 'contrast',
+        backgroundHex: '#ffa500',
+        foregroundHex: '#15202b',
+        ratio: 10,
+        isReadable: true,
+        titleBarAffected: false,
+        foregroundApplied: false,
+      });
+
+      expect(elements.contrastNote.hidden).toBe(false);
+      expect(elements.contrastNote.textContent).toContain('affectTitleBar');
+    });
+
+    it('surfaces a note when only the background will be applied (peacock.keepForegroundColor on)', () => {
+      const { elements, dispatchMessage } = runPickerScript(azureBlue);
+
+      dispatchMessage({
+        type: 'contrast',
+        backgroundHex: '#ffa500',
+        foregroundHex: '#15202b',
+        ratio: 10,
+        isReadable: true,
+        titleBarAffected: true,
+        foregroundApplied: false,
+      });
+
+      expect(elements.contrastNote.hidden).toBe(false);
+      expect(elements.contrastNote.textContent).toContain('keepForegroundColor');
     });
   });
 });

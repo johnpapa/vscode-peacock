@@ -44,4 +44,37 @@ describe('getTitleBarContrastPreview (#708 follow-up)', () => {
       expect(preview.isReadable).toBe(true);
     });
   });
+
+  it('defaults to titleBarAffected/foregroundApplied = true, matching the package.json defaults for affectTitleBar/keepForegroundColor', () => {
+    const preview = getTitleBarContrastPreview('#ffa500');
+
+    expect(preview.titleBarAffected).toBe(true);
+    expect(preview.foregroundApplied).toBe(true);
+  });
+
+  it('flags titleBarAffected = false when peacock.affectTitleBar is off, since Peacock will not touch the title bar at all', () => {
+    // Code-review follow-up (#755): the preview must not silently imply a
+    // guarantee ("can never drift from what Peacock actually applies")
+    // that collectTitleBarSettings() doesn't honor for this setting --
+    // it only writes titleBar.activeBackground/activeForeground when
+    // AffectedSettings.TitleBar is selected.
+    const preview = getTitleBarContrastPreview('#ffa500', { titleBarAffected: false });
+
+    expect(preview.titleBarAffected).toBe(false);
+    expect(preview.foregroundApplied).toBe(false);
+    // The background/foreground pairing itself is still computed (so the
+    // swatch stays informative) -- only the "would this actually be
+    // applied" flags change.
+    expect(preview.foregroundHex).toBe('#15202b');
+  });
+
+  it('flags foregroundApplied = false (but titleBarAffected = true) when peacock.keepForegroundColor is on, since only the background would be applied', () => {
+    // collectTitleBarSettings() writes titleBar.activeBackground
+    // regardless of keepForegroundColor, but only writes
+    // titleBar.activeForeground when keepForegroundColor is false.
+    const preview = getTitleBarContrastPreview('#ffa500', { keepForegroundColor: true });
+
+    expect(preview.titleBarAffected).toBe(true);
+    expect(preview.foregroundApplied).toBe(false);
+  });
 });

@@ -9,13 +9,15 @@ import {
   customColorPickerLabel,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
-import { executeCommand } from './lib/constants';
+import { executeCommand, allAffectedElements } from './lib/constants';
 import { createFakeWebviewPanel } from './lib/fake-webview-panel';
 import {
   getFavoriteColors,
   updateFavoriteColors,
   getEnvironmentAwareColor,
   getCurrentColorBeforeAdjustments,
+  updateAffectedElements,
+  updateKeepForegroundColor,
 } from '../../configuration';
 import { promptForCustomColorViaColorPicker } from '../../color-picker-webview';
 
@@ -145,11 +147,69 @@ suite('Custom color picker (#708)', () => {
       assert.ok(orangeContrast, 'expected a contrast update for the previewed orange color');
       assert.strictEqual(orangeContrast.foregroundHex, '#15202b');
       assert.strictEqual(orangeContrast.isReadable, true);
+      // Under the default settings (peacock.affectTitleBar: true,
+      // peacock.keepForegroundColor: false) this exact pairing IS what
+      // Peacock will apply (#755 code-review follow-up).
+      assert.strictEqual(orangeContrast.titleBarAffected, true);
+      assert.strictEqual(orangeContrast.foregroundApplied, true);
 
       await postToExtension({ type: 'cancel' });
       await resultPromise;
 
       createPanelStub.restore();
+    });
+
+    test('flags the contrast preview as not applied when peacock.affectTitleBar/keepForegroundColor make it inaccurate (#755 code-review follow-up)', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const originalAffectedElements = { ...allAffectedElements };
+
+      await updateAffectedElements({ ...allAffectedElements, titleBar: false });
+
+      const { panel, postedMessages, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const resultPromise = promptForCustomColorViaColorPicker(peacockGreen);
+      await postToExtension({ type: 'preview', color: '#ffa500' });
+      const withTitleBarOff: any = postedMessages.find(
+        (message: any) => message.type === 'contrast' && message.backgroundHex === '#ffa500',
+      );
+      assert.ok(withTitleBarOff, 'expected a contrast update for the previewed orange color');
+      // affectTitleBar off means Peacock won't touch the title bar at
+      // all, so neither the background nor the computed foreground will
+      // actually be applied -- the preview must say so rather than
+      // implying a guarantee that doesn't hold.
+      assert.strictEqual(withTitleBarOff.titleBarAffected, false);
+      assert.strictEqual(withTitleBarOff.foregroundApplied, false);
+
+      await postToExtension({ type: 'cancel' });
+      await resultPromise;
+      createPanelStub.restore();
+
+      await updateAffectedElements({ ...allAffectedElements, titleBar: true });
+      await updateKeepForegroundColor(true);
+
+      const { panel: panel2, postedMessages: postedMessages2, postToExtension: postToExtension2 } =
+        createFakeWebviewPanel();
+      const createPanelStub2 = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel2);
+
+      const resultPromise2 = promptForCustomColorViaColorPicker(peacockGreen);
+      await postToExtension2({ type: 'preview', color: '#ffa500' });
+      const withForegroundKept: any = postedMessages2.find(
+        (message: any) => message.type === 'contrast' && message.backgroundHex === '#ffa500',
+      );
+      assert.ok(withForegroundKept, 'expected a contrast update for the previewed orange color');
+      // keepForegroundColor on means only the background gets applied --
+      // the title bar itself is still affected, but the foreground pairing
+      // shown is only a preview, not something Peacock will write.
+      assert.strictEqual(withForegroundKept.titleBarAffected, true);
+      assert.strictEqual(withForegroundKept.foregroundApplied, false);
+
+      await postToExtension2({ type: 'cancel' });
+      await resultPromise2;
+      createPanelStub2.restore();
+
+      await updateAffectedElements(originalAffectedElements);
+      await updateKeepForegroundColor(false);
     });
 
     test("posts the picker's own fallback color (peacockGreen) as the initial contrast preview when there's no starting color to resolve (#708 follow-up)", async () => {

@@ -5,8 +5,11 @@ import {
   getColorPickerHtml,
   resolveInitialColor,
   serializeMessageHandler,
+  ColorPickerContrastUpdate,
 } from './color-picker-html';
 import { getTitleBarContrastPreview } from './color-picker-contrast';
+import { isAffectedSettingSelected, getKeepForegroundColor } from './configuration';
+import { AffectedSettings } from './models';
 
 export { getColorPickerHtml } from './color-picker-html';
 export type { ColorPickerMessage, ColorPickerCallbacks } from './color-picker-html';
@@ -52,7 +55,7 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
     // still be running its handler after onDidDispose has already fired,
     // so every post to the webview needs this guard, not just the initial
     // one (#708 follow-up).
-    const safePostMessage = (message: Record<string, unknown>) => {
+    const safePostMessage = (message: ColorPickerContrastUpdate | { type: 'invalid' }) => {
       if (disposed) {
         return;
       }
@@ -63,17 +66,28 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
      * Posts the title bar background/foreground pairing Peacock would apply
      * for `color` down to the webview so its contrast preview swatch stays
      * in sync with the same logic applyColor() just used -- never a
-     * separate, reimplemented copy of it (#708 follow-up).
+     * separate, reimplemented copy of it (#708 follow-up). Reads the same
+     * peacock.affectTitleBar / peacock.keepForegroundColor settings
+     * collectTitleBarSettings() gates on (read fresh on every preview, not
+     * cached, since the user could flip either mid-session) so the preview
+     * can flag when this exact pairing won't actually be applied, instead
+     * of implying a guarantee prepareColors() itself doesn't honor.
      */
     const postContrastPreview = (color: string) => {
-      const preview = getTitleBarContrastPreview(color);
-      safePostMessage({
+      const preview = getTitleBarContrastPreview(color, {
+        titleBarAffected: isAffectedSettingSelected(AffectedSettings.TitleBar),
+        keepForegroundColor: getKeepForegroundColor(),
+      });
+      const message: ColorPickerContrastUpdate = {
         type: 'contrast',
         backgroundHex: preview.backgroundHex,
         foregroundHex: preview.foregroundHex,
         ratio: preview.ratio,
         isReadable: preview.isReadable,
-      });
+        titleBarAffected: preview.titleBarAffected,
+        foregroundApplied: preview.foregroundApplied,
+      };
+      safePostMessage(message);
     };
 
     panel.webview.html = getColorPickerHtml(startingColor);
