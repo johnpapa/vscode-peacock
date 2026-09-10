@@ -28,7 +28,8 @@ import { LiveShareSettings } from '../live-share';
 // other colors to the workspace, which the Agents Window may not read, so
 // these specific keys are also mirrored to the user (global) settings.
 //
-// `agentsPanel.background`/`agentsPanel.foreground` are included here even
+// `agents.background`, `agentsPanel.background`/`.foreground`, and
+// `inactiveSessionView.background`/`.foreground` are included here even
 // though Peacock no longer sets them (see `collectAgentsWindowSettings`) so
 // that any stale value written by an earlier version of Peacock is still
 // cleared out of the user settings.
@@ -38,6 +39,8 @@ const agentsWindowColorKeys: string[] = [
   ColorSettings.agentsPanel_foreground,
   ColorSettings.inactiveSessionView_background,
   ColorSettings.inactiveSessionView_foreground,
+  ColorSettings.agentsPanel_border,
+  ColorSettings.agentsGradient_tintColor,
 ];
 
 export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {

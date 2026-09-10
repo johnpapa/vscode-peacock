@@ -11,8 +11,6 @@ import {
   ColorAdjustmentOptions,
   defaultAmountToDarkenLighten,
   defaultSaturation,
-  agentsWindowNeutralDarkBackground,
-  agentsWindowNeutralLightBackground,
 } from './models';
 import {
   getColorCustomizationConfigFromWorkspace,
@@ -55,24 +53,6 @@ export function getInactiveForegroundColorHex(backgroundColor = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
   foreground.setAlpha(inactiveElementAlpha);
   return formatHex(foreground);
-}
-
-/**
- * Computes the neutral (non-accent) background/foreground pair used to
- * counter-override the Agents Window's `inactiveSessionView.*` tokens, so
- * that coloring `agents.background` (title bar) doesn't also bleed into the
- * big center session/composer view that inherits from it by default. Reuses
- * the same light/dark contrast logic as `getForegroundColorHex` so the
- * computed foreground always stays readable.
- */
-export function getAgentsWindowNeutralStyle(isLightTheme: boolean) {
-  const backgroundHex = isLightTheme
-    ? agentsWindowNeutralLightBackground
-    : agentsWindowNeutralDarkBackground;
-  return {
-    backgroundHex,
-    foregroundHex: getForegroundColorHex(backgroundHex),
-  };
 }
 
 export function getReadableAccentColorHex(backgroundColor = '', ratio = ReadabilityRatios.Text) {

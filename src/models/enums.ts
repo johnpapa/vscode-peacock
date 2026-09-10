@@ -99,19 +99,26 @@ export enum ColorSettings {
   titleBar_inactiveForeground = 'titleBar.inactiveForeground',
   window_activeBorder = 'window.activeBorder',
   window_inactiveBorder = 'window.inactiveBorder',
-  // Agents Window tokens (VS Code 1.120+, src/vs/sessions/common/theme.ts)
+  // Agents Window tokens (VS Code 1.120+, src/vs/sessions/common/theme.ts).
+  //
+  // `agents.background`, `agentsPanel.background`/`agentsPanel.foreground`,
+  // and `inactiveSessionView.background`/`.foreground` are no longer written
+  // by Peacock (see `collectAgentsWindowSettings` for why - `agents.background`
+  // is an unconditional, single shared token for the title bar, the whole
+  // shell, AND the left Sessions sidebar, with no way to color just the
+  // title bar). They're kept here only so a stale value left behind by an
+  // earlier Peacock version is still cleared out.
   agents_background = 'agents.background',
-  // `agentsPanel.background`/`agentsPanel.foreground` are no longer written by
-  // Peacock (see `collectAgentsWindowSettings`), but are kept here so any
-  // stale value from an earlier Peacock version is still cleared out.
   agentsPanel_background = 'agentsPanel.background',
   agentsPanel_foreground = 'agentsPanel.foreground',
-  // Counter-overrides that keep `agents.background` scoped to the title bar
-  // only. VS Code registers `agents.background` as the *default* color for
-  // `inactiveSessionView.background` (the big center session/composer view),
-  // so without this override that view would inherit the accent color too.
   inactiveSessionView_background = 'inactiveSessionView.background',
   inactiveSessionView_foreground = 'inactiveSessionView.foreground',
+  // Actually used by Peacock: narrow, decoupled accent tokens that can never
+  // resolve to a full panel/sidebar background fill. `agentsCard.border` and
+  // `agentsBottomPanel.border` both default to `agentsPanel.border`, so
+  // setting it alone colors all three borders.
+  agentsPanel_border = 'agentsPanel.border',
+  agentsGradient_tintColor = 'agentsGradient.tintColor',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';

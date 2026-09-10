@@ -243,7 +243,7 @@
         "peacock.affectAgentsWindow": {
           "type": "boolean",
           "default": false,
-          "description": "Specifies whether Peacock should affect the Agents Window (agents.background, agentsPanel.background, and agentsPanel.foreground). Available in VS Code 1.120+."
+          "description": "Specifies whether Peacock should affect the Agents Window (agentsPanel.border and agentsGradient.tintColor). Available in VS Code 1.120+."
         },
         "peacock.affectTabActiveBackground": {
           "type": "boolean",
