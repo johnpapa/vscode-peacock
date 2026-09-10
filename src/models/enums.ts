@@ -101,8 +101,17 @@ export enum ColorSettings {
   window_inactiveBorder = 'window.inactiveBorder',
   // Agents Window tokens (VS Code 1.120+, src/vs/sessions/common/theme.ts)
   agents_background = 'agents.background',
+  // `agentsPanel.background`/`agentsPanel.foreground` are no longer written by
+  // Peacock (see `collectAgentsWindowSettings`), but are kept here so any
+  // stale value from an earlier Peacock version is still cleared out.
   agentsPanel_background = 'agentsPanel.background',
   agentsPanel_foreground = 'agentsPanel.foreground',
+  // Counter-overrides that keep `agents.background` scoped to the title bar
+  // only. VS Code registers `agents.background` as the *default* color for
+  // `inactiveSessionView.background` (the big center session/composer view),
+  // so without this override that view would inherit the accent color too.
+  inactiveSessionView_background = 'inactiveSessionView.background',
+  inactiveSessionView_foreground = 'inactiveSessionView.foreground',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';

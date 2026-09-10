@@ -25,6 +25,7 @@ import {
   getColorBrightness,
   getReadabilityRatio,
   getColorComplementHex,
+  getAgentsWindowNeutralStyle,
 } from '../../color-library';
 import { executeCommand, allAffectedElements } from './lib/constants';
 
@@ -246,7 +247,7 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
     });
 
-    test('agentsWindow sets agentsPanel.background and agentsPanel.foreground when enabled', async () => {
+    test('agentsWindow sets agents.background and inactiveSessionView colors when enabled', async () => {
       await updateAffectedElements({
         agentsWindow: true,
       } as IPeacockAffectedElementSettings);
@@ -255,16 +256,28 @@ suite('Affected elements', () => {
       const config = getColorCustomizationConfig();
       const keepForegroundColor = getKeepForegroundColor();
       const style = getElementStyle(peacockGreen);
+      const isLightTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Light;
+      const neutralStyle = getAgentsWindowNeutralStyle(isLightTheme);
 
-      // `agents.background` is intentionally left unset - see
-      // `collectAgentsWindowSettings` for why setting it recolors far more
-      // than the title bar (the whole session view background chain).
-      assert.ok(!config[ColorSettings.agents_background]);
-      assert.equal(config[ColorSettings.agentsPanel_background], style.backgroundHex);
+      // `agents.background` colors the title bar (and Sessions list
+      // sticky-scroll header) directly.
+      assert.equal(config[ColorSettings.agents_background], style.backgroundHex);
+
+      // `agentsPanel.background`/`.foreground` are intentionally left unset -
+      // see `collectAgentsWindowSettings` for why setting them recolors big
+      // content areas (panels, terminal, the active session view).
+      assert.ok(!config[ColorSettings.agentsPanel_background]);
+      assert.ok(!config[ColorSettings.agentsPanel_foreground]);
+
+      // `inactiveSessionView.background` is counter-overridden to a neutral,
+      // theme-appropriate color so `agents.background`'s accent doesn't
+      // bleed into the big center session/composer view, which inherits
+      // from `agents.background` by default.
+      assert.equal(config[ColorSettings.inactiveSessionView_background], neutralStyle.backgroundHex);
       assert.ok(
         shouldKeepColorTest(
-          style.foregroundHex,
-          ColorSettings.agentsPanel_foreground,
+          neutralStyle.foregroundHex,
+          ColorSettings.inactiveSessionView_foreground,
           keepForegroundColor,
         ),
       );
@@ -272,7 +285,7 @@ suite('Affected elements', () => {
       await updateAffectedElements(allAffectedElements);
     });
 
-    test('agentsWindow does not set agents/agentsPanel colors when disabled', async () => {
+    test('agentsWindow does not set any agents colors when disabled', async () => {
       await updateAffectedElements({
         agentsWindow: false,
       } as IPeacockAffectedElementSettings);
@@ -283,9 +296,11 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.agents_background]);
       assert.ok(!config[ColorSettings.agentsPanel_background]);
       assert.ok(!config[ColorSettings.agentsPanel_foreground]);
+      assert.ok(!config[ColorSettings.inactiveSessionView_background]);
+      assert.ok(!config[ColorSettings.inactiveSessionView_foreground]);
     });
 
-    test('agentsPanel.foreground is contrast-aware for a light accent color', async () => {
+    test('inactiveSessionView.foreground is contrast-aware for a light theme neutral background', async () => {
       const originalKeepForegroundColor = getKeepForegroundColor();
       await updateKeepForegroundColor(false);
       await updateAffectedElements({
@@ -293,41 +308,44 @@ suite('Affected elements', () => {
       } as IPeacockAffectedElementSettings);
 
       const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.75)');
-      const backgroundHex = config[ColorSettings.agentsPanel_background];
-      const foregroundHex = config[ColorSettings.agentsPanel_foreground];
+      const backgroundHex = config[ColorSettings.inactiveSessionView_background];
+      const foregroundHex = config[ColorSettings.inactiveSessionView_foreground];
 
-      assert.equal(foregroundHex, getElementStyle(backgroundHex).foregroundHex);
-      assert.ok(
-        getColorBrightness(backgroundHex) > getColorBrightness(foregroundHex),
-        'a light agentsPanel.background should get a darker foreground for contrast',
-      );
+      assert.equal(foregroundHex, getAgentsWindowNeutralStyle(false).foregroundHex);
+      assert.equal(backgroundHex, getAgentsWindowNeutralStyle(false).backgroundHex);
 
       await updateKeepForegroundColor(originalKeepForegroundColor);
       await updateAffectedElements(allAffectedElements);
     });
 
-    test('agentsPanel.foreground is contrast-aware for a dark accent color', async () => {
+    test('agents.background is contrast-independent of accent lightness (neutral override always applies)', async () => {
       const originalKeepForegroundColor = getKeepForegroundColor();
       await updateKeepForegroundColor(false);
       await updateAffectedElements({
         agentsWindow: true,
       } as IPeacockAffectedElementSettings);
 
-      const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.25)');
-      const backgroundHex = config[ColorSettings.agentsPanel_background];
-      const foregroundHex = config[ColorSettings.agentsPanel_foreground];
+      // Regardless of whether the chosen accent color is light or dark, the
+      // `inactiveSessionView.*` counter-override should always resolve to
+      // the same neutral, theme-appropriate value - it must never track the
+      // accent color itself.
+      const lightAccentConfig = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.75)');
+      const darkAccentConfig = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.25)');
 
-      assert.equal(foregroundHex, getElementStyle(backgroundHex).foregroundHex);
-      assert.ok(
-        getColorBrightness(backgroundHex) < getColorBrightness(foregroundHex),
-        'a dark agentsPanel.background should get a lighter foreground for contrast',
+      assert.equal(
+        lightAccentConfig[ColorSettings.inactiveSessionView_background],
+        darkAccentConfig[ColorSettings.inactiveSessionView_background],
+      );
+      assert.equal(
+        lightAccentConfig[ColorSettings.inactiveSessionView_foreground],
+        darkAccentConfig[ColorSettings.inactiveSessionView_foreground],
       );
 
       await updateKeepForegroundColor(originalKeepForegroundColor);
       await updateAffectedElements(allAffectedElements);
     });
 
-    test('agentsPanel.foreground respects keepForegroundColor', async () => {
+    test('inactiveSessionView.foreground respects keepForegroundColor', async () => {
       const originalKeepForegroundColor = getKeepForegroundColor();
       await updateKeepForegroundColor(true);
       await updateAffectedElements({
@@ -337,12 +355,10 @@ suite('Affected elements', () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
 
-      assert.ok(!config[ColorSettings.agentsPanel_foreground]);
+      assert.ok(!config[ColorSettings.inactiveSessionView_foreground]);
       // backgrounds are still set even when the foreground is kept
-      // (`agents.background` itself is never set - see
-      // `collectAgentsWindowSettings`)
-      assert.ok(!config[ColorSettings.agents_background]);
-      assert.ok(config[ColorSettings.agentsPanel_background]);
+      assert.ok(config[ColorSettings.agents_background]);
+      assert.ok(config[ColorSettings.inactiveSessionView_background]);
 
       await updateKeepForegroundColor(originalKeepForegroundColor);
       await updateAffectedElements(allAffectedElements);
@@ -360,11 +376,21 @@ suite('Affected elements', () => {
 
       await executeCommand(Commands.changeColorToPeacockGreen);
       const style = getElementStyle(peacockGreen);
+      const isLightTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Light;
+      const neutralStyle = getAgentsWindowNeutralStyle(isLightTheme);
       const globalConfig = getColorCustomizationConfigFromGlobal();
 
-      assert.ok(!globalConfig[ColorSettings.agents_background]);
-      assert.equal(globalConfig[ColorSettings.agentsPanel_background], style.backgroundHex);
-      assert.equal(globalConfig[ColorSettings.agentsPanel_foreground], style.foregroundHex);
+      assert.equal(globalConfig[ColorSettings.agents_background], style.backgroundHex);
+      assert.ok(!globalConfig[ColorSettings.agentsPanel_background]);
+      assert.ok(!globalConfig[ColorSettings.agentsPanel_foreground]);
+      assert.equal(
+        globalConfig[ColorSettings.inactiveSessionView_background],
+        neutralStyle.backgroundHex,
+      );
+      assert.equal(
+        globalConfig[ColorSettings.inactiveSessionView_foreground],
+        neutralStyle.foregroundHex,
+      );
 
       // clean up: disabling and re-applying should clear the global keys too
       await updateAffectedElements({
@@ -390,27 +416,29 @@ suite('Affected elements', () => {
       assert.ok(!globalConfig[ColorSettings.agents_background]);
       assert.ok(!globalConfig[ColorSettings.agentsPanel_background]);
       assert.ok(!globalConfig[ColorSettings.agentsPanel_foreground]);
+      assert.ok(!globalConfig[ColorSettings.inactiveSessionView_background]);
+      assert.ok(!globalConfig[ColorSettings.inactiveSessionView_foreground]);
 
       await updateAffectedElements(allAffectedElements);
     });
 
-    test('agentsWindow clears a stale agents.background left over from an older Peacock version', async () => {
-      // Regression test: an earlier version of this feature also set
-      // `agents.background`, which VS Code uses as the *default* color for
-      // several other tokens - including the large session/composer view
-      // background - so it painted far more of the window than intended.
-      // Simulate a workspace/user settings file left over from that
-      // version and confirm the current code cleans it up rather than
-      // leaving it in place forever.
+    test('agentsWindow clears a stale agentsPanel.background left over from an older Peacock version', async () => {
+      // Regression test: an earlier version of this feature set
+      // `agentsPanel.background` instead of `agents.background`, which VS
+      // Code uses as the *default* color for the active session view and
+      // the standard panel/terminal backgrounds - so it painted far more of
+      // the window than intended. Simulate a workspace/user settings file
+      // left over from that version and confirm the current code cleans it
+      // up rather than leaving it in place forever.
       const config = vscode.workspace.getConfiguration();
       await config.update(
         Sections.peacockColorCustomizationSection,
-        { [ColorSettings.agents_background]: peacockGreen },
+        { [ColorSettings.agentsPanel_background]: peacockGreen },
         vscode.ConfigurationTarget.Workspace,
       );
       await config.update(
         Sections.peacockColorCustomizationSection,
-        { [ColorSettings.agents_background]: peacockGreen },
+        { [ColorSettings.agentsPanel_background]: peacockGreen },
         vscode.ConfigurationTarget.Global,
       );
 
@@ -422,8 +450,8 @@ suite('Affected elements', () => {
       const workspaceConfig = getColorCustomizationConfig();
       const globalConfig = getColorCustomizationConfigFromGlobal();
 
-      assert.ok(!workspaceConfig[ColorSettings.agents_background]);
-      assert.ok(!globalConfig[ColorSettings.agents_background]);
+      assert.ok(!workspaceConfig[ColorSettings.agentsPanel_background]);
+      assert.ok(!globalConfig[ColorSettings.agentsPanel_background]);
 
       await updateAffectedElements(allAffectedElements);
     });
@@ -519,6 +547,8 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.agents_background]);
       assert.ok(!config[ColorSettings.agentsPanel_background]);
       assert.ok(!config[ColorSettings.agentsPanel_foreground]);
+      assert.ok(!config[ColorSettings.inactiveSessionView_background]);
+      assert.ok(!config[ColorSettings.inactiveSessionView_foreground]);
     });
 
     suiteTeardown(async () => {

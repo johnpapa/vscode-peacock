@@ -22,6 +22,7 @@ import {
 } from '../models';
 import {
   getAdjustedColorHex,
+  getAgentsWindowNeutralStyle,
   getBadgeBackgroundColorHex,
   getBackgroundHoverColorHex,
   getDebuggingBackgroundColorHex,
@@ -509,23 +510,36 @@ function collectAgentsWindowSettings(backgroundHex: string, keepForegroundColor:
   const agentsWindowSettings = {} as ISettingsIndexer;
 
   if (isAffectedSettingSelected(AffectedSettings.AgentsWindow)) {
-    // Intentionally does NOT set `agents.background`. VS Code registers it as
-    // the *default* color for several other tokens (e.g. the title bar, the
-    // Sessions list sticky scroll header, and - critically -
-    // `inactiveSessionView.background`/`activeSessionView.background`, which
-    // back the large session/composer view in the center of the window).
-    // Setting `agents.background` therefore doesn't just tint a thin title
-    // bar strip the way `titleBar.activeBackground` does elsewhere in
-    // Peacock - it washes over the whole window, including big content
-    // areas Peacock otherwise never touches. Scoping to `agentsPanel.*`
-    // keeps Peacock's usual "chrome strips only" philosophy: it colors the
-    // narrower chat/files/terminal card panels without recoloring the main
-    // session view or sidebar.
+    // `agents.background` is read directly by the Agents Window's title bar
+    // (titlebarPart.ts) and by the Sessions list's sticky-scroll header - a
+    // thin "chrome" usage, consistent with how Peacock colors
+    // titleBar.activeBackground elsewhere. There is no dedicated title bar
+    // *foreground* token for the Agents Window, so there's nothing to set
+    // for foreground here.
     const agentsWindowStyle = getElementStyle(backgroundHex);
-    agentsWindowSettings[ColorSettings.agentsPanel_background] = agentsWindowStyle.backgroundHex;
+    agentsWindowSettings[ColorSettings.agents_background] = agentsWindowStyle.backgroundHex;
+
+    // VS Code also registers `agents.background` as the *default* color for
+    // `inactiveSessionView.background`, which backs the big session/composer
+    // view in the center of the window (e.g. the empty "new session"
+    // screen). Left alone, that view would inherit the accent color too,
+    // spilling well beyond the title bar. Counter-override it back to a
+    // neutral, theme-appropriate value - matching what `agents.background`
+    // itself would resolve to if Peacock never touched it - so only the
+    // title bar (and sticky-scroll header) pick up the accent color, and the
+    // big content view stays untouched. `agentsPanel.background` is
+    // intentionally left unset for the same reason: it's the default color
+    // for `activeSessionView.background` and the standard panel/terminal
+    // backgrounds within the Agents Window, so setting it would recolor
+    // those content areas too.
+    const isLightTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Light;
+    const neutralStyle = getAgentsWindowNeutralStyle(isLightTheme);
+    agentsWindowSettings[ColorSettings.inactiveSessionView_background] =
+      neutralStyle.backgroundHex;
 
     if (!keepForegroundColor) {
-      agentsWindowSettings[ColorSettings.agentsPanel_foreground] = agentsWindowStyle.foregroundHex;
+      agentsWindowSettings[ColorSettings.inactiveSessionView_foreground] =
+        neutralStyle.foregroundHex;
     }
   }
   return agentsWindowSettings;
