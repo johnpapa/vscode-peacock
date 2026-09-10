@@ -4,6 +4,12 @@ export const extensionShortName = 'peacock';
 export const extensionId = 'johnpapa.vscode-peacock';
 export const favoriteColorSeparator = '->';
 
+// The extra Quick Pick item appended to the favorites list (#708) that opens
+// the custom color picker webview. Distinct from any real favorite because
+// favoriteColorSeparator never appears in it, so parseFavoriteColorValue()
+// can't mistake it for one.
+export const customColorPickerLabel = '$(paintcan) Custom color…';
+
 export const docsUri = vscode.Uri.parse('https://johnpapa.github.io/vscode-peacock/');
 
 // Matches the default inactive alpha in VS Code of 0x99

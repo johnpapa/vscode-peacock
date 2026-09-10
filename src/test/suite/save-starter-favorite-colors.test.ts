@@ -7,6 +7,9 @@ import {
   updateFavoriteColors,
 } from '../../configuration';
 import { executeCommand, stubInputBox } from './lib/constants';
+import { createFakeWebviewPanel } from './lib/fake-webview-panel';
+import * as vscode from 'vscode';
+import * as sinon from 'sinon';
 
 suite('Save starter favorite colors', () => {
   const originalValues = {} as IPeacockSettings;
@@ -47,9 +50,12 @@ suite('Save starter favorite colors', () => {
       const nightBlue = '#103362';
       const nightBlueName = 'Night Blue';
 
-      // input the hex #103362
-      const qiColorStub = await stubInputBox(nightBlue);
-      await executeCommand(Commands.enterColor);
+      // input the hex #103362 via the visual picker's hex/color field
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const qiColorStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+      const enterColorPromise = executeCommand(Commands.enterColor);
+      await postToExtension({ type: 'apply', color: nightBlue });
+      await enterColorPromise;
       qiColorStub.restore();
 
       // enter the name "Night Blue"
