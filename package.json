@@ -60,7 +60,7 @@
       },
       {
         "command": "peacock.enterColor",
-        "title": "Enter a Color",
+        "title": "Choose a Custom Color",
         "category": "Peacock"
       },
       {

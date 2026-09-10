@@ -11,6 +11,7 @@ import {
   Sections,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
+import { createFakeWebviewPanel } from './lib/fake-webview-panel';
 import {
   getKeepForegroundColor,
   updateKeepForegroundColor,
@@ -793,12 +794,15 @@ suite('Affected elements', () => {
     });
 
     async function testActivityBarBadgeColoringMeetsReadabilityThreshold(backgroundHex: string) {
-      // Stub the async input box to return a response
-      const stub = await sinon
-        .stub(vscode.window, 'showInputBox')
-        .returns(Promise.resolve(backgroundHex));
+      // Stub the webview panel and simulate its script posting an 'apply'
+      // message, as if the user typed backgroundHex into the picker's
+      // hex/color field.
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const stub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
       // fire the command
-      await executeCommand(Commands.enterColor);
+      const enterColorPromise = executeCommand(Commands.enterColor);
+      await postToExtension({ type: 'apply', color: backgroundHex });
+      await enterColorPromise;
       const config = getColorCustomizationConfig();
       const value = config[ColorSettings.activityBar_badgeBackground];
       stub.restore();
@@ -972,10 +976,15 @@ async function testsSetsColorCustomizationsForAffectedElements() {
 }
 
 async function getColorSettingAfterEnterColor(colorInput: string, setting: ColorSettings) {
-  // Stub the async input box to return a response
-  const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(colorInput));
+  // Stub the webview panel and simulate its script posting an 'apply'
+  // message, as if the user typed colorInput into the picker's hex/color
+  // field.
+  const { panel, postToExtension } = createFakeWebviewPanel();
+  const stub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
   // fire the command
-  await vscode.commands.executeCommand(Commands.enterColor);
+  const enterColorPromise = vscode.commands.executeCommand(Commands.enterColor);
+  await postToExtension({ type: 'apply', color: colorInput });
+  await enterColorPromise;
   const config = getColorCustomizationConfig();
   stub.restore();
   return config[setting];
@@ -992,11 +1001,16 @@ function shouldKeepColorTest(
   return passesTest;
 }
 async function getPeacockWorkspaceConfigAfterEnterColor(colorInput: string) {
-  // Stub the async input box to return a response
-  const stub = await sinon.stub(vscode.window, 'showInputBox').returns(Promise.resolve(colorInput));
+  // Stub the webview panel and simulate its script posting an 'apply'
+  // message, as if the user typed colorInput into the picker's hex/color
+  // field.
+  const { panel, postToExtension } = createFakeWebviewPanel();
+  const stub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
 
   // fire the command
-  await vscode.commands.executeCommand(Commands.enterColor);
+  const enterColorPromise = vscode.commands.executeCommand(Commands.enterColor);
+  await postToExtension({ type: 'apply', color: colorInput });
+  await enterColorPromise;
   const config = getColorCustomizationConfig();
   stub.restore();
 
