@@ -443,7 +443,7 @@
     "test:e2e": "playwright test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@types/glob": "^7.1.3",
     "@types/istanbul-lib-instrument": "^1.7.4",
     "@types/istanbul-lib-report": "^1.1.1",
@@ -452,12 +452,12 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.20.1",
     "@types/sinon": "^22.0.0",
-    "@types/vscode": "^1.49.0",
+    "@types/vscode": "^1.136.0",
     "@types/webpack-env": "^1.18.8",
     "@vitest/coverage-v8": "^5.0.0",
     "@vscode/test-electron": "^3.1.0",
     "@vscode/test-web": "^0.0.81",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "glob": "^7.1.6",
     "husky": "^9.1.7",
