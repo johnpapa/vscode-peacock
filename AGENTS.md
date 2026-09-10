@@ -111,6 +111,15 @@ npm run package:check           # Package the VSIX and verify contents/size (see
 - **CI** (`ci.yml`): Triggered on `pull_request` and `push` to `main` (ignores docs/markdown). Runs, in order: Lint → Build (`test-compile`) → Test (Host) (`xvfb-run npm run just-test`) → Test (Unit) (`npm run test:unit`) → Package contents check (`npm run package:check`).
 - **Docs + E2E** (`docs.yml`): Triggered on push to `main` and PRs when `docs/`, `e2e/`, `playwright.config.ts`, or the workflow itself changes. Runs Playwright e2e tests, then deploys `docs/` to GitHub Pages.
 
+## Merging Pull Requests
+
+**Every PR merge updates `docs/changelog/README.md` — no exceptions.** This applies to every PR, not just feature/fix PRs: Dependabot bumps, chores, CI/infra tweaks, and docs-only changes all get an entry under the `## Unreleased` section, not just user-facing changes. An empty `## Unreleased` section at release time is a signal something was merged without a changelog entry.
+
+- Add the entry under the matching category heading (`### Features`, `### Fixes`, `### Docs`, `### Tests`, `### Infrastructure` — create the heading if it doesn't exist yet under `## Unreleased`). Dependency bumps (Dependabot or manual) go under `### Infrastructure`.
+- Link the PR and/or issue the entry corresponds to.
+- Prefer adding the changelog entry as part of the PR itself before merging. If a PR was already merged without one (e.g. an upstream-authored Dependabot PR you merged as-is), add a follow-up commit to `main` immediately after merging — don't defer it to release time.
+- This feeds directly into the Release Process below, which only finalizes/renames the `## Unreleased` section — it should never be the first time an entry is written.
+
 ## Release Process
 
 **This checklist is mandatory for every release, no exceptions — run through it in full even when the release feels small.** Almost all of it is agent-executable — Claude (or any agent working this repo) should just do it, not ask a human to. Exactly one step is human-only: it's called out explicitly below, and it's the only one that requires stopping and waiting for a person.
