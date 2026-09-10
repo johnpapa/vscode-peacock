@@ -509,8 +509,19 @@ function collectAgentsWindowSettings(backgroundHex: string, keepForegroundColor:
   const agentsWindowSettings = {} as ISettingsIndexer;
 
   if (isAffectedSettingSelected(AffectedSettings.AgentsWindow)) {
+    // Intentionally does NOT set `agents.background`. VS Code registers it as
+    // the *default* color for several other tokens (e.g. the title bar, the
+    // Sessions list sticky scroll header, and - critically -
+    // `inactiveSessionView.background`/`activeSessionView.background`, which
+    // back the large session/composer view in the center of the window).
+    // Setting `agents.background` therefore doesn't just tint a thin title
+    // bar strip the way `titleBar.activeBackground` does elsewhere in
+    // Peacock - it washes over the whole window, including big content
+    // areas Peacock otherwise never touches. Scoping to `agentsPanel.*`
+    // keeps Peacock's usual "chrome strips only" philosophy: it colors the
+    // narrower chat/files/terminal card panels without recoloring the main
+    // session view or sidebar.
     const agentsWindowStyle = getElementStyle(backgroundHex);
-    agentsWindowSettings[ColorSettings.agents_background] = agentsWindowStyle.backgroundHex;
     agentsWindowSettings[ColorSettings.agentsPanel_background] = agentsWindowStyle.backgroundHex;
 
     if (!keepForegroundColor) {

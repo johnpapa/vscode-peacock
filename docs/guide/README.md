@@ -57,7 +57,7 @@ Commands can be found in the command palette. Look for commands beginning with "
 | peacock.affectTabActiveBorder       | Specifies whether Peacock should affect the active tab's border. Defaults to false                                                                                                                                    |
 | peacock.affectTabActiveBackground   | Specifies whether Peacock should affect the active tab's background color. Defaults to false                                                                                                                          |
 | peacock.affectWindowBorder          | Specifies whether Peacock should affect the window border (`window.activeBorder` and `window.inactiveBorder`). Defaults to false. Available on Windows in VS Code 1.104+.                                             |
-| peacock.affectAgentsWindow          | Specifies whether Peacock should affect the Agents Window (`agents.background`, `agentsPanel.background`, and `agentsPanel.foreground`). Defaults to false. Available in VS Code 1.120+.                              |
+| peacock.affectAgentsWindow          | Specifies whether Peacock should affect the Agents Window (`agentsPanel.background` and `agentsPanel.foreground`). Defaults to false. Available in VS Code 1.120+.                                                    |
 | peacock.excludedSettings            | Array of color customization keys Peacock should never modify or delete (protects your own workspace colors)                                                                                                          |
 | peacock.elementAdjustments          | fine tune coloring of affected elements                                                                                                                                                                               |
 | peacock.favoriteColors              | array of objects for color names and hex values                                                                                                                                                                       |
@@ -137,13 +137,14 @@ VS Code's Agents Window is the dedicated top-level window for managing Copilot/C
 
 When enabled, Peacock sets:
 
-- `agents.background` — the Agents Window shell and title bar
 - `agentsPanel.background` — the chat/files/terminal card panels
 - `agentsPanel.foreground` — text in those panels, computed for contrast the same way Peacock computes the title bar's foreground color, so a light accent color still gets readable dark text (unless `peacock.keepForegroundColor` is enabled)
 
+Peacock deliberately does **not** set `agents.background`. VS Code registers it as the *default* color for several other tokens - including the title bar, the Sessions list's sticky scroll header, and (most importantly) the background of the large session/composer view in the center of the window. Setting it therefore doesn't just tint a thin title bar strip the way `titleBar.activeBackground` does elsewhere in Peacock; it washes over most of the window, including big content areas Peacock otherwise never recolors (the same way it never touches `editor.background` or `sideBar.background` in the standard editor window). Scoping to `agentsPanel.*` keeps that "chrome strips only" philosophy for the Agents Window too.
+
 Like every other `peacock.affect*` setting, checking this box alone doesn't recolor anything by itself — Peacock only writes colors the next time you run a color command (e.g. **Peacock: Change Color to Random**), so re-run one after enabling it.
 
-The Agents Window is a single window shared across all your workspaces, not tied to any one folder, so it doesn't read a specific workspace's settings. Peacock still writes its usual colors to your **workspace** settings (`.vscode/settings.json`) as normal, but it also mirrors these three keys to your **user** settings so the Agents Window picks up the color no matter which workspace last applied it. Disabling `peacock.affectAgentsWindow` (or unapplying/resetting the Peacock color) clears the mirrored keys from your user settings too.
+The Agents Window is a single window shared across all your workspaces, not tied to any one folder, so it doesn't read a specific workspace's settings. Peacock still writes its usual colors to your **workspace** settings (`.vscode/settings.json`) as normal, but it also mirrors the `agentsPanel.*` keys to your **user** settings so the Agents Window picks up the color no matter which workspace last applied it. Disabling `peacock.affectAgentsWindow` (or unapplying/resetting the Peacock color) clears the mirrored keys from your user settings too.
 
 ### Excluded Settings
 

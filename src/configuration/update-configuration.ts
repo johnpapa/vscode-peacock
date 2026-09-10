@@ -27,6 +27,10 @@ import { LiveShareSettings } from '../live-share';
 // across all workspaces, not tied to any one folder. Peacock writes its
 // other colors to the workspace, which the Agents Window may not read, so
 // these specific keys are also mirrored to the user (global) settings.
+//
+// `agents.background` is included here even though Peacock no longer sets it
+// (see `collectAgentsWindowSettings`) so that any stale value written by an
+// earlier version of Peacock is still cleared out of the user settings.
 const agentsWindowColorKeys: string[] = [
   ColorSettings.agents_background,
   ColorSettings.agentsPanel_background,

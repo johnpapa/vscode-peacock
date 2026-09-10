@@ -8,6 +8,7 @@ import {
   ColorSettings,
   ReadabilityRatios,
   peacockGreen,
+  Sections,
 } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
@@ -245,7 +246,7 @@ suite('Affected elements', () => {
       assert.ok(!config[ColorSettings.window_inactiveBorder]);
     });
 
-    test('agentsWindow sets agents.background, agentsPanel.background and agentsPanel.foreground when enabled', async () => {
+    test('agentsWindow sets agentsPanel.background and agentsPanel.foreground when enabled', async () => {
       await updateAffectedElements({
         agentsWindow: true,
       } as IPeacockAffectedElementSettings);
@@ -255,7 +256,10 @@ suite('Affected elements', () => {
       const keepForegroundColor = getKeepForegroundColor();
       const style = getElementStyle(peacockGreen);
 
-      assert.equal(config[ColorSettings.agents_background], style.backgroundHex);
+      // `agents.background` is intentionally left unset - see
+      // `collectAgentsWindowSettings` for why setting it recolors far more
+      // than the title bar (the whole session view background chain).
+      assert.ok(!config[ColorSettings.agents_background]);
       assert.equal(config[ColorSettings.agentsPanel_background], style.backgroundHex);
       assert.ok(
         shouldKeepColorTest(
@@ -335,7 +339,9 @@ suite('Affected elements', () => {
 
       assert.ok(!config[ColorSettings.agentsPanel_foreground]);
       // backgrounds are still set even when the foreground is kept
-      assert.ok(config[ColorSettings.agents_background]);
+      // (`agents.background` itself is never set - see
+      // `collectAgentsWindowSettings`)
+      assert.ok(!config[ColorSettings.agents_background]);
       assert.ok(config[ColorSettings.agentsPanel_background]);
 
       await updateKeepForegroundColor(originalKeepForegroundColor);
@@ -346,8 +352,8 @@ suite('Affected elements', () => {
       // The Agents Window is a single window shared across all workspaces, not
       // tied to any one workspace folder, so it does not read Peacock's
       // workspace-scoped color customizations. Peacock also mirrors these
-      // three keys to the user (global) settings so the Agents Window picks
-      // up the color too.
+      // keys to the user (global) settings so the Agents Window picks up the
+      // color too.
       await updateAffectedElements({
         agentsWindow: true,
       } as IPeacockAffectedElementSettings);
@@ -356,7 +362,7 @@ suite('Affected elements', () => {
       const style = getElementStyle(peacockGreen);
       const globalConfig = getColorCustomizationConfigFromGlobal();
 
-      assert.equal(globalConfig[ColorSettings.agents_background], style.backgroundHex);
+      assert.ok(!globalConfig[ColorSettings.agents_background]);
       assert.equal(globalConfig[ColorSettings.agentsPanel_background], style.backgroundHex);
       assert.equal(globalConfig[ColorSettings.agentsPanel_foreground], style.foregroundHex);
 
@@ -384,6 +390,40 @@ suite('Affected elements', () => {
       assert.ok(!globalConfig[ColorSettings.agents_background]);
       assert.ok(!globalConfig[ColorSettings.agentsPanel_background]);
       assert.ok(!globalConfig[ColorSettings.agentsPanel_foreground]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('agentsWindow clears a stale agents.background left over from an older Peacock version', async () => {
+      // Regression test: an earlier version of this feature also set
+      // `agents.background`, which VS Code uses as the *default* color for
+      // several other tokens - including the large session/composer view
+      // background - so it painted far more of the window than intended.
+      // Simulate a workspace/user settings file left over from that
+      // version and confirm the current code cleans it up rather than
+      // leaving it in place forever.
+      const config = vscode.workspace.getConfiguration();
+      await config.update(
+        Sections.peacockColorCustomizationSection,
+        { [ColorSettings.agents_background]: peacockGreen },
+        vscode.ConfigurationTarget.Workspace,
+      );
+      await config.update(
+        Sections.peacockColorCustomizationSection,
+        { [ColorSettings.agents_background]: peacockGreen },
+        vscode.ConfigurationTarget.Global,
+      );
+
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const workspaceConfig = getColorCustomizationConfig();
+      const globalConfig = getColorCustomizationConfigFromGlobal();
+
+      assert.ok(!workspaceConfig[ColorSettings.agents_background]);
+      assert.ok(!globalConfig[ColorSettings.agents_background]);
 
       await updateAffectedElements(allAffectedElements);
     });
