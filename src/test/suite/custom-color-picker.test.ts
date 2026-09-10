@@ -188,8 +188,11 @@ suite('Custom color picker (#708)', () => {
       await updateAffectedElements({ ...allAffectedElements, titleBar: true });
       await updateKeepForegroundColor(true);
 
-      const { panel: panel2, postedMessages: postedMessages2, postToExtension: postToExtension2 } =
-        createFakeWebviewPanel();
+      const {
+        panel: panel2,
+        postedMessages: postedMessages2,
+        postToExtension: postToExtension2,
+      } = createFakeWebviewPanel();
       const createPanelStub2 = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel2);
 
       const resultPromise2 = promptForCustomColorViaColorPicker(peacockGreen);
