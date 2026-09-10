@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Infrastructure
+
+- Bumped `morgan` (transitive dev dependency) from 1.10.1 to 1.12.0, picking up fixes for log-injection CVEs in the `:remote-user` token and token value escaping ([#760](https://github.com/johnpapa/vscode-peacock/pull/760))
+
 ### Features
 
 - Added a visual color picker to the **Peacock: Change to a Favorite Color** flow. The favorites Quick Pick now ends with a `$(paintcan) Custom color…` item that opens a webview with a native color well kept in sync with a hex/name/formula text field. Every edit previews live (the same way hovering a favorite already does), **Apply** keeps the color, and **Cancel** (or closing the panel) reverts to the color that was active before the picker opened. The Quick Pick now always opens, even with zero favorites saved, so the picker is reachable regardless ([#708](https://github.com/johnpapa/vscode-peacock/issues/708))
