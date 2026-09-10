@@ -72,6 +72,21 @@ export function getColorCustomizationConfigFromWorkspace() {
   return colorCustomizations as ISettingsIndexer;
 }
 
+export function getColorCustomizationConfigFromGlobal() {
+  const inspect = workspace.getConfiguration().inspect(Sections.peacockColorCustomizationSection);
+
+  if (!inspect) {
+    return {};
+  }
+
+  const colorCustomizations = inspect.globalValue;
+  if (!colorCustomizations || typeof colorCustomizations !== 'object') {
+    return {};
+  }
+
+  return colorCustomizations as ISettingsIndexer;
+}
+
 export function getPeacockWorkspace() {
   return workspace.getConfiguration(extensionShortName);
 }

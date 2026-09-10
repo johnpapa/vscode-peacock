@@ -141,6 +141,10 @@ When enabled, Peacock sets:
 - `agentsPanel.background` — the chat/files/terminal card panels
 - `agentsPanel.foreground` — text in those panels, computed for contrast the same way Peacock computes the title bar's foreground color, so a light accent color still gets readable dark text (unless `peacock.keepForegroundColor` is enabled)
 
+Like every other `peacock.affect*` setting, checking this box alone doesn't recolor anything by itself — Peacock only writes colors the next time you run a color command (e.g. **Peacock: Change Color to Random**), so re-run one after enabling it.
+
+The Agents Window is a single window shared across all your workspaces, not tied to any one folder, so it doesn't read a specific workspace's settings. Peacock still writes its usual colors to your **workspace** settings (`.vscode/settings.json`) as normal, but it also mirrors these three keys to your **user** settings so the Agents Window picks up the color no matter which workspace last applied it. Disabling `peacock.affectAgentsWindow` (or unapplying/resetting the Peacock color) clears the mirrored keys from your user settings too.
+
 ### Excluded Settings
 
 Even if you tell Peacock not to "affect" a given element (e.g. `"peacock.affectStatusBar": false`), the related keys in the workspace's `settings.json` can still be deleted when Peacock cleans up or resets "dirty" state. This is a problem if you have your own workspace color customizations that you don't want Peacock to touch.

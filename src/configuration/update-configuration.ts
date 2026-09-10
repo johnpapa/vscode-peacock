@@ -11,10 +11,27 @@ import {
   AffectedSettings,
   starterSetOfFavorites,
   isObjectEmpty,
+  ColorSettings,
+  ISettingsIndexer,
 } from '../models';
 import { Logger } from '../logging';
-import { getFavoriteColors, getColorCustomizationConfigFromWorkspace } from './read-configuration';
+import {
+  getFavoriteColors,
+  getColorCustomizationConfigFromWorkspace,
+  getColorCustomizationConfigFromGlobal,
+  getExcludedSettings,
+} from './read-configuration';
 import { LiveShareSettings } from '../live-share';
+
+// The Agents Window (VS Code 1.120+) is a single top-level window shared
+// across all workspaces, not tied to any one folder. Peacock writes its
+// other colors to the workspace, which the Agents Window may not read, so
+// these specific keys are also mirrored to the user (global) settings.
+const agentsWindowColorKeys: string[] = [
+  ColorSettings.agents_background,
+  ColorSettings.agentsPanel_background,
+  ColorSettings.agentsPanel_foreground,
+];
 
 export async function updateGlobalConfiguration(setting: AllSettings, value?: any) {
   const config = vscode.workspace.getConfiguration();
@@ -57,6 +74,46 @@ export async function updateWorkspaceConfiguration(
       Sections.peacockColorCustomizationSection,
       colorCustomizations,
       ConfigurationTarget.Workspace,
+    );
+}
+
+export async function updateGlobalAgentsWindowColorCustomizations(
+  colorCustomizations: ISettingsIndexer,
+) {
+  const existingGlobal = getColorCustomizationConfigFromGlobal();
+  const excludedSettings = getExcludedSettings();
+  const managedKeys = agentsWindowColorKeys.filter(key => !excludedSettings.includes(key));
+
+  // Start from the existing global customizations (preserving anything the
+  // user set themselves), clear out the keys Peacock manages here, then
+  // re-add only the ones currently present. This correctly mirrors both
+  // "set" and "cleared" (setting disabled, color unapplied) states.
+  const merged: ISettingsIndexer = { ...existingGlobal };
+  managedKeys.forEach(key => delete merged[key]);
+  managedKeys
+    .filter(key => key in colorCustomizations)
+    .forEach(key => {
+      merged[key] = colorCustomizations[key];
+    });
+
+  if (isObjectEmpty(merged) && isObjectEmpty(existingGlobal)) {
+    // Nothing to write and nothing to clear.
+    return;
+  }
+
+  const nextGlobalCustomizations = isObjectEmpty(merged) ? undefined : merged;
+
+  Logger.info(
+    `${extensionShortName}: The Agents Window is shared across workspaces, so Peacock also mirrors its colors to the user settings:`,
+  );
+  Logger.info(nextGlobalCustomizations, true);
+
+  return await vscode.workspace
+    .getConfiguration()
+    .update(
+      Sections.peacockColorCustomizationSection,
+      nextGlobalCustomizations,
+      ConfigurationTarget.Global,
     );
 }
 

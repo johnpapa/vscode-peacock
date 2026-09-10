@@ -5,6 +5,7 @@ import {
   getColorCustomizationConfigFromWorkspace,
   prepareColors,
   updateWorkspaceConfiguration,
+  updateGlobalAgentsWindowColorCustomizations,
   updatePeacockColor,
   updatePeacockRemoteColor,
   getExcludedSettings,
@@ -29,6 +30,7 @@ export async function unapplyColors() {
   const excludedSettings = getExcludedSettings();
   const colorCustomizationsWithPeacock = deletePeacocksColorCustomizations(excludedSettings);
   await updateWorkspaceConfiguration(colorCustomizationsWithPeacock);
+  await updateGlobalAgentsWindowColorCustomizations(colorCustomizationsWithPeacock);
   updateStatusBar();
 }
 
@@ -104,6 +106,7 @@ export async function applyColor(input: string) {
   const colorCustomizations = mergeColorCustomizations(existingColors, updatedColors);
 
   await updateWorkspaceConfiguration(colorCustomizations);
+  await updateGlobalAgentsWindowColorCustomizations(colorCustomizations);
   updateStatusBar();
 
   Logger.info(`${extensionShortName}: Peacock is now using ${color}`);

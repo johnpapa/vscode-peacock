@@ -17,6 +17,7 @@ import {
   updateKeepBadgeColor,
   getElementStyle,
   getColorCustomizationConfig,
+  getColorCustomizationConfigFromGlobal,
   updateAffectedElements,
 } from '../../configuration';
 import {
@@ -338,6 +339,52 @@ suite('Affected elements', () => {
       assert.ok(config[ColorSettings.agentsPanel_background]);
 
       await updateKeepForegroundColor(originalKeepForegroundColor);
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('agentsWindow mirrors its colors to the user (global) settings when enabled', async () => {
+      // The Agents Window is a single window shared across all workspaces, not
+      // tied to any one workspace folder, so it does not read Peacock's
+      // workspace-scoped color customizations. Peacock also mirrors these
+      // three keys to the user (global) settings so the Agents Window picks
+      // up the color too.
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const style = getElementStyle(peacockGreen);
+      const globalConfig = getColorCustomizationConfigFromGlobal();
+
+      assert.equal(globalConfig[ColorSettings.agents_background], style.backgroundHex);
+      assert.equal(globalConfig[ColorSettings.agentsPanel_background], style.backgroundHex);
+      assert.equal(globalConfig[ColorSettings.agentsPanel_foreground], style.foregroundHex);
+
+      // clean up: disabling and re-applying should clear the global keys too
+      await updateAffectedElements({
+        agentsWindow: false,
+      } as IPeacockAffectedElementSettings);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      await updateAffectedElements(allAffectedElements);
+    });
+
+    test('agentsWindow clears its colors from the user (global) settings when disabled', async () => {
+      await updateAffectedElements({
+        agentsWindow: true,
+      } as IPeacockAffectedElementSettings);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      await updateAffectedElements({
+        agentsWindow: false,
+      } as IPeacockAffectedElementSettings);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const globalConfig = getColorCustomizationConfigFromGlobal();
+
+      assert.ok(!globalConfig[ColorSettings.agents_background]);
+      assert.ok(!globalConfig[ColorSettings.agentsPanel_background]);
+      assert.ok(!globalConfig[ColorSettings.agentsPanel_foreground]);
+
       await updateAffectedElements(allAffectedElements);
     });
 
