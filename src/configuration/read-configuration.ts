@@ -534,8 +534,7 @@ function collectAgentsWindowSettings(backgroundHex: string, keepForegroundColor:
     // those content areas too.
     const isLightTheme = vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Light;
     const neutralStyle = getAgentsWindowNeutralStyle(isLightTheme);
-    agentsWindowSettings[ColorSettings.inactiveSessionView_background] =
-      neutralStyle.backgroundHex;
+    agentsWindowSettings[ColorSettings.inactiveSessionView_background] = neutralStyle.backgroundHex;
 
     if (!keepForegroundColor) {
       agentsWindowSettings[ColorSettings.inactiveSessionView_foreground] =

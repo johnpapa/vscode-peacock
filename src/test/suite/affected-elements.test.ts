@@ -273,7 +273,10 @@ suite('Affected elements', () => {
       // theme-appropriate color so `agents.background`'s accent doesn't
       // bleed into the big center session/composer view, which inherits
       // from `agents.background` by default.
-      assert.equal(config[ColorSettings.inactiveSessionView_background], neutralStyle.backgroundHex);
+      assert.equal(
+        config[ColorSettings.inactiveSessionView_background],
+        neutralStyle.backgroundHex,
+      );
       assert.ok(
         shouldKeepColorTest(
           neutralStyle.foregroundHex,
