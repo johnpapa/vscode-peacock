@@ -85,6 +85,19 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
 
     const rawHandleMessage = createColorPickerMessageHandler({
       onPreview: async color => {
+        // Once the picker has definitively resolved (Apply/Cancel clicked,
+        // or the panel closed) a still-in-flight preview from just before
+        // that -- e.g. the last event of a color-well drag -- must not
+        // overwrite the decided outcome. Checking `settled` here (not just
+        // guarding the postMessage below) is what makes closing the panel
+        // mid-drag reliably revert to the starting color: whichever of the
+        // queued 'preview'/'cancel' messages the queue happens to run
+        // second, the settled check ensures the *decision* (revert or
+        // apply) always wins over a race-adjacent live-preview write
+        // (#708 follow-up).
+        if (settled) {
+          return;
+        }
         await applyColor(color);
         postContrastPreview(color);
       },

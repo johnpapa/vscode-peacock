@@ -193,20 +193,24 @@ suite('Custom color picker (#708)', () => {
       const previewPromise = postToExtension({ type: 'preview', color: azureBlue });
       simulateUserClosingPanel();
 
-      // The queued preview's own contrast-preview post now happens after
-      // the panel is disposed; it must be silently skipped, not throw
-      // (previously this posted to the fake's now-disposed webview, which
-      // throws "Webview is disposed" -- an unhandled rejection since
-      // nothing awaits that post).
+      // Whichever of the two queued messages the shared message queue
+      // happens to run second, it must not throw (a queued preview's own
+      // contrast-preview post, once the panel is disposed, is silently
+      // skipped rather than throwing "Webview is disposed" -- an unhandled
+      // rejection since nothing awaits that post) and the *decision*
+      // (revert to startingColor) must win over the race-adjacent preview
+      // -- not by enqueue order (which this fake resolves differently from
+      // the real API's guaranteed message-delivery-then-dispose ordering),
+      // but because onPreview checks `settled` before ever calling
+      // applyColor(), so a preview that lands after the outcome is already
+      // decided is a no-op regardless of which message the queue runs
+      // first.
       await assert.doesNotReject(previewPromise);
       const result = await resultPromise;
 
       createPanelStub.restore();
 
       assert.strictEqual(result, '');
-      // The dispose-triggered revert to startingColor is queued *after*
-      // the in-flight preview, so it runs last and wins: no stale azureBlue
-      // preview is left applied.
       assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
     });
   });

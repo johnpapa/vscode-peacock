@@ -11,14 +11,16 @@ import { peacockGreen, azureBlue } from '../../models';
 /**
  * Extracts the contents of the picker's inline <script> tag from its
  * generated HTML. Matches any attributes on the opening tag (e.g. the CSP
- * nonce -- see getColorPickerHtml()'s use of getNonce()), and is
+ * nonce -- see getColorPickerHtml()'s use of getNonce()) and any
+ * whitespace before the closing tag's `>` (e.g. `</script >`), and is
  * case-insensitive (CodeQL: js/bad-tag-filter -- an HTML tag match that
- * only accounts for lower case can be trivially missed if the source ever
- * emits `<SCRIPT>`), even though color-picker-html.ts always emits a lower
- * case tag today.
+ * only accounts for lower case, or a fixed-whitespace closing tag, can be
+ * trivially missed if the source ever emits a variant), even though
+ * color-picker-html.ts always emits a plain lower case `<script
+ * nonce="...">...</script>` today.
  */
 function extractInlineScript(html: string): string {
-  const scriptMatch = html.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+  const scriptMatch = html.match(/<script[^>]*>([\s\S]*?)<\/script\s*>/i);
   if (!scriptMatch) {
     throw new Error('Could not find inline <script> in generated picker HTML');
   }
