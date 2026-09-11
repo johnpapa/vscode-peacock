@@ -7,6 +7,7 @@ All notable changes to the code will be documented in this file.
 ### Infrastructure
 
 - Bumped `morgan` (transitive dev dependency) from 1.10.1 to 1.12.0, picking up fixes for log-injection CVEs in the `:remote-user` token and token value escaping ([#760](https://github.com/johnpapa/vscode-peacock/pull/760))
+- Reverted `typescript` from `^7.0.2` to `^5.9.3` because `typescript-eslint@8.69.0` still declares `typescript` support only through `<6.1.0`, then adjusted the test/coverage harness to the newer `glob`/`istanbul`/Node assert typings from [#764](https://github.com/johnpapa/vscode-peacock/pull/764), restoring `npm ci` and the CI build
 
 ### Features
 
