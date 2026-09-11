@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Fixes
+
+- Re-pinned `@types/vscode` to `1.49.0` (matching `engines.vscode`) so `vsce` packaging no longer fails with `@types/vscode ... greater than engines.vscode ...` when CI runs `npm run package:check`. Also told Dependabot to ignore `@types/vscode` until Peacock intentionally raises its minimum supported VS Code version, preventing the same incompatible bump from reopening CI failures.
+
 ### Infrastructure
 
 - Bumped `morgan` (transitive dev dependency) from 1.10.1 to 1.12.0, picking up fixes for log-injection CVEs in the `:remote-user` token and token value escaping ([#760](https://github.com/johnpapa/vscode-peacock/pull/760))
