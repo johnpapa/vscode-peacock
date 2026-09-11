@@ -61,9 +61,9 @@ export function run(): Promise<void> {
       });
     })
     .then(() => {
-    // Tests have finished executing, check if we should generate a coverage report
-    if (process.env['GENERATE_COVERAGE']) {
-      createReport();
-    }
-  });
+      // Tests have finished executing, check if we should generate a coverage report
+      if (process.env['GENERATE_COVERAGE']) {
+        createReport();
+      }
+    });
 }
