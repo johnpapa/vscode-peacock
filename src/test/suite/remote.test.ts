@@ -193,8 +193,8 @@ suite('Remote Integration', () => {
     const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    assert(isValidColorInput(value));
-    assert(value === azureBlue);
+    assert.ok(isValidColorInput(value));
+    assert.ok(value === azureBlue);
   });
 
   test('Workspace color is updated when in Remote SSH context.', async () => {
@@ -207,8 +207,8 @@ suite('Remote Integration', () => {
     const config = getColorCustomizationConfig();
     const value = config[ColorSettings.titleBar_activeBackground];
 
-    assert(isValidColorInput(value));
-    assert(value === azureBlue);
+    assert.ok(isValidColorInput(value));
+    assert.ok(value === azureBlue);
   });
 
   test('Workspace color is reverted when not in a remote context.', async () => {

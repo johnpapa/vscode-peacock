@@ -55,26 +55,25 @@ export function createReport(): void {
   const coverageMap = iLibCoverage.createCoverageMap(global.__coverage__);
   const transformed = mapStore.transformCoverage(coverageMap);
 
-  const watermarks = {
+  const watermarks: iLibReport.Watermarks = {
     statements: [50, 80],
     functions: [50, 80],
     branches: [50, 80],
     lines: [50, 80],
   };
 
-  const tree = iLibReport.summarizers.flat(transformed.map);
   const context = iLibReport.createContext({
+    coverageMap: transformed.map,
     dir: path.resolve(REPO_ROOT, `coverage`),
     watermarks,
   });
-
   const reports = [
     iReports.create('json'),
     iReports.create('lcov'),
     iReports.create('html'),
     iReports.create('cobertura'),
   ];
-  reports.forEach(report => tree.visit(report, context));
+  reports.forEach(report => report.execute(context));
 }
 
 function copyFile(inputPath: string, outputPath: string): void {

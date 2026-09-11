@@ -48,7 +48,9 @@ suite('Surprise me on startup', () => {
   });
 
   test('when not set has no effect if no customizations exist', async () => {
-    await testColorsBeforeAndAfterInitialConfiguration(assert.equal);
+    await testColorsBeforeAndAfterInitialConfiguration((actual, expected) => {
+      assert.equal(actual, expected);
+    });
   });
 
   suite('when set', () => {
@@ -57,12 +59,16 @@ suite('Surprise me on startup', () => {
     });
 
     test('applies a random color if no color customizations exist', async () => {
-      await testColorsBeforeAndAfterInitialConfiguration(assert.notEqual);
+      await testColorsBeforeAndAfterInitialConfiguration((actual, expected) => {
+        assert.notEqual(actual, expected);
+      });
     });
 
     test('has no effect when color customizations exist', async () => {
       await vscode.commands.executeCommand(Commands.changeColorToPeacockGreen);
-      await testColorsBeforeAndAfterInitialConfiguration(assert.equal);
+      await testColorsBeforeAndAfterInitialConfiguration((actual, expected) => {
+        assert.equal(actual, expected);
+      });
     });
 
     teardown(async () => {

@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as MochaModule from 'mocha';
-import * as glob from 'glob';
+import { glob } from 'glob';
 
 // mocha@12's CJS build exposes the Mocha class as a named export rather than
 // as the module's whole export value, but @types/mocha still types the
@@ -22,18 +22,14 @@ export function run(): Promise<void> {
 
   const testsRoot = path.resolve(__dirname, '..');
 
-  return new Promise((c, e) => {
-    glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
-      if (err) {
-        return e(err);
-      }
+  return glob('**/**.test.js', { cwd: testsRoot }).then(files => {
+    // Add files to the test suite
+    files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
 
-      // Add files to the test suite
-      files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
-
+    return new Promise<void>((c, e) => {
       try {
         // Run the mocha test
-        mocha.run((failures: any) => {
+        mocha.run((failures: number) => {
           if (failures > 0) {
             e(new Error(`${failures} tests failed.`));
           } else {
