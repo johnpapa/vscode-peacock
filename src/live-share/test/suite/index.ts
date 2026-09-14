@@ -6,7 +6,9 @@ import { glob } from 'glob';
 // as the module's whole export value, but @types/mocha still types the
 // module as `export = Mocha`. Pull the real constructor off the runtime
 // module and keep the constructor type from `export =`.
-const Mocha = (MochaModule as unknown as { Mocha: typeof MochaModule }).Mocha;
+type MochaConstructor = new (options?: MochaModule.MochaOptions) => MochaModule;
+
+const Mocha = (MochaModule as unknown as { Mocha: MochaConstructor }).Mocha;
 
 export function run(): Promise<void> {
   // Create the mocha test

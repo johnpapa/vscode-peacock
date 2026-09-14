@@ -115,8 +115,7 @@ suite('can set color to built-in color', () => {
 });
 
 function testChangingColorToPeacockGreen():
-  | ((this: Mocha.Context, done: Mocha.Done) => any)
-  | undefined {
+  ((this: Mocha.Context, done: Mocha.Done) => any) | undefined {
   return testBuiltInColor(Commands.changeColorToPeacockGreen, peacockGreen);
 }
 

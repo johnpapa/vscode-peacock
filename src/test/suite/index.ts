@@ -7,7 +7,12 @@ import { createReport } from '../coverage';
 // as the module's whole export value, but @types/mocha still types the
 // module as `export = Mocha`. Pull the real constructor off the runtime
 // module and keep the constructor type from `export =`.
-const Mocha = (MochaModule as unknown as { Mocha: typeof MochaModule }).Mocha;
+type MochaConstructor = {
+  new (options?: MochaModule.MochaOptions): MochaModule;
+  reporters: typeof MochaModule.reporters;
+};
+
+const Mocha = (MochaModule as unknown as { Mocha: MochaConstructor }).Mocha;
 
 // mocha@12 turned its built-in reporters into real ES6 classes, which broke
 // mocha-multi-reporters (it calls `Base.call(this, runner)` instead of

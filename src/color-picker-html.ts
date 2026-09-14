@@ -29,9 +29,7 @@ function getNonce(): string {
  * 'cancel' are the two ways the picker can resolve.
  */
 export type ColorPickerMessage =
-  | { type: 'preview'; color: string }
-  | { type: 'apply'; color: string }
-  | { type: 'cancel' };
+  { type: 'preview'; color: string } | { type: 'apply'; color: string } | { type: 'cancel' };
 
 /**
  * Message shape posted from the extension host back down to the webview
