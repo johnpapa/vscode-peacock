@@ -1,20 +1,9 @@
 import * as vscode from 'vscode';
-import { peacockGreen } from './models';
-import { getFavoriteColors } from './configuration';
+import { customColorPickerLabel } from './models';
+import { getFavoriteColors, getEnvironmentAwareColor } from './configuration';
 import { applyColor } from './apply-color';
 import { parseFavoriteColorValue } from './favorite-color';
-
-export async function promptForColor() {
-  const options: vscode.InputBoxOptions = {
-    ignoreFocusOut: true,
-    placeHolder: peacockGreen,
-    prompt:
-      'Enter a background color for the title bar in RGB hex format or a valid HTML color name',
-    value: peacockGreen,
-  };
-  const inputColor = (await vscode.window.showInputBox(options)) || '';
-  return inputColor.trim();
-}
+import { promptForCustomColorViaColorPicker } from './color-picker-webview';
 
 export async function promptForFavoriteColorName(color: string) {
   if (!color) {
@@ -31,15 +20,19 @@ export async function promptForFavoriteColorName(color: string) {
 }
 
 export async function promptForFavoriteColor() {
-  const { menu, values: favoriteColors } = getFavoriteColors();
-  let selection = '';
+  const { menu } = getFavoriteColors();
+  const menuWithCustomColor = [...menu, customColorPickerLabel];
   const options = {
-    placeHolder: 'Pick a favorite color',
+    placeHolder: 'Pick a favorite color, or choose Custom color… to pick one visually',
     onDidSelectItem: await tryColorWithPeacock(),
   };
-  if (favoriteColors && favoriteColors.length) {
-    selection = (await vscode.window.showQuickPick(menu, options)) || '';
+  const selection = (await vscode.window.showQuickPick(menuWithCustomColor, options)) || '';
+
+  if (selection === customColorPickerLabel) {
+    const startingColor = getEnvironmentAwareColor();
+    return await promptForCustomColorViaColorPicker(startingColor);
   }
+
   if (selection) {
     const selectedColor = parseFavoriteColorValue(selection);
     return selectedColor || '';
@@ -50,6 +43,17 @@ export async function promptForFavoriteColor() {
 
 async function tryColorWithPeacock() {
   return async (item: string) => {
+    // "Custom color…" is not a favorite -- it's the Quick Pick item that
+    // opens the color picker panel. Merely highlighting it (e.g. arrowing
+    // down to it, before ever selecting it) must not touch the applied
+    // color: parseFavoriteColorValue() on its label has no
+    // favoriteColorSeparator, so it returns a garbage substring that
+    // applyColor() treats as invalid input and responds to by unapplying
+    // every current Peacock color (title bar, activity bar, status bar)
+    // the instant the item is highlighted (#708 follow-up).
+    if (item === customColorPickerLabel) {
+      return;
+    }
     const color = parseFavoriteColorValue(item);
     return await applyColor(color);
   };

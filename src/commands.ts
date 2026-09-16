@@ -20,7 +20,8 @@ import {
   updateWorkspaceConfiguration,
   getColorCustomizationConfigFromWorkspace,
 } from './configuration';
-import { promptForColor, promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
+import { promptForFavoriteColor, promptForFavoriteColorName } from './inputs';
+import { promptForCustomColorViaColorPicker } from './color-picker-webview';
 import {
   resolveFavoriteSelectionAction,
   canSaveFavoriteColor,
@@ -68,15 +69,32 @@ export async function saveColorToFavoritesHandler() {
 }
 
 export async function enterColorHandler(color?: string) {
-  const input = color ? color : await promptForColor();
-  if (!input) {
-    return;
+  // Programmatic/keybinding callers that already pass a color skip the UI
+  // entirely, same as before (#708 follow-up merge -- see below).
+  if (color) {
+    if (!isValidColorInput(color)) {
+      throw new Error(`Invalid HEX or named color "${color}"`);
+    }
+    await applyColor(color);
+    await updateColorSetting(color);
+    return State.extensionContext;
   }
-  if (!isValidColorInput(input)) {
-    throw new Error(`Invalid HEX or named color "${input}"`);
+
+  // No color argument -- open the visual picker directly. Its own hex/name/
+  // rgb/hsl/hsv text field already covers "type a color", so a single
+  // command handles both typing and picking visually; there's no separate
+  // "Enter a Color" text-input step anymore (#708 follow-up -- "it feels
+  // odd that you can type a color hex in the textbox or use the picker
+  // where you can also type a hex... merge... remove enter a color and
+  // instead call it choose a custom color").
+  const startingColor = getEnvironmentAwareColor();
+  const selectedColor = await promptForCustomColorViaColorPicker(startingColor);
+  if (!selectedColor) {
+    // User canceled; the picker itself already reverted any live preview.
+    return State.extensionContext;
   }
-  await applyColor(input);
-  await updateColorSetting(input);
+  await applyColor(selectedColor);
+  await updateColorSetting(selectedColor);
   return State.extensionContext;
 }
 

@@ -1,7 +1,14 @@
 import * as vscode from 'vscode';
 import * as sinon from 'sinon';
 import * as assert from 'assert';
-import { IPeacockSettings, Commands, azureBlue } from '../../models';
+import {
+  IPeacockSettings,
+  Commands,
+  azureBlue,
+  peacockGreen,
+  customColorPickerLabel,
+  timeout,
+} from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import { parseFavoriteColorValue } from '../../favorite-color';
 import { isValidColorInput } from '../../color-library';
@@ -10,6 +17,7 @@ import {
   getFavoriteColors,
   updateFavoriteColors,
   getEnvironmentAwareColor,
+  getCurrentColorBeforeAdjustments,
 } from '../../configuration';
 
 suite('Favorite colors', () => {
@@ -97,5 +105,53 @@ suite('Favorite colors', () => {
     assert.ok(colorBefore && colorAfter);
     assert.ok(isValidColorInput(colorAfter), `${colorAfter} is not a valid color`);
     assert.ok(colorBefore === colorAfter);
+  });
+
+  test('highlighting "Custom color…" in the Quick Pick does not unapply the current color (#708 follow-up)', async () => {
+    await executeCommand(Commands.changeColorToPeacockGreen);
+    const startingColor = getCurrentColorBeforeAdjustments();
+    assert.strictEqual(startingColor, peacockGreen);
+
+    // Stub showQuickPick to capture the onDidSelectItem callback
+    // promptForFavoriteColor() passes in (fired on every highlighted item,
+    // not just the final selection) and hold the returned promise open
+    // until the test resolves it, mirroring the real Quick Pick's
+    // highlight-then-select flow.
+    let onDidSelectItem: ((item: string) => unknown) | undefined;
+    let resolveQuickPick!: (value: string) => void;
+    const quickPickPromise = new Promise<string>(resolve => {
+      resolveQuickPick = resolve;
+    });
+    const stub = sinon.stub(vscode.window, 'showQuickPick').callsFake(((
+      _items: unknown,
+      options: any,
+    ) => {
+      onDidSelectItem = options?.onDidSelectItem;
+      return quickPickPromise;
+    }) as any);
+
+    const commandPromise = executeCommand(Commands.changeColorToFavorite);
+    await timeout(50); // let promptForFavoriteColor() reach showQuickPick
+
+    assert.ok(onDidSelectItem, 'expected showQuickPick to be called with onDidSelectItem');
+
+    // Arrowing onto (not selecting) "Custom color…" must be a no-op: it's
+    // not a favorite, so parsing it as one and applying the result used to
+    // unapply every current Peacock color the instant it was highlighted.
+    await onDidSelectItem!(customColorPickerLabel);
+    assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
+
+    // A real, parseable favorite highlighted afterward still previews
+    // normally -- this fix only special-cases the picker's own entry.
+    const { menu } = getFavoriteColors();
+    if (menu.length > 0) {
+      await onDidSelectItem!(menu[0]);
+      const previewed = parseFavoriteColorValue(menu[0]);
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), previewed);
+    }
+
+    resolveQuickPick('');
+    await commandPromise;
+    stub.restore();
   });
 });
