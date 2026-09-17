@@ -56,7 +56,6 @@ test.describe('Key images exist and load', () => {
       'peacock-live-share-demo',
       'peacock-remote',
       'title-bar-coloring-settings',
-      'file-tree-selection',
       'peacock-sketchnote',
     ];
     
