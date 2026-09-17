@@ -31,7 +31,6 @@ export enum AffectedSettings {
   TabActiveBackground = 'affectTabActiveBackground',
   TitleBar = 'affectTitleBar',
   WindowBorder = 'affectWindowBorder',
-  FileTreeSelection = 'affectFileTreeSelection',
 }
 
 export type AllSettings = StandardSettings | AffectedSettings | LiveShareSettings;
@@ -99,9 +98,6 @@ export enum ColorSettings {
   titleBar_inactiveForeground = 'titleBar.inactiveForeground',
   window_activeBorder = 'window.activeBorder',
   window_inactiveBorder = 'window.inactiveBorder',
-  list_focusOutline = 'list.focusOutline',
-  list_focusAndSelectionOutline = 'list.focusAndSelectionOutline',
-  list_inactiveFocusOutline = 'list.inactiveFocusOutline',
 }
 
 export type ColorAdjustment = 'lighten' | 'darken' | 'none';
