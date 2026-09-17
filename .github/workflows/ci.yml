@@ -1,21 +1,21 @@
 name: CI
 
+# Always triggers (no paths-ignore) so the "build" check is reported by
+# exactly one job in exactly one workflow run for every PR and push --
+# including docs/markdown-only changes. A separate companion workflow
+# that only ran for docs changes was tried and reverted: because
+# `paths`/`paths-ignore` filters use OR-match semantics, a PR touching
+# both docs and code would trigger both workflows, producing two
+# identically-named "CI / build" checks that the required-status-check
+# branch rule could not unambiguously resolve. Detecting a docs-only
+# diff *inside* this single job avoids that duplication entirely.
 on:
   pull_request:
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'images/**'
-      - '.github/ISSUE_TEMPLATE/**'
-      - 'LICENSE'
   push:
     branches: [main]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - 'images/**'
-      - '.github/ISSUE_TEMPLATE/**'
-      - 'LICENSE'
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -23,26 +23,45 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Detect docs-only change
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            code:
+              - '!(**.md|docs/**|images/**|.github/ISSUE_TEMPLATE/**|LICENSE)'
+
       - name: Setup Node.js
+        if: steps.filter.outputs.code == 'true'
         uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
 
       - name: Install dependencies
+        if: steps.filter.outputs.code == 'true'
         run: npm ci
 
       - name: Lint
+        if: steps.filter.outputs.code == 'true'
         run: npm run lint
 
       - name: Build
+        if: steps.filter.outputs.code == 'true'
         run: npm run test-compile
 
       - name: Test (Host)
+        if: steps.filter.outputs.code == 'true'
         run: xvfb-run -a npm run just-test
 
       - name: Test (Unit)
+        if: steps.filter.outputs.code == 'true'
         run: npm run test:unit
 
       - name: Package contents check
+        if: steps.filter.outputs.code == 'true'
         run: npm run package:check
+
+      - name: Docs/markdown-only change
+        if: steps.filter.outputs.code != 'true'
+        run: echo "No code changes detected - skipping build/test/package steps."

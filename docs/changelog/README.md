@@ -11,6 +11,7 @@ All notable changes to the code will be documented in this file.
 ### Infrastructure
 
 - Bumped `morgan` (transitive dev dependency) from 1.10.1 to 1.12.0, picking up fixes for log-injection CVEs in the `:remote-user` token and token value escaping ([#760](https://github.com/johnpapa/vscode-peacock/pull/760))
+- Added a required `main` branch ruleset (the `CI / build` status check, plus automatic Copilot code review on every PR/push) now that CI passing is enforced before merge, not just advisory. Because `ci.yml`'s `build` job previously used `paths-ignore` to skip docs/markdown-only changes, a docs-only PR could never satisfy this new required check and would be permanently blocked; `ci.yml` now always triggers and instead detects a docs-only diff internally (via `dorny/paths-filter`) to skip the actual lint/build/test steps while still reporting the same single `build` check. An initial fix using a second, docs-only-triggered workflow was reverted after code review flagged that a mixed docs+code PR would trigger both workflows and produce two ambiguous, identically-named `CI / build` checks.
 
 ### Features
 
