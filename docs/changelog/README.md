@@ -4,6 +4,8 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+## 4.5.0 (2026-09-27)
+
 ### Fixes
 
 - Fixed unfocused windows losing Peacock's status bar color: when `peacock.affectStatusBar` is enabled, Peacock now writes `statusBar.inactiveBackground` alongside the active status bar token so VS Code keeps the Peacock color even after the window loses focus ([#773](https://github.com/johnpapa/vscode-peacock/issues/773))
