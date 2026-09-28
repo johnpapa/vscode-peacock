@@ -364,6 +364,25 @@ suite('Affected elements', () => {
       await updateAffectedElements(allAffectedElements);
     });
 
+    test('removes inactive background when status bar is no longer affected', async () => {
+      await updateAffectedElements({
+        statusBar: true,
+      } as IPeacockAffectedElementSettings);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      assert.ok(getColorCustomizationConfig()[ColorSettings.statusBar_inactiveBackground]);
+
+      await updateAffectedElements({
+        statusBar: false,
+      } as IPeacockAffectedElementSettings);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const config = getColorCustomizationConfig();
+      assert.ok(!config[ColorSettings.statusBar_background]);
+      assert.ok(!config[ColorSettings.statusBar_inactiveBackground]);
+
+      await updateAffectedElements(allAffectedElements);
+    });
+
     test('sets item hover color to darker on a light background', async () => {
       const config = await getPeacockWorkspaceConfigAfterEnterColor('hsl(0 0.5 0.75)');
       const backgroundHex = config[ColorSettings.statusBar_background];
@@ -378,6 +397,15 @@ suite('Affected elements', () => {
       const hoverBackgroundHex = config[ColorSettings.statusBarItem_hoverBackground];
 
       assert.ok(getColorBrightness(backgroundHex) < getColorBrightness(hoverBackgroundHex));
+    });
+
+    test('sets inactive background when status bar is affected', async () => {
+      const config = await getPeacockWorkspaceConfigAfterEnterColor(peacockGreen);
+      const statusBarStyle = getElementStyle(peacockGreen, 'statusBar');
+      const activeBackground = config[ColorSettings.statusBar_background];
+
+      assert.equal(activeBackground, statusBarStyle.backgroundHex);
+      assert.equal(config[ColorSettings.statusBar_inactiveBackground], activeBackground);
     });
 
     test('status bar remote host styles are set when status bar is affected', async () => {
@@ -641,6 +669,7 @@ async function testsDoesNotSetColorCustomizationsForAffectedElements() {
   assert.ok(!config[ColorSettings.activityBarTop_activeBackground]);
   assert.ok(!config[ColorSettings.statusBar_foreground]);
   assert.ok(!config[ColorSettings.statusBar_background]);
+  assert.ok(!config[ColorSettings.statusBar_inactiveBackground]);
   // assert.ok(!config[ColorSettings.activityBar_activeBorder]);
 
   // reset
@@ -742,6 +771,7 @@ async function testsSetsColorCustomizationsForAffectedElements() {
 
   const statusBarStyle = getElementStyle(peacockGreen, 'statusBar');
   assert.equal(statusBarStyle.backgroundHex, config[ColorSettings.statusBar_background]);
+  assert.equal(statusBarStyle.backgroundHex, config[ColorSettings.statusBar_inactiveBackground]);
 
   assert.ok(
     shouldKeepColorTest(

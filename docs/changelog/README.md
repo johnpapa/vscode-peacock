@@ -6,6 +6,7 @@ All notable changes to the code will be documented in this file.
 
 ### Fixes
 
+- Fixed unfocused windows losing Peacock's status bar color: when `peacock.affectStatusBar` is enabled, Peacock now writes `statusBar.inactiveBackground` alongside the active status bar token so VS Code keeps the Peacock color even after the window loses focus ([#773](https://github.com/johnpapa/vscode-peacock/issues/773))
 - Re-pinned `@types/vscode` to `1.49.0` (matching `engines.vscode`) so `vsce` packaging no longer fails with `@types/vscode ... greater than engines.vscode ...` when CI runs `npm run package:check`. Also told Dependabot to ignore `@types/vscode` until Peacock intentionally raises its minimum supported VS Code version, preventing the same incompatible bump from reopening CI failures.
 
 ### Infrastructure

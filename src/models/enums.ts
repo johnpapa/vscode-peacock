@@ -83,6 +83,7 @@ export enum ColorSettings {
   statusBar_border = 'statusBar.border',
   statusBar_background = 'statusBar.background',
   statusBar_foreground = 'statusBar.foreground',
+  statusBar_inactiveBackground = 'statusBar.inactiveBackground',
   statusBar_debuggingBorder = 'statusBar.debuggingBorder',
   statusBar_debuggingBackground = 'statusBar.debuggingBackground',
   statusBar_debuggingForeground = 'statusBar.debuggingForeground',
