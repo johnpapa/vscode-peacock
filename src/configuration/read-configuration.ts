@@ -405,7 +405,7 @@ function collectStatusBarSettings(backgroundHex: string, keepForegroundColor: bo
     const statusBarStyle = getElementStyle(backgroundHex, ElementNames.statusBar);
     statusBarSettings[ColorSettings.statusBar_background] = statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBar_inactiveBackground] =
-      statusBarStyle.inactiveBackgroundHex;
+      statusBarStyle.backgroundHex;
     statusBarSettings[ColorSettings.statusBarItem_hoverBackground] =
       statusBarStyle.backgroundHoverHex;
     statusBarSettings[ColorSettings.statusBarItem_remoteBackground] =
