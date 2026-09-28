@@ -771,10 +771,7 @@ async function testsSetsColorCustomizationsForAffectedElements() {
 
   const statusBarStyle = getElementStyle(peacockGreen, 'statusBar');
   assert.equal(statusBarStyle.backgroundHex, config[ColorSettings.statusBar_background]);
-  assert.equal(
-    statusBarStyle.backgroundHex,
-    config[ColorSettings.statusBar_inactiveBackground],
-  );
+  assert.equal(statusBarStyle.backgroundHex, config[ColorSettings.statusBar_inactiveBackground]);
 
   assert.ok(
     shouldKeepColorTest(
