@@ -29,9 +29,11 @@ const DISALLOWED_FILENAMES = new Set([
   'vitest.config.mts',
   '.eslintrc',
   '.prettierrc.js',
+  'AGENTS.md',
+  '.mcp.json',
 ]);
 
-const MAX_VSIX_KB = 2048; // ~8x the ~250KB historical package size, generous headroom
+const MAX_VSIX_KB = 256; // ~4x the ~67KB package size, generous headroom
 
 function fail(message) {
   console.error(`\n❌ VSIX content check failed: ${message}\n`);
