@@ -4,6 +4,18 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Fixes
+
+- Fixed the [Custom Color Picker](../guide/README.md#custom-color-picker) slowing down VS Code while dragging the color well: previewing a color (a color-well drag, hex edit, or the eyedropper) now debounces the actual workbench write instead of calling `applyColor()` (which writes `workbench.colorCustomizations` to `settings.json` and triggers a workbench theme re-render) on every pixel of drag movement. The panel's own title-bar contrast swatch still updates instantly on every event (a cheap in-memory computation), and the real workbench color -- title bar, status bar, etc. -- now updates live too, a short 150ms after the cursor/eyedropper settles, so a whole drag gesture collapses into a single write instead of one per event. **Apply** still commits the final color immediately, without waiting out the debounce ([#776](https://github.com/johnpapa/vscode-peacock/issues/776))
+- Fixed **Cancel** (and closing the panel) not reverting a debounced preview that had already been applied when the picker was opened with no color previously set (`startingColor === ''`): the revert now always calls `applyColor(startingColor)`, relying on its existing empty-string handling to unapply, instead of skipping the call whenever `startingColor` was falsy and silently leaving the previewed color applied (#776 follow-up, caught in critical review)
+- Fixed the debounced preview write racing **Apply**/**Cancel**. `applyColor()` is a read-modify-write of `workbench.colorCustomizations`, and every message used to be ordered by `serializeMessageHandler()`. Debouncing moved the preview's write off that queue and onto a timer, so a debounced write that had already fired could still be in flight when the user clicked Apply or Cancel -- the two writes overlapped and the stale preview could land last, clobbering the committed color (or leaving a canceled color applied). All three paths now go through one shared `applyColor()` serializer, restoring the guarantee that the last write requested is the last one written (#776 follow-up, caught in review)
+
+### Tests
+
+- Added a `debounce()` utility (`src/debounce.ts`) with unit tests covering burst-collapsing, cancellation, and back-to-back separate bursts, plus host-lane coverage proving a simulated 40-event color-well drag collapses into a single `applyColor()` write with the final previewed color -- not one write per event -- guarding against the exact performance regression reported in [#776](https://github.com/johnpapa/vscode-peacock/issues/776)
+- Added a regression test proving Cancel unapplies (rather than leaves applied) a debounce-settled preview when the picker started with no color set, covering the empty-`startingColor` case the rest of the cancel/close coverage didn't exercise (#776 follow-up)
+- Added a regression test that stubs `applyColor()` with a slow fake and asserts a debounced preview write and a subsequent Apply write never overlap, failing on the interleaved ordering the un-serialized version produced (#776 follow-up)
+
 ## 4.5.0 (2026-09-27)
 
 ### Fixes
