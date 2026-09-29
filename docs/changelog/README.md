@@ -6,11 +6,11 @@ All notable changes to the code will be documented in this file.
 
 ### Fixes
 
-- Fixed the [Custom Color Picker](../guide/README.md#custom-color-picker) slowing down VS Code while dragging the color well: previewing a color (a color-well drag, hex edit, or the eyedropper) now only updates the panel's own title-bar contrast swatch, a cheap in-memory computation, instead of calling `applyColor()` (which writes `workbench.colorCustomizations` to `settings.json` and triggers a workbench theme re-render) on every pixel of drag movement. The chosen color is now only ever applied once, when **Apply** is clicked ([#776](https://github.com/johnpapa/vscode-peacock/issues/776))
+- Fixed the [Custom Color Picker](../guide/README.md#custom-color-picker) slowing down VS Code while dragging the color well: previewing a color (a color-well drag, hex edit, or the eyedropper) now debounces the actual workbench write instead of calling `applyColor()` (which writes `workbench.colorCustomizations` to `settings.json` and triggers a workbench theme re-render) on every pixel of drag movement. The panel's own title-bar contrast swatch still updates instantly on every event (a cheap in-memory computation), and the real workbench color -- title bar, status bar, etc. -- now updates live too, a short 150ms after the cursor/eyedropper settles, so a whole drag gesture collapses into a single write instead of one per event. **Apply** still commits the final color immediately, without waiting out the debounce ([#776](https://github.com/johnpapa/vscode-peacock/issues/776))
 
 ### Tests
 
-- Updated the color picker's host-lane tests to assert that previewing a color never applies it to the workbench, and that only **Apply** does ([#776](https://github.com/johnpapa/vscode-peacock/issues/776))
+- Added a `debounce()` utility (`src/debounce.ts`) with unit tests covering burst-collapsing, cancellation, and back-to-back separate bursts, plus host-lane coverage proving a simulated 40-event color-well drag collapses into a single `applyColor()` write with the final previewed color -- not one write per event -- guarding against the exact performance regression reported in [#776](https://github.com/johnpapa/vscode-peacock/issues/776)
 
 ## 4.5.0 (2026-09-27)
 
