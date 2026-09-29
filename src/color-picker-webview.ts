@@ -9,7 +9,8 @@ import {
 } from './color-picker-html';
 import { getTitleBarContrastPreview } from './color-picker-contrast';
 import { isAffectedSettingSelected, getKeepForegroundColor } from './configuration';
-import { AffectedSettings } from './models';
+import { AffectedSettings, extensionShortName } from './models';
+import { Logger } from './logging';
 import { debounce } from './debounce';
 
 export { getColorPickerHtml } from './color-picker-html';
@@ -64,6 +65,21 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
     let settled = false;
     let disposed = false;
 
+    // applyColor() is a read-modify-write of workbench.colorCustomizations,
+    // so two overlapping calls can let an earlier color's write land after
+    // a later one's (see serializeMessageHandler's doc comment). Debouncing
+    // moves the preview's write out of the message queue and onto a timer,
+    // which means the queue alone no longer orders it against Apply/Cancel:
+    // a debounced write that fired ~150ms after the last drag event can
+    // still be in flight when the user clicks Apply or Cancel, and would
+    // otherwise race -- and potentially clobber -- that final write. Routing
+    // *every* applyColor() call (debounced preview, Apply, Cancel/close)
+    // through this one serializer restores the ordering guarantee: the last
+    // one requested is always the last one written (#776 follow-up).
+    const applyColorSerialized = serializeMessageHandler<string>(async color => {
+      await applyColor(color);
+    });
+
     const debouncedApplyPreview = debounce((color: string) => {
       if (settled) {
         // A still-in-flight debounce timer from just before Apply/Cancel/
@@ -72,7 +88,12 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
         // `settled` guard used everywhere else in this function).
         return;
       }
-      void applyColor(color);
+      // Nothing awaits this timer callback, so an unexpected applyColor()
+      // failure here would surface as an unhandled rejection rather than a
+      // caught error -- log it instead.
+      void applyColorSerialized(color).catch(error =>
+        Logger.info(`${extensionShortName}: failed to apply previewed color ${color}: ${error}`),
+      );
     }, PREVIEW_APPLY_DEBOUNCE_MS);
 
     const finish = (result: string) => {
@@ -150,9 +171,12 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
       onApply: async color => {
         // Apply is the user's explicit "commit" action: cancel any
         // pending debounced write and apply the final color immediately,
-        // rather than waiting out PREVIEW_APPLY_DEBOUNCE_MS.
+        // rather than waiting out PREVIEW_APPLY_DEBOUNCE_MS. Going through
+        // applyColorSerialized (not applyColor directly) means a debounced
+        // preview whose timer already fired, and whose write is still in
+        // flight, completes first -- so this final write always lands last.
         debouncedApplyPreview.cancel();
-        await applyColor(color);
+        await applyColorSerialized(color);
         finish(color);
       },
       onCancel: async () => {
@@ -163,8 +187,10 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
         // which is exactly the revert this needs. Gating this call on
         // `startingColor` being truthy would skip that unapply and leave a
         // debounced preview that already landed permanently applied (#776
-        // follow-up).
-        await applyColor(startingColor);
+        // follow-up). Serialized for the same reason as onApply: an
+        // already-in-flight debounced preview must not land *after* this
+        // revert and leave the canceled color applied.
+        await applyColorSerialized(startingColor);
         finish('');
       },
       onInvalid: () => safePostMessage({ type: 'invalid' }),
@@ -172,7 +198,10 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
 
     // See serializeMessageHandler's doc comment: without this, rapid
     // preview messages from dragging the color well or the EyeDropper can
-    // race and post contrast updates out of order.
+    // race and post contrast updates out of order. The applyColor() writes
+    // those messages trigger are ordered separately, by
+    // applyColorSerialized above, since debouncing moves them off this
+    // queue and onto a timer.
     const handleMessage = serializeMessageHandler(rawHandleMessage);
 
     panel.webview.onDidReceiveMessage(handleMessage);

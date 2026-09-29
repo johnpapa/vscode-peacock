@@ -183,6 +183,57 @@ suite('Custom color picker (#708)', () => {
       assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
     });
 
+    test('an in-flight debounced preview write is never raced by Apply or Cancel (#776 follow-up: debouncing must not drop the serialization guarantee)', async () => {
+      // applyColor() is a read-modify-write of workbench.colorCustomizations,
+      // so two overlapping calls can let an earlier color's write land after
+      // a later one's. Every message used to go through serializeMessageHandler,
+      // which guaranteed that never happened. Debouncing moves the preview's
+      // write off that queue and onto a timer, so a debounced write that has
+      // already fired can still be in flight when the user clicks Apply or
+      // Cancel -- without a shared serializer, those two applyColor() calls
+      // overlap and the final (Apply/Cancel) write can be clobbered by the
+      // stale preview finishing last.
+      await executeCommand(Commands.changeColorToPeacockGreen);
+
+      const order: string[] = [];
+      const applyColorStub = sinon
+        .stub(applyColorModule, 'applyColor')
+        .callsFake(async (input: string) => {
+          order.push(`start:${input}`);
+          // Long enough that a non-serialized Apply would definitely start
+          // before this resolves.
+          await new Promise(resolve => setTimeout(resolve, 60));
+          order.push(`end:${input}`);
+          return input;
+        });
+
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const resultPromise = promptForCustomColorViaColorPicker(peacockGreen);
+      await postToExtension({ type: 'preview', color: azureBlue });
+
+      // Wait just past the debounce so the preview's write has *started* but
+      // is still in flight (it takes 60ms), then commit a different color.
+      await new Promise(resolve => setTimeout(resolve, PREVIEW_APPLY_DEBOUNCE_MS + 10));
+      await postToExtension({ type: 'apply', color: peacockGreen });
+      await resultPromise;
+
+      createPanelStub.restore();
+      applyColorStub.restore();
+
+      // Strictly serialized: the preview write completes before the Apply
+      // write begins. Interleaved output like
+      // ['start:azure', 'start:green', 'end:azure', 'end:green'] means the
+      // two writes overlapped and Apply could be clobbered.
+      assert.deepStrictEqual(order, [
+        `start:${azureBlue}`,
+        `end:${azureBlue}`,
+        `start:${peacockGreen}`,
+        `end:${peacockGreen}`,
+      ]);
+    });
+
     test('canceling after the debounce delay already applied a preview unapplies the color when there was no starting color, rather than leaving the preview applied', async () => {
       // Regression test: when the picker is opened with no color set yet
       // (e.g. a fresh workspace, startingColor === ''), onCancel must still
