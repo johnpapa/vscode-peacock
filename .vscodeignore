@@ -48,3 +48,13 @@ extension/e2e/screenshots/**
 
 # Exclude e2e directory from VSIX
 e2e/**
+
+# Agent/dev tooling config, not used at runtime
+AGENTS.md
+.mcp.json
+
+# README images are referenced by absolute raw.githubusercontent.com URLs, so
+# they render from GitHub and never need to ship. Only the icon declared in
+# package.json's "icon" field is required in the package.
+resources/**
+!resources/peacock-icon.png

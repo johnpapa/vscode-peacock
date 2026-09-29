@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Infrastructure
+
+- Shrunk the published VSIX from **841 KB to 67 KB** (a 92% reduction) by excluding files that were never needed at runtime. `resources/hero.png`, `resources/modern-ui-classic.png`, `resources/modern-ui-modern.png`, and `resources/peacock-icon-small.png` accounted for ~838 KB of that, but every one of them is referenced from `README.md` by an absolute `raw.githubusercontent.com` URL -- so the Marketplace and the VS Code extension pane have always rendered them straight from GitHub, never from the package. Only `resources/peacock-icon.png` is genuinely required (it backs `package.json`'s `icon` field) and it still ships. `AGENTS.md` and `.mcp.json` were also leaking in as dev-only tooling config. `scripts/check-vsix-contents.js` now treats `AGENTS.md` and `.mcp.json` as disallowed filenames, and its size ceiling drops from 2048 KB to 256 KB, so a future regression of this kind fails CI instead of silently shipping
+
 ## 4.5.1 (2026-09-29)
 
 ### Fixes
