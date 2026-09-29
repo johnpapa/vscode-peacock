@@ -4,6 +4,14 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Fixes
+
+- Fixed the [Custom Color Picker](../guide/README.md#custom-color-picker) slowing down VS Code while dragging the color well: previewing a color (a color-well drag, hex edit, or the eyedropper) now only updates the panel's own title-bar contrast swatch, a cheap in-memory computation, instead of calling `applyColor()` (which writes `workbench.colorCustomizations` to `settings.json` and triggers a workbench theme re-render) on every pixel of drag movement. The chosen color is now only ever applied once, when **Apply** is clicked ([#776](https://github.com/johnpapa/vscode-peacock/issues/776))
+
+### Tests
+
+- Updated the color picker's host-lane tests to assert that previewing a color never applies it to the workbench, and that only **Apply** does ([#776](https://github.com/johnpapa/vscode-peacock/issues/776))
+
 ## 4.5.0 (2026-09-27)
 
 ### Fixes

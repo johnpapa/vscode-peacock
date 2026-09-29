@@ -16,9 +16,16 @@ export type { ColorPickerMessage, ColorPickerCallbacks } from './color-picker-ht
 
 /**
  * Opens the picker as a webview panel and resolves to the applied hex color,
- * or '' if the user canceled. Mirrors the favorites Quick Pick's live-preview
- * behavior (#708): every color-well/hex edit calls applyColor() immediately,
- * and canceling reverts to whatever color was active before the picker opened.
+ * or '' if the user canceled. Every color-well/hex edit only updates the
+ * panel's own title-bar contrast preview swatch (a cheap, in-memory
+ * computation) -- Peacock itself is left untouched, and workbench colors
+ * are only ever written once, when Apply is clicked. Dragging the native
+ * color well fires an 'input' event on essentially every pixel of
+ * movement; previously each of those called applyColor(), which writes
+ * workbench.colorCustomizations to settings.json and triggers a workbench
+ * theme re-render, and doing that continuously while dragging made VS Code
+ * visibly slow down (#776). Canceling (or closing the panel) needs no
+ * revert now, since nothing was ever applied to revert.
  */
 export async function promptForCustomColorViaColorPicker(startingColor: string): Promise<string> {
   return new Promise<string>(resolve => {
@@ -99,27 +106,26 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
 
     const rawHandleMessage = createColorPickerMessageHandler({
       onPreview: async color => {
-        // Once the picker has definitively resolved (Apply/Cancel clicked,
-        // or the panel closed) a still-in-flight preview from just before
-        // that -- e.g. the last event of a color-well drag -- must not
-        // overwrite the decided outcome. Checking `settled` here (not just
-        // guarding the postMessage below) is what makes closing the panel
-        // mid-drag reliably revert to the starting color: whichever of the
-        // queued 'preview'/'cancel' messages the queue happens to run
-        // second, the settled check ensures the *decision* (revert or
-        // apply) always wins over a race-adjacent live-preview write
-        // (#708 follow-up).
+        // No applyColor() here (#776) -- a preview only updates the
+        // panel's own contrast swatch, which is a pure, in-memory
+        // computation with no workbench/settings write, so a rapid burst
+        // of these while dragging the color well can't slow VS Code down.
+        // The `settled` check still matters: a still-in-flight preview
+        // from just before Apply/Cancel/close must not post a
+        // contrast-swatch update for a panel that's already resolved.
         if (settled) {
           return;
         }
-        await applyColor(color);
         postContrastPreview(color);
       },
-      onApply: color => finish(color),
-      onCancel: async () => {
-        if (startingColor) {
-          await applyColor(startingColor);
-        }
+      onApply: async color => {
+        // The one and only place a color is actually applied -- see the
+        // function doc comment (#776).
+        await applyColor(color);
+        finish(color);
+      },
+      onCancel: () => {
+        // Nothing to revert: onPreview never applied anything (#776).
         finish('');
       },
       onInvalid: () => safePostMessage({ type: 'invalid' }),
@@ -127,7 +133,7 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
 
     // See serializeMessageHandler's doc comment: without this, rapid
     // preview messages from dragging the color well or the EyeDropper can
-    // race and leave a stale color applied.
+    // race and post contrast updates out of order.
     const handleMessage = serializeMessageHandler(rawHandleMessage);
 
     panel.webview.onDidReceiveMessage(handleMessage);
@@ -136,12 +142,9 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
       disposed = true;
       if (!settled) {
         // Closing the panel (the tab's own "x", not the Cancel button) is
-        // the same revert Cancel does. Route it through the same message
-        // queue as every preview/apply/cancel -- not a direct applyColor()
-        // call -- so it can't race a still-queued preview (e.g. from
-        // dragging the color well right up to the moment the panel
-        // closes) and leave that stale preview applied after the revert
-        // (#708 follow-up).
+        // the same no-op-revert Cancel does (#776). Route it through the
+        // same message queue as every preview/apply/cancel so it can't run
+        // ahead of a still-queued message.
         void handleMessage({ type: 'cancel' });
       }
     });

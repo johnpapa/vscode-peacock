@@ -29,8 +29,9 @@ suite('Custom color picker (#708)', () => {
   setup(async () => await setupTest());
 
   suite('promptForCustomColorViaColorPicker', () => {
-    test('every preview message applies the color live', async () => {
+    test('a preview message never applies the color, only Apply does (#776: dragging the color well was applying on every pixel of movement, slowing VS Code down)', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
+      const startingColor = getCurrentColorBeforeAdjustments();
 
       const { panel, postToExtension } = createFakeWebviewPanel();
       const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
@@ -38,12 +39,17 @@ suite('Custom color picker (#708)', () => {
       const resultPromise = promptForCustomColorViaColorPicker(peacockGreen);
       await postToExtension({ type: 'preview', color: azureBlue });
 
-      assert.strictEqual(getCurrentColorBeforeAdjustments(), azureBlue);
+      // Previewing (a color-well drag or hex edit) must not touch the
+      // workbench color at all -- only the panel's own contrast swatch
+      // updates live (#776).
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
 
       await postToExtension({ type: 'apply', color: azureBlue });
       await resultPromise;
 
       createPanelStub.restore();
+
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), azureBlue);
     });
 
     test('resolves with the applied color and leaves it applied', async () => {
@@ -66,7 +72,7 @@ suite('Custom color picker (#708)', () => {
       assert.strictEqual(getCurrentColorBeforeAdjustments(), azureBlue);
     });
 
-    test('canceling reverts to the color that was active before the picker opened', async () => {
+    test('canceling leaves the color untouched, since previewing never applied anything (#776)', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const startingColor = getEnvironmentAwareColor();
 
@@ -75,7 +81,7 @@ suite('Custom color picker (#708)', () => {
 
       const resultPromise = promptForCustomColorViaColorPicker(startingColor);
       await postToExtension({ type: 'preview', color: azureBlue });
-      assert.strictEqual(getCurrentColorBeforeAdjustments(), azureBlue);
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
 
       await postToExtension({ type: 'cancel' });
       const result = await resultPromise;
@@ -86,7 +92,7 @@ suite('Custom color picker (#708)', () => {
       assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
     });
 
-    test('closing the panel without applying reverts to the starting color', async () => {
+    test('closing the panel without applying leaves the starting color untouched (#776)', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const startingColor = getEnvironmentAwareColor();
 
@@ -240,7 +246,7 @@ suite('Custom color picker (#708)', () => {
       createPanelStub.restore();
     });
 
-    test('closing the panel while a preview is still queued does not leave a stale color applied, and does not throw (#708 follow-up: dispose race)', async () => {
+    test('closing the panel while a preview is still queued does not throw (#708 follow-up: dispose race)', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const startingColor = getEnvironmentAwareColor();
 
@@ -260,14 +266,9 @@ suite('Custom color picker (#708)', () => {
       // happens to run second, it must not throw (a queued preview's own
       // contrast-preview post, once the panel is disposed, is silently
       // skipped rather than throwing "Webview is disposed" -- an unhandled
-      // rejection since nothing awaits that post) and the *decision*
-      // (revert to startingColor) must win over the race-adjacent preview
-      // -- not by enqueue order (which this fake resolves differently from
-      // the real API's guaranteed message-delivery-then-dispose ordering),
-      // but because onPreview checks `settled` before ever calling
-      // applyColor(), so a preview that lands after the outcome is already
-      // decided is a no-op regardless of which message the queue runs
-      // first.
+      // rejection since nothing awaits that post). Since previewing no
+      // longer applies anything (#776), there's nothing left to revert --
+      // the workbench color was never touched in the first place.
       await assert.doesNotReject(previewPromise);
       const result = await resultPromise;
 
