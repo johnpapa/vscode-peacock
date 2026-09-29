@@ -4,10 +4,6 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
-### Infrastructure
-
-- Shrunk the published VSIX from **841 KB to 67 KB** (a 92% reduction) by excluding files that were never needed at runtime. `resources/hero.png`, `resources/modern-ui-classic.png`, `resources/modern-ui-modern.png`, and `resources/peacock-icon-small.png` accounted for ~838 KB of that, but every one of them is referenced from `README.md` by an absolute `raw.githubusercontent.com` URL -- so the Marketplace and the VS Code extension pane have always rendered them straight from GitHub, never from the package. Only `resources/peacock-icon.png` is genuinely required (it backs `package.json`'s `icon` field) and it still ships. `AGENTS.md` and `.mcp.json` were also leaking in as dev-only tooling config. `scripts/check-vsix-contents.js` now treats `AGENTS.md` and `.mcp.json` as disallowed filenames, and its size ceiling drops from 2048 KB to 256 KB, so a future regression of this kind fails CI instead of silently shipping
-
 ## 4.5.1 (2026-09-29)
 
 ### Fixes
@@ -16,6 +12,7 @@ All notable changes to the code will be documented in this file.
 
 ### Infrastructure
 
+- Shrunk the published VSIX from **841 KB to 67 KB** (a 92% reduction) by excluding files that were never needed at runtime. `resources/hero.png`, `resources/modern-ui-classic.png`, `resources/modern-ui-modern.png`, and `resources/peacock-icon-small.png` accounted for ~838 KB of that, but every one of them is referenced from `README.md` by an absolute `raw.githubusercontent.com` URL -- so the Marketplace and the VS Code extension pane have always rendered them straight from GitHub, never from the package. Only `resources/peacock-icon.png` is genuinely required (it backs `package.json`'s `icon` field) and it still ships. `AGENTS.md` and `.mcp.json` were also leaking in as dev-only tooling config. `scripts/check-vsix-contents.js` now treats `AGENTS.md` and `.mcp.json` as disallowed filenames, and its size ceiling drops from 2048 KB to 256 KB, so a future regression of this kind fails CI instead of silently shipping ([#780](https://github.com/johnpapa/vscode-peacock/pull/780))
 - Routed all three of the Custom Color Picker's `applyColor()` calls -- the debounced preview, **Apply**, and **Cancel**/panel-close -- through a single shared serializer. Debouncing moved the preview's write off the picker's existing message queue and onto a timer, so a debounced write that had already fired could still be in flight when the user committed or canceled; the two overlapping `workbench.colorCustomizations` read-modify-writes could then land out of order, clobbering the committed color or leaving a canceled one applied. Serializing restores the guarantee that the last write requested is the last one written ([#777](https://github.com/johnpapa/vscode-peacock/pull/777))
 - Fixed **Cancel** (and closing the panel) not reverting an already-applied preview when the picker was opened with no color previously set (`startingColor === ''`) -- the revert now always calls `applyColor(startingColor)` and relies on its existing empty-string handling to unapply, instead of skipping the call whenever `startingColor` was falsy ([#777](https://github.com/johnpapa/vscode-peacock/pull/777))
 
