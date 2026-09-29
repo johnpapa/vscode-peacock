@@ -125,10 +125,7 @@ suite('Custom color picker (#708)', () => {
         'a burst of preview events must collapse into a single debounced write',
       );
       assert.strictEqual(applyColorSpy.firstCall.args[0], dragColors[dragColors.length - 1]);
-      assert.strictEqual(
-        getCurrentColorBeforeAdjustments(),
-        dragColors[dragColors.length - 1],
-      );
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), dragColors[dragColors.length - 1]);
 
       await postToExtension({ type: 'cancel' });
       await resultPromise;

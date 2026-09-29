@@ -10,7 +10,7 @@ describe('debounce (#776 follow-up: live preview without the drag performance hi
     vi.useRealTimers();
   });
 
-  it('collapses a rapid burst of calls into a single invocation, using the last call\'s arguments', () => {
+  it("collapses a rapid burst of calls into a single invocation, using the last call's arguments", () => {
     const fn = vi.fn();
     const debounced = debounce(fn, 100);
 
