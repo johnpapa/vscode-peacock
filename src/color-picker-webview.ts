@@ -157,9 +157,14 @@ export async function promptForCustomColorViaColorPicker(startingColor: string):
       },
       onCancel: async () => {
         debouncedApplyPreview.cancel();
-        if (startingColor) {
-          await applyColor(startingColor);
-        }
+        // Always call applyColor(), even when startingColor is '' (no color
+        // was set before the picker opened): applyColor('') unapplies any
+        // colors via its own isValidColorInput() check (see apply-color.ts),
+        // which is exactly the revert this needs. Gating this call on
+        // `startingColor` being truthy would skip that unapply and leave a
+        // debounced preview that already landed permanently applied (#776
+        // follow-up).
+        await applyColor(startingColor);
         finish('');
       },
       onInvalid: () => safePostMessage({ type: 'invalid' }),

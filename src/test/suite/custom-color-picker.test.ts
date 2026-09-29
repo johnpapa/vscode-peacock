@@ -183,6 +183,36 @@ suite('Custom color picker (#708)', () => {
       assert.strictEqual(getCurrentColorBeforeAdjustments(), startingColor);
     });
 
+    test('canceling after the debounce delay already applied a preview unapplies the color when there was no starting color, rather than leaving the preview applied', async () => {
+      // Regression test: when the picker is opened with no color set yet
+      // (e.g. a fresh workspace, startingColor === ''), onCancel must still
+      // revert a preview that the debounce already wrote to the workbench.
+      // A naive `if (startingColor) { await applyColor(startingColor); }`
+      // guard skips the revert entirely for a falsy startingColor, leaving
+      // the previewed color permanently applied even though the user
+      // canceled.
+      await executeCommand(Commands.resetWorkspaceColors);
+      const startingColor = getEnvironmentAwareColor();
+      assert.strictEqual(startingColor, '');
+
+      const { panel, postToExtension } = createFakeWebviewPanel();
+      const createPanelStub = sinon.stub(vscode.window, 'createWebviewPanel').returns(panel);
+
+      const resultPromise = promptForCustomColorViaColorPicker(startingColor);
+      await postToExtension({ type: 'preview', color: azureBlue });
+
+      await new Promise(resolve => setTimeout(resolve, DEBOUNCE_SETTLE_WAIT_MS));
+      assert.strictEqual(getCurrentColorBeforeAdjustments(), azureBlue);
+
+      await postToExtension({ type: 'cancel' });
+      const result = await resultPromise;
+
+      createPanelStub.restore();
+
+      assert.strictEqual(result, '');
+      assert.strictEqual(getEnvironmentAwareColor(), '');
+    });
+
     test('closing the panel without applying leaves the starting color untouched when closed before the debounce settles', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const startingColor = getEnvironmentAwareColor();
