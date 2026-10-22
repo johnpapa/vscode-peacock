@@ -91,6 +91,40 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       await updateKeepForegroundColor(false);
     });
 
+    test('keeps activityBar.activeBackground equal to the bar when affectActivityBarActiveBackground is false (#787)', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(
+        config[ColorSettings.activityBar_activeBackground],
+        config[ColorSettings.activityBar_background],
+      );
+    });
+
+    test('shades activityBar.activeBackground when affectActivityBarActiveBackground is true (#787)', async () => {
+      try {
+        await updateAffectedElements({
+          activityBar: true,
+          activityBarActiveBackground: true,
+        } as IPeacockAffectedElementSettings);
+        await executeCommand(Commands.changeColorToPeacockGreen);
+        const config = getColorCustomizationConfig();
+
+        assert.notEqual(
+          config[ColorSettings.activityBar_activeBackground],
+          config[ColorSettings.activityBar_background],
+        );
+        assert.equal(
+          config[ColorSettings.activityBarTop_activeBackground],
+          config[ColorSettings.activityBar_activeBackground],
+        );
+      } finally {
+        await updateAffectedElements({
+          activityBar: true,
+        } as IPeacockAffectedElementSettings);
+      }
+    });
+
     test('sets activityBarTop.foreground when keepForegroundColor is false', async () => {
       await updateKeepForegroundColor(false);
       await executeCommand(Commands.changeColorToPeacockGreen);

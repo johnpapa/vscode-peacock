@@ -215,6 +215,11 @@
           "default": true,
           "description": "Specifies whether Peacock should affect the activity bar."
         },
+        "peacock.affectActivityBarActiveBackground": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether Peacock should shade the active activity bar item's background (lighter on dark bars, darker on light bars) so it stays visible in VS Code's Modern UI. When false the active item's background matches the activity bar."
+        },
         "peacock.affectDebuggingStatusBar": {
           "type": "boolean",
           "default": false,

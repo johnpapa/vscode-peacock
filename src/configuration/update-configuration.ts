@@ -158,6 +158,10 @@ export async function updateLiveShareColor(
 
 export async function updateAffectedElements(values: IPeacockAffectedElementSettings) {
   await updateGlobalConfiguration(AffectedSettings.ActivityBar, values.activityBar);
+  await updateGlobalConfiguration(
+    AffectedSettings.ActivityBarActiveBackground,
+    values.activityBarActiveBackground,
+  );
   await updateGlobalConfiguration(AffectedSettings.StatusBar, values.statusBar);
   await updateGlobalConfiguration(AffectedSettings.TitleBar, values.titleBar);
   await updateGlobalConfiguration(AffectedSettings.EditorGroupBorder, values.editorGroupBorder);

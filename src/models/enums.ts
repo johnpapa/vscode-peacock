@@ -24,6 +24,7 @@ export enum AffectedSettings {
   SideBarBorder = 'affectSideBarBorder',
   SashHover = 'affectSashHover',
   ActivityBar = 'affectActivityBar',
+  ActivityBarActiveBackground = 'affectActivityBarActiveBackground',
   DebuggingStatusBar = 'affectDebuggingStatusBar',
   StatusBar = 'affectStatusBar',
   StatusAndTitleBorders = 'affectStatusAndTitleBorders',
