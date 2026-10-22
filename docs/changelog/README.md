@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Fixes
+
+- Fixed the active activity bar icon being unreadable on some Peacock colors under VS Code's Modern UI ([#785](https://github.com/johnpapa/vscode-peacock/issues/785), related to [#652](https://github.com/johnpapa/vscode-peacock/issues/652)). Modern UI draws the active icon with its own `modernActivityBarItem.activeForeground` token, which Peacock never set, so the theme's fixed color (for example a near-white icon on a light Peacock bar) could apply. Peacock now writes it, respecting `keepForegroundColor`
+
 ## 4.5.1 (2026-09-29)
 
 ### Fixes

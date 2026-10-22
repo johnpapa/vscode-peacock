@@ -381,6 +381,9 @@ function collectActivityBarSettings(
       // of Peacock's colorized foreground (#652). Set both explicitly so the active
       // item's border always matches the rest of the icons.
       activityBarSettings[ColorSettings.activityBar_activeBorder] = activityBarStyle.foregroundHex;
+      // Modern UI draws the active activity bar icon with this token, not activityBar.foreground.
+      activityBarSettings[ColorSettings.modernActivityBarItem_activeForeground] =
+        activityBarStyle.foregroundHex;
 
       activityBarSettings[ColorSettings.activityBarTop_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBarTop_inactiveForeground] =
