@@ -71,6 +71,8 @@ export enum ColorSettings {
   activityBarTop_activeBorder = 'activityBarTop.activeBorder',
   activityBarTop_foreground = 'activityBarTop.foreground',
   activityBarTop_inactiveForeground = 'activityBarTop.inactiveForeground',
+  // Modern UI (2026 themes) active icon token
+  modernActivityBarItem_activeForeground = 'modernActivityBarItem.activeForeground',
   commandCenter_border = 'commandCenter.border',
   commandCenter_foreground = 'commandCenter.foreground',
   editorGroupBorder = 'editorGroup.border',
