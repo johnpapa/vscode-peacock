@@ -28,6 +28,7 @@ import {
   getForegroundColorHex,
   getInactiveBackgroundColorHex,
   getInactiveForegroundColorHex,
+  getActivityBarActiveBackgroundColorHex,
 } from '../color-library';
 import { LiveShareSettings } from '../live-share';
 import { sortSettingsIndexer } from '../object-library';
@@ -247,6 +248,8 @@ export function getSurpriseMeInFavoritesOrder() {
 export function getAffectedElements() {
   return {
     activityBar: readConfiguration<boolean>(AffectedSettings.ActivityBar) || false,
+    activityBarActiveBackground:
+      readConfiguration<boolean>(AffectedSettings.ActivityBarActiveBackground) || false,
     statusBar: readConfiguration<boolean>(AffectedSettings.StatusBar) || false,
     debuggingStatusBar: readConfiguration<boolean>(AffectedSettings.DebuggingStatusBar) || false,
     titleBar: readConfiguration<boolean>(AffectedSettings.TitleBar) || false,
@@ -363,13 +366,19 @@ function collectActivityBarSettings(
 
     // Classic (side) layout tokens
     activityBarSettings[ColorSettings.activityBar_background] = activityBarStyle.backgroundHex;
-    activityBarSettings[ColorSettings.activityBar_activeBackground] =
-      activityBarStyle.backgroundHex;
+    // Modern UI draws the active item's box from this token. The bar color (enough for classic UI,
+    // which uses a left border) erases it, so the opt-in setting uses a shade of the bar instead.
+    const shadeActiveBackground = isAffectedSettingSelected(
+      AffectedSettings.ActivityBarActiveBackground,
+    );
+    const activeBackgroundHex = shadeActiveBackground
+      ? getActivityBarActiveBackgroundColorHex(activityBarStyle.backgroundHex)
+      : activityBarStyle.backgroundHex;
+    activityBarSettings[ColorSettings.activityBar_activeBackground] = activeBackgroundHex;
 
     // "On top" layout tokens (VS Code 1.84+) — mirror classic layout values
     activityBarSettings[ColorSettings.activityBarTop_background] = activityBarStyle.backgroundHex;
-    activityBarSettings[ColorSettings.activityBarTop_activeBackground] =
-      activityBarStyle.backgroundHex;
+    activityBarSettings[ColorSettings.activityBarTop_activeBackground] = activeBackgroundHex;
 
     if (!keepForegroundColor) {
       activityBarSettings[ColorSettings.activityBar_foreground] = activityBarStyle.foregroundHex;
@@ -381,6 +390,9 @@ function collectActivityBarSettings(
       // of Peacock's colorized foreground (#652). Set both explicitly so the active
       // item's border always matches the rest of the icons.
       activityBarSettings[ColorSettings.activityBar_activeBorder] = activityBarStyle.foregroundHex;
+      // Modern UI draws the active activity bar icon with this token, not activityBar.foreground.
+      activityBarSettings[ColorSettings.modernActivityBarItem_activeForeground] =
+        activityBarStyle.foregroundHex;
 
       activityBarSettings[ColorSettings.activityBarTop_foreground] = activityBarStyle.foregroundHex;
       activityBarSettings[ColorSettings.activityBarTop_inactiveForeground] =
@@ -574,6 +586,7 @@ function getAllUserSettings() {
   const lightForegroundColor = getLightForegroundColor();
   const {
     activityBar: affectActivityBar,
+    activityBarActiveBackground: affectActivityBarActiveBackground,
     statusBar: affectStatusBar,
     debuggingStatusBar: affectDebuggingStatusBar,
     titleBar: affectTitleBar,
@@ -594,6 +607,7 @@ function getAllUserSettings() {
     darkForegroundColor,
     lightForegroundColor,
     affectActivityBar,
+    affectActivityBarActiveBackground,
     affectStatusBar,
     affectDebuggingStatusBar,
     affectTitleBar,

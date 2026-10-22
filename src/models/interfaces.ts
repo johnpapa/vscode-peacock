@@ -33,6 +33,7 @@ export interface IElementStyle {
 
 export interface IPeacockAffectedElementSettings {
   activityBar: boolean;
+  activityBarActiveBackground: boolean;
   statusBar: boolean;
   debuggingStatusBar: boolean;
   titleBar: boolean;

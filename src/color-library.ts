@@ -49,6 +49,26 @@ export function getForegroundColorHex(backgroundColor = '') {
   return formatHex(tinycolor(foreground));
 }
 
+// Background for the active activity bar item when peacock.affectActivityBarActiveBackground
+// is on. Mirrors VS Code's built-in 2026 themes, where the box is the bar color mixed toward
+// white on dark bars (#191A1B -> #313233) and toward black on light ones (#FAFAFD -> #D6D6D6).
+// Flips direction if the icon would lose contrast.
+const activeItemMixToWhite = 10;
+const activeItemMixToBlack = 14;
+
+export function getActivityBarActiveBackgroundColorHex(activityBarBackground = '') {
+  const background = tinycolor(activityBarBackground);
+  const iconColor = tinycolor(getForegroundColorHex(activityBarBackground));
+  const lightened = tinycolor.mix(background, '#ffffff', activeItemMixToWhite);
+  const darkened = tinycolor.mix(background, '#000000', activeItemMixToBlack);
+
+  const candidates = background.isLight() ? [darkened, lightened] : [lightened, darkened];
+  const readable = candidates.find(
+    color => tinycolor.readability(color, iconColor) >= ReadabilityRatios.UserInterface,
+  );
+  return formatHex(readable ?? candidates[0]);
+}
+
 export function getInactiveForegroundColorHex(backgroundColor = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
   foreground.setAlpha(inactiveElementAlpha);
