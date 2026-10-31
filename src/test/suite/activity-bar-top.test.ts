@@ -15,7 +15,7 @@
  * rest of the icons.
  */
 import * as assert from 'assert';
-import { ColorSettings, Commands, peacockGreen } from '../../models';
+import { ColorSettings, Commands, ElementNames, peacockGreen } from '../../models';
 import { setupTestSuite, teardownTestSuite, setupTest } from './lib/setup-teardown-test-suite';
 import {
   getColorCustomizationConfig,
@@ -68,6 +68,61 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
         config[ColorSettings.activityBar_activeBackground],
         'activityBarTop.activeBackground should match activityBar.activeBackground',
       );
+    });
+
+    test('sets modernActivityBarItem.activeForeground to the foreground (#785)', async () => {
+      await updateKeepForegroundColor(false);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      const style = getElementStyle(peacockGreen, ElementNames.activityBar);
+
+      assert.equal(
+        config[ColorSettings.modernActivityBarItem_activeForeground],
+        style.foregroundHex,
+      );
+    });
+
+    test('leaves modernActivityBarItem.activeForeground unset when keepForegroundColor is true', async () => {
+      await updateKeepForegroundColor(true);
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.ok(!config[ColorSettings.modernActivityBarItem_activeForeground]);
+      await updateKeepForegroundColor(false);
+    });
+
+    test('keeps activityBar.activeBackground equal to the bar when affectActivityBarActiveBackground is false (#787)', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+
+      assert.equal(
+        config[ColorSettings.activityBar_activeBackground],
+        config[ColorSettings.activityBar_background],
+      );
+    });
+
+    test('shades activityBar.activeBackground when affectActivityBarActiveBackground is true (#787)', async () => {
+      try {
+        await updateAffectedElements({
+          activityBar: true,
+          activityBarActiveBackground: true,
+        } as IPeacockAffectedElementSettings);
+        await executeCommand(Commands.changeColorToPeacockGreen);
+        const config = getColorCustomizationConfig();
+
+        assert.notEqual(
+          config[ColorSettings.activityBar_activeBackground],
+          config[ColorSettings.activityBar_background],
+        );
+        assert.equal(
+          config[ColorSettings.activityBarTop_activeBackground],
+          config[ColorSettings.activityBar_activeBackground],
+        );
+      } finally {
+        await updateAffectedElements({
+          activityBar: true,
+        } as IPeacockAffectedElementSettings);
+      }
     });
 
     test('sets activityBarTop.foreground when keepForegroundColor is false', async () => {

@@ -49,6 +49,23 @@ export function getForegroundColorHex(backgroundColor = '') {
   return formatHex(tinycolor(foreground));
 }
 
+// Background for the active activity bar item when peacock.affectActivityBarActiveBackground
+// is on. Mixes the bar color toward white (very dark bars) or black (all others) until the box is
+// about as distinct from the bar as in VS Code's built-in themes (#FAFAFD -> #D6D6D6, ~1.4:1).
+const activeItemContrast = 1.4;
+const darkBarLuminance = 0.1;
+const maxActiveItemMix = 40;
+
+export function getActivityBarActiveBackgroundColorHex(activityBarBackground = '') {
+  const background = tinycolor(activityBarBackground);
+  const toward = background.getLuminance() < darkBarLuminance ? '#ffffff' : '#000000';
+  for (let amount = 5; amount < maxActiveItemMix; amount++) {
+    const box = tinycolor.mix(background, toward, amount);
+    if (tinycolor.readability(background, box) >= activeItemContrast) return formatHex(box);
+  }
+  return formatHex(tinycolor.mix(background, toward, maxActiveItemMix));
+}
+
 export function getInactiveForegroundColorHex(backgroundColor = '') {
   const foreground = tinycolor(getForegroundColorHex(backgroundColor));
   foreground.setAlpha(inactiveElementAlpha);

@@ -342,6 +342,7 @@ suite('Affected elements', () => {
     test('does not set item hover color when status bar is not affected', async () => {
       await updateAffectedElements({
         activityBar: true,
+        activityBarActiveBackground: false,
         statusBar: false,
         debuggingStatusBar: false,
         titleBar: true,

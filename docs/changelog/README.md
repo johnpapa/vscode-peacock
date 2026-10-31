@@ -4,6 +4,14 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Features
+
+- Added the opt-in `peacock.affectActivityBarActiveBackground` setting (default `false`). When enabled, the active activity bar item's background (`activityBar.activeBackground` and `activityBarTop.activeBackground`) is a shade of the bar color, matching VS Code's built-in 2026 themes, so the active item stays visible in Modern UI instead of blending into the bar ([#787](https://github.com/johnpapa/vscode-peacock/issues/787))
+
+### Fixes
+
+- Fixed the active activity bar icon being unreadable on some Peacock colors under VS Code's Modern UI ([#785](https://github.com/johnpapa/vscode-peacock/issues/785), related to [#652](https://github.com/johnpapa/vscode-peacock/issues/652)). Modern UI draws the active icon with its own `modernActivityBarItem.activeForeground` token, which Peacock never set, so the theme's fixed color (for example a near-white icon on a light Peacock bar) could apply. Peacock now writes it, respecting `keepForegroundColor`
+
 ## 4.5.1 (2026-09-29)
 
 ### Fixes
