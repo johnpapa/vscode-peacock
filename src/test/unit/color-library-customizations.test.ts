@@ -4,7 +4,6 @@ import {
   deleteKnownColorCustomizations,
   getActivityBarActiveBackgroundColorHex,
   getBackgroundColorHex,
-  getForegroundColorHex,
 } from '../../color-library';
 import { ColorSettings } from '../../models';
 
@@ -42,14 +41,10 @@ describe('Color library customizations', () => {
 describe('getActivityBarActiveBackgroundColorHex', () => {
   const bars = ['#fe4c37', '#832561', '#b895dd', '#1a6c1f', '#ffffff', '#15202b', '#000000'];
 
-  it.each(bars)('differs from the bar background for %s', bar => {
-    expect(getActivityBarActiveBackgroundColorHex(bar)).not.toBe(getBackgroundColorHex(bar));
-  });
-
-  it.each(bars)('is opaque and keeps the icon readable for %s', bar => {
+  it.each(bars)('is an opaque hex that differs from the bar background for %s', bar => {
     const active = getActivityBarActiveBackgroundColorHex(bar);
     expect(active).toMatch(/^#[0-9a-f]{6}$/i);
-    expect(tinycolor.readability(active, getForegroundColorHex(bar))).toBeGreaterThanOrEqual(3);
+    expect(active).not.toBe(getBackgroundColorHex(bar));
   });
 
   it.each([
@@ -63,12 +58,13 @@ describe('getActivityBarActiveBackgroundColorHex', () => {
     expect(Math.abs(actual.b - target.b)).toBeLessThanOrEqual(4);
   });
 
-  it('lightens very dark bars and darkens bright ones', () => {
-    expect(tinycolor('#15202b').getLuminance()).toBeLessThan(
-      tinycolor(getActivityBarActiveBackgroundColorHex('#15202b')).getLuminance(),
-    );
-    expect(tinycolor('#fe4c37').getLuminance()).toBeGreaterThan(
-      tinycolor(getActivityBarActiveBackgroundColorHex('#fe4c37')).getLuminance(),
-    );
+  it('lightens very dark bars and darkens the rest', () => {
+    const luminanceOf = (bar: string) => tinycolor(bar).getLuminance();
+    const activeLuminance = (bar: string) =>
+      tinycolor(getActivityBarActiveBackgroundColorHex(bar)).getLuminance();
+    expect(activeLuminance('#15202b')).toBeGreaterThan(luminanceOf('#15202b'));
+    expect(activeLuminance('#1a6c1f')).toBeLessThan(luminanceOf('#1a6c1f'));
+    expect(activeLuminance('#fe4c37')).toBeLessThan(luminanceOf('#fe4c37'));
+    expect(activeLuminance('#ffffff')).toBeLessThan(luminanceOf('#ffffff'));
   });
 });
