@@ -4,6 +4,10 @@ All notable changes to the code will be documented in this file.
 
 ## Unreleased
 
+### Fixes
+
+- Fixed the activity bar ignoring Peacock's color under VS Code's Modern UI when the theme sets `modernActivityBar.*` tokens, such as One Dark Pro ([#789](https://github.com/johnpapa/vscode-peacock/issues/789)). Peacock now also writes `modernActivityBar.background` and `modernActivityBar.inactiveBackground`
+
 ## 4.5.1 (2026-09-29)
 
 ### Fixes

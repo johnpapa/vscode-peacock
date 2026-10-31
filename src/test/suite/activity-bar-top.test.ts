@@ -55,6 +55,21 @@ suite('Activity Bar — "on top" layout (issue #538)', () => {
       );
     });
 
+    test('sets the Modern UI activity bar background tokens to the bar color (#789)', async () => {
+      await executeCommand(Commands.changeColorToPeacockGreen);
+      const config = getColorCustomizationConfig();
+      const activityBarStyle = getElementStyle(peacockGreen, 'activityBar');
+
+      assert.equal(
+        config[ColorSettings.modernActivityBar_background],
+        activityBarStyle.backgroundHex,
+      );
+      assert.equal(
+        config[ColorSettings.modernActivityBar_inactiveBackground],
+        activityBarStyle.backgroundHex,
+      );
+    });
+
     test('sets activityBarTop.activeBackground to the same value as activityBar.activeBackground', async () => {
       await executeCommand(Commands.changeColorToPeacockGreen);
       const config = getColorCustomizationConfig();
