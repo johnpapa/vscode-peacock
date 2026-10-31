@@ -39,7 +39,16 @@ describe('Color library customizations', () => {
 });
 
 describe('getActivityBarActiveBackgroundColorHex', () => {
-  const bars = ['#fe4c37', '#832561', '#b895dd', '#1a6c1f', '#ffffff', '#15202b', '#000000'];
+  const bars = [
+    '#fe4c37',
+    '#832561',
+    '#b895dd',
+    '#1a6c1f',
+    '#3554f5',
+    '#ffffff',
+    '#15202b',
+    '#000000',
+  ];
 
   it.each(bars)('is an opaque hex that differs from the bar background for %s', bar => {
     const active = getActivityBarActiveBackgroundColorHex(bar);
@@ -47,10 +56,17 @@ describe('getActivityBarActiveBackgroundColorHex', () => {
     expect(active).not.toBe(getBackgroundColorHex(bar));
   });
 
+  it.each(bars)("is about as distinct from the bar as VS Code's built-in themes for %s", bar => {
+    // The built-in themes use about 1.4:1 between the bar and the active item (#FAFAFD -> #D6D6D6).
+    const contrast = tinycolor.readability(getActivityBarActiveBackgroundColorHex(bar), bar);
+    expect(contrast).toBeGreaterThanOrEqual(1.4);
+    expect(contrast).toBeLessThan(1.5);
+  });
+
   it.each([
-    ['#191a1b', '#313233'],
     ['#fafafd', '#d6d6d6'],
-  ])("is within a few levels of VS Code's built-in 2026 theme for %s", (bar, expected) => {
+    ['#2c2c2c', '#444445'],
+  ])("is within a few levels of VS Code's built-in theme for %s", (bar, expected) => {
     const actual = tinycolor(getActivityBarActiveBackgroundColorHex(bar)).toRgb();
     const target = tinycolor(expected).toRgb();
     expect(Math.abs(actual.r - target.r)).toBeLessThanOrEqual(4);
