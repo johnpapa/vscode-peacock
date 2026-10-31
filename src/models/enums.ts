@@ -65,6 +65,9 @@ export enum ColorSettings {
   activityBar_inactiveForeground = 'activityBar.inactiveForeground',
   activityBar_badgeBackground = 'activityBarBadge.background',
   activityBar_badgeForeground = 'activityBarBadge.foreground',
+  // Modern UI activity bar backgrounds
+  modernActivityBar_background = 'modernActivityBar.background',
+  modernActivityBar_inactiveBackground = 'modernActivityBar.inactiveBackground',
   // Activity Bar "on top" layout tokens (VS Code 1.84+)
   activityBarTop_background = 'activityBarTop.background',
   activityBarTop_activeBackground = 'activityBarTop.activeBackground',

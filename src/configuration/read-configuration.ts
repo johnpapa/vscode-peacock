@@ -366,6 +366,12 @@ function collectActivityBarSettings(
     activityBarSettings[ColorSettings.activityBar_activeBackground] =
       activityBarStyle.backgroundHex;
 
+    // Modern UI reads these before activityBar.background, and some themes set them (#789)
+    activityBarSettings[ColorSettings.modernActivityBar_background] =
+      activityBarStyle.backgroundHex;
+    activityBarSettings[ColorSettings.modernActivityBar_inactiveBackground] =
+      activityBarStyle.backgroundHex;
+
     // "On top" layout tokens (VS Code 1.84+) — mirror classic layout values
     activityBarSettings[ColorSettings.activityBarTop_background] = activityBarStyle.backgroundHex;
     activityBarSettings[ColorSettings.activityBarTop_activeBackground] =
